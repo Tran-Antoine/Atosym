@@ -1,7 +1,8 @@
-package net.akami.mask.core;
+package net.akami.mask;
 
 import java.util.List;
-import net.akami.mask.core.Tree.Branch;
+
+import net.akami.mask.Tree.Branch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,34 +11,43 @@ public class Reducer {
     private static final Logger LOGGER = LoggerFactory.getLogger(Reducer.class.getName());
 
     static {
-        new Operation('+').setFunction((a, b) -> a+b);
-        new Operation('-').setFunction((a, b) -> a-b);
-        new Operation('*').setFunction(((a, b) -> a*b));
-        new Operation('/').setFunction((a, b) -> a/b);
+        Operation.setOperations(
+                Operation.none(),
+                Operation.none(),
+                new Operation('+').withFunction(MathUtils::sum),
+                new Operation('-').withFunction(MathUtils::subtract),
+                new Operation('*').withFunction(MathUtils::mult),
+                new Operation('/').withFunction(MathUtils::divide),
+                new Operation('^').withFunction(MathUtils::pow),
+                Operation.none());
     }
-
-    private static final char[] OPERATIONS = {' ', ' ', '+', '-', '*', '/'};
 
     public static String reduce(String exp) {
         long time = System.nanoTime();
         // deletes all the spaces
         String localExp = exp.replaceAll("\\s", "");
         Tree tree = new Tree();
-        tree.new Branch(localExp, null);
+        tree.new Branch(localExp);
 
-        for(int i = 2; i<OPERATIONS.length; i+=2) {
-            reduceBy(OPERATIONS[i], OPERATIONS[i+1], OPERATIONS[i-1], OPERATIONS[i-2], tree);
+        Operation[] ops = Operation.getOperations();
+        for(int i = 2; i < ops.length; i+=2) {
+            reduceBy(ops[i].getChar(), ops[i+1].getChar(), ops[i-1].getChar(), ops[i-2].getChar(), tree);
         }
+
         String result;
         try {
             result = mergeBranches(tree);
         } catch (ArithmeticException | NumberFormatException e) {
             if(e instanceof ArithmeticException)
                 LOGGER.error("Non solvable mathematical expression given : {}", exp);
-            else
-                LOGGER.error("Number present in the expression {} too high", exp);
+            else if(e instanceof NumberFormatException)
+                LOGGER.error("Wrong format in the expression {}", exp);
+            else {
+                LOGGER.error("Unknown error :"+e.getClass());
+            }
             result = "undefined";
         }
+
         float deltaTime = (System.nanoTime() - time) / 1000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
         return result;
@@ -88,8 +98,8 @@ public class Reducer {
 
         String left = exp.substring(0, index);
         String right = exp.substring(index+1);
-        actual.setLeft(tree.new Branch(left, actual));
-        actual.setRight(tree.new Branch(right, actual));
+        actual.setLeft(tree.new Branch(left));
+        actual.setRight(tree.new Branch(right));
         actual.setOperation(operation);
     }
 
@@ -128,7 +138,7 @@ public class Reducer {
             if(branch.getRight().isReduced()) {
                 right = String.valueOf(branch.getRight().getReducedValue());
             }
-            int value = Operation.getByCharacter(branch.getOperation()).compute(left, right);
+            float value = Operation.getByCharacter(branch.getOperation()).compute(left, right);
             // The result is defined as the reduced value of the expression
             LOGGER.debug("Successfully calculated the value of "+branch.getExpression()+" : "+value);
 
@@ -136,7 +146,11 @@ public class Reducer {
             branch.setLeft(null);
             branch.setRight(null);
 
-            if(tree.getBranches().get(0).isReduced()) {
+            Branch first = tree.getBranches().get(0);
+            if(first.isReduced()) {
+                if(String.valueOf(first.getReducedValue()).equals("Infinity"))
+                    throw new ArithmeticException();
+
                 return String.valueOf(tree.getBranches().get(0).getReducedValue());
             }
         }
