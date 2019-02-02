@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+
+    <Appenders>
+        <Console name="STDOUT">
+            <PatternLayout pattern="%d{HH:mm:ss:SSSS} |%level| : %msg%n"></PatternLayout>
+
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT"/>
+            </Filters>
+        </Console>
+
+        <Console name="STDERR">
+            <PatternLayout pattern="%d{HH:mm} |%level| [%F#%M() line:%L]: %msg%n"/>
+
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Root level="DEBUG">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="STDERR"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
