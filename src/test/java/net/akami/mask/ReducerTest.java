@@ -33,7 +33,7 @@ public class ReducerTest {
 
     @Test
     public void initExpressionVariablesCorrectly() {
-        MathExpression expression = new MathExpression("xxxy");
+        MaskExpression expression = new MaskExpression("xxxy");
         Assertions.assertThat(expression.getVariablesAmount()).isEqualTo(2);
     }
     @Test
@@ -44,7 +44,7 @@ public class ReducerTest {
     }
     @Test
     public void mathExpressionImageFor() {
-        MathExpression expression = new MathExpression("4x+5-2x");
-        Assertions.assertThat(expression.imageFor(5).asInt()).isEqualTo(15);
+        MaskExpression expression = new MaskExpression("4x+5-2y");
+        Assertions.assertThat(expression.imageFor(5, 5).asInt()).isEqualTo(15);
     }
 }

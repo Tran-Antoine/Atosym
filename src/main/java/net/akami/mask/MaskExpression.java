@@ -3,13 +3,13 @@ package net.akami.mask;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MathExpression {
+public class MaskExpression {
 
-    private static final String NUMBERS = "0123456789";
+    private static final String NON_VARIABLES = "0123456789+-*=^";
     private final String expression;
     private final List<Character> variables;
 
-    public MathExpression(final String expression) {
+    public MaskExpression(final String expression) {
         this.expression = expression;
         this.variables = createVariables();
     }
@@ -19,7 +19,7 @@ public class MathExpression {
 
         for(int i = 0; i < expression.length(); i++) {
             char c = expression.charAt(i);
-            if(!NUMBERS.contains(String.valueOf(c)) && !variables.contains(c)) {
+            if(!NON_VARIABLES.contains(String.valueOf(c)) && !variables.contains(c)) {
                 variables.add(c);
             }
         }
@@ -43,7 +43,7 @@ public class MathExpression {
         for(int i = 0; i < self.length(); i++) {
             if(self.charAt(i) == var && i!= 0) {
 
-                if(NUMBERS.contains(String.valueOf(self.charAt(i-1)))) {
+                if(NON_VARIABLES.contains(String.valueOf(self.charAt(i-1)))) {
                     //the char before the variable is a number. 4x obviously means 4*x
                     builder.append("*"+value);
                 } else {

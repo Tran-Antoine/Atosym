@@ -20,7 +20,7 @@ public class RestCalculation {
         return Float.parseFloat(rest);
     }
 
-    public MathExpression asMathExpression() {
-        return new MathExpression(rest);
+    public MaskExpression asMathExpression() {
+        return new MaskExpression(rest);
     }
 }
