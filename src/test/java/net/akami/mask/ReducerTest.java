@@ -19,16 +19,16 @@ public class ReducerTest {
         String s9 = "7^3";
         String s10 = "3*2^2";
 
-        Assertions.assertThat(Reducer.reduce(s1)).isEqualTo("5");
-        Assertions.assertThat(Reducer.reduce(s2)).isEqualTo("15.0");
-        Assertions.assertThat(Reducer.reduce(s3)).isEqualTo("12.0");
-        Assertions.assertThat(Reducer.reduce(s4)).isEqualTo("11.0");
-        Assertions.assertThat(Reducer.reduce(s5)).isEqualTo("-165.0");
-        Assertions.assertThat(Reducer.reduce(s6)).isEqualTo("2.0");
-        Assertions.assertThat(Reducer.reduce(s7)).isEqualTo("undefined");
-        Assertions.assertThat(Reducer.reduce(s8)).isEqualTo("undefined");
-        Assertions.assertThat(Reducer.reduce(s9)).isEqualTo("343.0");
-        Assertions.assertThat(Reducer.reduce(s10)).isEqualTo("12.0");
+        Assertions.assertThat(Reducer.reduce(s1).asInt()).isEqualTo(5);
+        Assertions.assertThat(Reducer.reduce(s2).asInt()).isEqualTo(15);
+        Assertions.assertThat(Reducer.reduce(s3).asExpression()).isEqualTo("12.0");
+        Assertions.assertThat(Reducer.reduce(s4).asExpression()).isEqualTo("11.0");
+        Assertions.assertThat(Reducer.reduce(s5).asExpression()).isEqualTo("-165.0");
+        Assertions.assertThat(Reducer.reduce(s6).asInt()).isEqualTo(2);
+        Assertions.assertThat(Reducer.reduce(s7).asExpression()).isEqualTo("undefined");
+        Assertions.assertThat(Reducer.reduce(s8).asExpression()).isEqualTo("undefined");
+        Assertions.assertThat(Reducer.reduce(s9).asInt()).isEqualTo(343);
+        Assertions.assertThat(Reducer.reduce(s10).asExpression()).isEqualTo("12.0");
     }
 
     @Test

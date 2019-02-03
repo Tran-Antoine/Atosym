@@ -1,65 +1,40 @@
 package net.akami.mask;
 
-public class Operation {
+public enum Operation {
 
-    private static Operation[] operations;
-    private static final Operation none = new Operation(' ');
-    private final char character;
-    private Function function;
+    SUM('+', MathUtils::sum),
+    SUBTRACT('-', MathUtils::subtract),
+    MULT('*', MathUtils::mult),
+    DIVIDE('/', MathUtils::divide),
+    POW('^', MathUtils::pow),
+    NONE(' ', null);
 
-    public Operation(char operation) {
-        this.character = operation;
-    }
+    private char sign;
+    private MathOperation function;
 
-    public Operation withFunction(Function function) {
+    Operation(char sign, MathOperation function) {
+        this.sign = sign;
         this.function = function;
-        return this;
     }
 
-    public static Operation none() {
-        return none;
-    }
-
-    public char getChar() {
-        return character;
+    public char getSign() {
+        return sign;
     }
 
     public float compute(String a, String b) {
         return function.compute(Float.parseFloat(a), Float.parseFloat(b));
     }
 
-    public static Operation getByCharacter(char c) {
-        for(Operation op : operations) {
-            if(op.character == c)
-                return op;
+    public static Operation getBySign(char sign) {
+        for(Operation operation : values()) {
+            if(operation.sign == sign) {
+                return operation;
+            }
         }
         return null;
     }
 
-    public static void setOperations(Operation... operations) {
-        Operation.operations = operations;
-    }
-
-    public static Operation[] getOperations() {
-        return operations;
-    }
-    public static char[] getSigns() {
-        char[] signs = new char[operations.length];
-        for(int i = 0; i<signs.length; i++) {
-            signs[i] = operations[i].getChar();
-        }
-        return signs;
-    }
-
-    public static boolean isOperationSign(char c) {
-        for(char sign : getSigns())
-            if(sign == c)
-                return true;
-        return false;
-    }
-    public interface Function {
-
+    private interface MathOperation {
         float compute(float a, float b);
     }
 }
-

@@ -9,29 +9,28 @@ import org.slf4j.LoggerFactory;
 public class Reducer {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Reducer.class.getName());
+    private static final Operation[] OPERATIONS;
 
     static {
-        Operation.setOperations(
-                Operation.none(),
-                Operation.none(),
-                new Operation('+').withFunction(MathUtils::sum),
-                new Operation('-').withFunction(MathUtils::subtract),
-                new Operation('*').withFunction(MathUtils::mult),
-                new Operation('/').withFunction(MathUtils::divide),
-                new Operation('^').withFunction(MathUtils::pow),
-                Operation.none());
+        OPERATIONS = new Operation[]{
+                Operation.SUM, Operation.SUBTRACT,
+                Operation.MULT, Operation.DIVIDE,
+                Operation.POW, Operation.NONE
+        };
     }
 
-    public static String reduce(String exp) {
+    public static RestCalculation reduce(String exp) {
         long time = System.nanoTime();
+
+        Tree tree = new Tree();
+
         // deletes all the spaces
         String localExp = exp.replaceAll("\\s", "");
-        Tree tree = new Tree();
         tree.new Branch(localExp);
 
-        Operation[] ops = Operation.getOperations();
-        for(int i = 2; i < ops.length; i+=2) {
-            reduceBy(ops[i].getChar(), ops[i+1].getChar(), ops[i-1].getChar(), ops[i-2].getChar(), tree);
+        // split the expression for each pair of signs.
+        for(int i = 0; i < OPERATIONS.length; i+=2) {
+            splitBy(tree, OPERATIONS[i].getSign(), OPERATIONS[i+1].getSign());
         }
 
         String result;
@@ -40,19 +39,16 @@ public class Reducer {
         } catch (ArithmeticException | NumberFormatException e) {
             if(e instanceof ArithmeticException)
                 LOGGER.error("Non solvable mathematical expression given : {}", exp);
-            else if(e instanceof NumberFormatException)
+            else
                 LOGGER.error("Wrong format in the expression {}", exp);
-            else {
-                LOGGER.error("Unknown error :"+e.getClass());
-            }
             result = "undefined";
         }
 
         float deltaTime = (System.nanoTime() - time) / 1000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
-        return result;
+        return new RestCalculation(result);
     }
-    public static void reduceBy(char c1, char c2, char p1, char p2, Tree tree) {
+    public static void splitBy(Tree tree, char c1, char c2) {
 
         List<Branch> branches = tree.getBranches();
         int index = 0;
@@ -75,13 +71,13 @@ public class Reducer {
                     expression '5+3*2', the result will be 5+3*2, 5, and 3*2. When splitting by '*' and '/', we don't
                     want '5+3*2' to be split, because it contains one of the previous operations (+).
                  */
-                if(exp.contains(""+p1) || exp.contains(""+p2))
+                if(actual.hasChildren())
                     break;
 
                 char c = exp.charAt(i);
 
                 if(c == c1 || c == c2) {
-                    createNewBranch(exp, i, c, actual, tree);
+                    createNewBranch(tree, actual, exp, i, c);
                     break;
                 }
             }
@@ -94,7 +90,7 @@ public class Reducer {
         LOGGER.debug("Separations with the operations {} and {} are done", c1, c2);
     }
 
-    private static void createNewBranch(String exp, int index, char operation, Branch actual, Tree tree) {
+    private static void createNewBranch(Tree tree, Branch actual, String exp, int index, char operation) {
 
         String left = exp.substring(0, index);
         String right = exp.substring(index+1);
@@ -138,7 +134,7 @@ public class Reducer {
             if(branch.getRight().isReduced()) {
                 right = String.valueOf(branch.getRight().getReducedValue());
             }
-            float value = Operation.getByCharacter(branch.getOperation()).compute(left, right);
+            float value = Operation.getBySign(branch.getOperation()).compute(left, right);
             // The result is defined as the reduced value of the expression
             LOGGER.debug("Successfully calculated the value of "+branch.getExpression()+" : "+value);
 
@@ -151,7 +147,7 @@ public class Reducer {
                 if(String.valueOf(first.getReducedValue()).equals("Infinity"))
                     throw new ArithmeticException();
 
-                return String.valueOf(tree.getBranches().get(0).getReducedValue());
+                return String.valueOf(first.getReducedValue());
             }
         }
         return null;

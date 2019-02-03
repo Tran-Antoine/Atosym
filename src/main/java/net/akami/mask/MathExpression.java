@@ -30,22 +30,20 @@ public class MathExpression {
 
         String replaced = expression;
         for(int i = 0; i < values.length; i++) {
-
             char var = variables.get(i);
             replaced = replace(var, values[i], replaced);
         }
-        System.out.println(replaced);
-        return new RestCalculation(Reducer.reduce(replaced));
+        return Reducer.reduce(replaced);
     }
 
-    private String replace(char var, float value, String toReplace) {
+    private String replace(char var, float value, String self) {
 
         StringBuilder builder = new StringBuilder();
 
-        for(int i = 0; i < toReplace.length(); i++) {
-            if(toReplace.charAt(i) == var && i!= 0) {
+        for(int i = 0; i < self.length(); i++) {
+            if(self.charAt(i) == var && i!= 0) {
 
-                if(NUMBERS.contains(String.valueOf(toReplace.charAt(i-1)))) {
+                if(NUMBERS.contains(String.valueOf(self.charAt(i-1)))) {
                     //the char before the variable is a number. 4x obviously means 4*x
                     builder.append("*"+value);
                 } else {
@@ -54,7 +52,7 @@ public class MathExpression {
                 }
             } else {
                 // No variable found, we just add the same char
-                builder.append(toReplace.charAt(i));
+                builder.append(self.charAt(i));
             }
         }
         return builder.toString();
