@@ -1,4 +1,4 @@
-package net.akami.mask;
+package net.akami.mask.utils;
 
 import java.text.DecimalFormat;
 

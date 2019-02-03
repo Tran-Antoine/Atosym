@@ -1,4 +1,4 @@
-package net.akami.mask;
+package net.akami.mask.core;
 
 public class RestCalculation {
 
@@ -20,7 +20,7 @@ public class RestCalculation {
         return Float.parseFloat(rest);
     }
 
-    public MaskExpression asMathExpression() {
+    public MaskExpression asMaskExpression() {
         return new MaskExpression(rest);
     }
 }

@@ -1,5 +1,8 @@
 package net.akami.mask;
 
+import net.akami.mask.core.MaskExpression;
+import net.akami.mask.utils.MathUtils;
+import net.akami.mask.utils.Reducer;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package net.akami.mask;
+package net.akami.mask.core;
 
 import java.util.ArrayList;
 import java.util.List;

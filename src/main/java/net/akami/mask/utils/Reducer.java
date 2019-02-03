@@ -1,8 +1,11 @@
-package net.akami.mask;
+package net.akami.mask.utils;
 
 import java.util.List;
 
-import net.akami.mask.Tree.Branch;
+import net.akami.mask.Operation;
+import net.akami.mask.core.RestCalculation;
+import net.akami.mask.core.Tree;
+import net.akami.mask.core.Tree.Branch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

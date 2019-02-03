@@ -1,5 +1,7 @@
 package net.akami.mask;
 
+import net.akami.mask.utils.MathUtils;
+
 public enum Operation {
 
     SUM('+', MathUtils::sum),

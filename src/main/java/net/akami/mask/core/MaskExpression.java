@@ -1,4 +1,6 @@
-package net.akami.mask;
+package net.akami.mask.core;
+
+import net.akami.mask.utils.Reducer;
 
 import java.util.ArrayList;
 import java.util.List;
