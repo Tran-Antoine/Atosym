@@ -51,13 +51,17 @@ public class ReducerTest {
 
     @Test
     public void basicVariableOperation() {
-        String s9 = "5x + 2y";
+        String s9  = "5x + 2y";
         String s10 = "5x * 2x";
         String s11 = "4x * 2y";
+        String s12 = "4x + 3x";
+        String s13 = "4x + 3x * 2y";
 
         Assertions.assertThat(ReducerFactory.reduce(s9)).isEqualTo("5x+2y");
         Assertions.assertThat(ReducerFactory.reduce(s10)).isEqualTo("10x^2");
         Assertions.assertThat(ReducerFactory.reduce(s11)).isEqualTo("8xy");
+        Assertions.assertThat(ReducerFactory.reduce(s12)).isEqualTo("7x");
+        Assertions.assertThat(ReducerFactory.reduce(s13)).isEqualTo("4x+6xy");
     }
 
 
