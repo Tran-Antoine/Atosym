@@ -2,3 +2,4 @@
 - Division has not been configured for variables, hence all expressions containing '/' and variables
   won't be reduced properly
 - Pow encounters the same issue as division
+- Some math shortcuts currently don't work, such as "9x*y" instead of "9x*1y". Same for "(3+2)x" instead of "(3+2)*1x"

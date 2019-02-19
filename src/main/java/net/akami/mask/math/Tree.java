@@ -3,6 +3,9 @@ package net.akami.mask.math;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A tree is an object that contains a list of branches.
+ */
 public class Tree {
 
     private List<Branch> branches;
@@ -23,6 +26,8 @@ public class Tree {
         private String reducedValue;
 
         public Branch(String expression) {
+            //boolean surrounded = expression.charAt(0) == '(' && expression.charAt(expression.length()-1) == ')';
+            //this.expression = surrounded ? expression.substring(1, expression.length()-1) : expression;
             this.expression = expression;
             reduced = false;
             branches.add(this);
@@ -38,7 +43,7 @@ public class Tree {
         public void setOperation(char operation) { this.operation = operation; }
         public void setLeft(Branch left)         { this.left = left;           }
         public void setRight(Branch right)       { this.right = right;         }
-        public void setReducedValue(String value) {
+        public void setReducedValue(String value){
             this.reducedValue = value;
             reduced = true;
         }
@@ -51,15 +56,26 @@ public class Tree {
             return false;
         }
 
+        @Override
+        public String toString() {
+            return expression;
+        }
+
         public boolean hasChildren() {
             return left != null || right != null;
+        }
+
+        public boolean doChildrenHaveChildren() {
+            if(hasChildren())
+                return left.hasChildren() || right.hasChildren();
+            return false;
         }
 
         public boolean canBeCalculated() {
             if(!hasChildren()) {
                 return false;
             }
-            return !(left.hasChildren() || right.hasChildren());
+            return !doChildrenHaveChildren();
         }
     }
 }

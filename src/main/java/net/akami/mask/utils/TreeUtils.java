@@ -25,10 +25,12 @@ public class TreeUtils {
         for (int i = tree.getBranches().size() -1; i >= 0; i--) {
 
             Branch branch = tree.getBranches().get(i);
-            LOGGER.debug("Actual branch : {}\n", branch.getExpression());
+            LOGGER.debug("\n");
+            LOGGER.debug("Actual branch : {}", branch.getExpression());
 
             if(!branch.canBeCalculated()) {
-                LOGGER.debug("Not calculable.");
+                LOGGER.debug("Not calculable : hasChildren : {} / children have no children : {}",
+                        branch.hasChildren(), branch.doChildrenHaveChildren());
                 continue;
             }
             // We are sure that the branch has a left and a right part, because the branch can be calculated
@@ -62,12 +64,29 @@ public class TreeUtils {
         return null;
     }
 
-    public static void createNewBranch(Tree tree, Branch actual, String exp, int index, char operation) {
+    public static void createNewBranch(Tree tree, Branch actual, int index, char operation) {
 
-        String left = exp.substring(0, index);
-        String right = exp.substring(index+1);
+        String exp = actual.getExpression();
+
+        int start = 0;
+
+        if(exp.charAt(0) == '(' && exp.charAt(exp.length()-1) == ')') {
+            start = 1;
+        }
+
+        String left = exp.substring(start, index);
+        String right = exp.substring(index+1, exp.length()-start);
         actual.setLeft(tree.new Branch(left));
         actual.setRight(tree.new Branch(right));
         actual.setOperation(operation);
+
+        LOGGER.debug("Successfully created new branches. Left : {}, Right : {}",
+                actual.getLeft().getExpression(), actual.getRight().getExpression());
+    }
+
+    public static void printBranches(Tree self) {
+        for(Branch branch : self.getBranches()) {
+            LOGGER.debug("Branch found : {}", branch);
+        }
     }
 }
