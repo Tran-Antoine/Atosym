@@ -67,6 +67,11 @@ public class MathUtils {
         return a + "/" + b;
     }
     public static String pow(String a, String b) {
+        String vars = getVariables(a+b);
+
+        if(vars.length() == 0) {
+            return String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
+        }
         return a + "^" + b;
     }
 

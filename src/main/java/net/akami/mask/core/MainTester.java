@@ -16,16 +16,38 @@ public class MainTester {
                 // Changes the initial mask
                 .imageFor(1)
                 // Conserves the initial mask, writes the result of the operation in the next mask
-                .imageFor(next, 2)
+                .imageFor(next, true, 2)
                 // Ends the operations with initial as the default mask
                 .end();
 
         System.out.println("Initial transformed : " + initial);
         System.out.println("Next transformed : " + next);
 
-        MaskExpression nonReducible = new MaskExpression("3x");
+        MaskExpression curve = new MaskExpression("x^2 -3x + 5");
+        MaskOperator operator = MaskOperator.begin(curve);
 
-        // throws an exception, because 3x obviously cannot be converted to an integer
-        System.out.println(MaskOperator.begin(nonReducible).asInt());
+        for(int i = 0; i < 50; i++) {
+            operator.imageFor(MaskExpression.TEMP, false, i);
+            System.out.println(operator.asInt(MaskExpression.TEMP));
+        }
+        operator.end();
+
+        /*
+        Output :
+
+            Initial : 4x-5y+3
+            Initial transformed : 4-5y+3
+            Next transformed : -3
+
+            5
+            3
+            3
+            5
+            9
+            15
+            23
+            33
+            ...
+         */
     }
 }

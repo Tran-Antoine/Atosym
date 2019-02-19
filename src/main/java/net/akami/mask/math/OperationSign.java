@@ -36,6 +36,7 @@ public enum OperationSign {
         return null;
     }
 
+    @FunctionalInterface
     private interface MathOperation {
         String compute(String a, String b);
     }

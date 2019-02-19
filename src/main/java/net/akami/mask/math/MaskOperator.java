@@ -10,6 +10,7 @@ public class MaskOperator {
 
     private MaskExpression mask;
 
+
     /**
      * Gets the static instance of {@link MaskOperator}, though no {@link MaskExpression} will be used by default
      * @return the static instance of {@link MaskOperator}
@@ -39,38 +40,49 @@ public class MaskOperator {
     }
 
     /**
-     * Call {@link MaskOperator#imageFor(MaskExpression, float...)} with the mask specified in the begin call as the
-     * out parameter. See the method itself for further information.
+     * Call {@link MaskOperator#imageFor(MaskExpression, boolean, float...)} with the mask specified in the begin call
+     * as the out parameter. The boolean parameter doesn't matter, since in = out.
+     * See the method itself for further information.
      * @return the operator itself for chaining
      */
     public MaskOperator imageFor(float... values) {
         if(mask == null)
             throw new MaskException("Unable to operate with the defined expression", null);
-        return imageFor(mask, values);
+        // setOut doesn't matter, because in = out
+        return imageFor(mask, false, values);
     }
 
     /**
      * Calculates an image from the values given. The result can be a numerical or polynomial expression, depending
      * of the values given. For instance, {3, 2} as values for the expression {x + y} will give 5, while {3} for the
      * same expression will give {3 + y}
+     * <br/>
+     * Note that if the default mask is null, it will be set to the out parameter before the calculations.
      * @throws IllegalStateException if more values than variables are given.
      * @param out the affected mask
+     * @param setToOut whether the next calculation will be done from the out expression or not
      * @param values the values replacing the variables
      * @return the operator itself for chaining.
      */
-    public MaskOperator imageFor(MaskExpression out, float... values) {
+    public MaskOperator imageFor(MaskExpression out, boolean setToOut, float... values) {
+
+        if(this.mask == null) {
+            this.mask = out;
+        }
 
         if (mask.getVariablesAmount() < values.length) {
             throw new IllegalStateException("More values than variables given");
         }
 
-        String replaced = mask.getExpression();
+        String toReplace = mask.getExpression();
         for (int i = 0; i < values.length; i++) {
             char var = mask.getVariables()[i];
-            replaced = replace(var, values[i], replaced);
+            toReplace = replace(var, values[i], toReplace);
         }
-        out.reload(ReducerFactory.reduce(replaced));
-        this.mask = out;
+        out.reload(ReducerFactory.reduce(toReplace));
+        if(setToOut) {
+            this.mask = out;
+        }
         return this;
     }
 
@@ -79,9 +91,9 @@ public class MaskOperator {
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < self.length(); i++) {
-            if (self.charAt(i) == var && i != 0) {
+            if (self.charAt(i) == var) {
 
-                if (NON_VARIABLES.contains(String.valueOf(self.charAt(i - 1)))) {
+                if (i != 0 && NON_VARIABLES.contains(String.valueOf(self.charAt(i - 1)))) {
                     //the char before the variable is a number. 4x obviously means 4*x
                     builder.append("*" + value);
                 } else {
@@ -96,12 +108,24 @@ public class MaskOperator {
         return builder.toString();
     }
 
+    /**
+     * Call {@link MaskOperator#reduce(MaskExpression)} with the mask specified in the last begin call as the out
+     * parameter. See the method itself for further information.
+     * @return the operator itself for chaining
+     */
     public MaskOperator reduce() {
         if(mask == null)
             throw new MaskException("Unable to operate with the defined expression :", null);
         return reduce(mask);
     }
 
+    /**
+     * Reduces the MaskExpression given, if possible.
+     * <br/>
+     * For instance, 4x + 3x + 3 + 5 will be reduced as 7x + 8
+     * @param out the mask to reduce
+     * @return the operator itself for chaining
+     */
     public MaskOperator reduce(MaskExpression out) {
         out.reload(ReducerFactory.reduce(out.getExpression()));
         this.mask = out;
@@ -113,6 +137,10 @@ public class MaskOperator {
      * @return "null" if begin() hasn't been called after the last end() call, otherwise the expression of the mask.
      */
     public String asExpression() {
+        return asExpression(this.mask);
+    }
+
+    public String asExpression(MaskExpression mask) {
         return mask == null ? "null" : mask.getExpression();
     }
 
@@ -122,12 +150,20 @@ public class MaskOperator {
      * @return NaN if begin() hasn't been called after the last end() call, otherwise the int value of the expression.
      */
     public int asInt() {
+        return asInt(this.mask);
+    }
+
+    public int asInt(MaskExpression mask) {
         if(mask.getVariablesAmount() != 0)
             throw new MaskException("Cannot convert the expression to an integer", mask);
         return (int) Float.parseFloat(mask.getExpression());
     }
 
     public float asFloat() {
+        return asFloat(this.mask);
+    }
+
+    public float asFloat(MaskExpression mask) {
         return Float.parseFloat(mask.getExpression());
     }
 
