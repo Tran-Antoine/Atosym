@@ -9,13 +9,18 @@ import java.util.Arrays;
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
+    //TODO remove spaces
     public static String sum(String a, String b) {
 
         char[] aVars = sort(a);
         char[] bVars = sort(b);
-        String numericResult = cutDotZero(String.valueOf(numericValueOf(a) + numericValueOf(b)));
+        BigDecimal aValue = new BigDecimal(numericValueOf(a));
+        BigDecimal bValue = new BigDecimal(numericValueOf(b));
+
+        String numericResult = cutDotZero(aValue.add(bValue).toString());
 
         String finalResult = resultFirstLevelOperation(aVars, bVars, numericResult);
+        System.out.println("FINAL RESULT : "+finalResult);
         return finalResult == null ? a + "+" + b : finalResult;
     }
     public static String subtract(String a, String b) {
@@ -47,7 +52,7 @@ public class MathUtils {
         String valueResult = cutDotZero(String.valueOf(numericResult));
         return valueResult + Arrays.toString(commonVars).replaceAll("[\\[\\]]", "");
     }
-
+    // TODO use BigDecimal
     public static String mult(String a, String b) {
         String originalVars = getVariables(a+b);
         StringBuilder reducedVars = new StringBuilder();
@@ -71,10 +76,10 @@ public class MathUtils {
             String result = count == 1 ? String.valueOf(c1) : c1 + "^" + count;
             reducedVars.append(result);
         }
-        float aValue = numericValueOf(a);
-        float bValue = numericValueOf(b);
+        BigDecimal aValue = new BigDecimal(numericValueOf(a));
+        BigDecimal bValue = new BigDecimal(numericValueOf(b));
 
-        String floatResult = cutDotZero(String.valueOf(aValue * bValue));
+        String floatResult = cutDotZero(aValue.multiply(bValue).toString());
         return floatResult + reducedVars.toString();
     }
 
@@ -115,7 +120,8 @@ public class MathUtils {
         return vars;
     }
 
-    private static float numericValueOf(String self) {
-        return Float.parseFloat(self.replaceAll("[a-zA-Z]+", ""));
+    //TODO return a String
+    private static String numericValueOf(String self) {
+        return self.replaceAll("[a-zA-Z]+", "");
     }
 }

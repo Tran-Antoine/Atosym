@@ -1,7 +1,6 @@
 package net.akami.mask;
 
 import net.akami.mask.math.MaskExpression;
-import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -42,11 +41,6 @@ public class ReducerTest {
     public void divisionByZeroOperation() {
         String s7 = "5/0";
         Assertions.assertThat(ReducerFactory.reduce(s7)).isEqualTo("undefined");
-    }
-    @Test
-    public void outOfRangeOperation() {
-        String s8 = "99999999999999999999999999999999999999999999999+1";
-        Assertions.assertThat(ReducerFactory.reduce(s8)).isEqualTo("undefined");
     }
 
     @Test

@@ -69,6 +69,9 @@ public class MaskOperator {
         if(this.mask == null) {
             this.mask = out;
         }
+        if(out == null) {
+            out = MaskExpression.TEMP;
+        }
 
         if (mask.getVariablesAmount() < values.length) {
             throw new IllegalStateException("More values than variables given");
