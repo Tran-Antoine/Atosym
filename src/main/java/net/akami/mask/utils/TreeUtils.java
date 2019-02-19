@@ -1,23 +1,22 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.Operation;
-import net.akami.mask.core.RestCalculation;
-import net.akami.mask.core.Tree;
+import net.akami.mask.math.OperationSign;
+import net.akami.mask.math.Tree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.akami.mask.core.Tree.Branch;
+import net.akami.mask.math.Tree.Branch;
 
 public class TreeUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TreeUtils.class.getName());
 
-    public static RestCalculation mergeBranches(Tree tree) {
+    public static String mergeBranches(Tree tree) {
         /*
             If we give a very simple expression such as '50' to the reducer, it will detect that no operation
             needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
          */
         if(tree.getBranches().size() == 1) {
-            return new RestCalculation(tree.getBranches().get(0).getExpression());
+            return tree.getBranches().get(0).getExpression();
         }
 
         /*
@@ -36,16 +35,15 @@ public class TreeUtils {
             String left = branch.getLeft().getExpression();
             String right = branch.getRight().getExpression();
 
-            /*  We need to check whether the left/right part is already reduced as a simple number, or whether
-                a reduced form has been calculated
-            */
+            //  We need to check whether a reduced form has been calculated or not
             if(branch.getLeft().isReduced()) {
-                left = String.valueOf(branch.getLeft().getReducedValue());
+                left = branch.getLeft().getReducedValue();
             }
             if(branch.getRight().isReduced()) {
-                right = String.valueOf(branch.getRight().getReducedValue());
+                right = branch.getRight().getReducedValue();
             }
-            float value = Operation.getBySign(branch.getOperation()).compute(left, right);
+            LOGGER.debug("Left : {}, Right : {}. Operation : {}", left, right, branch.getOperation());
+            String value = OperationSign.getBySign(branch.getOperation()).compute(left, right);
             // The result is defined as the reduced value of the expression
             LOGGER.debug("Successfully calculated the value of "+branch.getExpression()+" : "+value);
 
@@ -58,7 +56,7 @@ public class TreeUtils {
                 if(String.valueOf(first.getReducedValue()).equals("Infinity"))
                     throw new ArithmeticException();
 
-                return new RestCalculation(String.valueOf(first.getReducedValue()));
+                return String.valueOf(first.getReducedValue());
             }
         }
         return null;

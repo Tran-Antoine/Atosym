@@ -1,8 +1,8 @@
-package net.akami.mask;
+package net.akami.mask.math;
 
 import net.akami.mask.utils.MathUtils;
 
-public enum Operation {
+public enum OperationSign {
 
     SUM('+', MathUtils::sum),
     SUBTRACT('-', MathUtils::subtract),
@@ -14,7 +14,7 @@ public enum Operation {
     private char sign;
     private MathOperation function;
 
-    Operation(char sign, MathOperation function) {
+    OperationSign(char sign, MathOperation function) {
         this.sign = sign;
         this.function = function;
     }
@@ -23,12 +23,12 @@ public enum Operation {
         return sign;
     }
 
-    public float compute(String a, String b) {
-        return function.compute(Float.parseFloat(a), Float.parseFloat(b));
+    public String compute(String a, String b) {
+        return function.compute(a, b);
     }
 
-    public static Operation getBySign(char sign) {
-        for(Operation operation : values()) {
+    public static OperationSign getBySign(char sign) {
+        for(OperationSign operation : values()) {
             if(operation.sign == sign) {
                 return operation;
             }
@@ -37,6 +37,6 @@ public enum Operation {
     }
 
     private interface MathOperation {
-        float compute(float a, float b);
+        String compute(String a, String b);
     }
 }

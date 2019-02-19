@@ -1,0 +1,3 @@
+- Multiplication doesn't work with powered expressions, such as x^3, because only "x" is identified
+- Division has not been configured for variables, hence all expressions containing '/' and variables
+  won't be reduced properly

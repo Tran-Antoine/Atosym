@@ -2,27 +2,26 @@ package net.akami.mask.utils;
 
 import java.util.List;
 
-import net.akami.mask.Operation;
-import net.akami.mask.core.RestCalculation;
-import net.akami.mask.core.Tree;
-import net.akami.mask.core.Tree.Branch;
+import net.akami.mask.math.OperationSign;
+import net.akami.mask.math.Tree;
+import net.akami.mask.math.Tree.Branch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Reducer {
+public class ReducerFactory {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Reducer.class.getName());
-    private static final Operation[] OPERATIONS;
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
+    private static final OperationSign[] OPERATIONS;
 
     static {
-        OPERATIONS = new Operation[]{
-                Operation.SUM, Operation.SUBTRACT,
-                Operation.MULT, Operation.DIVIDE,
-                Operation.POW, Operation.NONE
+        OPERATIONS = new OperationSign[]{
+                OperationSign.SUM, OperationSign.SUBTRACT,
+                OperationSign.MULT, OperationSign.DIVIDE,
+                OperationSign.POW, OperationSign.NONE
         };
     }
 
-    public static RestCalculation reduce(String exp) {
+    public static String reduce(String exp) {
         long time = System.nanoTime();
 
         Tree tree = new Tree();
@@ -36,7 +35,7 @@ public class Reducer {
             splitBy(tree, OPERATIONS[i].getSign(), OPERATIONS[i+1].getSign());
         }
 
-        RestCalculation result;
+        String result;
         try {
             result = TreeUtils.mergeBranches(tree);
         } catch (ArithmeticException | NumberFormatException e) {
@@ -44,7 +43,7 @@ public class Reducer {
                 LOGGER.error("Non solvable mathematical expression given : {}", exp);
             else
                 LOGGER.error("Wrong format in the expression {}", exp);
-            result = new RestCalculation("undefined");
+            result = "undefined";
         }
 
         float deltaTime = (System.nanoTime() - time) / 1000000f;
@@ -89,7 +88,7 @@ public class Reducer {
                 break;
             }
         }
-        LOGGER.debug("Separations with the operations {} and {} are done", c1, c2);
+        LOGGER.debug("Separations with the operations {} and {} are now done", c1, c2);
     }
 
 }
