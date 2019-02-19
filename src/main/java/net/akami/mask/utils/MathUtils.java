@@ -20,7 +20,6 @@ public class MathUtils {
         String numericResult = cutDotZero(aValue.add(bValue).toString());
 
         String finalResult = resultFirstLevelOperation(aVars, bVars, numericResult);
-        System.out.println("FINAL RESULT : "+finalResult);
         return finalResult == null ? a + "+" + b : finalResult;
     }
     public static String subtract(String a, String b) {
