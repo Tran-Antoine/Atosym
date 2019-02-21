@@ -64,9 +64,14 @@ public class ReducerTest {
         MaskExpression expression = new MaskExpression("xxxy");
         Assertions.assertThat(expression.getVariablesAmount()).isEqualTo(2);
     }
+
     @Test
-    public void mathExpressionImageFor() {
-        MaskExpression expression = new MaskExpression("4x+5-2y");
-        //Assertions.assertThat(expression.imageFor(5, 5).asInt()).isEqualTo(15);
+    public void complexSimplificationTest() {
+        String s14 = "3*((x+2y)*2 - 8z)";
+        String s15 = "(((((5)))))";
+        String s16 = "((((5)*3)*2)*1)";
+        Assertions.assertThat(ReducerFactory.reduce(s14)).isEqualTo("6x+12y-24z");
+        Assertions.assertThat(ReducerFactory.reduce(s15)).isEqualTo("5");
+        Assertions.assertThat(ReducerFactory.reduce(s16)).isEqualTo("30");
     }
 }
