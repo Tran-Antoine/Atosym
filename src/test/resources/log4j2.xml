@@ -20,6 +20,7 @@
     </Appenders>
 
     <Loggers>
+        # put DEBUG for debug
         <Root level="DEBUG">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="STDERR"/>

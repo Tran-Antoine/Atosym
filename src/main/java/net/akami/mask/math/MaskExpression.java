@@ -92,14 +92,9 @@ public class MaskExpression {
     }
 
     private void checkExpressionValidity() {
-        boolean valid = true;
 
-        if(".*/^".contains(String.valueOf(expression.charAt(0))))
-            valid = false;
-        if(".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1))))
-            valid = false;
-
-        if(!valid)
+        if(".*/^".contains(String.valueOf(expression.charAt(0)))
+                || ".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1))))
             throw new MaskException("Expression not valid", this);
     }
 

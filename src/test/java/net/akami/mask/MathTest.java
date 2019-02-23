@@ -3,22 +3,32 @@ package net.akami.mask;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class MathTest {
 
     public static void main(String... args) {
 
-        Scanner sc = new Scanner(System.in);
-        String expression = sc.nextLine();
+        try {
+            System.out.println(ReducerFactory.reduce("x^y*x^(y^2)+3"));
+        } catch (NumberFormatException e){
+            e.printStackTrace();
+        }
 
-        while(!expression.isEmpty()) {
+        //System.out.println(MathUtils.sum("xx", "x^2"));
+        //MaskExpression exp = new MaskExpression("5x + 3y");
+        //System.out.println(MaskOperator.begin(exp).differentiate('y').asExpression());
+        Scanner sc = new Scanner(System.in);
+        String expression;
+
+        System.out.println("Next expression to reduce : ");
+        while(!(expression = sc.nextLine()).isEmpty()) {
             long time = System.nanoTime();
             System.out.println("Result : "+ReducerFactory.reduce(expression));
+
             float deltaTime = (System.nanoTime() - time) / 1000000000f;
             System.out.println("Calculations ended after "+deltaTime+" seconds");
-            expression = sc.nextLine();
+            System.out.println("Next expression to reduce : ");
         }
 
         //System.out.println(MathUtils.sum("-168", "3"));

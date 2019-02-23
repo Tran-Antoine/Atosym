@@ -40,16 +40,16 @@ public class MaskOperator {
     }
 
     /**
-     * Call {@link MaskOperator#imageFor(MaskExpression, boolean, float...)} with the mask specified in the begin call
+     * Call {@link MaskOperator#imageFor(MaskExpression, MaskExpression, boolean, String...)} with the mask specified in the begin call
      * as the out parameter. The boolean parameter doesn't matter, since in = out.
      * See the method itself for further information.
      * @return the operator itself for chaining
      */
-    public MaskOperator imageFor(float... values) {
+    public MaskOperator imageFor(String... values) {
         if(mask == null)
             throw new MaskException("Unable to operate with the defined expression", null);
         // setOut doesn't matter, because in = out
-        return imageFor(mask, false, values);
+        return imageFor(mask, mask, false, values);
     }
 
     /**
@@ -64,7 +64,7 @@ public class MaskOperator {
      * @param values the values replacing the variables
      * @return the operator itself for chaining.
      */
-    public MaskOperator imageFor(MaskExpression out, boolean setToOut, float... values) {
+    public MaskOperator imageFor(MaskExpression in, MaskExpression out, boolean setToOut, String... values) {
 
         if(this.mask == null) {
             this.mask = out;
@@ -77,9 +77,9 @@ public class MaskOperator {
             throw new IllegalStateException("More values than variables given");
         }
 
-        String toReplace = mask.getExpression();
+        String toReplace = in.getExpression();
         for (int i = 0; i < values.length; i++) {
-            char var = mask.getVariables()[i];
+            char var = in.getVariables()[i];
             toReplace = replace(var, values[i], toReplace);
         }
         out.reload(ReducerFactory.reduce(toReplace));
@@ -89,7 +89,7 @@ public class MaskOperator {
         return this;
     }
 
-    private String replace(char var, float value, String self) {
+    private String replace(char var, String value, String self) {
 
         StringBuilder builder = new StringBuilder();
 
@@ -111,15 +111,35 @@ public class MaskOperator {
         return builder.toString();
     }
 
+    public MaskOperator differentiate(char var) {
+        return differentiate(mask, mask, var, true);
+    }
+
+    public MaskOperator differentiate(MaskExpression in, MaskExpression out, char var, boolean setToOut) {
+
+        String[] values = new String[in.getVariablesAmount()];
+
+        for(int i = 0; i < in.getVariables().length; i++) {
+            if(in.getVariables()[i] == var)
+                values[i] = String.valueOf(var);
+            else {
+                values[i] = String.valueOf(1);
+            }
+        }
+
+        imageFor(in, out, true, values);
+        return this;
+    }
+
     /**
-     * Call {@link MaskOperator#reduce(MaskExpression)} with the mask specified in the last begin call as the out
+     * Call {@link MaskOperator#reduce(MaskExpression, MaskExpression)} with the mask specified in the last begin call as the out
      * parameter. See the method itself for further information.
      * @return the operator itself for chaining
      */
     public MaskOperator reduce() {
         if(mask == null)
             throw new MaskException("Unable to operate with the defined expression :", null);
-        return reduce(mask);
+        return reduce(mask, mask);
     }
 
     /**
@@ -129,7 +149,7 @@ public class MaskOperator {
      * @param out the mask to reduce
      * @return the operator itself for chaining
      */
-    public MaskOperator reduce(MaskExpression out) {
+    public MaskOperator reduce(MaskExpression in, MaskExpression out) {
         out.reload(ReducerFactory.reduce(out.getExpression()));
         this.mask = out;
         return this;

@@ -114,7 +114,8 @@ public class Tree {
                 if ((c == c1 || c == c2)) {
                     LOGGER.debug("Checking if sign {} at index {} is surrounded in {}", c, i, this);
                     boolean bracketsConnected = TreeUtils.areEdgesBracketsConnected(expression);
-                    if (!ReducerFactory.isInsideParentheses(i, this, bracketsConnected)) {
+
+                    if (!ReducerFactory.isSurroundedByParentheses(i, expression)) {
                         LOGGER.debug("Found a place to split at index {}, character '{}'", i, c);
                         TreeUtils.createNewBranch(Tree.this, this, i, c, bracketsConnected);
                         break;

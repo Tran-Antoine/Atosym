@@ -16,6 +16,7 @@ public class TreeUtils {
             needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
          */
         if (tree.getBranches().size() == 1) {
+            LOGGER.debug("Only one branch found. Returns it.");
             return tree.getBranches().get(0).getExpression();
         }
 

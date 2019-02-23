@@ -1,4 +1,4 @@
-package net.akami.mask.core;
+package net.akami.mask;
 
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.math.MaskOperator;
@@ -14,9 +14,9 @@ public class MainTester {
 
         MaskOperator.begin(initial)
                 // Changes the initial mask
-                .imageFor(1)
+                .imageFor("1")
                 // Conserves the initial mask, writes the result of the operation in the next mask
-                .imageFor(next, true, 2)
+                .imageFor(initial, next, true, "2")
                 // Ends the operations with initial as the default mask
                 .end();
 
@@ -27,7 +27,7 @@ public class MainTester {
         MaskOperator operator = MaskOperator.begin(curve);
 
         for(int i = 0; i < 50; i++) {
-            operator.imageFor(MaskExpression.TEMP, false, i);
+            operator.imageFor(curve, MaskExpression.TEMP, false, ""+i);
             System.out.println(operator.asInt(MaskExpression.TEMP));
         }
         operator.end();
