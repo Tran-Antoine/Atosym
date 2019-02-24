@@ -1,5 +1,7 @@
 package net.akami.mask;
 
+import net.akami.mask.math.MaskExpression;
+import net.akami.mask.math.MaskOperator;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
@@ -8,6 +10,9 @@ import java.util.Scanner;
 public class MathTest {
 
     public static void main(String... args) {
+
+        MaskExpression exp = new MaskExpression("3x^2 + 6xy + 3");
+        System.out.println(MaskOperator.begin().differentiate(exp, MaskExpression.TEMP, 'x',true).asExpression());
 
         //System.out.println(MathUtils.sum("xx", "x^2"));
         //MaskExpression exp = new MaskExpression("5x + 3y");

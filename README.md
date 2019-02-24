@@ -26,7 +26,7 @@ dependencies {
 
 ## How to use it
 
-A mathematical expression is represented by a class called MaskExpression. The following code shows how to create one properly : 
+> A mathematical expression is represented by a class called MaskExpression. The following code shows how to create one properly : 
 ```java
 package test;
 
