@@ -20,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.Askigh:Mask:-SNAPSHOT'
+    implementation 'com.github.Askigh:Mask:v0.2'
 }
 ```
 
@@ -39,8 +39,8 @@ public class MathTest {
 
         // Creates the math expression
         MaskExpression curve = new MaskExpression("3x^2 + 2x + 6 + 2y");
-        // Prepares the operator. At least the next calculation will be performed from "curve"
-        MaskOperator operator = MaskOperator.begin(curve);
+        // Prepares the operator.
+        MaskOperator operator = MaskOperator.begin();
 
         /* null indicates that the result of the calculation "imageFor" doesn't need to be saved as a mask.
            Instead, a final temporary variable will contain the result. The boolean indicates that the mask selected
@@ -48,7 +48,7 @@ public class MathTest {
            an integer, we want the result of the calculation to be the actual mask, so that we can convert it to an
            integer afterwards
         */
-        System.out.println("Image : "+operator.imageFor(null, true, 2, 0).asInt());
+        System.out.println("Image : "+operator.imageFor(curve, null, true, 2, 0).asInt());
         System.out.println("Expression : "+curve);
 
         // The default mask used for calculation is now set to null
@@ -73,8 +73,8 @@ public class MathTest {
             When calling asFloat, we need to specify that we want the float value of the temporary variable,
             by default the method gives us the value of the default mask, here 39+2y.
         */
-        float image1 = operator.imageFor(null, false, 0).asFloat(MaskExpression.TEMP);
-        float image2 = operator.imageFor(null, false, 2).asFloat(MaskExpression.TEMP);
+        float image1 = operator.imageFor(curve, null, false, 0).asFloat(MaskExpression.TEMP);
+        float image2 = operator.imageFor(curve, null, false, 2).asFloat(MaskExpression.TEMP);
         System.out.println(curve);
         System.out.println(image1 + " / " + image2);
 

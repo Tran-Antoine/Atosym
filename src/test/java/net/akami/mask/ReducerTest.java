@@ -75,12 +75,18 @@ public class ReducerTest {
         Assertions.assertThat(ReducerFactory.reduce(s15)).isEqualTo("5");
         Assertions.assertThat(ReducerFactory.reduce(s16)).isEqualTo("30");
         Assertions.assertThat(ReducerFactory.reduce(s17)).isEqualTo("8x+y+9");
-
     }
+
     @Test
     public void multiPowTest() {
         String s18 = "x^y*x^(y^2)+3";
         Assertions.assertThat(ReducerFactory.reduce(s18)).isEqualTo("x^(y+y^2)+3");
+    }
+
+    @Test
+    public void negativeStartTest() {
+        String s19 = "-6-1";
+        Assertions.assertThat(ReducerFactory.reduce(s19)).isEqualTo("-7");
     }
     // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ?
     // Like 3x + 5x would give x(3+5) = 8x

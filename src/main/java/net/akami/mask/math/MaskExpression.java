@@ -45,7 +45,7 @@ public class MaskExpression {
     public static final MaskExpression TEMP = new MaskExpression();
 
     private String expression;
-    private char[] variables;
+    private Character[] variables;
 
     /**
      * Constructs a new MaskExpression without any string expression by default.
@@ -62,28 +62,24 @@ public class MaskExpression {
         reload(expression);
     }
 
-    private char[] createVariables() {
+    private Character[] createVariables() {
         String letters = expression.replaceAll("[\\d.+\\-*\\/^]+", "");
         ArrayList<Character> chars = new ArrayList<>();
         for(char c : letters.toCharArray()) {
             if(!chars.contains(c) && !MaskOperator.NON_VARIABLES.contains(""+c))
                 chars.add(c);
         }
-        char[] vars = new char[chars.size()];
-        for(Character c : chars) {
-            vars[chars.indexOf(c)] = c;
-        }
-        return vars;
+        return chars.toArray(new Character[chars.size()]);
     }
 
-    public int getVariablesAmount() { return variables.length; }
-    public String getExpression()   { return expression;       }
-    public char[] getVariables()    { return variables;        }
+    public int getVariablesAmount()   { return variables.length; }
+    public String getExpression()     { return expression;       }
+    public Character[] getVariables() { return variables;        }
 
     public void reload(String newExp) {
         if(newExp == null) {
             this.expression = "undefined";
-            this.variables = new char[]{};
+            this.variables = new Character[]{};
         } else {
             this.expression = newExp.replaceAll("\\s", "");
             checkExpressionValidity();

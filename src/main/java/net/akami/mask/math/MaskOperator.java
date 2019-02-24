@@ -111,6 +111,9 @@ public class MaskOperator {
         return builder.toString();
     }
 
+    /*
+    Code not ready for the release.
+
     public MaskOperator differentiate(char var) {
         return differentiate(mask, mask, var, true);
     }
@@ -129,7 +132,7 @@ public class MaskOperator {
 
         imageFor(in, out, true, values);
         return this;
-    }
+    }*/
 
     /**
      * Call {@link MaskOperator#reduce(MaskExpression, MaskExpression)} with the mask specified in the last begin call as the out

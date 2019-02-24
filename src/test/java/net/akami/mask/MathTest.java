@@ -9,12 +9,6 @@ public class MathTest {
 
     public static void main(String... args) {
 
-        try {
-            System.out.println(ReducerFactory.reduce("x^y*x^(y^2)+3"));
-        } catch (NumberFormatException e){
-            e.printStackTrace();
-        }
-
         //System.out.println(MathUtils.sum("xx", "x^2"));
         //MaskExpression exp = new MaskExpression("5x + 3y");
         //System.out.println(MaskOperator.begin(exp).differentiate('y').asExpression());

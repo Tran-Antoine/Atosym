@@ -72,6 +72,9 @@ public class TreeUtils {
         int start = edgesBracketsConnected ? 1 : 0;
 
         String left = exp.substring(start, index);
+        // In case the expression is "-5", means "0-5"
+        if(left.isEmpty())
+            left = "0";
         String right = exp.substring(index + 1, exp.length() - start);
         LOGGER.debug("Successfully created new branches. Left : {}, Right : {}", left, right);
         actual.setLeft(tree.new Branch(left));
