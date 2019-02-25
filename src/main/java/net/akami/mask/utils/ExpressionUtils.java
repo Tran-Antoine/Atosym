@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ExpressionUtils {
@@ -12,8 +13,9 @@ public class ExpressionUtils {
     private static final StringBuilder BUILDER = new StringBuilder();
     private static final String DELETE_VARIABLES = "[a-zA-DF-Z]+";
     private static final String DELETE_NON_VARIABLES = "[\\d.+\\-/*()^]+";
+    public static final String MATH_SIGNS = "+-*/^()";
     // 'E' deliberately missing
-    private static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
+    public static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
 
     public static List<String> toMonomials(String self) {
 
@@ -22,7 +24,7 @@ public class ExpressionUtils {
         for (int i = 0; i < self.length(); i++) {
             // We don't want i = 0 because if the first char is '-', it will add an empty string to the list
             if (self.charAt(i) == '+' || self.charAt(i) == '-' && i != 0) {
-                if(ReducerFactory.isSurroundedByParentheses(i, self))
+                if (ReducerFactory.isSurroundedByParentheses(i, self))
                     continue;
                 String monomial = self.substring(lastIndex, i);
                 monomials.add(monomial);
@@ -37,9 +39,12 @@ public class ExpressionUtils {
         }
         return monomials;
     }
+
     public static String toVariables(String exp) {
 
-        String vars = keepEachCharacterOnce(exp.replaceAll(DELETE_NON_VARIABLES, ""));
+        String[] unSortedVars = keepEachCharacterOnce(exp.replaceAll(DELETE_NON_VARIABLES, "")).split("");
+        Arrays.sort(unSortedVars);
+        String vars = String.join("", unSortedVars);
         if (vars.length() == 0)
             return "";
 
@@ -53,13 +58,14 @@ public class ExpressionUtils {
             int partsAmount = 0;
             char var = vars.charAt(i);
 
+            LOGGER.debug("Treating {}", var);
+
             // can happen if 'x^y', the y has been transformed to '$', meaning it wasn't a variable but an exponent.
-            if(!builtExpression.toString().contains(String.valueOf(var))) {
+            if (!builtExpression.toString().contains(String.valueOf(var))) {
                 LOGGER.debug("Variable {} not found. Skipping.", var);
                 continue;
             }
 
-            LOGGER.debug("Treating {}", var);
             for (int j = 0; j < builtExpression.length(); j++) {
 
                 char c1 = builtExpression.charAt(j);
@@ -70,12 +76,10 @@ public class ExpressionUtils {
                         BUILDER.append("+1");
                         LOGGER.debug("No power found. Adds 1");
                     } else {
-                        SequenceCalculationResult sequenceResult = sequenceAfterPow(j+1, exp);
+                        SequenceCalculationResult sequenceResult = sequenceAfterPow(j + 1, exp);
                         String exponent = sequenceResult.exponent;
                         String valuelessSequence = exponent.replaceAll(".", "\\$");
-                        LOGGER.error(builtExpression.toString()+" / "+sequenceResult.start+" / "+sequenceResult.end);
                         builtExpression.replace(sequenceResult.start, sequenceResult.end, valuelessSequence);
-                        LOGGER.error(builtExpression.toString());
                         BUILDER.append("+").append(exponent);
                         LOGGER.debug("Power found. Adds {}", exponent);
                     }
@@ -88,17 +92,17 @@ public class ExpressionUtils {
                 BUILDER.deleteCharAt(0);
 
             if (partsAmount > 1) {
-                LOGGER.debug("Needs extra sum");
+                LOGGER.debug("Several parts forming the power : {}. Needs extra sum", BUILDER.toString());
                 String reducedExponent = MathUtils.sum(BUILDER.toString(), "");
                 clearBuilder();
                 BUILDER.append(reducedExponent);
             }
             String exponent = BUILDER.toString();
-            if(!isReduced(exponent)) {
+            if (!isReduced(exponent)) {
                 exponent = "(" + exponent + ")";
             }
-            LOGGER.debug("Final exponent calculation : {}", exponent);
-            if(exponent.equals("1")) {
+            LOGGER.debug("Final exponent calculation of {} : {}", var, exponent);
+            if (exponent.equals("1")) {
                 finalVars.add(String.valueOf(var));
             } else {
                 finalVars.add(var + "^" + exponent);
@@ -115,65 +119,94 @@ public class ExpressionUtils {
 
         SequenceCalculationResult result = new SequenceCalculationResult();
 
-        boolean betweenBrackets = fullExp.charAt(powIndex+1) == '(';
+        boolean betweenBrackets = fullExp.charAt(powIndex + 1) == '(';
 
-        for(int i = powIndex+1; i < fullExp.length(); i++) {
+        for (int i = powIndex + 1; i < fullExp.length(); i++) {
             char c = fullExp.charAt(i);
 
-            if(!betweenBrackets && "+-*/^".contains(String.valueOf(c))) {
+            if (!betweenBrackets && "+-*/^".contains(String.valueOf(c))) {
                 LOGGER.debug("Found an operator : {} at index {}. Stopped", c, i);
-                result.exponent = fullExp.substring(powIndex+1, i);
-                result.start = powIndex+1;
+                result.exponent = fullExp.substring(powIndex + 1, i);
+                result.start = powIndex + 1;
                 result.end = i;
                 break;
             }
-            if(betweenBrackets && c == ')') {
+            if (betweenBrackets && c == ')') {
                 LOGGER.debug("Found the closing bracket");
-                result.start = powIndex+2;
+                result.start = powIndex + 2;
                 result.exponent = fullExp.substring(powIndex + 2, i);
                 result.end = i;
                 break;
             }
         }
-        if(result.exponent == null) {
+        if (result.exponent == null) {
             result.exponent = fullExp.substring(powIndex + 1);
             result.start = powIndex;
             result.end = fullExp.length();
         }
+        LOGGER.debug("Sequence {} after pow at index {} found : {}", fullExp, powIndex, result.exponent);
         return result;
     }
+
+    // TODO : redo this ugly thing
     public static String toNumericValue(String self) {
+        LOGGER.info("Calculating the numeric value of {}", self);
         clearBuilder();
         BUILDER.append(self);
 
         for (int i = 0; i < self.length(); i++) {
             char c = self.charAt(i);
-            if(VARIABLES.contains(String.valueOf(c))) {
-                BUILDER.setCharAt(i, '$');
-
-                if(i+1 < self.length() && self.charAt(i+1) == '^') {
-                    BUILDER.setCharAt(i+1, '$');
-                    if(self.charAt(i+2) == '(') {
-                        for(int j = i+3; j < self.length(); j++) {
-                            BUILDER.setCharAt(j, '$');
-                            if(self.charAt(j) == ')') {
-                                break;
-                            }
-                        }
-                    }
-                    BUILDER.setCharAt(i+2, '$');
-                }
+            if (VARIABLES.contains(String.valueOf(c))) {
+                LOGGER.error("Before : {}", BUILDER);
+                deleteExponentOf(i, self, BUILDER);
+                LOGGER.error("After : {}", BUILDER);
             }
         }
         String numericValue = BUILDER.toString().replace("$", "");
         String finalNumericValue = numericValue.isEmpty() ? "1" : numericValue;
         if (finalNumericValue.equals("-")) {
             finalNumericValue = "-1";
-        } else if(finalNumericValue.equals("+")) {
+        } else if (finalNumericValue.equals("+")) {
             finalNumericValue = "1";
         }
-        LOGGER.debug("Numeric value of {} : {}", self, finalNumericValue);
+        LOGGER.error("Numeric value of {} : {}", self, finalNumericValue);
         return finalNumericValue;
+    }
+
+    private static void deleteExponentOf(int i, String self, StringBuilder builder) {
+        builder.setCharAt(i, '$');
+        LOGGER.error("Between 1 : {}", builder);
+
+        if (!(i + 1 < self.length() && self.charAt(i + 1) == '^')) {
+            return;
+        }
+        LOGGER.error("FOUND A ^");
+        // sets the '^' to '$'
+        builder.setCharAt(i + 1, '$');
+        LOGGER.error("Between x : {}, after = {}", builder, self.charAt(i+2));
+        if (self.charAt(i+2) == '(') {
+            builder.setCharAt(i+2, '$');
+            int openingBrackets = 0;
+            for (int j = i + 3; j < self.length(); j++) {
+                builder.setCharAt(j, '$');
+                if (self.charAt(j) == ')' && openingBrackets <= 0) {
+                    break;
+                }
+                if (self.charAt(j) == '(') {
+                    LOGGER.debug("Opening bracket found at index {}", j);
+                    openingBrackets++;
+                }
+            }
+            LOGGER.debug("Between final : {}",builder);
+        } else {
+            for (int j = i + 2; j < self.length(); j++) {
+                if (MATH_SIGNS.contains(String.valueOf(self.charAt(j)))) {
+                    break;
+                }
+                builder.setCharAt(j, '$');
+            }
+        }
+
     }
 
     public static String keepEachCharacterOnce(String self) {

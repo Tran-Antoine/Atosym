@@ -2,6 +2,7 @@ package net.akami.mask;
 
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.math.MaskOperator;
+import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
@@ -11,8 +12,13 @@ public class MathTest {
 
     public static void main(String... args) {
 
-        MaskExpression exp = new MaskExpression("3x^2 + 6xy + 3");
-        System.out.println(MaskOperator.begin().differentiate(exp, MaskExpression.TEMP, 'x',true).asExpression());
+        System.out.println("...............................");
+        System.out.println(MathUtils.sum("x^10", ""));
+        //System.out.println(MathUtils.pow("x+y+3", "3"));
+        //System.out.println(ReducerFactory.reduce("(x+y+3)^3"));
+        //System.out.println(MathUtils.pow("x+1", "2"));
+        //MaskExpression exp = new MaskExpression("3x^2 + 6xy + 3");
+        //System.out.println(MaskOperator.begin().differentiate(exp, MaskExpression.TEMP, 'x',true).asExpression());
 
         //System.out.println(MathUtils.sum("xx", "x^2"));
         //MaskExpression exp = new MaskExpression("5x + 3y");
@@ -24,7 +30,6 @@ public class MathTest {
         while(!(expression = sc.nextLine()).isEmpty()) {
             long time = System.nanoTime();
             System.out.println("Result : "+ReducerFactory.reduce(expression));
-
             float deltaTime = (System.nanoTime() - time) / 1000000000f;
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");

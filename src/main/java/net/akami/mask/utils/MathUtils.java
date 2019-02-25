@@ -2,7 +2,6 @@ package net.akami.mask.utils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.math.BigDecimal;
 import java.util.*;
 
@@ -15,10 +14,9 @@ public class MathUtils {
     //TODO remove spaces
     public static String sum(String a, String b) {
 
-        LOGGER.debug("Sum process : \n");
+        LOGGER.info("Sum process of {} |+| {}: \n", a, b);
         List<String> monomials = ExpressionUtils.toMonomials(a);
         monomials.addAll(ExpressionUtils.toMonomials(b));
-
         return sum(monomials);
     }
 
@@ -37,7 +35,7 @@ public class MathUtils {
                 continue;
 
             String vars = ExpressionUtils.toVariables(part);
-            LOGGER.debug("Analyzing {}, found \"{}\" as variables", part, vars);
+            LOGGER.debug("Analyzing monomial {} : {}, found \"{}\" as variables", i, part, vars);
             // Adding all the "additionable" parts to the map, with their value and their index
             Map<BigDecimal, Integer> compatibleParts = new HashMap<>();
 
@@ -52,12 +50,21 @@ public class MathUtils {
 
                 // If the unknown part is similar, we can add them
                 if (ExpressionUtils.toVariables(part2).equals(vars)) {
-                    compatibleParts.put(new BigDecimal(ExpressionUtils.toNumericValue(part2)), j);
+                    BigDecimal toAdd = new BigDecimal(ExpressionUtils.toNumericValue(part2));
+                    if(compatibleParts.containsKey(toAdd)) {
+                        LOGGER.debug("Found copy in the map. Doubling the original.");
+                        int index = compatibleParts.get(toAdd);
+                        compatibleParts.remove(toAdd, index);
+                        compatibleParts.put(toAdd.multiply(new BigDecimal("2")), index);
+                    } else {
+                        compatibleParts.put(toAdd, j);
+                    }
                 }
             }
             BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(part));
-
+            LOGGER.error(""+ExpressionUtils.toNumericValue(part));
             for (BigDecimal value : compatibleParts.keySet()) {
+                LOGGER.debug("Value : "+value);
                 finalTotal = finalTotal.add(value);
                 // The compatible part is set to null in the list
                 monomials.set(compatibleParts.get(value), null);
@@ -89,11 +96,12 @@ public class MathUtils {
             }
         }
         String result = BUILDER.toString();
+        LOGGER.info("- Raw result of sum / subtraction : {}", result);
         return result.startsWith("+") ? result.substring(1) : result;
     }
 
     public static String subtract(String a, String b) {
-        LOGGER.debug("Subtraction process : \n");
+        LOGGER.info("Subtraction process of {} |-| {}: \n", a, b);
 
         List<String> monomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
@@ -115,7 +123,7 @@ public class MathUtils {
     }
 
     public static String mult(String a, String b) {
-        LOGGER.debug("Multiplication process : \n");
+        LOGGER.info("Multiplication process of {} |*| {}: \n", a, b);
 
         List<String> aMonomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
@@ -125,8 +133,9 @@ public class MathUtils {
 
         for (String part : aMonomials) {
             for (String part2 : bMonomials) {
+                LOGGER.debug("Treating simple mult : {} |*| {}", part, part2);
                 String result = simpleMult(part, part2);
-                LOGGER.debug("Result of simple mult : {}", result);
+                LOGGER.info("Result of simple mult between {} and {} : {}", part, part2, result);
                 boolean first = part.equals(aMonomials.get(0)) && part2.equals(bMonomials.get(0));
                 if (result.startsWith("+") || result.startsWith("-") || first) {
                     builder.append(result);
@@ -135,7 +144,10 @@ public class MathUtils {
                 }
             }
         }
-        return builder.toString();
+        String unReducedResult = builder.toString();
+        String finalResult = sum(unReducedResult, "");
+        LOGGER.info("- Result of mult {} |*| {} : {}", a, b, finalResult);
+        return finalResult;
     }
 
 
@@ -160,11 +172,11 @@ public class MathUtils {
         BigDecimal bValue = new BigDecimal(ExpressionUtils.toNumericValue(b));
         String floatResult = cutSignificantZero(aValue.multiply(bValue).toString());
 
-        return floatResult.equals("1") ? originalVars : floatResult + originalVars;
+        return floatResult.equals("1") && !originalVars.isEmpty() ? originalVars : floatResult + originalVars;
     }
 
     public static String divide(String a, String b) {
-        LOGGER.debug("Operation process : \n");
+        LOGGER.info("Division process of {} |/| {}: \n", a, b);
 
         String vars = ExpressionUtils.toVariables(a + b);
 
@@ -178,15 +190,32 @@ public class MathUtils {
     }
 
     public static String pow(String a, String b) {
-        LOGGER.debug("Pow operation process : \n");
+        LOGGER.debug("Pow operation process between {} and {} : \n", a, b);
 
-        String vars = ExpressionUtils.toVariables(a + "^" + b);
+        String aVars = ExpressionUtils.toVariables(a);
+        String bVars = ExpressionUtils.toVariables(b);
 
-        if (vars.length() == 0) {
-            LOGGER.debug("No variable found, return a^b value");
-            return String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
+        LOGGER.debug("aVars : {}, bVars : {}", aVars, bVars);
+        if (aVars.length() == 0 && bVars.length() == 0) {
+            String result = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
+            LOGGER.info("No variable found, return a^b value : {}", result);
+            return result;
         }
-        return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
+        float powValue;
+        // If pow value is too high, there is no point in developing the entire expression
+        if(bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 99) {
+            LOGGER.info("Pow value contains variables or pow value is greater than 9. Returns a^b");
+            return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
+        }
+
+        clearBuilder();
+        StringBuilder builder = new StringBuilder();
+        builder.append(a);
+        for(int i = 1; i < powValue; i++) {
+            builder.replace(0, builder.length(), mult(builder.toString(), a));
+            LOGGER.info("{} steps left. Currently : {}", powValue-i-1, builder.toString());
+        }
+        return builder.toString();
     }
 
     private static String cutSignificantZero(String self) {

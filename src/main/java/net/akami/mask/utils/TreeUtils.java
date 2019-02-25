@@ -84,7 +84,7 @@ public class TreeUtils {
 
     public static void printBranches(Tree self) {
         for (Branch branch : self.getBranches()) {
-            LOGGER.debug("Branch found : {}", branch);
+            LOGGER.info("Branch found : {}", branch);
         }
     }
 

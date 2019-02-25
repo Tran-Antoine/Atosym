@@ -1,16 +1,14 @@
 package net.akami.mask.utils;
 
-import java.util.List;
-
 import net.akami.mask.math.OperationSign;
 import net.akami.mask.math.Tree;
-import net.akami.mask.math.Tree.Branch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ReducerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
+    private static final StringBuilder BUILDER = new StringBuilder();
     public static final OperationSign[] OPERATIONS;
 
     static {
@@ -28,9 +26,21 @@ public class ReducerFactory {
 
         // deletes all the spaces
         String localExp = exp.replaceAll("\\s", "");
+        clearBuilder();
+
+        for(int i = 0; i < localExp.length(); i++) {
+            String c = String.valueOf(localExp.charAt(i));
+            if(ExpressionUtils.VARIABLES.contains(c) && i!= 0 &&
+                    !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(localExp.charAt(i-1)))) {
+                BUILDER.append("*").append(c);
+            } else {
+                BUILDER.append(c);
+            }
+        }
+        localExp = BUILDER.toString();
 
         tree.new Branch(localExp);
-        LOGGER.debug("Initial branch added : {}", tree.getBranches().get(0));
+        LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 
         TreeUtils.printBranches(tree);
         LOGGER.debug("Now merging branches");
@@ -43,6 +53,7 @@ public class ReducerFactory {
             else
                 LOGGER.error("Wrong format in the expression {}", exp);
             result = "undefined";
+            e.printStackTrace();
         }
 
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
@@ -69,6 +80,10 @@ public class ReducerFactory {
         }
         LOGGER.debug("- Not surrounded");
         return false;
+    }
+
+    private static void clearBuilder() {
+        BUILDER.delete(0, BUILDER.length());
     }
 
 }

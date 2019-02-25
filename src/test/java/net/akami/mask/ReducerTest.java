@@ -88,6 +88,14 @@ public class ReducerTest {
         String s19 = "-6-1";
         Assertions.assertThat(ReducerFactory.reduce(s19)).isEqualTo("-7");
     }
+
+    @Test
+    public void poweredBracketsTest() {
+        String s20 = "(3+x)^2";
+        String s21 = "(x+y+z+3)^5";
+
+        Assertions.assertThat(ReducerFactory.reduce(s20)).isEqualTo("9+6x+x^2");
+    }
     // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ?
     // Like 3x + 5x would give x(3+5) = 8x
     // -> method "getCommonPart" instead of roughly checking "are variables similar"
