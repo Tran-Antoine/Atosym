@@ -26,18 +26,8 @@ public class ReducerFactory {
 
         // deletes all the spaces
         String localExp = exp.replaceAll("\\s", "");
-        clearBuilder();
 
-        for(int i = 0; i < localExp.length(); i++) {
-            String c = String.valueOf(localExp.charAt(i));
-            if(ExpressionUtils.VARIABLES.contains(c) && i!= 0 &&
-                    !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(localExp.charAt(i-1)))) {
-                BUILDER.append("*").append(c);
-            } else {
-                BUILDER.append(c);
-            }
-        }
-        localExp = BUILDER.toString();
+        localExp = ExpressionUtils.cancelMultShortcut(localExp);
 
         tree.new Branch(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
@@ -58,7 +48,7 @@ public class ReducerFactory {
 
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
-        return result;
+        return ExpressionUtils.addMultShortcut(result);
     }
 
     public static boolean isSurroundedByParentheses(int index, String exp) {

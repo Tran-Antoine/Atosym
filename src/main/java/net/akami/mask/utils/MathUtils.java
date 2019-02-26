@@ -62,7 +62,6 @@ public class MathUtils {
                 }
             }
             BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(part));
-            LOGGER.error(""+ExpressionUtils.toNumericValue(part));
             for (BigDecimal value : compatibleParts.keySet()) {
                 LOGGER.debug("Value : "+value);
                 finalTotal = finalTotal.add(value);
@@ -97,7 +96,7 @@ public class MathUtils {
         }
         String result = BUILDER.toString();
         LOGGER.info("- Raw result of sum / subtraction : {}", result);
-        return result.startsWith("+") ? result.substring(1) : result;
+        return ExpressionUtils.cancelMultShortcut(result.startsWith("+") ? result.substring(1) : result);
     }
 
     public static String subtract(String a, String b) {
@@ -147,7 +146,7 @@ public class MathUtils {
         String unReducedResult = builder.toString();
         String finalResult = sum(unReducedResult, "");
         LOGGER.info("- Result of mult {} |*| {} : {}", a, b, finalResult);
-        return finalResult;
+        return ExpressionUtils.cancelMultShortcut(finalResult);
     }
 
 
@@ -172,7 +171,8 @@ public class MathUtils {
         BigDecimal bValue = new BigDecimal(ExpressionUtils.toNumericValue(b));
         String floatResult = cutSignificantZero(aValue.multiply(bValue).toString());
 
-        return floatResult.equals("1") && !originalVars.isEmpty() ? originalVars : floatResult + originalVars;
+        String finalResult = floatResult.equals("1") && !originalVars.isEmpty() ? originalVars : floatResult + originalVars;
+        return ExpressionUtils.cancelMultShortcut(finalResult);
     }
 
     public static String divide(String a, String b) {
@@ -189,6 +189,7 @@ public class MathUtils {
         return a + "/" + b;
     }
 
+    // TODO : optimize : use other method to chain multiplications
     public static String pow(String a, String b) {
         LOGGER.debug("Pow operation process between {} and {} : \n", a, b);
 
@@ -203,7 +204,7 @@ public class MathUtils {
         }
         float powValue;
         // If pow value is too high, there is no point in developing the entire expression
-        if(bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 99) {
+        if(bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199) {
             LOGGER.info("Pow value contains variables or pow value is greater than 9. Returns a^b");
             return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
         }

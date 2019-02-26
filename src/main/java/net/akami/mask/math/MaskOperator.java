@@ -6,6 +6,7 @@ import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class MaskOperator {
 
@@ -56,19 +57,28 @@ public class MaskOperator {
         return imageFor(mask, mask, false, values);
     }
 
-    /**
-     * Calculates an image from the values given. The result can be a numerical or polynomial expression, depending
-     * of the values given. For instance, {3, 2} as values for the expression {x + y} will give 5, while {3} for the
-     * same expression will give {3 + y}
-     * <br/>
-     * Note that if the default mask is null, it will be set to the out parameter before the calculations.
-     * @throws IllegalStateException if more values than variables are given.
-     * @param out the affected mask
-     * @param setToOut whether the next calculation will be done from the out expression or not
-     * @param values the values replacing the variables
-     * @return the operator itself for chaining.
-     */
+    public MaskOperator imageFor(MaskExpression out, boolean setToOut, Consumer<MaskExpression> actionWithOut,
+                                 String... values) {
+        return imageFor(mask, out, setToOut, actionWithOut, values);
+    }
+
     public MaskOperator imageFor(MaskExpression in, MaskExpression out, boolean setToOut, String... values) {
+        return imageFor(in, out, setToOut, null, values);
+    }
+        /**
+         * Calculates an image from the values given. The result can be a numerical or polynomial expression, depending
+         * of the values given. For instance, {3, 2} as values for the expression {x + y} will give 5, while {3} for the
+         * same expression will give {3 + y}
+         * <br/>
+         * Note that if the default mask is null, it will be set to the out parameter before the calculations.
+         * @throws IllegalStateException if more values than variables are given.
+         * @param out the affected mask
+         * @param setToOut whether the next calculation will be done from the out expression or not
+         * @param values the values replacing the variables
+         * @return the operator itself for chaining.
+         */
+    public MaskOperator imageFor(MaskExpression in, MaskExpression out, boolean setToOut,
+                                 Consumer<MaskExpression> actionWithOut, String... values) {
 
         if(this.mask == null) {
             this.mask = out;
@@ -77,7 +87,7 @@ public class MaskOperator {
             out = MaskExpression.TEMP;
         }
 
-        if (mask.getVariablesAmount() < values.length) {
+        if (in.getVariablesAmount() < values.length) {
             throw new IllegalStateException("More values than variables given");
         }
 
@@ -89,6 +99,10 @@ public class MaskOperator {
         out.reload(ReducerFactory.reduce(toReplace));
         if(setToOut) {
             this.mask = out;
+        }
+
+        if(actionWithOut != null) {
+            actionWithOut.accept(out);
         }
         return this;
     }

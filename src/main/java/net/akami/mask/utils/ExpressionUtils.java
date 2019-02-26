@@ -150,16 +150,17 @@ public class ExpressionUtils {
 
     // TODO : redo this ugly thing
     public static String toNumericValue(String self) {
-        LOGGER.info("Calculating the numeric value of {}", self);
+        LOGGER.debug("Calculating the numeric value of {}", self);
         clearBuilder();
+        self = self.replace("*", "");
         BUILDER.append(self);
 
         for (int i = 0; i < self.length(); i++) {
             char c = self.charAt(i);
             if (VARIABLES.contains(String.valueOf(c))) {
-                LOGGER.error("Before : {}", BUILDER);
+                LOGGER.debug("Before : {}", BUILDER);
                 deleteExponentOf(i, self, BUILDER);
-                LOGGER.error("After : {}", BUILDER);
+                LOGGER.debug("After : {}", BUILDER);
             }
         }
         String numericValue = BUILDER.toString().replace("$", "");
@@ -169,21 +170,21 @@ public class ExpressionUtils {
         } else if (finalNumericValue.equals("+")) {
             finalNumericValue = "1";
         }
-        LOGGER.error("Numeric value of {} : {}", self, finalNumericValue);
+        LOGGER.info("Numeric value of {} : {}", self, finalNumericValue);
         return finalNumericValue;
     }
 
     private static void deleteExponentOf(int i, String self, StringBuilder builder) {
         builder.setCharAt(i, '$');
-        LOGGER.error("Between 1 : {}", builder);
+        LOGGER.debug("Between 1 : {}", builder);
 
         if (!(i + 1 < self.length() && self.charAt(i + 1) == '^')) {
             return;
         }
-        LOGGER.error("FOUND A ^");
+        LOGGER.debug("FOUND A ^");
         // sets the '^' to '$'
         builder.setCharAt(i + 1, '$');
-        LOGGER.error("Between x : {}, after = {}", builder, self.charAt(i+2));
+        LOGGER.debug("Between x : {}, after = {}", builder, self.charAt(i+2));
         if (self.charAt(i+2) == '(') {
             builder.setCharAt(i+2, '$');
             int openingBrackets = 0;
@@ -227,6 +228,34 @@ public class ExpressionUtils {
         BUILDER.delete(0, BUILDER.length());
     }
 
+    public static String cancelMultShortcut(String self) {
+        clearBuilder();
+
+        for(int i = 0; i < self.length(); i++) {
+            String c = String.valueOf(self.charAt(i));
+            if(ExpressionUtils.VARIABLES.contains(c) && i!= 0 &&
+                    !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i-1)))) {
+                BUILDER.append("*").append(c);
+            } else {
+                BUILDER.append(c);
+            }
+        }
+        return BUILDER.toString();
+    }
+
+    public static String addMultShortcut(String self) {
+        clearBuilder();
+        BUILDER.append(self);
+        for(int i = 1; i < self.length()-1; i++) {
+            char c = self.charAt(i);
+
+            if(c == '*' && VARIABLES.contains(String.valueOf(self.charAt(i+1)))) {
+                BUILDER.setCharAt(i, '$');
+            }
+
+        }
+        return BUILDER.toString().replace("$", "");
+    }
     private static class SequenceCalculationResult {
         private String exponent;
         private int start;
