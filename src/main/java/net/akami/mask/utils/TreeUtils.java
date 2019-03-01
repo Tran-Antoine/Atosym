@@ -89,7 +89,7 @@ public class TreeUtils {
     }
 
     public static boolean areEdgesBracketsConnected(String exp) {
-        if (exp.charAt(0) != '(') {
+        if (exp.isEmpty() || exp.charAt(0) != '(') {
             return false;
         }
         int left = 0;

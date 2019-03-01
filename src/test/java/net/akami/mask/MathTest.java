@@ -14,12 +14,12 @@ public class MathTest {
 
         //System.out.println("...............................");
         //System.out.println(MathUtils.sum("x^10", ""));
-
+        //System.out.println(MathUtils.highPow("x+1", "3"));
         MaskExpression curve = new MaskExpression("4x^2 + 5x + 6");
         MaskOperator operator = MaskOperator.begin(curve);
         //operator.imageFor(MaskExpression.TEMP, false, res -> System.out.println(operator.asInt(res)), "1");
 
-        System.out.println(MathUtils.simpleMult("5*x", "6*x"));
+        //System.out.println(MathUtils.simpleMult("5*x", "6*x"));
         //System.out.println(MathUtils.pow("x+y+3", "3"));
         //System.out.println(ReducerFactory.reduce("(x+y+3)^3"));
         //System.out.println(MathUtils.pow("x+1", "2"));
@@ -41,7 +41,6 @@ public class MathTest {
             System.out.println("Next expression to reduce : ");
         }
 
-        //System.out.println(MathUtils.sum("-168", "3"));
         //System.out.println(MathUtils.sum(Arrays.asList("5", "-4", "-x", "3y", "4x")));
         //System.out.println(MathUtils.subtract("5x", "3+x+2"));
         //System.out.println(ReducerFactory.reduce("5+2"));

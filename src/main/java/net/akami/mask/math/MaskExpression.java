@@ -1,6 +1,7 @@
 package net.akami.mask.math;
 
 import net.akami.mask.exception.MaskException;
+import net.akami.mask.utils.ExpressionUtils;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class MaskExpression {
     public static final MaskExpression TEMP = new MaskExpression();
 
     private String expression;
-    private Character[] variables;
+    private char[] variables;
 
     /**
      * Constructs a new MaskExpression without any string expression by default.
@@ -62,24 +63,25 @@ public class MaskExpression {
         reload(expression);
     }
 
-    private Character[] createVariables() {
-        String letters = expression.replaceAll("[\\d.+\\-*\\/^]+", "");
+    private char[] createVariables() {
+        return ExpressionUtils.toVariablesType(expression).toCharArray();
+        /*String letters = expression.replaceAll("[\\d.+\\-*\\/^]+", "");
         ArrayList<Character> chars = new ArrayList<>();
         for(char c : letters.toCharArray()) {
             if(!chars.contains(c) && !MaskOperator.NON_VARIABLES.contains(""+c))
                 chars.add(c);
         }
-        return chars.toArray(new Character[chars.size()]);
+        return chars.toArray(new Character[chars.size()]);*/
     }
 
-    public int getVariablesAmount()   { return variables.length; }
-    public String getExpression()     { return expression;       }
-    public Character[] getVariables() { return variables;        }
+    public int getVariablesAmount(){ return variables.length; }
+    public String getExpression()  { return expression;       }
+    public char[] getVariables()   { return variables;        }
 
     public void reload(String newExp) {
         if(newExp == null) {
             this.expression = "undefined";
-            this.variables = new Character[]{};
+            this.variables = new char[]{};
         } else {
             this.expression = newExp.replaceAll("\\s", "");
             checkExpressionValidity();

@@ -1,6 +1,8 @@
 package net.akami.mask;
 
 import net.akami.mask.math.MaskExpression;
+import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -96,7 +98,32 @@ public class ReducerTest {
 
         Assertions.assertThat(ReducerFactory.reduce(s20)).isEqualTo("9+6x+x^2");
     }
-    // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ?
+
+    @Test
+    public void groupingWorks() {
+        ExpressionUtils.SequenceCalculationResult r1 = ExpressionUtils.groupAfter(1, "3^(4+x)");
+        ExpressionUtils.SequenceCalculationResult r2 = ExpressionUtils.groupAfter(1, "3^9876");
+        Assertions.assertThat(r1.getStart()).isEqualTo(3);
+        Assertions.assertThat(r1.getEnd()).isEqualTo(6);
+        Assertions.assertThat(r2.getStart()).isEqualTo(2);
+        Assertions.assertThat(r2.getEnd()).isEqualTo(6);
+    }
+
+    // It won't support factorisation for now. Therefore :
+    // (x^2 + 2x + 1) / (x+1) won't give (x+1)
+    @Test
+    public void decomposeExpressionTest() {
+        Assertions.assertThat(MathUtils.simpleDivision("4", "2")).isEqualTo("2");
+        Assertions.assertThat(MathUtils.simpleDivision("5", "2")).isEqualTo("5/2");
+        Assertions.assertThat(MathUtils.simpleDivision("6", "4")).isEqualTo("3/2");
+        Assertions.assertThat(MathUtils.simpleDivision("18", "16")).isEqualTo("9/8");
+
+        StringBuilder builder = new StringBuilder();
+        ExpressionUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
+        builder.deleteCharAt(builder.length()-1);
+        Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
+    }
+    // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ??
     // Like 3x + 5x would give x(3+5) = 8x
     // -> method "getCommonPart" instead of roughly checking "are variables similar"
 }
