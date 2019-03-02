@@ -123,6 +123,14 @@ public class ReducerTest {
         builder.deleteCharAt(builder.length()-1);
         Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
     }
+
+    @Test
+    public void divisionsTest() {
+        Assertions.assertThat(MathUtils.divide("5+6", "3")).isEqualTo("5/3+2");
+        Assertions.assertThat(MathUtils.divide("6+x", "2")).isEqualTo("3+x/2");
+        Assertions.assertThat(MathUtils.divide("2x", "x")).isEqualTo("2");
+        Assertions.assertThat(MathUtils.divide("2x+3", "x")).isEqualTo("2+3/x");
+    }
     // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ??
     // Like 3x + 5x would give x(3+5) = 8x
     // -> method "getCommonPart" instead of roughly checking "are variables similar"

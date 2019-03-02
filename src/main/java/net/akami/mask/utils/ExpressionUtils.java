@@ -1,5 +1,6 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +14,7 @@ public class ExpressionUtils {
     private static final String DELETE_VARIABLES = "[a-zA-DF-Z]+";
     private static final String DELETE_NON_VARIABLES = "[\\d.+\\-/*()^]+";
     public static final String MATH_SIGNS = "+-*/^()";
+    public static final String NUMBERS = "0123456789";
     // 'E' deliberately missing
     public static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
 
@@ -289,6 +291,14 @@ public class ExpressionUtils {
         return BUILDER.toString().replace("$", "");
     }
 
+    public static String toVariablesType(List<EquationSolver.BiMask> biMasks) {
+        clearBuilder();
+        for(EquationSolver.BiMask biMask : biMasks) {
+            String line = biMask.getLeft().getExpression() + biMask.getRight().getExpression();
+            BUILDER.append(line);
+        }
+        return toVariablesType(BUILDER.toString());
+    }
     public static String toVariablesType(String self) {
         String letters = self.replaceAll("[\\d.+\\-*\\/^]+", "");
         Set<String> chars = new HashSet<>();
@@ -329,18 +339,19 @@ public class ExpressionUtils {
      * @return
      */
     public static List<String> decompose(String exp) {
+        LOGGER.info("Now decomposing expression {}", exp);
         List<String> elements = new ArrayList<>();
         elements.addAll(Arrays.asList(cancelMultShortcut(exp).split("\\*")));
-
         List<String> decomposedElements = new ArrayList<>();
         // We can't use a classic for each loop since the size of the list will be modified
         for(int i = 0; i < elements.size(); i++) {
             String element = elements.get(i);
-            if(!VARIABLES.contains(element) && !MATH_SIGNS.contains(element)) {
+            if(element.substring(1).matches("[\\d.]+") || NUMBERS.contains(element)) {
                 List<String> decomposedLocal = decomposeNumber(Float.parseFloat(element));
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
-
+            } else {
+                LOGGER.debug("{} is not a number", element);
             }
         }
         elements.addAll(decomposedElements);
@@ -349,9 +360,13 @@ public class ExpressionUtils {
         return elements;
     }
     public static List<String> decomposeNumber(float self) {
-
+        LOGGER.info("Now decomposing float {}", self);
         List<Integer> dividers = new ArrayList<>();
         List<String> results = new ArrayList<>();
+        if(self < 0) {
+            results.add("-1");
+            self = -self;
+        }
         for(int i = 2; i <= self; i++) {
             boolean unique = true;
             for(int j = 2; j < i; j++) {
@@ -376,6 +391,12 @@ public class ExpressionUtils {
             }
         }
         return results;
+    }
+
+    public static boolean isANumber(String exp) {
+        if(exp.length() == 0)
+            return false;
+        return exp.substring(1).matches("[\\d.]+") || NUMBERS.contains(exp);
     }
 
     public static class SequenceCalculationResult {

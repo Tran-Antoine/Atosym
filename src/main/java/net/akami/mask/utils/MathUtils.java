@@ -1,17 +1,16 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.structure.EquationCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.akami.mask.utils.ExpressionUtils.VARIABLES;
-import static net.akami.mask.utils.ExpressionUtils.MATH_SIGNS;
+import static net.akami.mask.utils.ExpressionUtils.NUMBERS;
 
 import net.akami.mask.utils.ExpressionUtils.SequenceCalculationResult;
 
@@ -183,66 +182,123 @@ public class MathUtils {
     }
 
     /*
-
         3x^2 / 6x -> 3 * x * x / 3 * 2 * x -> x/2
      */
     public static String divide(String a, String b) {
         LOGGER.info("Division process of {} |/| {}: \n", a, b);
 
-        String concatenated = a + b;
-
-        if (!VARIABLES.contains(concatenated) && !MATH_SIGNS.contains(concatenated)) {
+        if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             BigDecimal bigA = new BigDecimal(a);
             BigDecimal bigB = new BigDecimal(b);
-            String result = cutSignificantZero(bigA.divide(bigB).toString());
-            LOGGER.info("Result of {} / {} : {}", a, b, result);
+            String result = cutSignificantZero(bigA.divide(bigB, MathContext.DECIMAL128).toString());
+            LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
             return result;
         }
-        return a + "/" + b;
+
+        List<String> numMonomials = ExpressionUtils.toMonomials(a);
+        int index = 0;
+        for(String numMonomial : numMonomials) {
+            String divisionResult = simpleDivision(numMonomial, b);
+            LOGGER.debug("Result of simple division between {} and {} : {}", numMonomial, b, divisionResult);
+            if(divisionResult.startsWith("+") || divisionResult.startsWith("-") || index == 0) {
+                numMonomials.set(index++, divisionResult);
+            } else {
+                numMonomials.set(index++, "+" + divisionResult);
+            }
+        }
+        return String.join("", numMonomials);
     }
 
     public static String simpleDivision(String a, String b) {
         List<String> numFactors = ExpressionUtils.decompose(a);
         List<String> denFactors = ExpressionUtils.decompose(b);
 
+        LOGGER.debug("NumFactors : {}, DenFactors : {}", numFactors, denFactors);
         for (int i = 0; i < numFactors.size(); i++) {
             String numFactor = numFactors.get(i);
             if (numFactor == null)
                 continue;
-
             for (int j = 0; j < denFactors.size(); j++) {
                 String denFactor = denFactors.get(j);
                 if (denFactor == null)
                     continue;
 
-                if (!VARIABLES.contains(numFactor) && !MATH_SIGNS.contains(numFactor)) {
-                    LOGGER.debug("Numeric value found");
-                    if (numFactor.equals(denFactor)) {
-                        LOGGER.debug("Equal values at index {} and {} found. Deletes them", i, j);
-                        numFactors.set(i, null);
-                        denFactors.set(j, null);
+                if (ExpressionUtils.isANumber(numFactor) && ExpressionUtils.isANumber(denFactor)) {
+                    if(proceedForNumericalDivision(numFactor, denFactor, i, j, numFactors, denFactors)) {
+                        LOGGER.debug("Deleted at index {} and {} : NumFactors : {}, DenFactors : {}", i, j, numFactors, denFactors);
                         break;
                     }
-                    LOGGER.debug("DenFactors : {}", denFactors);
-                    LOGGER.debug("Both factors are numeric but not equal : {} and {}", numFactor, denFactor);
-                    float numValue = Float.parseFloat(numFactor);
-                    float denValue = Float.parseFloat(denFactor);
-                    float[] values = proceedSimplificationWithNumbers(numValue, denValue);
-                    LOGGER.debug("Nums {}, Dens {}, i = {}, j = {}", numFactors, denFactors, i, j);
-                    numFactors.set(i, String.valueOf(values[0]));
-                    denFactors.set(j, String.valueOf(values[1]));
-                    LOGGER.debug("DenFactors 2: {}", denFactors);
+                } else if(proceedForVarDivision(numFactor, denFactor, i, j, numFactors, denFactors)) {
+                    LOGGER.debug("Deleted at index {} and {} : NumFactors : {}, DenFactors : {}", i, j, numFactors, denFactors);
+                    break;
                 }
             }
         }
+        LOGGER.debug("Simple division proceeded. NumFactors : {}, DenFactors : {}", numFactors, denFactors);
         String finalNum = assembleFactors(numFactors);
         String finalDen = assembleFactors(denFactors);
-
         LOGGER.debug("Raw result : {} / {}", finalNum, finalDen);
         if(finalDen.isEmpty() || finalDen.equals("1") || finalDen.equals("1.0")) {
             return finalNum;
         }
         return finalNum + "/" + finalDen;
+    }
+
+    private static boolean proceedForNumericalDivision(String num, String den, int i, int j, List<String> nums, List<String> dens) {
+        LOGGER.debug("Numeric value found");
+        if (num.equals(den)) {
+            LOGGER.debug("Equal values at index {} and {} found. Deletes them", i, j);
+            nums.set(i, null);
+            dens.set(j, null);
+            return true;
+        }
+        LOGGER.debug("DenFactors : {}", dens);
+        LOGGER.debug("Both factors are numeric but not equal : {} and {}", num, den);
+        float numValue = Float.parseFloat(num);
+        float denValue = Float.parseFloat(den);
+        float[] values = proceedSimplificationWithNumbers(numValue, denValue);
+        LOGGER.debug("Nums {}, Dens {}, i = {}, j = {}", nums, dens, i, j);
+        nums.set(i, String.valueOf(values[0]));
+        dens.set(j, String.valueOf(values[1]));
+        LOGGER.debug("DenFactors 2: {}", dens);
+        return false;
+    }
+
+    private static boolean proceedForVarDivision(String num, String den, int i, int j, List<String> nums, List<String> dens) {
+        LOGGER.debug("Vars : {} and {}", num, den);
+        String nVar = ExpressionUtils.toVariablesType(num);
+        String dVar = ExpressionUtils.toVariablesType(den);
+
+        if(!nVar.equals(dVar))
+            return false;
+
+        if(num.equals(den)) {
+            LOGGER.debug("Both values are equal. Deletes them");
+            nums.set(i, null);
+            dens.set(j, null);
+            return true;
+        }
+
+        String nPow = num.replace(nVar+"^", "");
+        String dPow = den.replace(dVar+"^", "");
+        nPow = nPow.isEmpty() ? "1" : nPow;
+        dPow = dPow.isEmpty() ? "1" : dPow;
+
+        String subResult = subtract(nPow, dPow);
+
+        if(ExpressionUtils.isANumber(subResult)) {
+            float subNumericResult = Float.parseFloat(subResult);
+            if(subNumericResult < 0) {
+                nums.set(i, null);
+                dens.set(j, dVar + -subNumericResult);
+            } else {
+                dens.set(j, null);
+                nums.set(i, nVar + subNumericResult);
+            }
+        } else {
+            LOGGER.error("Unsupported operation for now");
+        }
+        return false;
     }
 
     private static String assembleFactors(List<String> factors) {

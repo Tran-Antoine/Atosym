@@ -6,6 +6,8 @@ import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class MathTest {
