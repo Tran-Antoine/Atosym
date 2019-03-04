@@ -53,6 +53,12 @@ public class ReducerFactory {
 
     public static boolean isSurroundedByParentheses(int index, String exp) {
 
+        // In case the exp is 5*-3 or 5/-3
+        if(index > 0 && (exp.charAt(index-1) == '/' || exp.charAt(index-1) == '*')) {
+            LOGGER.info("Character right after * or /. Is surrounded = true");
+            return true;
+        }
+
         int leftParenthesis = 0;
 
         for(int i = 0; i < exp.length(); i++) {

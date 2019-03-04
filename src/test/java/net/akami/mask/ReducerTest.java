@@ -22,7 +22,9 @@ public class ReducerTest {
     @Test
     public void operationWithPriorityFromLeftToRight() {
         String s3 = "5*2 + 2";
+        String s3b = "0 + 4";
         Assertions.assertThat(ReducerFactory.reduce(s3)).isEqualTo("12");
+        Assertions.assertThat(ReducerFactory.reduce(s3b)).isEqualTo("4");
     }
     @Test
     public void operationThatNeedsPriorityCheck() {
@@ -48,12 +50,13 @@ public class ReducerTest {
     @Test
     public void basicVariableOperation() {
         String s9  = "5x + 2y";
+        String s9b = "5x + 0";
         String s10 = "5x * 2x";
         String s11 = "4x * 2y";
         String s12 = "4x + 3x";
         String s13 = "4x + 3x * 2y";
-
         Assertions.assertThat(ReducerFactory.reduce(s9)).isEqualTo("5x+2y");
+        Assertions.assertThat(ReducerFactory.reduce(s9b)).isEqualTo("5x");
         Assertions.assertThat(ReducerFactory.reduce(s10)).isEqualTo("10x^2");
         Assertions.assertThat(ReducerFactory.reduce(s11)).isEqualTo("8xy");
         Assertions.assertThat(ReducerFactory.reduce(s12)).isEqualTo("7x");
@@ -130,6 +133,7 @@ public class ReducerTest {
         Assertions.assertThat(MathUtils.divide("6+x", "2")).isEqualTo("3+x/2");
         Assertions.assertThat(MathUtils.divide("2x", "x")).isEqualTo("2");
         Assertions.assertThat(MathUtils.divide("2x+3", "x")).isEqualTo("2+3/x");
+        Assertions.assertThat(MathUtils.mult("3", "x/3")).isEqualTo("x");
     }
     // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ??
     // Like 3x + 5x would give x(3+5) = 8x

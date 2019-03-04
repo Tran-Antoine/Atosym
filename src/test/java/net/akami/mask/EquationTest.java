@@ -34,7 +34,6 @@ public class EquationTest {
     public void oneUnknownTwoDegreesTest() {
     }
 
-    // TODO : fix problem with replacement order
     @Test
     public void twoUnknownSingleLineTest() {
 
@@ -47,15 +46,31 @@ public class EquationTest {
         Assertions.assertThat(r2[1]).isEqualTo("x/2");
     }
 
-    // TODO : use recursion, x = y/2 needs to be recalculated as soon as y is calculated
     @Test
     public void twoUnknownTwoLinesTest() {
         BiMask b1 = new BiMask(new MaskExpression("3x+2y"), new MaskExpression("7x"));
         BiMask b2 = new BiMask(new MaskExpression("6x"), new MaskExpression("3y"));
 
-        String[] result = EquationSolver.solve(Arrays.asList(b1, b2));
-        Assertions.assertThat(result[0]).isEqualTo("1");
-        Assertions.assertThat(result[1]).isEqualTo("2");
+        String[] result0 = EquationSolver.solve(Arrays.asList(b1, b2));
+        //Assertions.assertThat(result0[0]).isEqualTo("y/2");
+        //Assertions.assertThat(result0[1]).isEqualTo("2x");
+
+        BiMask b3 = new BiMask(new MaskExpression("3x+5"), new MaskExpression("2y"));
+        BiMask b4 = new BiMask(new MaskExpression("x+1"), new MaskExpression("y-2"));
+
+        String[] result1 = EquationSolver.solve(Arrays.asList(b3, b4));
+        Assertions.assertThat(result1[0]).isEqualTo("1");
+        Assertions.assertThat(result1[1]).isEqualTo("4");
+
+        BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
+        BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
+        BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));
+
+        String[] result2 = EquationSolver.solve(Arrays.asList(b5, b6, b7));
+        Assertions.assertThat(result2[0]).isEqualTo("1");
+        Assertions.assertThat(result2[1]).isEqualTo("2");
+        Assertions.assertThat(result2[2]).isEqualTo("-1");
+
     }
 
     public String[] solveSimple(String a, String b) {

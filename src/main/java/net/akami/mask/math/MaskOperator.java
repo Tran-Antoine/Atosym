@@ -107,19 +107,19 @@ public class MaskOperator {
         return this;
     }
 
-    private String replace(char var, String value, String self) {
+    public String replace(char var, String value, String self) {
 
         StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < self.length(); i++) {
             if (self.charAt(i) == var) {
 
-                if (i != 0 && NON_VARIABLES.contains(String.valueOf(self.charAt(i - 1)))) {
+                if (i != 0 && ExpressionUtils.NUMBERS.contains(String.valueOf(self.charAt(i - 1)))) {
                     //the char before the variable is a number. 4x obviously means 4*x
-                    builder.append("*" + value);
+                    builder.append("*" +"("+value+")");
                 } else {
                     // No number before the variable, for instance 3+x
-                    builder.append(value);
+                    builder.append("("+value+")");
                 }
             } else {
                 // No variable found, we just add the same char

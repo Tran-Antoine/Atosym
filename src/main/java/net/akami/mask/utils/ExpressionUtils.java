@@ -25,15 +25,20 @@ public class ExpressionUtils {
         for (int i = 0; i < self.length(); i++) {
             // We don't want i = 0 because if the first char is '-', it will add an empty string to the list
             if (self.charAt(i) == '+' || self.charAt(i) == '-' && i != 0) {
-                if (ReducerFactory.isSurroundedByParentheses(i, self))
+                if (ReducerFactory.isSurroundedByParentheses(i, self)) {
                     continue;
+                }
                 String monomial = self.substring(lastIndex, i);
+                if(toNumericValue(monomial).equals("0")) continue;
+
                 monomials.add(monomial);
                 LOGGER.debug("Added {} to monomials because sign found", monomial);
                 lastIndex = i;
             }
             if (i == self.length() - 1) {
                 String monomial = self.substring(lastIndex, i + 1);
+                if(toNumericValue(monomial).equals("0")) continue;
+
                 monomials.add(monomial);
                 LOGGER.debug("Added {} to monomials because we reached the end of the String", monomial);
             }
@@ -211,14 +216,17 @@ public class ExpressionUtils {
             }
         }
         String numericValue = BUILDER.toString().replace("$", "");
-        String finalNumericValue = numericValue.isEmpty() ? "1" : numericValue;
-        if (finalNumericValue.equals("-")) {
-            finalNumericValue = "-1";
-        } else if (finalNumericValue.equals("+")) {
-            finalNumericValue = "1";
+        LOGGER.info("Raw numeric value of {} : {}", self, numericValue);
+
+        if (numericValue.equals("-")) {
+            return "-1";
+        } else if (numericValue.equals("+") || numericValue.isEmpty()) {
+            return "1";
+        } else if ("/".equals(String.valueOf(numericValue.charAt(0)))) {
+            return "1" + numericValue;
+        } else {
+            return numericValue;
         }
-        LOGGER.info("Numeric value of {} : {}", self, finalNumericValue);
-        return finalNumericValue;
     }
 
     private static void deleteExponentOf(int i, String self, StringBuilder builder) {
@@ -346,8 +354,9 @@ public class ExpressionUtils {
         // We can't use a classic for each loop since the size of the list will be modified
         for(int i = 0; i < elements.size(); i++) {
             String element = elements.get(i);
-            if(element.substring(1).matches("[\\d.]+") || NUMBERS.contains(element)) {
+            if(isANumber(element)) {
                 List<String> decomposedLocal = decomposeNumber(Float.parseFloat(element));
+                LOGGER.info("Decomposed {}, result : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
             } else {
@@ -356,21 +365,28 @@ public class ExpressionUtils {
         }
         elements.addAll(decomposedElements);
         elements = elements.stream().filter(x -> x!= null && !x.equals("1.0")).collect(Collectors.toList());
-        LOGGER.debug("Elements of {} : {}", exp, elements);
+        LOGGER.info("Elements of {} : {}", exp, elements);
         return elements;
     }
     public static List<String> decomposeNumber(float self) {
         LOGGER.info("Now decomposing float {}", self);
-        List<Integer> dividers = new ArrayList<>();
+
         List<String> results = new ArrayList<>();
+        if(self % 1 != 0) {
+            LOGGER.info("Non-integer given, returns it");
+            results.add(String.valueOf(self));
+            return results;
+        }
+        List<Integer> dividers = new ArrayList<>();
         if(self < 0) {
             results.add("-1");
-            self = -self;
+            self *= -1;
         }
+        // Builds the dividers array
         for(int i = 2; i <= self; i++) {
             boolean unique = true;
             for(int j = 2; j < i; j++) {
-                if(i % j == 0 && j != i) {
+                if(i % j == 0 && (j != i && i!=2)) {
                     unique = false;
                     break;
                 }
@@ -384,12 +400,15 @@ public class ExpressionUtils {
         while(index < dividers.size()) {
             int divider = dividers.get(index);
             if(self % divider == 0) {
+                LOGGER.error("{} is a divider of {}", divider, self);
                 results.add(String.valueOf(divider));
                 self /= divider;
             } else {
+                LOGGER.error("{} is not a divider of {}", divider, self);
                 index++;
             }
         }
+        LOGGER.error("Result : {}", results);
         return results;
     }
 
