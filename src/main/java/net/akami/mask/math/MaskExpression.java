@@ -1,9 +1,8 @@
 package net.akami.mask.math;
 
 import net.akami.mask.exception.MaskException;
+import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ExpressionUtils;
-
-import java.util.ArrayList;
 
 /**
  * MaskExpression is the core object of the mask library. It handles a String, which corresponds to the expression,

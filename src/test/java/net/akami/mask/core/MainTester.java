@@ -1,7 +1,7 @@
-package net.akami.mask;
+package net.akami.mask.core;
 
 import net.akami.mask.math.MaskExpression;
-import net.akami.mask.math.MaskOperator;
+import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Scanner;

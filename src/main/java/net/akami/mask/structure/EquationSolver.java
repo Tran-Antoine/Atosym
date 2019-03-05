@@ -1,7 +1,7 @@
 package net.akami.mask.structure;
 
 import net.akami.mask.math.MaskExpression;
-import net.akami.mask.math.MaskOperator;
+import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
@@ -13,6 +13,16 @@ import java.util.*;
 public class EquationSolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EquationSolver.class);
+
+    public static List<BiMask> build(String... lines) {
+        List<BiMask> biMasks = new ArrayList<>();
+        for(String line : lines) {
+            String[] sides = line.split("=");
+            if(sides.length != 2) throw new IllegalArgumentException("Invalid line given (0 or more than 1 '=' found");
+            biMasks.add(new BiMask(new MaskExpression(sides[0]), new MaskExpression(sides[1])));
+        }
+        return biMasks;
+    }
 
     public static String[] solve(List<BiMask> biMasks) {
         MaskOperator op = MaskOperator.begin();

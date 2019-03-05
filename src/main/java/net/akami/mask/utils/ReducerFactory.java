@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.math.OperationSign;
+import net.akami.mask.operation.OperationSign;
 import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,10 +9,10 @@ public class ReducerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
     private static final StringBuilder BUILDER = new StringBuilder();
-    public static final OperationSign[] OPERATIONS;
+    public static final OperationSign[] PROCEDURAL_OPERATIONS;
 
     static {
-        OPERATIONS = new OperationSign[]{
+        PROCEDURAL_OPERATIONS = new OperationSign[]{
                 OperationSign.SUM, OperationSign.SUBTRACT,
                 OperationSign.MULT, OperationSign.DIVIDE,
                 OperationSign.POW, OperationSign.NONE
@@ -24,10 +24,8 @@ public class ReducerFactory {
 
         BinaryTree tree = new BinaryTree();
 
-        // deletes all the spaces
-        String localExp = exp.replaceAll("\\s", "");
-
-        localExp = ExpressionUtils.cancelMultShortcut(localExp);
+        // deletes all the spaces, adds the necessary '*'
+        String localExp = ExpressionUtils.cancelMultShortcut(exp.replaceAll("\\s", ""));
 
         tree.new Branch(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
@@ -49,33 +47,6 @@ public class ReducerFactory {
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
         return ExpressionUtils.addMultShortcut(result);
-    }
-
-    public static boolean isSurroundedByParentheses(int index, String exp) {
-
-        // In case the exp is 5*-3 or 5/-3
-        if(index > 0 && (exp.charAt(index-1) == '/' || exp.charAt(index-1) == '*')) {
-            LOGGER.info("Character right after * or /. Is surrounded = true");
-            return true;
-        }
-
-        int leftParenthesis = 0;
-
-        for(int i = 0; i < exp.length(); i++) {
-            if(exp.charAt(i) == '(') {
-                leftParenthesis++;
-            }
-
-            if(exp.charAt(i) == ')') {
-                leftParenthesis--;
-            }
-            if(leftParenthesis > 0 && i == index) {
-                LOGGER.debug("- Indeed surrounded");
-                return true;
-            }
-        }
-        LOGGER.debug("- Not surrounded");
-        return false;
     }
 
     private static void clearBuilder() {

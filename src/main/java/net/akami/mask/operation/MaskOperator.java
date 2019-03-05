@@ -1,6 +1,7 @@
-package net.akami.mask.math;
+package net.akami.mask.operation;
 
 import net.akami.mask.exception.MaskException;
+import net.akami.mask.math.MaskExpression;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;

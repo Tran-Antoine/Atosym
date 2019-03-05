@@ -1,4 +1,4 @@
-package net.akami.mask.math;
+package net.akami.mask.operation;
 
 import net.akami.mask.utils.MathUtils;
 
@@ -12,9 +12,9 @@ public enum OperationSign {
     NONE(' ', null);
 
     private char sign;
-    private MathOperation function;
+    private BinaryMathOperation function;
 
-    OperationSign(char sign, MathOperation function) {
+    OperationSign(char sign, BinaryMathOperation function) {
         this.sign = sign;
         this.function = function;
     }
@@ -37,7 +37,7 @@ public enum OperationSign {
     }
 
     @FunctionalInterface
-    private interface MathOperation {
+    private interface BinaryMathOperation {
         String compute(String a, String b);
     }
 }

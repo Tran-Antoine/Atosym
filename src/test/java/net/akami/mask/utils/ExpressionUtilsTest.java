@@ -1,9 +1,10 @@
-package net.akami.mask;
+package net.akami.mask.utils;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import static net.akami.mask.utils.ExpressionUtils.toNumericValue;
 import static net.akami.mask.utils.ExpressionUtils.toMonomials;
+import static net.akami.mask.utils.ExpressionUtils.toVariables;
 public class ExpressionUtilsTest {
 
     @Test
@@ -21,5 +22,10 @@ public class ExpressionUtilsTest {
     @Test
     public void toMonomialsTest() {
         Assertions.assertThat(toMonomials("0.66y-1.66").toString()).isEqualTo("[0.66y, -1.66]");
+    }
+
+    @Test
+    public void toVariablesTest() {
+        Assertions.assertThat(toVariables("5x^2y")).isEqualTo("x^2y");
     }
 }

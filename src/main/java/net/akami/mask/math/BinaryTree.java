@@ -1,11 +1,11 @@
 package net.akami.mask.math;
 
-import net.akami.mask.utils.ReducerFactory;
+import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.TreeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static net.akami.mask.utils.ReducerFactory.OPERATIONS;
+import static net.akami.mask.utils.ReducerFactory.PROCEDURAL_OPERATIONS;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +39,13 @@ public class BinaryTree {
             reduced = false;
             branches.add(this);
             LOGGER.debug("Now treating : "+this);
-            for (int i = 0; i < OPERATIONS.length; i += 2) {
-                split(OPERATIONS[i].getSign(), OPERATIONS[i + 1].getSign());
+            for (int i = 0; i < PROCEDURAL_OPERATIONS.length; i += 2) {
+                split(PROCEDURAL_OPERATIONS[i].getSign(), PROCEDURAL_OPERATIONS[i + 1].getSign());
              }
         }
 
         private String deleteUselessBrackets(String exp) {
-            while(TreeUtils.areEdgesBracketsConnected(exp)) {
+            while(ExpressionUtils.areEdgesBracketsConnected(exp)) {
                 exp = exp.substring(1, exp.length()-1);
             }
             return exp;
@@ -113,9 +113,9 @@ public class BinaryTree {
 
                 if ((c == c1 || c == c2)) {
                     LOGGER.debug("Checking if sign {} at index {} is surrounded in {}", c, i, this);
-                    boolean bracketsConnected = TreeUtils.areEdgesBracketsConnected(expression);
+                    boolean bracketsConnected = ExpressionUtils.areEdgesBracketsConnected(expression);
 
-                    if (!ReducerFactory.isSurroundedByParentheses(i, expression)) {
+                    if (!ExpressionUtils.isSurroundedByParentheses(i, expression)) {
                         LOGGER.debug("Found a place to split at index {}, character '{}'", i, c);
                         TreeUtils.createNewBranch(BinaryTree.this, this, i, c, bracketsConnected);
                         break;

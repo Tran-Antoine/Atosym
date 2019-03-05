@@ -1,7 +1,0 @@
-- SOLVED : Multiplication doesn't work with powered expressions, such as x^3, because only "x" is identified
-- Division has not been configured for variables, hence all expressions containing '/' and variables
-  won't be reduced properly
-- Pow is not fully configured, hence (x^y)^2 won't give x^(2y)
-- Some math shortcuts currently don't work, such as : "9x*y" instead of "9x*1y". Same for "(3+2)x" instead of "(3+2)*1x"
-- Distributivity is now supported
-- The x*y instead of 1x*1y shortcut is now supported

@@ -11,13 +11,12 @@ public class ExpressionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtils.class);
     private static final StringBuilder BUILDER = new StringBuilder();
-    private static final String DELETE_VARIABLES = "[a-zA-DF-Z]+";
     private static final String DELETE_NON_VARIABLES = "[\\d.+\\-/*()^]+";
     public static final String MATH_SIGNS = "+-*/^()";
     public static final String NUMBERS = "0123456789";
     // 'E' deliberately missing
     public static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
-
+    public static final String TRIGONOMETRY_SHORTCUTS = "@#§";
     public static List<String> toMonomials(String self) {
 
         List<String> monomials = new ArrayList<>();
@@ -25,7 +24,7 @@ public class ExpressionUtils {
         for (int i = 0; i < self.length(); i++) {
             // We don't want i = 0 because if the first char is '-', it will add an empty string to the list
             if (self.charAt(i) == '+' || self.charAt(i) == '-' && i != 0) {
-                if (ReducerFactory.isSurroundedByParentheses(i, self)) {
+                if (isSurroundedByParentheses(i, self)) {
                     continue;
                 }
                 String monomial = self.substring(lastIndex, i);
@@ -196,7 +195,7 @@ public class ExpressionUtils {
             result.start = index;
             result.end = exp.length();
         }
-        if(TreeUtils.areEdgesBracketsConnected(result.sequence)) {
+        if(areEdgesBracketsConnected(result.sequence)) {
             result.sequence = result.sequence.substring(1, result.sequence.length()-1);
         }
     }
@@ -273,10 +272,12 @@ public class ExpressionUtils {
 
         for(int i = 0; i < self.length(); i++) {
             String c = String.valueOf(self.charAt(i));
-            if(ExpressionUtils.VARIABLES.contains(c) && i!= 0 &&
-                    !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i-1)))) {
-                BUILDER.append("*").append(c);
-            } else if(i != 0 && c.equals("(") && self.charAt(i-1) == ')') {
+            boolean varOrTrigo = ExpressionUtils.VARIABLES.contains(c) || ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(c);
+
+            if(varOrTrigo && i!= 0 && !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i-1)))) {
+                    BUILDER.append("*").append(c);
+            } else if(i != 0 && c.equals("(") &&
+                    (self.charAt(i-1) == ')' || !MATH_SIGNS.contains(String.valueOf(self.charAt(i-1))))) {
                 BUILDER.append("*").append(c);
             } else {
                 BUILDER.append(c);
@@ -420,6 +421,56 @@ public class ExpressionUtils {
 
     public static boolean isSigned(String exp) {
         return exp.charAt(0) == '+' || exp.charAt(0) == '-';
+    }
+
+    public static boolean areEdgesBracketsConnected(String exp) {
+        if (exp.isEmpty() || exp.charAt(0) != '(') {
+            return false;
+        }
+        int left = 0;
+        for (int i = 1; i < exp.length() - 1; i++) {
+            if (exp.charAt(i) == ')') {
+                left--;
+            } else if (exp.charAt(i) == '(') {
+                left++;
+            }
+            if (left < 0) {
+                break;
+            }
+        }
+        if (left >= 0) {
+            exp = exp.substring(1, exp.length() - 1);
+            LOGGER.debug("Connected brackets found at position 0 and last, new expression : {}", exp);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isSurroundedByParentheses(int index, String exp) {
+
+        // In case the exp is 5*-3 or 5/-3
+        if(index > 0 && (exp.charAt(index-1) == '/' || exp.charAt(index-1) == '*')) {
+            LOGGER.info("Character right after * or /. Is surrounded = true");
+            return true;
+        }
+
+        int leftParenthesis = 0;
+
+        for(int i = 0; i < exp.length(); i++) {
+            if(exp.charAt(i) == '(') {
+                leftParenthesis++;
+            }
+
+            if(exp.charAt(i) == ')') {
+                leftParenthesis--;
+            }
+            if(leftParenthesis > 0 && i == index) {
+                LOGGER.debug("- Indeed surrounded");
+                return true;
+            }
+        }
+        LOGGER.debug("- Not surrounded");
+        return false;
     }
 
     public static class SequenceCalculationResult {

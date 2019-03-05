@@ -56,6 +56,26 @@ public class MathUtils {
         return Pow.getInstance().rawOperate(a, b);
     }
 
+    public static String sin(String a) {
+        if(ExpressionUtils.isANumber(a)) {
+            return String.valueOf(Math.sin(Float.valueOf(a)));
+        }
+        return a;
+    }
+
+    public static String cos(String a) {
+        if(ExpressionUtils.isANumber(a)) {
+            return String.valueOf(Math.cos(Float.valueOf(a)));
+        }
+        return a;
+    }
+
+    public static String tan(String a) {
+        if(ExpressionUtils.isANumber(a)) {
+            return String.valueOf(Math.tan(Float.valueOf(a)));
+        }
+        return a;
+    }
     /**
      * Method currently in development. Do not use
      *

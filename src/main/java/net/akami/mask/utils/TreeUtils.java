@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.math.OperationSign;
+import net.akami.mask.operation.OperationSign;
 import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -86,28 +86,5 @@ public class TreeUtils {
         for (Branch branch : self.getBranches()) {
             LOGGER.info("Branch found : {}", branch);
         }
-    }
-
-    public static boolean areEdgesBracketsConnected(String exp) {
-        if (exp.isEmpty() || exp.charAt(0) != '(') {
-            return false;
-        }
-        int left = 0;
-        for (int i = 1; i < exp.length() - 1; i++) {
-            if (exp.charAt(i) == ')') {
-                left--;
-            } else if (exp.charAt(i) == '(') {
-                left++;
-            }
-            if (left < 0) {
-                break;
-            }
-        }
-        if (left >= 0) {
-            exp = exp.substring(1, exp.length() - 1);
-            LOGGER.debug("Connected brackets found at position 0 and last, new expression : {}", exp);
-            return true;
-        }
-        return false;
     }
 }

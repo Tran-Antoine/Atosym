@@ -15,10 +15,10 @@ public class SumTest {
         Assertions.assertThat(sum.rawOperate("1/2", "1/2")).isEqualTo("1");
     }
 
-    /*@Test
+    @Test
     public void inFormatTest() {
         Assertions.assertThat(Sum.getInstance().inFormat("5x")).isEqualTo("5x");
         Assertions.assertThat(Sum.getInstance().inFormat("5x/5")).isEqualTo("1x");
         Assertions.assertThat(Sum.getInstance().inFormat("3x/4")).isEqualTo("0.75x");
-    }*/
+    }
 }

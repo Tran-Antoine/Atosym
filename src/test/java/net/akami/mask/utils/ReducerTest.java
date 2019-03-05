@@ -1,4 +1,4 @@
-package net.akami.mask;
+package net.akami.mask.utils;
 
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.operation.Division;

@@ -1,4 +1,4 @@
-package net.akami.mask;
+package net.akami.mask.core;
 
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.structure.EquationSolver;
@@ -7,6 +7,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
+
 import net.akami.mask.structure.EquationSolver.BiMask;
 public class EquationTest {
 
@@ -73,11 +75,8 @@ public class EquationTest {
         Assertions.assertThat(result2[1]).isEqualTo("2");
         Assertions.assertThat(result2[2]).isEqualTo("-1");
 
-        BiMask b8 = new BiMask(new MaskExpression("x+y+z"), new MaskExpression("6"));
-        BiMask b9 = new BiMask(new MaskExpression("x+2y+2z"), new MaskExpression("11"));
-        BiMask b10 = new BiMask(new MaskExpression("x+3y+z"), new MaskExpression("10"));
-
-        String[] result3 = EquationSolver.solve(Arrays.asList(b8, b9, b10));
+        List<BiMask> lines = EquationSolver.build("x+y+z=6", "x+2y+2z=11", "x+3y+z=10");
+        String[] result3 = EquationSolver.solve(lines);
         Assertions.assertThat(result3[0]).isEqualTo("1");
         Assertions.assertThat(result3[1]).isEqualTo("2");
         Assertions.assertThat(result3[2]).isEqualTo("3");

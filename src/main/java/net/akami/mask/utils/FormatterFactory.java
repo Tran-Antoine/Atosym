@@ -1,6 +1,8 @@
 package net.akami.mask.utils;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FormatterFactory {
 
@@ -19,6 +21,16 @@ public class FormatterFactory {
         }
         return BUILDER.toString();
     }
+
+    /*public static String deleteMathShortcuts(String origin) {
+        origin = origin.replaceAll("\\s", "");
+        Pattern pattern = Pattern.compile("(cos\\()(.+)(\\))");
+        Matcher matcher = pattern.matcher(origin);
+        while(matcher.find()) {
+            System.out.println(matcher.replaceAll(matcher.group(2)));
+        }
+        return ExpressionUtils.cancelMultShortcut(origin);
+    }*/
 
     private static void clearBuilder() {
         BUILDER.delete(0, BUILDER.length());
