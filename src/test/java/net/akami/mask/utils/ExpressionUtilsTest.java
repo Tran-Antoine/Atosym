@@ -18,6 +18,8 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toNumericValue("-1")).isEqualTo("-1");
         Assertions.assertThat(toNumericValue("2*y/3")).isEqualTo("2/3");
         Assertions.assertThat(toNumericValue("0.4")).isEqualTo("0.4");
+        Assertions.assertThat(toNumericValue("3x^(2y+1)")).isEqualTo("3");
+
     }
     @Test
     public void toMonomialsTest() {

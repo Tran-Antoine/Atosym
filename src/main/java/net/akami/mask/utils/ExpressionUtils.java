@@ -131,7 +131,7 @@ public class ExpressionUtils {
      */
     public static SequenceCalculationResult groupAfter(int index, String exp) {
         if(index < exp.length() -1 && exp.charAt(index+1) == '(') {
-            LOGGER.debug("bracketSequenceAfter");
+            LOGGER.info("bracketSequenceAfter");
             return bracketSequenceAfter(index, exp);
         }
         LOGGER.debug("No bracket sequence after char at index {}", index);
@@ -209,9 +209,9 @@ public class ExpressionUtils {
         for (int i = 0; i < self.length(); i++) {
             char c = self.charAt(i);
             if (VARIABLES.contains(String.valueOf(c))) {
-                LOGGER.debug("Before : {}", BUILDER);
+                LOGGER.info("Before : {}", BUILDER);
                 deleteExponentOf(i, self, BUILDER);
-                LOGGER.debug("After : {}", BUILDER);
+                LOGGER.info("After : {}", BUILDER);
             }
         }
         String numericValue = BUILDER.toString().replace("$", "");
@@ -239,14 +239,17 @@ public class ExpressionUtils {
         SequenceCalculationResult result = groupAfter(i+1, builder.toString());
         // abc becomes $$$
         result.sequence = result.sequence.replaceAll(".", "\\$");
-        LOGGER.debug("Initial : {}, start : {}, end : {}, replacedBy : {}", builder, result.start, result.end, result.sequence);
+        LOGGER.info("Initial : {}, start : {}, end : {}, replacedBy : {}", builder, result.start, result.end, result.sequence);
         // Replaces the '^' by '$'
         builder.setCharAt(i + 1, '$');
+        if(builder.charAt(i+2) == '(')
+            builder.setCharAt(result.end, '$');
         // Replaces the '(' if present by '$'
         builder.setCharAt(i + 2, '$');
 
         builder.replace(result.start, result.end, result.sequence);
-        LOGGER.debug("Result : {}", builder);
+        LOGGER.info("Result : {}", builder);
+        LOGGER.error("Group after {} in {} : {}", i, self, result.sequence);
     }
 
     public static String keepEachCharacterOnce(String self) {
