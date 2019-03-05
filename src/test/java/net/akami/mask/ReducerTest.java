@@ -1,6 +1,7 @@
 package net.akami.mask;
 
 import net.akami.mask.math.MaskExpression;
+import net.akami.mask.operation.Division;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
@@ -116,10 +117,11 @@ public class ReducerTest {
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test
     public void decomposeExpressionTest() {
-        Assertions.assertThat(MathUtils.simpleDivision("4", "2")).isEqualTo("2");
-        Assertions.assertThat(MathUtils.simpleDivision("5", "2")).isEqualTo("5/2");
-        Assertions.assertThat(MathUtils.simpleDivision("6", "4")).isEqualTo("3/2");
-        Assertions.assertThat(MathUtils.simpleDivision("18", "16")).isEqualTo("9/8");
+        Division div = Division.getInstance();
+        Assertions.assertThat(div.simpleDivision("4", "2")).isEqualTo("2");
+        Assertions.assertThat(div.simpleDivision("5", "2")).isEqualTo("5/2");
+        Assertions.assertThat(div.simpleDivision("6", "4")).isEqualTo("3/2");
+        Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
 
         StringBuilder builder = new StringBuilder();
         ExpressionUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
@@ -135,7 +137,7 @@ public class ReducerTest {
         Assertions.assertThat(MathUtils.divide("2x+3", "x")).isEqualTo("2+3/x");
         Assertions.assertThat(MathUtils.mult("3", "x/3")).isEqualTo("x");
     }
-    // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual sum ??
+    // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual monomialSum ??
     // Like 3x + 5x would give x(3+5) = 8x
     // -> method "getCommonPart" instead of roughly checking "are variables similar"
 }

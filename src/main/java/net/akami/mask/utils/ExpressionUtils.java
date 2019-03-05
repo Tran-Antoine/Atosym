@@ -101,7 +101,7 @@ public class ExpressionUtils {
                 BUILDER.deleteCharAt(0);
 
             if (partsAmount > 1) {
-                LOGGER.debug("Several parts forming the power : {}. Needs extra sum", BUILDER.toString());
+                LOGGER.debug("Several parts forming the power : {}. Needs extra monomialSum", BUILDER.toString());
                 String reducedExponent = MathUtils.sum(BUILDER.toString(), "");
                 clearBuilder();
                 BUILDER.append(reducedExponent);
@@ -416,6 +416,10 @@ public class ExpressionUtils {
         if(exp.length() == 0)
             return false;
         return exp.substring(1).matches("[\\d.]+") || NUMBERS.contains(exp);
+    }
+
+    public static boolean isSigned(String exp) {
+        return exp.charAt(0) == '+' || exp.charAt(0) == '-';
     }
 
     public static class SequenceCalculationResult {

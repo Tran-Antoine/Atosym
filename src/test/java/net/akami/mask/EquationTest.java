@@ -34,6 +34,8 @@ public class EquationTest {
     public void oneUnknownTwoDegreesTest() {
     }
 
+    /*
+    Unused test for now
     @Test
     public void twoUnknownSingleLineTest() {
 
@@ -44,7 +46,7 @@ public class EquationTest {
         String[] r2 = solveSimple("2x", "4y");
         Assertions.assertThat(r2[0]).isEqualTo("2y");
         Assertions.assertThat(r2[1]).isEqualTo("x/2");
-    }
+    }*/
 
     @Test
     public void twoUnknownTwoLinesTest() {
@@ -71,6 +73,14 @@ public class EquationTest {
         Assertions.assertThat(result2[1]).isEqualTo("2");
         Assertions.assertThat(result2[2]).isEqualTo("-1");
 
+        BiMask b8 = new BiMask(new MaskExpression("x+y+z"), new MaskExpression("6"));
+        BiMask b9 = new BiMask(new MaskExpression("x+2y+2z"), new MaskExpression("11"));
+        BiMask b10 = new BiMask(new MaskExpression("x+3y+z"), new MaskExpression("10"));
+
+        String[] result3 = EquationSolver.solve(Arrays.asList(b8, b9, b10));
+        Assertions.assertThat(result3[0]).isEqualTo("1");
+        Assertions.assertThat(result3[1]).isEqualTo("2");
+        Assertions.assertThat(result3[2]).isEqualTo("3");
     }
 
     public String[] solveSimple(String a, String b) {

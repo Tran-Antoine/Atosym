@@ -65,13 +65,6 @@ public class MaskExpression {
 
     private char[] createVariables() {
         return ExpressionUtils.toVariablesType(expression).toCharArray();
-        /*String letters = expression.replaceAll("[\\d.+\\-*\\/^]+", "");
-        ArrayList<Character> chars = new ArrayList<>();
-        for(char c : letters.toCharArray()) {
-            if(!chars.contains(c) && !MaskOperator.NON_VARIABLES.contains(""+c))
-                chars.add(c);
-        }
-        return chars.toArray(new Character[chars.size()]);*/
     }
 
     public int getVariablesAmount(){ return variables.length; }

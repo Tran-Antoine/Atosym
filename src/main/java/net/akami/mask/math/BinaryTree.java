@@ -12,12 +12,12 @@ import java.util.List;
 /**
  * A tree is an object that contains a list of branches.
  */
-public class Tree {
+public class BinaryTree {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(Tree.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(BinaryTree.class);
     private List<Branch> branches;
 
-    public Tree() {
+    public BinaryTree() {
         this.branches = new ArrayList<>();
     }
 
@@ -117,7 +117,7 @@ public class Tree {
 
                     if (!ReducerFactory.isSurroundedByParentheses(i, expression)) {
                         LOGGER.debug("Found a place to split at index {}, character '{}'", i, c);
-                        TreeUtils.createNewBranch(Tree.this, this, i, c, bracketsConnected);
+                        TreeUtils.createNewBranch(BinaryTree.this, this, i, c, bracketsConnected);
                         break;
                     }
                 }

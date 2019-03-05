@@ -1,16 +1,16 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.math.OperationSign;
-import net.akami.mask.math.Tree;
+import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.akami.mask.math.Tree.Branch;
+import net.akami.mask.math.BinaryTree.Branch;
 
 public class TreeUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TreeUtils.class.getName());
 
-    public static String mergeBranches(Tree tree) {
+    public static String mergeBranches(BinaryTree tree) {
         /*
             If we give a very simple expression such as '50' to the reducer, it will detect that no operation
             needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
@@ -65,7 +65,7 @@ public class TreeUtils {
         return null;
     }
 
-    public static void createNewBranch(Tree tree, Branch actual, int index, char sign, boolean edgesBracketsConnected) {
+    public static void createNewBranch(BinaryTree tree, Branch actual, int index, char sign, boolean edgesBracketsConnected) {
 
         String exp = actual.getExpression();
 
@@ -82,7 +82,7 @@ public class TreeUtils {
         actual.setOperation(sign);
     }
 
-    public static void printBranches(Tree self) {
+    public static void printBranches(BinaryTree self) {
         for (Branch branch : self.getBranches()) {
             LOGGER.info("Branch found : {}", branch);
         }

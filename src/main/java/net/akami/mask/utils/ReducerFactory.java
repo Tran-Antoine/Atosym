@@ -1,7 +1,7 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.math.OperationSign;
-import net.akami.mask.math.Tree;
+import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +22,7 @@ public class ReducerFactory {
     public static String reduce(String exp) {
         long time = System.nanoTime();
 
-        Tree tree = new Tree();
+        BinaryTree tree = new BinaryTree();
 
         // deletes all the spaces
         String localExp = exp.replaceAll("\\s", "");
@@ -41,7 +41,7 @@ public class ReducerFactory {
             if(e instanceof ArithmeticException)
                 LOGGER.error("Non solvable mathematical expression given : {}", exp);
             else
-                LOGGER.error("Wrong format in the expression {}", exp);
+                LOGGER.error("Wrong inFormat in the expression {}", exp);
             result = "undefined";
             e.printStackTrace();
         }

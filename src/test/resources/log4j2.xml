@@ -3,7 +3,7 @@
 
     <Appenders>
         <Console name="STDOUT">
-            <PatternLayout pattern="%d{HH:mm:ss:SSSS} |%level| : %msg%n"></PatternLayout>
+            <PatternLayout pattern="%F (line:%L) |%level| : %msg%n"></PatternLayout>
 
             <Filters>
                 <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="ACCEPT"/>
