@@ -1,8 +1,10 @@
-package net.akami.mask.operation;
+package net.akami.mask.operation.sign;
 
 import net.akami.mask.utils.MathUtils;
 
-public enum OperationSign {
+import java.util.Objects;
+
+public enum BinaryOperationSign {
 
     SUM('+', MathUtils::sum),
     SUBTRACT('-', MathUtils::subtract),
@@ -12,11 +14,11 @@ public enum OperationSign {
     NONE(' ', null);
 
     private char sign;
-    private BinaryMathOperation function;
+    private BinaryMathOperation binaryFunction;
 
-    OperationSign(char sign, BinaryMathOperation function) {
+    BinaryOperationSign(char sign, BinaryMathOperation function) {
         this.sign = sign;
-        this.function = function;
+        this.binaryFunction = function;
     }
 
     public char getSign() {
@@ -24,11 +26,13 @@ public enum OperationSign {
     }
 
     public String compute(String a, String b) {
-        return function.compute(a, b);
+        Objects.requireNonNull(binaryFunction);
+        return binaryFunction.compute(a, b);
     }
 
-    public static OperationSign getBySign(char sign) {
-        for(OperationSign operation : values()) {
+
+    public static BinaryOperationSign getBySign(char sign) {
+        for(BinaryOperationSign operation : values()) {
             if(operation.sign == sign) {
                 return operation;
             }

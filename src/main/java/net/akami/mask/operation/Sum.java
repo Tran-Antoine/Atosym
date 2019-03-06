@@ -36,7 +36,6 @@ public class Sum extends BinaryOperationHandler {
 
         // All the monomials that couldn't be calculated because their unknown part was unique are eventually added
         finalMonomials.addAll(monomials);
-
         clearBuilder();
         for (String rest : finalMonomials) {
             if (rest == null)
@@ -119,7 +118,7 @@ public class Sum extends BinaryOperationHandler {
             finalMonomials.add(vars);
         } else if (numericTotal.equals("-1") && !vars.isEmpty()) {
             finalMonomials.add("-" + vars);
-        } else {
+        } else if(!numericTotal.matches("0\\.0+") && !numericTotal.equals("0")){
             finalMonomials.add(MathUtils.cutSignificantZero(numericTotal + vars));
         }
     }

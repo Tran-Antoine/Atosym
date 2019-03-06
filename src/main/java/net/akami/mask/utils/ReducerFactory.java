@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.OperationSign;
+import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,13 +9,13 @@ public class ReducerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
     private static final StringBuilder BUILDER = new StringBuilder();
-    public static final OperationSign[] PROCEDURAL_OPERATIONS;
+    public static final BinaryOperationSign[] PROCEDURAL_OPERATIONS;
 
     static {
-        PROCEDURAL_OPERATIONS = new OperationSign[]{
-                OperationSign.SUM, OperationSign.SUBTRACT,
-                OperationSign.MULT, OperationSign.DIVIDE,
-                OperationSign.POW, OperationSign.NONE
+        PROCEDURAL_OPERATIONS = new BinaryOperationSign[]{
+                BinaryOperationSign.SUM, BinaryOperationSign.SUBTRACT,
+                BinaryOperationSign.MULT, BinaryOperationSign.DIVIDE,
+                BinaryOperationSign.POW, BinaryOperationSign.NONE
         };
     }
 
@@ -25,7 +25,7 @@ public class ReducerFactory {
         BinaryTree tree = new BinaryTree();
 
         // deletes all the spaces, adds the necessary '*'
-        String localExp = ExpressionUtils.cancelMultShortcut(exp.replaceAll("\\s", ""));
+        String localExp = FormatterFactory.formatForCalculations(exp);
 
         tree.new Branch(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
@@ -46,7 +46,7 @@ public class ReducerFactory {
 
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
-        return ExpressionUtils.addMultShortcut(result);
+        return FormatterFactory.formatForVisual(result);
     }
 
     private static void clearBuilder() {

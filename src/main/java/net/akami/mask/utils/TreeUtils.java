@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.OperationSign;
+import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.math.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +26,6 @@ public class TreeUtils {
         for (int i = tree.getBranches().size() - 1; i >= 0; i--) {
 
             Branch branch = tree.getBranches().get(i);
-            LOGGER.debug("\n");
             LOGGER.debug("Actual branch : {}", branch.getExpression());
 
             if (!branch.canBeCalculated()) {
@@ -39,27 +38,27 @@ public class TreeUtils {
             String right = branch.getRight().getExpression();
 
             //  We need to check whether a reduced form has been calculated or not
-            if (branch.getLeft().isReduced()) {
-                left = branch.getLeft().getReducedValue();
+            if (branch.getLeft().hasAlternativeValue()) {
+                left = branch.getLeft().getAlternativeValue();
             }
-            if (branch.getRight().isReduced()) {
-                right = branch.getRight().getReducedValue();
+            if (branch.getRight().hasAlternativeValue()) {
+                right = branch.getRight().getAlternativeValue();
             }
             LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, branch.getOperation());
-            String value = OperationSign.getBySign(branch.getOperation()).compute(left, right);
+            String value = BinaryOperationSign.getBySign(branch.getOperation()).compute(left, right);
             // The result is defined as the reduced value of the expression
             LOGGER.debug("Successfully calculated the value of " + branch.getExpression() + " : " + value);
 
-            branch.setReducedValue(value);
+            branch.setAlternativeValue(value);
             branch.setLeft(null);
             branch.setRight(null);
 
             Branch first = tree.getBranches().get(0);
-            if (first.isReduced()) {
-                if (String.valueOf(first.getReducedValue()).equals("Infinity"))
+            if (first.hasAlternativeValue()) {
+                if (String.valueOf(first.getAlternativeValue()).equals("Infinity"))
                     throw new ArithmeticException();
 
-                return String.valueOf(first.getReducedValue());// 8019
+                return String.valueOf(first.getAlternativeValue());// 8019
             }
         }
         return null;

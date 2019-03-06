@@ -4,6 +4,8 @@ import net.akami.mask.operation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,31 +17,37 @@ public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
     private static final StringBuilder BUILDER = new StringBuilder();
+    private static final MathContext TRIGO_CONTEXT = new MathContext(4);
 
-    //TODO remove spaces
     public static String sum(String a, String b) {
         return Sum.getInstance().rawOperate(a, b);
     }
-
-    /**
-     * @param monomials
-     * @return the monomialSum of all monomials given
-     */
     public static String sum(List<String> monomials) {
         return Sum.getInstance().monomialSum(monomials);
     }
-
     public static String subtract(String a, String b) {
         return Subtraction.getInstance().rawOperate(a, b);
     }
-
     public static String mult(String a, String b) {
         return Multiplication.getInstance().rawOperate(a, b);
     }
-
-    // 3x^2 / 6x -> 3 * x * x / 3 * 2 * x -> x/2
     public static String divide(String a, String b) {
         return Division.getInstance().rawOperate(a, b);
+    }
+    public static String diffSum(String a, String altA, String b, String altB) {
+        return sum(altA, altB);
+    }
+    public static String diffSubtract(String a, String altA, String b, String altB) {
+        return subtract(altA, altB);
+    }
+    public static String diffMult(String a, String altA, String b, String altB) {
+        return sum(mult(altA, b), mult(altB, a));
+    }
+    public static String diffDivide(String a, String altA, String b, String altB) {
+        return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
+    }
+    public static String diffPow(String a, String altA, String b, String altB) {
+        return "("+mult(b, a)+")^("+ subtract(b, "1")+")";
     }
 
     public static String breakNumericalFraction(String self) {
@@ -57,24 +65,23 @@ public class MathUtils {
     }
 
     public static String sin(String a) {
-        if(ExpressionUtils.isANumber(a)) {
-            return String.valueOf(Math.sin(Float.valueOf(a)));
-        }
-        return a;
+        return trigonometryOperation(a, '@', Math::sin);
     }
 
     public static String cos(String a) {
-        if(ExpressionUtils.isANumber(a)) {
-            return String.valueOf(Math.cos(Float.valueOf(a)));
-        }
-        return a;
+        return trigonometryOperation(a, '#', Math::cos);
     }
 
     public static String tan(String a) {
+        return trigonometryOperation(a, '§', Math::tan);
+    }
+
+    public static String trigonometryOperation(String a, char opChar, UnaryOperation operation) {
         if(ExpressionUtils.isANumber(a)) {
-            return String.valueOf(Math.tan(Float.valueOf(a)));
+            double result = operation.compute(Math.toRadians(Double.valueOf(a)));
+            return String.valueOf(result > 10E-15 ? result : 0);
         }
-        return a;
+        return "("+a+")"+opChar;
     }
     /**
      * Method currently in development. Do not use
@@ -172,5 +179,10 @@ public class MathUtils {
 
     private static void clearBuilder() {
         BUILDER.delete(0, BUILDER.length());
+    }
+
+    @FunctionalInterface
+    private interface UnaryOperation {
+        double compute(double d);
     }
 }

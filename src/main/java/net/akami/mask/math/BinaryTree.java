@@ -32,7 +32,7 @@ public class BinaryTree {
         private char operation;
         private String expression;
         private boolean reduced;
-        private String reducedValue;
+        private String alternativeValue;
 
         public Branch(String expression) {
             this.expression = deleteUselessBrackets(expression);
@@ -51,48 +51,7 @@ public class BinaryTree {
             return exp;
         }
 
-        public Branch getLeft() {
-            return left;
-        }
-
-        public Branch getRight() {
-            return right;
-        }
-
-        public char getOperation() {
-            return operation;
-        }
-
-        public String getExpression() {
-            return expression;
-        }
-
-        public String getReducedValue() {
-            return reducedValue;
-        }
-
-        public boolean isReduced() {
-            return reduced;
-        }
-
-        public void setOperation(char operation) {
-            this.operation = operation;
-        }
-
-        public void setLeft(Branch left) {
-            this.left = left;
-        }
-
-        public void setRight(Branch right) {
-            this.right = right;
-        }
-
-        public void setReducedValue(String value) {
-            this.reducedValue = value;
-            reduced = true;
-        }
-
-        public void split(char c1, char c2) {
+        private void split(char c1, char c2) {
             /*
                 We must go from the end to the beginning. Otherwise, operations' priority is not respected.
                 For instance, 2/2*2 = 1. If we go from 0 to exp.length() -1, the expression will be divided like this :
@@ -154,5 +113,17 @@ public class BinaryTree {
             }
             return !doChildrenHaveChildren();
         }
+
+        public Branch getLeft()         { return left;         }
+        public Branch getRight()        { return right;        }
+        public char getOperation()      { return operation;    }
+        public String getExpression()   { return expression;   }
+        public String getAlternativeValue() { return alternativeValue; }
+        public boolean hasAlternativeValue()      { return reduced;      }
+
+        public void setOperation(char operation)  { this.operation = operation; }
+        public void setLeft(Branch left)          { this.left = left;           }
+        public void setRight(Branch right)        { this.right = right;         }
+        public void setAlternativeValue(String value) { this.alternativeValue = value; reduced = true; }
     }
 }

@@ -14,6 +14,12 @@ public class Multiplication extends BinaryOperationHandler {
 
     @Override
     protected String operate(String a, String b) {
+
+        LOGGER.error("Operating mult {} * {}", a, b);
+        if(b.length() == 1 && ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(b)) {
+            LOGGER.info("Trigonometry calculation with {} and {}", a, b);
+            return trigonometryOperation(a.isEmpty() ? "0" : a, b);
+        }
         LOGGER.info("Multiplication process of {} |*| {}: \n", a, b);
 
         List<String> aMonomials = ExpressionUtils.toMonomials(a);
@@ -40,6 +46,7 @@ public class Multiplication extends BinaryOperationHandler {
         LOGGER.info("- Result of mult {} |*| {} : {}", a, b, finalResult);
         return finalResult;
     }
+
     /**
      * Calculates a*b. both strings must not be polynomials. If you don't know whether a and b are monomials,
      * call {@link MathUtils#mult(String, String)} instead.
@@ -51,7 +58,6 @@ public class Multiplication extends BinaryOperationHandler {
      */
     public String simpleMult(String a, String b) {
 
-        LOGGER.error(">>> {}, {}", a, b);
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
 
@@ -61,12 +67,23 @@ public class Multiplication extends BinaryOperationHandler {
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
         String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, MathContext.DECIMAL64).toString());
-        if(MathUtils.roundPeriodicSeries(floatResult).equals("1")) {
-            if(!originalVars.isEmpty()) {
+        if (MathUtils.roundPeriodicSeries(floatResult).equals("1")) {
+            if (!originalVars.isEmpty()) {
                 return originalVars;
             }
         }
         return floatResult + originalVars;
+    }
+
+    private static String trigonometryOperation(String a, String b) {
+        switch (b) {
+            case "@":
+                return MathUtils.sin(a);
+            case "#":
+                return MathUtils.cos(a);
+            default:
+                return MathUtils.tan(a);
+        }
     }
 
     @Override
