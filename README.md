@@ -1,12 +1,12 @@
 # Mask
 
-Mask is a free open source library that helps the user dealing with mathematical expressions. The main features (most of them still in development) are the following : 
+Mask is a free open source library that helps the user dealing with calculations concerning mathematical expressions (in the form of character strings). The main features are the following : 
 
 * Calculation of any series of numbers split by operations (+, -, *, /, ^), giving a reduced result.
-* Calculation of any polynomial, giving the most reduced result.
+* Reduction / Expansion of any polynomial, giving the most reduced result.
 * Calculation of an image from any function with the given x / y / ... values
 * Calculation of the derivative of any function
-* Calculation of the solution(s) of any equation given, containing n variables
+* Calculation of the solution(s) of any system of equations given, containing n variables
 
 ***
 
@@ -23,6 +23,7 @@ dependencies {
     implementation 'com.github.Askigh:Mask:<latest_version_here>'
 }
 ```
+See [releases](https://github.com/Askigh/Mask/releases) section for more information.
 
 ## How to use it
 
