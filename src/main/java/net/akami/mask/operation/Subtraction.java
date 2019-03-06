@@ -28,7 +28,7 @@ public class Subtraction extends BinaryOperationHandler {
             }
         }
         monomials.addAll(bMonomials);
-        return Sum.getInstance().monomialSum(monomials);
+        return Sum.getInstance().monomialSum(monomials, true);
     }
 
     @Override

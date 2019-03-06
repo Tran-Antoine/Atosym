@@ -19,11 +19,11 @@ public class Sum extends BinaryOperationHandler {
         LOGGER.info("Sum process of {} |+| {}: \n", a, b);
         List<String> monomials = ExpressionUtils.toMonomials(a);
         monomials.addAll(ExpressionUtils.toMonomials(b));
-        LOGGER.info("Monomials : {}", monomials);
-        return monomialSum(monomials);
+        LOGGER.debug("Monomials : {}", monomials);
+        return monomialSum(monomials, false);
     }
 
-    public String monomialSum(List<String> monomials) {
+    public String monomialSum(List<String> monomials, boolean needsFormatting) {
 
         List<String> finalMonomials = new ArrayList<>();
 
@@ -48,8 +48,9 @@ public class Sum extends BinaryOperationHandler {
             }
         }
         String result = BUILDER.toString();
-        LOGGER.info("- Raw result of monomialSum / subtraction : {}", result);
-        return result.startsWith("+") ? result.substring(1) : result;
+        result = result.startsWith("+") ? result.substring(1) : result;
+        LOGGER.info("- Result of monomialSum / subtraction : {}", result);
+        return needsFormatting ? outFormat(result) : result;
     }
 
     // TODO : Stop using this map
@@ -70,9 +71,10 @@ public class Sum extends BinaryOperationHandler {
 
             // If the unknown part is similar, we can add them
             if (ExpressionUtils.toVariables(part2).equals(vars)) {
+                LOGGER.info("TO NUMERIC OF {} : {}", part2, ExpressionUtils.toNumericValue(part2));
                 BigDecimal toAdd = new BigDecimal(ExpressionUtils.toNumericValue(part2));
                 if (compatibleParts.containsKey(toAdd)) {
-                    LOGGER.info("Found copy in the map. Doubling the original.");
+                    LOGGER.debug("Found copy in the map. Doubling the original.");
                     int index = compatibleParts.get(toAdd);
                     compatibleParts.remove(toAdd, index);
                     compatibleParts.put(toAdd.multiply(new BigDecimal("2")), index);
@@ -103,6 +105,7 @@ public class Sum extends BinaryOperationHandler {
      */
     private void replaceMonomialsByResult(String initialMonomial, String vars, int index, Map<BigDecimal, Integer> others,
                                           List<String> initialMonomials, List<String> finalMonomials) {
+        LOGGER.info("Numeric value of {} : {}", initialMonomial, ExpressionUtils.toNumericValue(initialMonomial));
         BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(initialMonomial));
         for (BigDecimal value : others.keySet()) {
             LOGGER.debug("Value : " + value);
@@ -130,6 +133,10 @@ public class Sum extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
+        if(origin.isEmpty()) {
+            LOGGER.debug("RETURNED 0");
+            return "0";
+        }
         return ExpressionUtils.addMultShortcut(origin);
     }
 

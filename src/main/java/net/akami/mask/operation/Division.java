@@ -13,6 +13,10 @@ public class Division extends BinaryOperationHandler {
 
     @Override
     protected String operate(String a, String b) {
+        // Avoids division by zero error.
+        if(a.equals(b))
+            return "1";
+
         LOGGER.info("Division process of {} |/| {}: \n", a, b);
 
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {

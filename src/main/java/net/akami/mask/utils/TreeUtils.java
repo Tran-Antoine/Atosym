@@ -26,10 +26,10 @@ public class TreeUtils {
         for (int i = tree.getBranches().size() - 1; i >= 0; i--) {
 
             Branch branch = tree.getBranches().get(i);
-            LOGGER.debug("Actual branch : {}", branch.getExpression());
+            LOGGER.info("Actual branch : {}", branch.getExpression());
 
             if (!branch.canBeCalculated()) {
-                LOGGER.debug("Not calculable : hasChildren : {} / children have no children : {}",
+                LOGGER.info("Not calculable : hasChildren : {} / children have no children : {}",
                         branch.hasChildren(), branch.doChildrenHaveChildren());
                 continue;
             }
@@ -47,7 +47,7 @@ public class TreeUtils {
             LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, branch.getOperation());
             String value = BinaryOperationSign.getBySign(branch.getOperation()).compute(left, right);
             // The result is defined as the reduced value of the expression
-            LOGGER.debug("Successfully calculated the value of " + branch.getExpression() + " : " + value);
+            LOGGER.info("Successfully calculated the value of " + branch.getExpression() + " : " + value);
 
             branch.setAlternativeValue(value);
             branch.setLeft(null);

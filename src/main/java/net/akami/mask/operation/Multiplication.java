@@ -18,7 +18,9 @@ public class Multiplication extends BinaryOperationHandler {
         LOGGER.error("Operating mult {} * {}", a, b);
         if(b.length() == 1 && ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(b)) {
             LOGGER.info("Trigonometry calculation with {} and {}", a, b);
-            return trigonometryOperation(a.isEmpty() ? "0" : a, b);
+            String result = trigonometryOperation(a.isEmpty() ? "0" : a, b);
+            LOGGER.info("Trigonometry result : {}", result);
+            return result;
         }
         LOGGER.info("Multiplication process of {} |*| {}: \n", a, b);
 
@@ -60,7 +62,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
-
+        LOGGER.info("Variables of {} and {} : {}", a, b, originalVars);
         a = ExpressionUtils.toNumericValue(a);
         b = ExpressionUtils.toNumericValue(b);
 
@@ -72,6 +74,7 @@ public class Multiplication extends BinaryOperationHandler {
                 return originalVars;
             }
         }
+        LOGGER.info("Float result : {}", floatResult);
         return floatResult + originalVars;
     }
 
@@ -88,7 +91,9 @@ public class Multiplication extends BinaryOperationHandler {
 
     @Override
     public String inFormat(String origin) {
-        return FormatterFactory.removeFractions(origin);
+        String result = FormatterFactory.removeFractions(origin);
+        LOGGER.info("{} became {}", origin, result);
+        return result;
     }
 
     @Override

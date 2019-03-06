@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ExpressionUtils {
@@ -45,7 +47,7 @@ public class ExpressionUtils {
         return monomials;
     }
 
-    public static String toVariables(String exp) {
+    public static String toVariablesUnused(String exp) {
 
         String[] unSortedVars = keepEachCharacterOnce(exp.replaceAll(DELETE_NON_VARIABLES, "")).split("");
         if (unSortedVars.length == 0)
@@ -123,6 +125,73 @@ public class ExpressionUtils {
         return result;
     }
 
+    public static String toVariables(String exp) {
+        Pattern pattern = Pattern.compile("([a-zA-DF-Z]\\^([a-zA-DF-Z0-9]+|\\(.+\\))|([a-zA-DF-Z]))+");
+        Matcher matcher = pattern.matcher(exp);
+        StringBuilder builder = new StringBuilder();
+        while(matcher.find())
+            builder.append(matcher.group());
+        String result = builder.toString();
+        builder.delete(0, builder.length());
+        LOGGER.info("Result after removing the non required numbers from {} : {}", exp, result);
+        Map<Character, String> variables = new HashMap<>();
+        for(char var : toVariablesType(result).toCharArray()) {
+            variables.put(var, "0");
+        }
+        // TODO : fix the problem : x^3x becomes x^3*x instead of x^(3*x) AND x^10 gives x
+        for(int i = 0; i < result.length(); i++) {
+            char c = result.charAt(i);
+            if(i!=0 && VARIABLES.contains(String.valueOf(c))) {
+                String before = String.valueOf(result.charAt(i-1));
+                if(NUMBERS.contains(before) || VARIABLES.contains(before)) {
+                    builder.append("*").append(c);
+                } else {
+                    builder.append(c);
+                }
+            } else {
+                builder.append(c);
+            }
+        }
+        result = builder.toString();
+        LOGGER.info("After rewriting result : {}", result);
+        builder.delete(0, builder.length());
+
+        for(int i = 0; i < result.length(); i++) {
+            char c = result.charAt(i);
+            if(variables.containsKey(c)) {
+                LOGGER.debug("Char {} at index {} in {} is a var", c, i, result);
+                if(i == result.length()-1 || result.charAt(i+1) != '^') {
+                    //LOGGER.info("char {} at index {} of {} isn't followed by '^'", c, i, result);
+                    variables.put(c, MathUtils.sum(variables.get(c), "1"));
+                    LOGGER.info("Exponent of {} is now {}", c, variables.get(c));
+                } else {
+                    String cutPart = result.substring(i+2);
+                    Pattern cutPattern = Pattern.compile("([a-zA-DF-Z0-9]+)|\\(.+\\)");
+                    Matcher cutMatcher = cutPattern.matcher(cutPart);
+                    String group = null;
+                    if(cutMatcher.find())
+                        group = cutMatcher.group();
+
+                    LOGGER.info("Group after {} is : {}", c, group);
+                    LOGGER.info("--> Result was previously {}", result);
+                    result = result.replaceFirst(Pattern.quote(group), group.replaceAll(".", "_"));
+                    LOGGER.info("--> Result is now : {}", result);
+                    variables.put(c, MathUtils.sum(variables.get(c), group));
+                }
+            }
+        }
+        for(Character var : variables.keySet()) {
+            if(variables.get(var).equals("0"))
+                continue;
+            if(variables.get(var).equals("1")) {
+                builder.append(var);
+            } else {
+                builder.append(var).append("^").append(variables.get(var));
+            }
+        }
+        return builder.toString();
+    }
+
     /**
      * groupAfter(1, "3^(4+x)") will return 3 and 6 as start and end
      * @param index
@@ -131,7 +200,6 @@ public class ExpressionUtils {
      */
     public static SequenceCalculationResult groupAfter(int index, String exp) {
         if(index < exp.length() -1 && exp.charAt(index+1) == '(') {
-            LOGGER.info("bracketSequenceAfter");
             return bracketSequenceAfter(index, exp);
         }
         LOGGER.debug("No bracket sequence after char at index {}", index);
@@ -154,7 +222,35 @@ public class ExpressionUtils {
                 result.end = exp.length();
             }
         }
-        finishSequenceCalculation(result, index, exp);
+        //removeBrackets(result, exp, index, true);
+        LOGGER.debug("Result of group at index {} for {} : {}", index, exp, result.sequence);
+        return result;
+    }
+    public static SequenceCalculationResult groupBefore(int index, String exp) {
+        if(index > 0 && exp.charAt(index-1) == ')') {
+            return bracketSequenceBefore(index, exp);
+        }
+        LOGGER.debug("No bracket sequence after char at index {}", index);
+        SequenceCalculationResult result = new SequenceCalculationResult();
+        for (int i = index - 1; i >= 0; i--) {
+            char c = exp.charAt(i);
+
+            if ("+-*/^".contains(String.valueOf(c))) {
+                LOGGER.debug("Found an operator : {} at index {}. Stopped", c, i);
+                result.sequence = exp.substring(i, index);
+                result.start = i;
+                result.end = index;
+                break;
+            }
+
+            if(i == 0) {
+                LOGGER.debug("Reached the end of the string.");
+                result.sequence = exp.substring(0, index);
+                result.start = 0;
+                result.end = index;
+            }
+        }
+        removeBrackets(result, exp, index, false);
         LOGGER.debug("Result of group at index {} for {} : {}", index, exp, result.sequence);
         return result;
     }
@@ -183,73 +279,49 @@ public class ExpressionUtils {
             }
         }
 
-        finishSequenceCalculation(result, index, exp);
+        //removeBrackets(result, exp, index, true);
         LOGGER.debug("Sequence {} after pow at index {} found : {}", exp, index, result.sequence);
         return result;
     }
 
-    private static void finishSequenceCalculation(SequenceCalculationResult result, int index, String exp) {
-        if (result.sequence == null) {
-            LOGGER.error("Sequence null");
-            result.sequence = exp.substring(index + 1);
-            result.start = index;
-            result.end = exp.length();
-        }
-        if(areEdgesBracketsConnected(result.sequence)) {
-            result.sequence = result.sequence.substring(1, result.sequence.length()-1);
-        }
-    }
+    public static SequenceCalculationResult bracketSequenceBefore(int index, String exp) {
+        SequenceCalculationResult result = new SequenceCalculationResult();
 
-    public static String toNumericValue(String self) {
-        LOGGER.debug("Calculating the numeric value of {}", self);
-        clearBuilder();
-        self = self.replace("*", "");
-        BUILDER.append(self);
+        int closingBrackets = 0;
+        for (int i = index - 1; i >= 0; i--) {
+            char c = exp.charAt(i);
 
-        for (int i = 0; i < self.length(); i++) {
-            char c = self.charAt(i);
-            if (VARIABLES.contains(String.valueOf(c))) {
-                LOGGER.info("Before : {}", BUILDER);
-                deleteExponentOf(i, self, BUILDER);
-                LOGGER.info("After : {}", BUILDER);
+            if (c == '(') {
+                if(closingBrackets <= 0) {
+                    LOGGER.debug("Found the closing bracket");
+                    result.start = i+1;
+                    result.sequence = exp.substring(i+1, index-1);
+                    result.end = index-1;
+                    break;
+                } else {
+                    closingBrackets--;
+                }
+            }
+            if(c == ')' && i != index+1) {
+                closingBrackets++;
             }
         }
-        String numericValue = BUILDER.toString().replace("$", "");
-        LOGGER.info("Raw numeric value of {} : {}", self, numericValue);
 
-        if (numericValue.equals("-")) {
-            return "-1";
-        } else if (numericValue.equals("+") || numericValue.isEmpty()) {
-            return "1";
-        } else if ("/".equals(String.valueOf(numericValue.charAt(0)))) {
-            return "1" + numericValue;
-        } else {
-            return numericValue;
-        }
+        //removeBrackets(result, exp, index, false);
+        LOGGER.debug("Sequence {} after pow at index {} found : {}", exp, index, result.sequence);
+        return result;
     }
 
-    private static void deleteExponentOf(int i, String self, StringBuilder builder) {
-        builder.setCharAt(i, '$');
-
-        if (!(i + 1 < self.length() && self.charAt(i + 1) == '^')) {
-            return;
+    private static void removeBrackets(SequenceCalculationResult result, String exp, int index, boolean leftToR) {
+        if (result.sequence == null) {
+            LOGGER.debug("Sequence null");
+            result.sequence = leftToR ? exp.substring(index + 1) : exp.substring(0, index);
+            result.start = leftToR ? index : 0;
+            result.end = leftToR ? exp.length() : index;
         }
-        LOGGER.debug("FOUND A ^");
-        // sets the '^' to '$'
-        SequenceCalculationResult result = groupAfter(i+1, builder.toString());
-        // abc becomes $$$
-        result.sequence = result.sequence.replaceAll(".", "\\$");
-        LOGGER.info("Initial : {}, start : {}, end : {}, replacedBy : {}", builder, result.start, result.end, result.sequence);
-        // Replaces the '^' by '$'
-        builder.setCharAt(i + 1, '$');
-        if(builder.charAt(i+2) == '(')
-            builder.setCharAt(result.end, '$');
-        // Replaces the '(' if present by '$'
-        builder.setCharAt(i + 2, '$');
-
-        builder.replace(result.start, result.end, result.sequence);
-        LOGGER.info("Result : {}", builder);
-        LOGGER.error("Group after {} in {} : {}", i, self, result.sequence);
+        while(areEdgesBracketsConnected(result.sequence)) {
+            result.sequence = result.sequence.substring(1, result.sequence.length()-1);
+        }
     }
 
     public static String keepEachCharacterOnce(String self) {
@@ -312,7 +384,7 @@ public class ExpressionUtils {
         return toVariablesType(BUILDER.toString());
     }
     public static String toVariablesType(String self) {
-        String letters = self.replaceAll("[\\d.+\\-*\\/^]+", "");
+        String letters = self.replaceAll("[\\d.+\\-*/^()]+", "");
         Set<String> chars = new HashSet<>();
         for(char c : letters.toCharArray()) {
             chars.add(String.valueOf(c));
@@ -492,5 +564,20 @@ public class ExpressionUtils {
         public int getEnd() {
             return end;
         }
+    }
+
+    public static String toNumericValue(String exp) {
+        if(exp.isEmpty())
+            return "0";
+        exp = ExpressionUtils.addMultShortcut(exp)
+                .replaceAll("\\(.+\\)([@#§])", "")
+                .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
+                .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")
+                .replaceAll("\\s", "");
+
+        if(exp.equals("-") || exp.equals("+")) {
+            exp = exp + "1";
+        }
+        return exp.isEmpty() || exp.startsWith("/") ? "1"+exp : exp;
     }
 }

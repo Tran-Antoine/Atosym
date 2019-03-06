@@ -24,7 +24,7 @@ public class Pow extends BinaryOperationHandler {
         float powValue;
         // If pow value is too high, there is no point in developing the entire expression
         if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199) {
-            LOGGER.info("Pow value contains variables or pow value is greater than 9. Returns a^b");
+            LOGGER.info("Pow value contains variables or pow value is greater than 199. Returns a^b");
             return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
         }
 

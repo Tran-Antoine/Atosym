@@ -1,27 +1,37 @@
 package net.akami.mask.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 
 public class FormatterFactory {
 
     private static final StringBuilder BUILDER = new StringBuilder();
+    private static final Logger LOGGER = LoggerFactory.getLogger(FormatterFactory.class);
 
     public static String removeFractions(String origin) {
-
+        while(ExpressionUtils.areEdgesBracketsConnected(origin)) {
+            origin = origin.substring(1, origin.length() - 1);
+        }
         if (ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(origin))
             return origin;
 
-        clearBuilder();
+        StringBuilder builder = new StringBuilder();
         List<String> monomials = ExpressionUtils.toMonomials(origin);
         for (String monomial : monomials) {
             String vars = ExpressionUtils.toVariables(monomial);
             String numericValue = ExpressionUtils.toNumericValue(monomial);
-            if (BUILDER.length() != 0 && !ExpressionUtils.isSigned(numericValue)) {
-                BUILDER.append('+');
+            LOGGER.info("Treating {}, vars : {}, numericValue : {}", monomial, vars, numericValue);
+            if (builder.length() != 0 && !ExpressionUtils.isSigned(numericValue)) {
+                builder.append('+');
             }
-            BUILDER.append(MathUtils.breakNumericalFraction(numericValue)).append(vars);
+            builder.append(MathUtils.breakNumericalFraction(numericValue)).append(vars);
         }
-        return BUILDER.toString();
+        if(builder.length() == 0)
+            builder.append(0);
+        LOGGER.debug("Removed the fractions, {} became {}", origin, builder);
+        return builder.toString();
     }
 
     public static String formatForCalculations(String origin) {
@@ -36,9 +46,9 @@ public class FormatterFactory {
     // TODO : remove 1's in front of variables, remove useless brackets
     public static String formatForVisual(String origin) {
         origin = origin
-                .replaceAll("\\((.*?)\\)(\\*@|@)", "sin$1")
-                .replaceAll("\\((.*?)\\)(\\*#|#)", "cos$1")
-                .replaceAll("\\((.*?)\\)(\\*§|§)", "tan$1");
+                .replaceAll("\\((.*?)\\)(\\*@|@)", "sin\\($1\\)")
+                .replaceAll("\\((.*?)\\)(\\*#|#)", "cos\\($1\\)")
+                .replaceAll("\\((.*?)\\)(\\*§|§)", "tan\\($1\\)");
 
         return ExpressionUtils.addMultShortcut(origin);
     }

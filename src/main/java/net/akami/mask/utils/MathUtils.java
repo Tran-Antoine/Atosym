@@ -4,7 +4,6 @@ import net.akami.mask.operation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,7 @@ public class MathUtils {
         return Sum.getInstance().rawOperate(a, b);
     }
     public static String sum(List<String> monomials) {
-        return Sum.getInstance().monomialSum(monomials);
+        return Sum.getInstance().monomialSum(monomials, true);
     }
     public static String subtract(String a, String b) {
         return Subtraction.getInstance().rawOperate(a, b);

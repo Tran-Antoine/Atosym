@@ -8,11 +8,11 @@ public class SumTest {
     @Test
     public void sum() {
         Sum sum = new Sum();
-        //Assertions.assertThat(sum.rawOperate("2", "5")).isEqualTo("7");
-        //Assertions.assertThat(sum.rawOperate("2x", "5")).isEqualTo("2x+5");
-        //Assertions.assertThat(sum.rawOperate("3x", "5x")).isEqualTo("8x");
-        //Assertions.assertThat(sum.rawOperate("x/2", "x/2")).isEqualTo("1.0x");
-        //Assertions.assertThat(sum.rawOperate("1/2", "1/2")).isEqualTo("1");
+        Assertions.assertThat(sum.rawOperate("2", "5")).isEqualTo("7");
+        Assertions.assertThat(sum.rawOperate("2x", "5")).isEqualTo("2x+5");
+        Assertions.assertThat(sum.rawOperate("3x", "5x")).isEqualTo("8x");
+        Assertions.assertThat(sum.rawOperate("x/2", "x/2")).isEqualTo("1.0x");
+        Assertions.assertThat(sum.rawOperate("1/2", "1/2")).isEqualTo("1");
         Assertions.assertThat(sum.rawOperate("x+1", "-1")).isEqualTo("x");
     }
 

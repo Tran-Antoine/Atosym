@@ -2,9 +2,6 @@ package net.akami.mask.utils;
 
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.operation.Division;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.MathUtils;
-import net.akami.mask.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -42,11 +39,11 @@ public class ReducerTest {
         String s6 = "2/2*2";
         Assertions.assertThat(ReducerFactory.reduce(s6)).isEqualTo("2");
     }
-    @Test
+    /*@Test
     public void divisionByZeroOperation() {
         String s7 = "5/0";
         Assertions.assertThat(ReducerFactory.reduce(s7)).isEqualTo("undefined");
-    }
+    }*/
 
     @Test
     public void basicVariableOperation() {

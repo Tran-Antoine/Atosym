@@ -1,8 +1,6 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.operation.Division;
-import net.akami.mask.operation.sign.QuaternaryOperationSign;
-import net.akami.mask.utils.MathUtils;
 import net.akami.mask.operation.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -16,6 +14,13 @@ public class MathUtilsTest {
         Assertions.assertThat(MathUtils.sum("1/2", "y")).isEqualTo("0.5+y");
         Assertions.assertThat(MathUtils.sum("2/5", "y")).isEqualTo("0.4+y");
         //Assertions.assertThat(MathUtils.sum("2y/3", "5/3")).isEqualTo("2y/3+5/3");
+    }
+
+    @Test
+    public void multTest() {
+        Assertions.assertThat(MathUtils.mult("3","x")).isEqualTo("3x");
+        Assertions.assertThat(MathUtils.mult("3x","x")).isEqualTo("3x^2");
+        Assertions.assertThat(MathUtils.mult("x^2+2x+1","x+1")).isEqualTo("x^3+3x^2+3x+1");
     }
 
     @Test
