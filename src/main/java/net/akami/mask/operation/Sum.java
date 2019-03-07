@@ -9,30 +9,76 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class Sum extends BinaryOperationHandler {
 
     private static final Sum INSTANCE = new Sum();
 
     @Override
-    protected String operate(String a, String b) {
+    public String operate(String a, String b) {
         LOGGER.info("Sum process of {} |+| {}: \n", a, b);
         List<String> monomials = ExpressionUtils.toMonomials(a);
         monomials.addAll(ExpressionUtils.toMonomials(b));
-        LOGGER.debug("Monomials : {}", monomials);
-        return monomialSum(monomials, false);
+        LOGGER.info("Monomials : {}", monomials);
+        String result = monomialSum(monomials, false);
+        LOGGER.info("---> Sum result of {} |+| {}: {}", a, b, result);
+        return result;
     }
 
+    /*public String monomialSum(List<String> monomials, boolean needsFormatting) {
+
+        Map<String, Float> parts = new HashMap<>();
+
+        for(String monomial : monomials) {
+            if(monomial == null || monomial.isEmpty()) continue;
+
+            String numericValue = ExpressionUtils.toNumericValue(monomial);
+            String vars = monomial.replaceAll(Pattern.quote(numericValue), "");
+            while (ExpressionUtils.areEdgesBracketsConnected(vars))
+                vars = vars.substring(1, vars.length()-1);
+            numericValue = FormatterFactory.removeFractions(numericValue);
+
+            LOGGER.info("Vars from {} : {}", monomial, vars);
+            if(!parts.containsKey(vars)) {
+                parts.put(vars, Float.parseFloat(numericValue));
+            } else {
+                parts.put(vars, parts.get(vars) + Float.parseFloat(numericValue));
+            }
+        }
+        clearBuilder();
+        LOGGER.info("Map : {}", parts);
+        for(String vars : parts.keySet()) {
+            float numericValue = parts.get(vars);
+            vars = vars.startsWith("+") ? vars.substring(1) : vars;
+            if (numericValue == 0)
+                continue;
+
+            if(numericValue == 1 && !vars.isEmpty()) {
+                BUILDER.append('+').append(vars);
+            } else if(numericValue == -1 && !vars.isEmpty()) {
+                BUILDER.append("-").append(vars);
+            } else if(numericValue < 0) {
+                BUILDER.append(MathUtils.cutSignificantZero(""+numericValue)).append(vars);
+            } else {
+                BUILDER.append('+').append(MathUtils.cutSignificantZero(""+numericValue)).append(vars);
+            }
+        }
+        return BUILDER.toString().substring(1);
+    }*/
     public String monomialSum(List<String> monomials, boolean needsFormatting) {
 
         List<String> finalMonomials = new ArrayList<>();
 
         for (int i = 0; i < monomials.size(); i++) {
             String part = monomials.get(i);
+            LOGGER.info("Analyzing {}", part);
             if (part == null || part.isEmpty())
                 continue;
             fillMonomialList(part, i, monomials, finalMonomials);
         }
+
+        LOGGER.info("Inter step : {} and {}", monomials, finalMonomials);
 
         // All the monomials that couldn't be calculated because their unknown part was unique are eventually added
         finalMonomials.addAll(monomials);
@@ -49,7 +95,7 @@ public class Sum extends BinaryOperationHandler {
         }
         String result = BUILDER.toString();
         result = result.startsWith("+") ? result.substring(1) : result;
-        LOGGER.info("- Result of monomialSum / subtraction : {}", result);
+        LOGGER.debug("- Result of monomialSum / subtraction : {}", result);
         return needsFormatting ? outFormat(result) : result;
     }
 
@@ -71,18 +117,20 @@ public class Sum extends BinaryOperationHandler {
 
             // If the unknown part is similar, we can add them
             if (ExpressionUtils.toVariables(part2).equals(vars)) {
-                LOGGER.info("TO NUMERIC OF {} : {}", part2, ExpressionUtils.toNumericValue(part2));
                 BigDecimal toAdd = new BigDecimal(ExpressionUtils.toNumericValue(part2));
                 if (compatibleParts.containsKey(toAdd)) {
                     LOGGER.debug("Found copy in the map. Doubling the original.");
                     int index = compatibleParts.get(toAdd);
                     compatibleParts.remove(toAdd, index);
                     compatibleParts.put(toAdd.multiply(new BigDecimal("2")), index);
+                    initialMonomials.set(j, null);
+                    LOGGER.info("After copy : {}", compatibleParts);
                 } else {
                     compatibleParts.put(toAdd, j);
                 }
             }
         }
+        LOGGER.info("Part for var {} : {}", vars, compatibleParts);
         replaceMonomialsByResult(monomial, vars, i, compatibleParts, initialMonomials, finalMonomials);
     }
 
@@ -105,6 +153,9 @@ public class Sum extends BinaryOperationHandler {
      */
     private void replaceMonomialsByResult(String initialMonomial, String vars, int index, Map<BigDecimal, Integer> others,
                                           List<String> initialMonomials, List<String> finalMonomials) {
+        LOGGER.debug("Init : {}, Final : {}. Vars : {}", initialMonomial, finalMonomials, vars);
+        while(ExpressionUtils.areEdgesBracketsConnected(initialMonomial))
+            initialMonomial = initialMonomial.substring(1, initialMonomial.length()-1);
         LOGGER.info("Numeric value of {} : {}", initialMonomial, ExpressionUtils.toNumericValue(initialMonomial));
         BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(initialMonomial));
         for (BigDecimal value : others.keySet()) {
@@ -124,11 +175,14 @@ public class Sum extends BinaryOperationHandler {
         } else if(!numericTotal.matches("0\\.0+") && !numericTotal.equals("0")){
             finalMonomials.add(MathUtils.cutSignificantZero(numericTotal + vars));
         }
+        LOGGER.info("Init : {}, Final : {}", initialMonomial, finalMonomials);
     }
 
     @Override
     public String inFormat(String origin) {
-        return FormatterFactory.removeFractions(origin);
+        String result = FormatterFactory.removeFractions(origin);
+        LOGGER.info("{} became {}", origin, result);
+        return result;
     }
 
     @Override

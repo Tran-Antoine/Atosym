@@ -11,7 +11,11 @@ public class FormatterFactory {
     private static final Logger LOGGER = LoggerFactory.getLogger(FormatterFactory.class);
 
     public static String removeFractions(String origin) {
+        if(!origin.contains("/"))
+            return origin;
+
         while(ExpressionUtils.areEdgesBracketsConnected(origin)) {
+            LOGGER.info("{} has connected brackets", origin);
             origin = origin.substring(1, origin.length() - 1);
         }
         if (ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(origin))
@@ -21,8 +25,9 @@ public class FormatterFactory {
         List<String> monomials = ExpressionUtils.toMonomials(origin);
         for (String monomial : monomials) {
             String vars = ExpressionUtils.toVariables(monomial);
+            LOGGER.debug("Vars from {} : {}", origin, vars);
             String numericValue = ExpressionUtils.toNumericValue(monomial);
-            LOGGER.info("Treating {}, vars : {}, numericValue : {}", monomial, vars, numericValue);
+            LOGGER.debug("Treating {}, vars : {}, numericValue : {}", monomial, vars, numericValue);
             if (builder.length() != 0 && !ExpressionUtils.isSigned(numericValue)) {
                 builder.append('+');
             }

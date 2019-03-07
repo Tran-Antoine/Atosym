@@ -38,10 +38,9 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toVariables("x*x")).isEqualTo("x^2");
         Assertions.assertThat(toVariables("xx")).isEqualTo("x^2");
         Assertions.assertThat(toVariables("x^y")).isEqualTo("x^y");
-        Assertions.assertThat(toVariables("x^(y^2)")).isEqualTo("x^y^2");
+        Assertions.assertThat(toVariables("x^(y^2)")).isEqualTo("x^(y^2)");
         Assertions.assertThat(toVariables("1x^1y")).isEqualTo("x^y");
-
-
+        Assertions.assertThat(toVariables("x^2y^2")).isEqualTo("x^2y^2");
     }
 
     @Test

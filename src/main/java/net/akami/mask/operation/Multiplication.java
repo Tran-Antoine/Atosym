@@ -26,7 +26,11 @@ public class Multiplication extends BinaryOperationHandler {
 
         List<String> aMonomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
-
+        for(String part : aMonomials)
+            for(String part2 : bMonomials)
+                LOGGER.info("To perform : {} times {}", part, part2);
+        LOGGER.info("Monomials of a : {}", aMonomials);
+        LOGGER.info("Monomials of b : {}", bMonomials);
         // We can't use the constant BUILDER, because it is cleared repeatedly inside the loop
         StringBuilder builder = new StringBuilder();
 
@@ -44,6 +48,7 @@ public class Multiplication extends BinaryOperationHandler {
             }
         }
         String unReducedResult = builder.toString();
+        LOGGER.info("FINAL RESULT : {}", unReducedResult);
         String finalResult = Sum.getInstance().operate(unReducedResult, "");
         LOGGER.info("- Result of mult {} |*| {} : {}", a, b, finalResult);
         return finalResult;
@@ -62,7 +67,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
-        LOGGER.info("Variables of {} and {} : {}", a, b, originalVars);
+        LOGGER.debug("Variables of {} and {} : {}", a, b, originalVars);
         a = ExpressionUtils.toNumericValue(a);
         b = ExpressionUtils.toNumericValue(b);
 
@@ -74,7 +79,7 @@ public class Multiplication extends BinaryOperationHandler {
                 return originalVars;
             }
         }
-        LOGGER.info("Float result : {}", floatResult);
+        LOGGER.debug("Float result : {}", floatResult);
         return floatResult + originalVars;
     }
 
@@ -91,6 +96,7 @@ public class Multiplication extends BinaryOperationHandler {
 
     @Override
     public String inFormat(String origin) {
+        LOGGER.info("Formatting : {}", origin);
         String result = FormatterFactory.removeFractions(origin);
         LOGGER.info("{} became {}", origin, result);
         return result;

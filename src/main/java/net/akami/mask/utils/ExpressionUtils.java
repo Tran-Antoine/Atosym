@@ -21,6 +21,9 @@ public class ExpressionUtils {
     public static final String TRIGONOMETRY_SHORTCUTS = "@#§";
     public static List<String> toMonomials(String self) {
 
+        while(ExpressionUtils.areEdgesBracketsConnected(self)) {
+            self = self.substring(1, self.length()-1);
+        }
         List<String> monomials = new ArrayList<>();
         int lastIndex = 0;
         for (int i = 0; i < self.length(); i++) {
@@ -126,24 +129,22 @@ public class ExpressionUtils {
     }
 
     public static String toVariables(String exp) {
-        Pattern pattern = Pattern.compile("([a-zA-DF-Z]\\^([a-zA-DF-Z0-9]+|\\(.+\\))|([a-zA-DF-Z]))+");
+        Pattern pattern = Pattern.compile("(([a-zA-DF-Z]\\^(\\(.+\\)|([0-9.]+)|[a-zA-DF-Z]))|[a-zA-DF-Z])+");
         Matcher matcher = pattern.matcher(exp);
         StringBuilder builder = new StringBuilder();
         while(matcher.find())
             builder.append(matcher.group());
         String result = builder.toString();
         builder.delete(0, builder.length());
-        LOGGER.info("Result after removing the non required numbers from {} : {}", exp, result);
         Map<Character, String> variables = new HashMap<>();
         for(char var : toVariablesType(result).toCharArray()) {
             variables.put(var, "0");
         }
-        // TODO : fix the problem : x^3x becomes x^3*x instead of x^(3*x) AND x^10 gives x
         for(int i = 0; i < result.length(); i++) {
             char c = result.charAt(i);
             if(i!=0 && VARIABLES.contains(String.valueOf(c))) {
                 String before = String.valueOf(result.charAt(i-1));
-                if(NUMBERS.contains(before) || VARIABLES.contains(before)) {
+                if((NUMBERS.contains(before) || VARIABLES.contains(before)) && !before.equals("1")) {
                     builder.append("*").append(c);
                 } else {
                     builder.append(c);
@@ -153,7 +154,7 @@ public class ExpressionUtils {
             }
         }
         result = builder.toString();
-        LOGGER.info("After rewriting result : {}", result);
+        LOGGER.debug("After rewriting result from {} : {}", exp, result);
         builder.delete(0, builder.length());
 
         for(int i = 0; i < result.length(); i++) {
@@ -161,9 +162,11 @@ public class ExpressionUtils {
             if(variables.containsKey(c)) {
                 LOGGER.debug("Char {} at index {} in {} is a var", c, i, result);
                 if(i == result.length()-1 || result.charAt(i+1) != '^') {
-                    //LOGGER.info("char {} at index {} of {} isn't followed by '^'", c, i, result);
-                    variables.put(c, MathUtils.sum(variables.get(c), "1"));
-                    LOGGER.info("Exponent of {} is now {}", c, variables.get(c));
+                    String sumResult = MathUtils.sum(variables.get(c), "1");
+                    sumResult = sumResult.matches("[\\da-zA-Z.]+") ? sumResult : "(" + sumResult + ")";
+                    LOGGER.debug("Sum result of {} and 1 : {}", variables.get(c), sumResult);
+                    variables.put(c, sumResult);
+                    LOGGER.debug("Exponent of {} is now {}", c, variables.get(c));
                 } else {
                     String cutPart = result.substring(i+2);
                     Pattern cutPattern = Pattern.compile("([a-zA-DF-Z0-9]+)|\\(.+\\)");
@@ -172,11 +175,14 @@ public class ExpressionUtils {
                     if(cutMatcher.find())
                         group = cutMatcher.group();
 
-                    LOGGER.info("Group after {} is : {}", c, group);
-                    LOGGER.info("--> Result was previously {}", result);
+                    LOGGER.debug("Group after {} is : {}", c, group);
+                    LOGGER.debug("--> Result was previously {}", result);
                     result = result.replaceFirst(Pattern.quote(group), group.replaceAll(".", "_"));
-                    LOGGER.info("--> Result is now : {}", result);
-                    variables.put(c, MathUtils.sum(variables.get(c), group));
+                    LOGGER.debug("--> Result is now : {}", result);
+                    String sumResult = MathUtils.sum(variables.get(c), group);
+                    sumResult = sumResult.matches("[\\da-zA-Z.]+") ? sumResult : "(" + sumResult + ")";
+                    variables.put(c, sumResult);
+                    LOGGER.debug("Variables state : {}", variables);
                 }
             }
         }
@@ -441,7 +447,7 @@ public class ExpressionUtils {
         }
         elements.addAll(decomposedElements);
         elements = elements.stream().filter(x -> x!= null && !x.equals("1.0")).collect(Collectors.toList());
-        LOGGER.info("Elements of {} : {}", exp, elements);
+        LOGGER.debug("Elements of {} : {}", exp, elements);
         return elements;
     }
     public static List<String> decomposeNumber(float self) {

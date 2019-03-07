@@ -5,11 +5,19 @@ import net.akami.mask.operation.sign.QuaternaryOperationSign.QuaternaryMathOpera
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MathUtilsTest {
 
     @Test
     public void sumTest() {
-
+        List<String> monomials = Arrays.asList("2xyz", "2xyz", "2xyz");
+        Assertions.assertThat(MathUtils.sum(monomials)).isEqualTo("6xyz");
+        Assertions.assertThat(MathUtils.sum("(y^2+y)", "0")).isEqualTo("y^2+y");
+        Assertions.assertThat(MathUtils.sum("y^2", "y")).isEqualTo("y^2+y");
+        Assertions.assertThat(MathUtils.sum("2xyz+2xyz+2xyz", "")).isEqualTo("6xyz");
+        Assertions.assertThat(MathUtils.sum("1", "5x^2y")).isEqualTo("1+5x^2y");
         Assertions.assertThat(MathUtils.sum("0.4", "y")).isEqualTo("0.4+y");
         Assertions.assertThat(MathUtils.sum("1/2", "y")).isEqualTo("0.5+y");
         Assertions.assertThat(MathUtils.sum("2/5", "y")).isEqualTo("0.4+y");
@@ -18,9 +26,15 @@ public class MathUtilsTest {
 
     @Test
     public void multTest() {
+        Assertions.assertThat(MathUtils.mult("x^(y^2)","x^y")).isEqualTo("x^(y^2+y)");
+        Assertions.assertThat(MathUtils.mult("x^2+2xy+2xz+y^2+2yz+z^2", "x+y+z")).isEqualTo("x^3+3x^2y+3x^2z+3xy^2+6xyz+3xz^2+y^3+3y^2z+3yz^2+z^3");
         Assertions.assertThat(MathUtils.mult("3","x")).isEqualTo("3x");
         Assertions.assertThat(MathUtils.mult("3x","x")).isEqualTo("3x^2");
         Assertions.assertThat(MathUtils.mult("x^2+2x+1","x+1")).isEqualTo("x^3+3x^2+3x+1");
+        Assertions.assertThat(MathUtils.mult("xy^2","x")).isEqualTo("x^2y^2");
+        Assertions.assertThat(MathUtils.mult("3x^2y+3xy^2+y^3","x+y")).isEqualTo("3x^3y+6x^2y^2+4xy^3+y^4");
+        Assertions.assertThat(MathUtils.mult("2xz+y^2", "x+y")).isEqualTo("2x^2z+2xyz+xy^2+y^3");
+        Assertions.assertThat(MathUtils.mult("2xz+y^2", "x+y+z")).isEqualTo("2x^2z+2xyz+2xz^2+xy^2+y^3+y^2z");
     }
 
     @Test

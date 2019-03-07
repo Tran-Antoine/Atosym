@@ -10,6 +10,7 @@ public class MainTester {
 
     public static void main(String... args) {
 
+        System.out.println(new Scanner(System.in).nextLine().replaceAll("\\s", ""));
         //System.out.println("...............................");
         //System.out.println(MathUtils.monomialSum("x^10", ""));
         //System.out.println(MathUtils.highPow("x+1", "3"));
