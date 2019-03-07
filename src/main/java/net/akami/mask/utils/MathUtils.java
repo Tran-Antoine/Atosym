@@ -46,7 +46,9 @@ public class MathUtils {
         return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
     }
     public static String diffPow(String a, String altA, String b, String altB) {
-        return "("+mult(b, a)+")^("+ subtract(b, "1")+")";
+        String subtractResult = subtract(b, "1");
+        subtractResult = subtractResult.equals("1") ? "" : "^("+subtractResult+")";
+        return "("+mult(b, a)+")"+subtractResult;
     }
 
     public static String breakNumericalFraction(String self) {

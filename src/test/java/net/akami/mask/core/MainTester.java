@@ -10,13 +10,9 @@ public class MainTester {
 
     public static void main(String... args) {
 
-        System.out.println(new Scanner(System.in).nextLine().replaceAll("\\s", ""));
         //System.out.println("...............................");
         //System.out.println(MathUtils.monomialSum("x^10", ""));
         //System.out.println(MathUtils.highPow("x+1", "3"));
-        MaskExpression curve = new MaskExpression("b");
-        System.out.println(curve.getVariablesAmount());
-        MaskOperator operator = MaskOperator.begin(curve);
         //operator.imageFor(MaskExpression.TEMP, false, res -> System.out.println(operator.asInt(res)), "1");
 
         //System.out.println(MathUtils.simpleMult("5*x", "6*x"));

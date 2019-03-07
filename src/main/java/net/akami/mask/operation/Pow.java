@@ -10,7 +10,7 @@ public class Pow extends BinaryOperationHandler {
 
     @Override
     public String operate(String a, String b) {
-        LOGGER.debug("Pow operation process between {} and {} : \n", a, b);
+        LOGGER.info("Pow operation process between {} and {} : \n", a, b);
 
         String aVars = ExpressionUtils.toVariables(a);
         String bVars = ExpressionUtils.toVariables(b);
@@ -23,9 +23,12 @@ public class Pow extends BinaryOperationHandler {
         }
         float powValue;
         // If pow value is too high, there is no point in developing the entire expression
-        if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199) {
+        if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199 ||
+                (aVars.length() != 0 && powValue % 1 != 0)) {
             LOGGER.info("Pow value contains variables or pow value is greater than 199. Returns a^b");
-            return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
+            a = ExpressionUtils.isReduced(a) ? a : "(" + a + ")";
+            b = ExpressionUtils.isReduced(b) ? b : "(" + b + ")";
+            return a + "^" + b;
         }
 
         clearBuilder();

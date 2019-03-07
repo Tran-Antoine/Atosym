@@ -360,6 +360,8 @@ public class ExpressionUtils {
             } else if(i != 0 && c.equals("(") &&
                     (self.charAt(i-1) == ')' || !MATH_SIGNS.contains(String.valueOf(self.charAt(i-1))))) {
                 BUILDER.append("*").append(c);
+            } else if(i!= 0 && self.charAt(i-1) == ')' && !MATH_SIGNS.contains(String.valueOf(c))) {
+                BUILDER.append("*").append(c);
             } else {
                 BUILDER.append(c);
             }

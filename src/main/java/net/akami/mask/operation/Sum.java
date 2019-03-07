@@ -117,6 +117,7 @@ public class Sum extends BinaryOperationHandler {
 
             // If the unknown part is similar, we can add them
             if (ExpressionUtils.toVariables(part2).equals(vars)) {
+                LOGGER.error("Numeric value of {} : {}", part2, ExpressionUtils.toNumericValue(part2));
                 BigDecimal toAdd = new BigDecimal(ExpressionUtils.toNumericValue(part2));
                 if (compatibleParts.containsKey(toAdd)) {
                     LOGGER.debug("Found copy in the map. Doubling the original.");
