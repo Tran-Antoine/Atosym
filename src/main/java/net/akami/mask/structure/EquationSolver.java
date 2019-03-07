@@ -146,12 +146,11 @@ public class EquationSolver {
             for(char localVar : localVars.toCharArray()) {
                 String replacement = solutions.get(localVar);
 
-                // If x = y and we look for transforming y, we don't want to replace x by y...
-                // TODO : condition should be !replacement.isASimpleMultOfAAndX
-                if(!replacement.equals(String.valueOf(var))) {
-                    presentSolutions[j++] = replacement;
+                // If we are analyzing y, we don't want it to be replaced
+                if(localVar == var) {
+                    presentSolutions[j++] = localVars;
                 } else {
-                    presentSolutions[j++] = String.valueOf(localVar);
+                    presentSolutions[j++] = replacement;
                 }
             }
             LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, presentSolutions);

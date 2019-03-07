@@ -53,6 +53,12 @@ public class EquationTest {
 
     @Test
     public void twoUnknownTwoLinesTest() {
+
+        List<BiMask> test = EquationSolver.build("x=y", "x+y=2");
+        Map<Character, String> testSolved = EquationSolver.solve(test);
+        Assertions.assertThat(testSolved.get('x')).isEqualTo("1");
+        Assertions.assertThat(testSolved.get('y')).isEqualTo("1");
+
         BiMask b1 = new BiMask(new MaskExpression("3x+2y"), new MaskExpression("7x"));
         BiMask b2 = new BiMask(new MaskExpression("6x"), new MaskExpression("3y"));
 
