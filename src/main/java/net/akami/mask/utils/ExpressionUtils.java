@@ -443,12 +443,31 @@ public class ExpressionUtils {
                 decomposedElements.addAll(decomposedLocal);
             } else {
                 LOGGER.debug("{} is not a number", element);
+                if(element.length() > 2 && element.charAt(1) == '^') {
+                    decomposePoweredVariable(element, i, elements, decomposedElements);
+                }
             }
         }
         elements.addAll(decomposedElements);
         elements = elements.stream().filter(x -> x!= null && !x.equals("1.0")).collect(Collectors.toList());
         LOGGER.debug("Elements of {} : {}", exp, elements);
         return elements;
+    }
+
+    private static void decomposePoweredVariable(String origin, int i, List<String> in, List<String> out) {
+        String exponent = origin.substring(2);
+        while(ExpressionUtils.areEdgesBracketsConnected(exponent))
+            exponent = exponent.substring(1, exponent.length()-1);
+        if(ExpressionUtils.isANumber(exponent)) {
+            float exponentValue = Float.parseFloat(exponent);
+            if(exponentValue % 1 != 0)
+                return;
+
+            in.set(i, null);
+            for(int j = 0; j < exponentValue; j++) {
+                out.add(String.valueOf(origin.charAt(0)));
+            }
+        }
     }
     public static List<String> decomposeNumber(float self) {
         LOGGER.info("Now decomposing float {}", self);

@@ -58,6 +58,8 @@ public class Division extends BinaryOperationHandler {
 
                 divideTwoFactors(numFactor, denFactor, i, j, numFactors, denFactors);
                 numFactor = numFactors.get(i);
+                if(numFactor == null)
+                    break;
             }
         }
         LOGGER.info("Simple division proceeded. NumFactors : {}, DenFactors : {}", numFactors, denFactors);
@@ -72,7 +74,6 @@ public class Division extends BinaryOperationHandler {
 
     private void divideTwoFactors(String numFactor, String denFactor, int i, int j,
                                          List<String> numFactors, List<String> denFactors) {
-        String[] result = new String[2];
         if (ExpressionUtils.isANumber(numFactor) && ExpressionUtils.isANumber(denFactor)) {
             LOGGER.info("{} and {} are numbers. Dividing them", numFactor, denFactor);
             proceedForNumericalDivision(numFactor, denFactor, i, j, numFactors, denFactors);

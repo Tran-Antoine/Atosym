@@ -14,7 +14,8 @@ public class MainTester {
         //System.out.println("...............................");
         //System.out.println(MathUtils.monomialSum("x^10", ""));
         //System.out.println(MathUtils.highPow("x+1", "3"));
-        MaskExpression curve = new MaskExpression("4x^2 + 5x + 6");
+        MaskExpression curve = new MaskExpression("b");
+        System.out.println(curve.getVariablesAmount());
         MaskOperator operator = MaskOperator.begin(curve);
         //operator.imageFor(MaskExpression.TEMP, false, res -> System.out.println(operator.asInt(res)), "1");
 
