@@ -24,7 +24,7 @@ public class EquationSolver {
         return biMasks;
     }
 
-    public static String[] solve(List<BiMask> biMasks) {
+    public static Map<Character, String> solve(List<BiMask> biMasks) {
         MaskOperator op = MaskOperator.begin();
         for(BiMask biMask : biMasks) {
             op.reduce(biMask.left, biMask.left).reduce(biMask.right, biMask.right);
@@ -56,7 +56,7 @@ public class EquationSolver {
                 }
             }
         }
-        return solutions.values().toArray(new String[0]);
+        return solutions;
     }
 
     /**
