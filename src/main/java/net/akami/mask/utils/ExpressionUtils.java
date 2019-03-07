@@ -169,16 +169,16 @@ public class ExpressionUtils {
                     LOGGER.debug("Exponent of {} is now {}", c, variables.get(c));
                 } else {
                     String cutPart = result.substring(i+2);
-                    Pattern cutPattern = Pattern.compile("([a-zA-DF-Z0-9]+)|\\(.+\\)");
+                    Pattern cutPattern = Pattern.compile("(1[a-zA-DF-Z])|([a-zA-DF-Z])|([0-9]+)|\\(.+\\)");
                     Matcher cutMatcher = cutPattern.matcher(cutPart);
                     String group = null;
                     if(cutMatcher.find())
                         group = cutMatcher.group();
 
-                    LOGGER.debug("Group after {} is : {}", c, group);
-                    LOGGER.debug("--> Result was previously {}", result);
+                    LOGGER.error("Group after {} is : {}", c, group);
+                    LOGGER.error("--> Result was previously {}", result);
                     result = result.replaceFirst(Pattern.quote(group), group.replaceAll(".", "_"));
-                    LOGGER.debug("--> Result is now : {}", result);
+                    LOGGER.error("--> Result is now : {}", result);
                     String sumResult = MathUtils.sum(variables.get(c), group);
                     sumResult = sumResult.matches("[\\da-zA-Z.]+") ? sumResult : "(" + sumResult + ")";
                     variables.put(c, sumResult);
@@ -597,7 +597,9 @@ public class ExpressionUtils {
         if(exp.isEmpty())
             return "0";
         exp = ExpressionUtils.addMultShortcut(exp)
+                // deletes trigonometry stuff
                 .replaceAll("\\(.+\\)([@#§])", "")
+                // deletes variables + their pow value
                 .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
                 .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")
                 .replaceAll("\\s", "");

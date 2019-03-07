@@ -26,6 +26,8 @@ public class MathUtilsTest {
 
     @Test
     public void multTest() {
+        Assertions.assertThat(MathUtils.mult("x^11","x")).isEqualTo("x^12");
+        Assertions.assertThat(MathUtils.mult("x^11","x+2")).isEqualTo("x^12+2x^11");
         Assertions.assertThat(MathUtils.mult("x^(y^2)","x^y")).isEqualTo("x^(y^2+y)");
         Assertions.assertThat(MathUtils.mult("x^2+2xy+2xz+y^2+2yz+z^2", "x+y+z")).isEqualTo("x^3+3x^2y+3x^2z+3xy^2+6xyz+3xz^2+y^3+3y^2z+3yz^2+z^3");
         Assertions.assertThat(MathUtils.mult("3","x")).isEqualTo("3x");

@@ -28,17 +28,17 @@ public class Multiplication extends BinaryOperationHandler {
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
         for(String part : aMonomials)
             for(String part2 : bMonomials)
-                LOGGER.info("To perform : {} times {}", part, part2);
-        LOGGER.info("Monomials of a : {}", aMonomials);
-        LOGGER.info("Monomials of b : {}", bMonomials);
+                LOGGER.error("To perform : {} times {}", part, part2);
+        LOGGER.error("Monomials of a : {}", aMonomials);
+        LOGGER.error("Monomials of b : {}", bMonomials);
         // We can't use the constant BUILDER, because it is cleared repeatedly inside the loop
         StringBuilder builder = new StringBuilder();
 
         for (String part : aMonomials) {
             for (String part2 : bMonomials) {
-                LOGGER.debug("Treating simple mult : {} |*| {}", part, part2);
+                LOGGER.error("Treating simple mult : {} |*| {}", part, part2);
                 String result = simpleMult(part, part2);
-                LOGGER.info("Result of simple mult between {} and {} : {}", part, part2, result);
+                LOGGER.error("Result of simple mult between {} and {} : {}", part, part2, result);
                 boolean first = part.equals(aMonomials.get(0)) && part2.equals(bMonomials.get(0));
                 if (result.startsWith("+") || result.startsWith("-") || first) {
                     builder.append(result);
@@ -50,7 +50,7 @@ public class Multiplication extends BinaryOperationHandler {
         String unReducedResult = builder.toString();
         LOGGER.info("FINAL RESULT : {}", unReducedResult);
         String finalResult = Sum.getInstance().operate(unReducedResult, "");
-        LOGGER.info("- Result of mult {} |*| {} : {}", a, b, finalResult);
+        LOGGER.error("- Result of mult {} |*| {} : {}", a, b, finalResult);
         return finalResult;
     }
 
@@ -67,13 +67,13 @@ public class Multiplication extends BinaryOperationHandler {
 
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
-        LOGGER.debug("Variables of {} and {} : {}", a, b, originalVars);
+        LOGGER.error("Variables of {} and {} : {}", a, b, originalVars);
         a = ExpressionUtils.toNumericValue(a);
         b = ExpressionUtils.toNumericValue(b);
 
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
-        String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, MathContext.DECIMAL64).toString());
+        String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, MathContext.DECIMAL128).toString());
         if (MathUtils.roundPeriodicSeries(floatResult).equals("1")) {
             if (!originalVars.isEmpty()) {
                 return originalVars;

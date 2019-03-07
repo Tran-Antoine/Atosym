@@ -9,6 +9,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void numericValueOfTest() {
+        Assertions.assertThat(toNumericValue("5.123E10x")).isEqualTo("5.123E10");
         Assertions.assertThat(toNumericValue("5x")).isEqualTo("5");
         Assertions.assertThat(toNumericValue("0.3xyz")).isEqualTo("0.3");
         Assertions.assertThat(toNumericValue("x^2")).isEqualTo("1");
@@ -33,6 +34,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void toVariablesTest() {
+        Assertions.assertThat(toVariables("x^11x")).isEqualTo("x^12");
         Assertions.assertThat(toVariables("5x^2y")).isEqualTo("x^2y");
         Assertions.assertThat(toVariables("2x")).isEqualTo("x");
         Assertions.assertThat(toVariables("x*x")).isEqualTo("x^2");
