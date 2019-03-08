@@ -33,6 +33,11 @@ public class ExpressionUtilsTest {
     }
 
     @Test
+    public void cancelMultShortcutTest() {
+        System.out.println(ExpressionUtils.cancelMultShortcut("3x*(4x^2-3x) + 3/4"));
+    }
+
+    @Test
     public void toVariablesTest() {
         Assertions.assertThat(toVariables("x^11x")).isEqualTo("x^12");
         Assertions.assertThat(toVariables("5x^2y")).isEqualTo("x^2y");

@@ -203,6 +203,7 @@ public class ExpressionUtils {
     }
 
     public static String cancelMultShortcut(String self) {
+        self = self.replaceAll("\\s", "");
         clearBuilder();
 
         for(int i = 0; i < self.length(); i++) {
@@ -210,7 +211,7 @@ public class ExpressionUtils {
             boolean varOrTrigo = ExpressionUtils.VARIABLES.contains(c) || ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(c);
 
             if(varOrTrigo && i!= 0 && !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i-1)))) {
-                    BUILDER.append("*").append(c);
+                BUILDER.append("*").append(c);
             } else if(i != 0 && c.equals("(") &&
                     (self.charAt(i-1) == ')' || !MATH_SIGNS.contains(String.valueOf(self.charAt(i-1))))) {
                 BUILDER.append("*").append(c);
@@ -219,7 +220,9 @@ public class ExpressionUtils {
             } else {
                 BUILDER.append(c);
             }
+            System.out.println(BUILDER);
         }
+        System.out.println("Converted : "+self+" to "+BUILDER.toString());
         return BUILDER.toString();
     }
 
