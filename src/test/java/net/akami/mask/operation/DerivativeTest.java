@@ -11,8 +11,8 @@ public class DerivativeTest {
         Assertions.assertThat(Derivative.differentiateElement("a")).isEqualTo("1");
         Assertions.assertThat(Derivative.differentiateElement("3")).isEqualTo("0");
         Assertions.assertThat(Derivative.differentiateElement("-1324")).isEqualTo("0");
-        Assertions.assertThat(Derivative.differentiateElement("x^2")).isEqualTo("(2x)");
-        Assertions.assertThat(Derivative.differentiateElement("x^(y+1)")).isEqualTo("(xy+x)^(y)");
+        Assertions.assertThat(Derivative.differentiateElement("x^2")).isEqualTo("2*x");
+        Assertions.assertThat(Derivative.differentiateElement("x^(y+1)")).isEqualTo("(y+1)*x^(y)");
 
     }
 }

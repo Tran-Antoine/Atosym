@@ -9,6 +9,9 @@ import net.akami.mask.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Does not work yet
+ */
 public class Derivative {
 
     private static final Derivative INSTANCE = new Derivative();

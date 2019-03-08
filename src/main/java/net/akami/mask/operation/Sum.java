@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class Sum extends BinaryOperationHandler {
 
@@ -90,7 +89,7 @@ public class Sum extends BinaryOperationHandler {
             if (rest.startsWith("+") || rest.startsWith("-")) {
                 BUILDER.append(rest);
             } else {
-                BUILDER.append("+" + rest);
+                BUILDER.append('+').append(rest);
             }
         }
         String result = BUILDER.toString();
@@ -145,12 +144,6 @@ public class Sum extends BinaryOperationHandler {
      * 2x + 2x + 3x
      * -> Compatible unknown part : x. Hence, initialMonomial is 2x, others contains 2x and 3x, it removes
      * the three monomials to the initial list, and adds 7x to the final list
-     * @param initialMonomial
-     * @param vars
-     * @param index
-     * @param others
-     * @param initialMonomials
-     * @param finalMonomials
      */
     private void replaceMonomialsByResult(String initialMonomial, String vars, int index, Map<BigDecimal, Integer> others,
                                           List<String> initialMonomials, List<String> finalMonomials) {

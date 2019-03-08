@@ -1,7 +1,5 @@
 package net.akami.mask.core;
 
-import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Scanner;
@@ -10,21 +8,6 @@ public class MainTester {
 
     public static void main(String... args) {
 
-        //System.out.println("...............................");
-        //System.out.println(MathUtils.monomialSum("x^10", ""));
-        //System.out.println(MathUtils.highPow("x+1", "3"));
-        //operator.imageFor(MaskExpression.TEMP, false, res -> System.out.println(operator.asInt(res)), "1");
-
-        //System.out.println(MathUtils.simpleMult("5*x", "6*x"));
-        //System.out.println(MathUtils.pow("x+y+3", "3"));
-        //System.out.println(ReducerFactory.reduce("(x+y+3)^3"));
-        //System.out.println(MathUtils.pow("x+1", "2"));
-        //MaskExpression exp = new MaskExpression("3x^2 + 6xy + 3");
-        //System.out.println(MaskOperator.begin().differentiate(exp, MaskExpression.TEMP, 'x',true).asExpression());
-
-        //System.out.println(MathUtils.monomialSum("xx", "x^2"));
-        //MaskExpression exp = new MaskExpression("5x + 3y");
-        //System.out.println(MaskOperator.begin(exp).differentiate('y').asExpression());
         Scanner sc = new Scanner(System.in);
         String expression;
 
@@ -36,17 +19,5 @@ public class MainTester {
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");
         }
-
-        //System.out.println(MathUtils.monomialSum(Arrays.asList("5", "-4", "-x", "3y", "4x")));
-        //System.out.println(MathUtils.subtract("5x", "3+x+2"));
-        //System.out.println(ReducerFactory.reduce("5+2"));
-        //System.out.println(ReducerFactory.reduce("3*((x+2y)*2 - 8z)"));
-        //System.out.println(ReducerFactory.reduce("((1+2)*3)*4"));
-        //System.out.println(ReducerFactory.reduce("(5x+4x)*7y"));
-        //System.out.println(ReducerFactory.reduce("(5x+3y)*3"));
-        //System.out.println(ReducerFactory.reduce("5x*y"));
-        //for(int i = 0; i<5000; i++)
-        //System.out.println(ReducerFactory.reduce("((2+7)^(23-19)-((3+9)*10))^3"));
-        //System.out.println(MathUtils.mult("5x+3y+8z+9w", "2x+3y+12z+4w"));
     }
 }

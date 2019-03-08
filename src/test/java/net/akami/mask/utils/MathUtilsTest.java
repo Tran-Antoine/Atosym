@@ -72,7 +72,7 @@ public class MathUtilsTest {
     @Test
     public void diffPowTest() {
         QuaternaryMathOperation sum = MathUtils::diffPow;
-        Assertions.assertThat(sum.compute("3x", "3", "3", "0")).isEqualTo("(9x)^(2)");
-        Assertions.assertThat(sum.compute("-5x", "-5", "x+1", "1")).isEqualTo("(-5x^2-5x)^(x)");
+        Assertions.assertThat(sum.compute("3x", "3", "3", "0")).isEqualTo("3*3x^(2)");
+        Assertions.assertThat(sum.compute("-5x", "-5", "x+1", "1")).isEqualTo("(x+1)*-5x^(x)");
     }
 }

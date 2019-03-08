@@ -7,7 +7,6 @@ import java.util.List;
 
 public class FormatterFactory {
 
-    private static final StringBuilder BUILDER = new StringBuilder();
     private static final Logger LOGGER = LoggerFactory.getLogger(FormatterFactory.class);
 
     public static String removeFractions(String origin) {
@@ -56,9 +55,5 @@ public class FormatterFactory {
                 .replaceAll("\\((.*?)\\)(\\*§|§)", "tan\\($1\\)");
 
         return ExpressionUtils.addMultShortcut(origin);
-    }
-
-    private static void clearBuilder() {
-        BUILDER.delete(0, BUILDER.length());
     }
 }

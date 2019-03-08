@@ -48,7 +48,8 @@ public class MathUtils {
     public static String diffPow(String a, String altA, String b, String altB) {
         String subtractResult = subtract(b, "1");
         subtractResult = subtractResult.equals("1") ? "" : "^("+subtractResult+")";
-        return "("+mult(b, a)+")"+subtractResult;
+        b = ExpressionUtils.isReduced(b) || ExpressionUtils.areEdgesBracketsConnected(b) ? b+"*" : "("+b+")*";
+        return b+a+subtractResult;
     }
 
     public static String breakNumericalFraction(String self) {
