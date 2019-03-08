@@ -3,6 +3,7 @@ package net.akami.mask.operation;
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
@@ -95,8 +96,11 @@ public class MaskOperator {
         String toReplace = in.getExpression();
         for (int i = 0; i < values.length; i++) {
             char var = in.getVariables()[i];
+            System.out.println("Treating var : "+var);
             toReplace = replace(var, values[i], toReplace);
         }
+        System.out.println("Before : "+toReplace);
+        System.out.println("Result : "+ReducerFactory.reduce(toReplace));
         out.reload(ReducerFactory.reduce(toReplace));
         if(setToOut) {
             this.mask = out;

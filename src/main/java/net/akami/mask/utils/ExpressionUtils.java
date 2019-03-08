@@ -246,7 +246,7 @@ public class ExpressionUtils {
         return toVariablesType(BUILDER.toString());
     }
     public static String toVariablesType(String self) {
-        String letters = self.replaceAll("[\\d.+\\-*/^()]+", "");
+        String letters = self.replaceAll("[\\d.+\\-*/^()@#§]+", "");
         Set<String> chars = new HashSet<>();
         for(char c : letters.toCharArray()) {
             chars.add(String.valueOf(c));

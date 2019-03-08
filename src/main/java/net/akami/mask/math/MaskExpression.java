@@ -3,6 +3,7 @@ package net.akami.mask.math;
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 
 /**
  * MaskExpression is the core object of the mask library. It handles a String, which corresponds to the expression,
@@ -75,7 +76,9 @@ public class MaskExpression {
             this.expression = "undefined";
             this.variables = new char[]{};
         } else {
-            this.expression = newExp.replaceAll("\\s", "");
+            this.expression = FormatterFactory.formatTrigonometry(ExpressionUtils.cancelMultShortcut(newExp.replaceAll("\\s", "")));
+            this.expression = ExpressionUtils.addMultShortcut(this.expression);
+            System.out.println("Expression found : "+this.expression);
             checkExpressionValidity();
             this.variables = createVariables();
         }

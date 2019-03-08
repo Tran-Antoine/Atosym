@@ -39,7 +39,12 @@ public class FormatterFactory {
     }
 
     public static String formatForCalculations(String origin) {
-        origin = ExpressionUtils.cancelMultShortcut(origin)
+        origin = formatTrigonometry(ExpressionUtils.cancelMultShortcut(origin));
+        return origin;
+    }
+
+    public static String formatTrigonometry(String origin) {
+        origin = origin
                 .replaceAll("\\s", "")
                 .replaceAll("s\\*i\\*n\\*\\((.*?)\\)", "\\(\\($1\\)\\*@\\)")
                 .replaceAll("c\\*o\\*s\\*\\((.*?)\\)", "\\(\\($1\\)\\*#\\)")
