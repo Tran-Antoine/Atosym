@@ -26,6 +26,7 @@ public class MathUtilsTest {
 
     @Test
     public void multTest() {
+        Assertions.assertThat(FormatterFactory.formatForVisual(MathUtils.mult("5","((x)#)"))).isEqualTo("5cos(x)");
         Assertions.assertThat(MathUtils.mult("x^11","x")).isEqualTo("x^12");
         Assertions.assertThat(MathUtils.mult("x^11","x+2")).isEqualTo("x^12+2x^11");
         Assertions.assertThat(MathUtils.mult("x^(y^2)","x^y")).isEqualTo("x^(y^2+y)");
@@ -53,26 +54,26 @@ public class MathUtilsTest {
     }
     @Test
     public void diffSubtractTest() {
-        QuaternaryMathOperation sum = MathUtils::diffSubtract;
-        Assertions.assertThat(sum.compute("5x", "5", "x^2", "2x")).isEqualTo("5-2x");
-        Assertions.assertThat(sum.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("-5-6x");
+        QuaternaryMathOperation sub = MathUtils::diffSubtract;
+        Assertions.assertThat(sub.compute("5x", "5", "x^2", "2x")).isEqualTo("5-2x");
+        Assertions.assertThat(sub.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("-5-6x");
     }
     @Test
     public void diffMultTest() {
-        QuaternaryMathOperation sum = MathUtils::diffMult;
-        Assertions.assertThat(sum.compute("5x", "5", "x^2", "2x")).isEqualTo("15x^2");
-        Assertions.assertThat(sum.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("-45x^2");
+        QuaternaryMathOperation mult = MathUtils::diffMult;
+        Assertions.assertThat(mult.compute("5x", "5", "x^2", "2x")).isEqualTo("15x^2");
+        Assertions.assertThat(mult.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("-45x^2");
     }
     @Test
     public void diffDivideTest() {
-        QuaternaryMathOperation sum = MathUtils::diffDivide;
-        Assertions.assertThat(sum.compute("5x", "5", "x^2", "2x")).isEqualTo("(-5x^2)/(x^2)^2");
-        Assertions.assertThat(sum.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("(15x^2)/(3x^2)^2");
+        QuaternaryMathOperation div = MathUtils::diffDivide;
+        Assertions.assertThat(div.compute("5x", "5", "x^2", "2x")).isEqualTo("(-5x^2)/(x^2)^2");
+        Assertions.assertThat(div.compute("-5x", "-5", "3x^2", "6x")).isEqualTo("(15x^2)/(3x^2)^2");
     }
     @Test
     public void diffPowTest() {
-        QuaternaryMathOperation sum = MathUtils::diffPow;
-        Assertions.assertThat(sum.compute("3x", "3", "3", "0")).isEqualTo("3*3x^(2)");
-        Assertions.assertThat(sum.compute("-5x", "-5", "x+1", "1")).isEqualTo("(x+1)*-5x^(x)");
+        QuaternaryMathOperation pow = MathUtils::diffPow;
+        Assertions.assertThat(pow.compute("3x", "3", "3", "0")).isEqualTo("3*3x^(2)");
+        Assertions.assertThat(pow.compute("-5x", "-5", "x+1", "1")).isEqualTo("(x+1)*-5x^(x)");
     }
 }

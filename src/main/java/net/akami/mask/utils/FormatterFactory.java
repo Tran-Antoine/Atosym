@@ -55,9 +55,9 @@ public class FormatterFactory {
     // TODO : remove 1's in front of variables, remove useless brackets
     public static String formatForVisual(String origin) {
         origin = origin
-                .replaceAll("\\((.*?)\\)(\\*@|@)", "sin\\($1\\)")
-                .replaceAll("\\((.*?)\\)(\\*#|#)", "cos\\($1\\)")
-                .replaceAll("\\((.*?)\\)(\\*§|§)", "tan\\($1\\)");
+                .replaceAll("\\(\\((.*?)\\)(\\*@|@)\\)", "sin\\($1\\)")
+                .replaceAll("\\(\\((.*?)\\)(\\*#|#)\\)", "cos\\($1\\)")
+                .replaceAll("\\(\\((.*?)\\)(\\*§|§)\\)", "tan\\($1\\)");
 
         return ExpressionUtils.addMultShortcut(origin);
     }

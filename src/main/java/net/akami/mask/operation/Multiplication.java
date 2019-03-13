@@ -11,12 +11,13 @@ import java.util.List;
 public class Multiplication extends BinaryOperationHandler {
 
     private static final Multiplication INSTANCE = new Multiplication();
-
+    private static final MathContext CONTEXT = new MathContext(100);
     @Override
     protected String operate(String a, String b) {
 
         LOGGER.error("Operating mult {} * {}", a, b);
-        if(b.length() == 1 && ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(b)) {
+        // Means we want to calculate the sin/cos/tan value of 'a'
+        if(ExpressionUtils.isTrigoShortcut(b)) {
             LOGGER.info("Trigonometry calculation with {} and {}", a, b);
             String result = trigonometryOperation(a.isEmpty() ? "0" : a, b);
             LOGGER.info("Trigonometry result : {}", result);
@@ -26,11 +27,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         List<String> aMonomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
-        for(String part : aMonomials)
-            for(String part2 : bMonomials)
-                LOGGER.error("To perform : {} times {}", part, part2);
-        LOGGER.error("Monomials of a : {}", aMonomials);
-        LOGGER.error("Monomials of b : {}", bMonomials);
+
         // We can't use the constant BUILDER, because it is cleared repeatedly inside the loop
         StringBuilder builder = new StringBuilder();
 
@@ -73,7 +70,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
-        String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, MathContext.DECIMAL128).toString());
+        String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, CONTEXT).toString());
         if (MathUtils.roundPeriodicSeries(floatResult).equals("1")) {
             if (!originalVars.isEmpty()) {
                 return originalVars;

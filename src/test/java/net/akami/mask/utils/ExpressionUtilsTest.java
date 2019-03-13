@@ -9,6 +9,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void numericValueOfTest() {
+        Assertions.assertThat(toNumericValue("((x)#)")).isEqualTo("1");
         Assertions.assertThat(toNumericValue("5.123E10x")).isEqualTo("5.123E10");
         Assertions.assertThat(toNumericValue("5x")).isEqualTo("5");
         Assertions.assertThat(toNumericValue("0.3xyz")).isEqualTo("0.3");
@@ -20,9 +21,9 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toNumericValue("2*y/3")).isEqualTo("2/3");
         Assertions.assertThat(toNumericValue("0.4")).isEqualTo("0.4");
         Assertions.assertThat(toNumericValue("3x^(2y+1)")).isEqualTo("3");
-        Assertions.assertThat(toNumericValue("3(x)@")).isEqualTo("3");
+        Assertions.assertThat(toNumericValue("3((x)@)")).isEqualTo("3");
         Assertions.assertThat(toNumericValue("3@")).isEqualTo("3@");
-        Assertions.assertThat(toNumericValue("(3x)@")).isEqualTo("1");
+        Assertions.assertThat(toNumericValue("((3x)@)")).isEqualTo("1");
         Assertions.assertThat(toNumericValue("1*y^2")).isEqualTo("1");
         Assertions.assertThat(toNumericValue("3x^2y^2")).isEqualTo("3");
     }
@@ -34,7 +35,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void cancelMultShortcutTest() {
-        System.out.println(ExpressionUtils.cancelMultShortcut("3x*(4x^2-3x) + 3/4"));
+        Assertions.assertThat(ExpressionUtils.cancelMultShortcut("3x*(4x^2-3x) + 3/4")).isEqualTo("3*x*(4*x^2-3*x)+3/4");
     }
 
     @Test
@@ -46,8 +47,17 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toVariables("xx")).isEqualTo("x^2");
         Assertions.assertThat(toVariables("x^y")).isEqualTo("x^y");
         Assertions.assertThat(toVariables("x^(y^2)")).isEqualTo("x^(y^2)");
-        Assertions.assertThat(toVariables("1x^1y")).isEqualTo("x^y");
+        Assertions.assertThat(toVariables("1x^1y")).isEqualTo("xy");
         Assertions.assertThat(toVariables("x^2y^2")).isEqualTo("x^2y^2");
+    }
+
+    @Test
+    public void clearNonVariablesTest() {
+        Assertions.assertThat(String.join("",clearNonVariables("5((x)@)"))).isEqualTo("((x)@)^1");
+        Assertions.assertThat(String.join("",clearNonVariables("5((4)@)"))).isEqualTo("");
+
+        Assertions.assertThat(String.join("",toVariables("5((x)@)"))).isEqualTo("((x)@)");
+        Assertions.assertThat(String.join("",toVariables("5((4)@)"))).isEqualTo("");
     }
 
     @Test
