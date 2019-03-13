@@ -46,9 +46,9 @@ public class FormatterFactory {
     public static String formatTrigonometry(String origin) {
         origin = origin
                 .replaceAll("\\s", "")
-                .replaceAll("s\\*i\\*n\\*\\((.*?)\\)", "\\(\\($1\\)\\*@\\)")
-                .replaceAll("c\\*o\\*s\\*\\((.*?)\\)", "\\(\\($1\\)\\*#\\)")
-                .replaceAll("t\\*a\\*n\\*\\((.*?)\\)", "\\(\\($1\\)\\*§\\)");
+                .replaceAll("s\\*i\\*n\\*\\((.*?)\\)", "\\(\\($1\\)@\\)")
+                .replaceAll("c\\*o\\*s\\*\\((.*?)\\)", "\\(\\($1\\)#\\)")
+                .replaceAll("t\\*a\\*n\\*\\((.*?)\\)", "\\(\\($1\\)§\\)");
         return origin;
     }
 

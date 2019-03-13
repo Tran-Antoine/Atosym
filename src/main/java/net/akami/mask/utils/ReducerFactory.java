@@ -26,7 +26,6 @@ public class ReducerFactory {
 
         // deletes all the spaces, adds the necessary '*'
         String localExp = FormatterFactory.formatForCalculations(exp);
-        System.out.println("Formatted : "+localExp);
 
         tree.new Branch(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));

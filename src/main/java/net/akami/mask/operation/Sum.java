@@ -130,7 +130,6 @@ public class Sum extends BinaryOperationHandler {
                 }
             }
         }
-        LOGGER.info("Part for var {} : {}", vars, compatibleParts);
         replaceMonomialsByResult(monomial, vars, i, compatibleParts, initialMonomials, finalMonomials);
     }
 

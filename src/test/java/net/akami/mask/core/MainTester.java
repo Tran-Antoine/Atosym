@@ -1,7 +1,5 @@
 package net.akami.mask.core;
 
-import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Scanner;
@@ -10,9 +8,6 @@ public class MainTester {
 
     public static void main(String... args) {
 
-        MaskExpression test = new MaskExpression("cos(x)");
-
-        System.out.println(MaskOperator.begin(test).imageFor("0").asExpression());
         Scanner sc = new Scanner(System.in);
         String expression;
 

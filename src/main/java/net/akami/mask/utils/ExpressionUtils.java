@@ -13,7 +13,9 @@ public class ExpressionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtils.class);
     private static final StringBuilder BUILDER = new StringBuilder();
-    private static final String DELETE_NON_VARIABLES = "[\\d.+\\-/*()^]+";
+
+    public static final String MATCH_POW_STRUCT = "(\\^([0-9.]+|\\(.*?\\)|(1|)[a-zA-DF-Z])|)";
+    public static final String KEEP_VARIABLES_ONLY = "("+ "[a-zA-DF-Z]"+MATCH_POW_STRUCT+ "|" + "\\(\\(.*?\\)[@#§]\\)"+MATCH_POW_STRUCT + ")+";
     public static final String MATH_SIGNS = "+-*/^()";
     public static final String NUMBERS = "0123456789";
     // 'E' deliberately missing, because it corresponds to "*10^x"
@@ -108,42 +110,20 @@ public class ExpressionUtils {
     public static String[] clearNonVariables(String exp) {
         clearBuilder();
         // Deletes all the useless characters
-        Pattern pattern = Pattern.compile("((([a-zA-DF-Z]\\^(\\(.*?\\)|([0-9.]+)|[a-zA-DF-Z]))|[a-zA-DF-Z])|(\\(\\(.*?\\)[@#§]\\)))+");
+
+        Pattern pattern = Pattern.compile(KEEP_VARIABLES_ONLY);
         Matcher matcher = pattern.matcher(exp);
         while (matcher.find()) {
             String found = matcher.group();
             if (found.matches("(.+|)[a-zA-DF-Z](.+|)"))
                 BUILDER.append(matcher.group());
         }
-
         // Replaces x^2x((x)#) by x^2 * x * ((x)#)
         String result = BUILDER.toString();
         clearBuilder();
-        for (int i = 0; i < result.length(); i++) {
-            char c = result.charAt(i);
-            String previous = i == 0 ? null : String.valueOf(result.charAt(i - 1));
-            String next = i == result.length() - 1 ? null : String.valueOf(result.charAt(i + 1));
+        result = cancelMultShortcut(result);
 
-            boolean addedChar = false;
-            if (VARIABLES.contains(String.valueOf(c)) && previous != null) {
-                if ((NUMBERS.contains(previous) || VARIABLES.contains(previous))) {
-                    BUILDER.append('*').append(c);
-                    addedChar = true;
-                }
-            } else if (c == '(' && previous != null && !MATH_SIGNS.contains(previous)) {
-                BUILDER.append('*').append(c);
-                addedChar = true;
-            } else if (c == ')' && next != null && !MATH_SIGNS.contains(next) && !TRIGONOMETRY_SHORTCUTS.contains(next)) {
-                System.out.println("appended because " + String.valueOf(i + 1) + " is after");
-                BUILDER.append(c).append('*');
-                addedChar = true;
-            }
-
-            if (!addedChar) {
-                BUILDER.append(c);
-            }
-        }
-        String[] varsResult = BUILDER.toString().split("\\*");
+        String[] varsResult = result.split("\\*");
         // Replaces x by x^1
         for (int i = 0; i < varsResult.length; i++) {
             String actual = varsResult[i];
@@ -243,21 +223,20 @@ public class ExpressionUtils {
 
         for (int i = 0; i < self.length(); i++) {
             String c = String.valueOf(self.charAt(i));
-            boolean varOrTrigo = ExpressionUtils.VARIABLES.contains(c) || ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(c);
+            boolean isVar = ExpressionUtils.VARIABLES.contains(c);
 
-            if (varOrTrigo && i != 0 && !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i - 1)))) {
+            if (isVar && i != 0 && !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i - 1)))) {
                 BUILDER.append("*").append(c);
             } else if (i != 0 && c.equals("(") &&
                     (self.charAt(i - 1) == ')' || !MATH_SIGNS.contains(String.valueOf(self.charAt(i - 1))))) {
                 BUILDER.append("*").append(c);
-            } else if (i != 0 && self.charAt(i - 1) == ')' && !MATH_SIGNS.contains(String.valueOf(c))) {
+            } else if (i != 0 && self.charAt(i - 1) == ')' && !MATH_SIGNS.contains(c) && !TRIGONOMETRY_SHORTCUTS.contains(c)) {
                 BUILDER.append("*").append(c);
             } else {
                 BUILDER.append(c);
             }
-            System.out.println(BUILDER);
         }
-        System.out.println("Converted : " + self + " to " + BUILDER.toString());
+        LOGGER.error("Converted : " + self + " to " + BUILDER.toString());
         return BUILDER.toString();
     }
 
@@ -497,7 +476,7 @@ public class ExpressionUtils {
 
         exp = ExpressionUtils.addMultShortcut(exp)
                 // deletes trigonometry stuff
-                .replaceAll("\\(\\(.+\\)([@#§])\\)", "")
+                .replaceAll("\\(\\(.+\\)([@#§])\\)"+"(\\^([0-9.]+|((1|)[a-zA-DF-Z]))|)", "")
                 // deletes variables + their pow value
                 .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
                 .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")
