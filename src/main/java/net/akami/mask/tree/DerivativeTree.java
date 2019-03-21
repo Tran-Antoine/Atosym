@@ -2,16 +2,17 @@ package net.akami.mask.tree;
 
 import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.operation.sign.QuaternaryOperationSign;
-import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
 
 import java.util.Optional;
 
 public class DerivativeTree extends CalculationTree<DerivativeBranch> {
 
-    public DerivativeTree(String initial) {
+    private char var;
+
+    public DerivativeTree(String initial, char var) {
         super(FormatterFactory.formatForCalculations(initial));
+        this.var = var;
     }
 
     @Override
@@ -37,13 +38,11 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     }
 
     public String differentiateElement(String element) {
-        if(ExpressionUtils.isANumber(element))
-            return "0";
 
-        if(element.length() == 1)
+        if(element.equals(String.valueOf(var)))
             return "1";
 
-        return MathUtils.diffPow(String.valueOf(element.charAt(0)), null, element.substring(2), null);
+        return "0";
     }
 
     @Override

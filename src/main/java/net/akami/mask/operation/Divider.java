@@ -43,7 +43,7 @@ public class Divider extends BinaryOperationHandler {
             }
         }
         String divisionResult = String.join("", numMonomials);
-        LOGGER.info("++++ Result of division between {} and {} : {}", a, b, divisionResult);
+        LOGGER.info("Result of division between {} and {} : {}", a, b, divisionResult);
         return divisionResult;
     }
 

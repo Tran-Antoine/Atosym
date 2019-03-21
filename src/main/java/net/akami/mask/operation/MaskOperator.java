@@ -2,6 +2,7 @@ package net.akami.mask.operation;
 
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.math.MaskExpression;
+import net.akami.mask.tree.DerivativeTree;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
@@ -143,18 +144,8 @@ public class MaskOperator {
 
     public MaskOperator differentiate(MaskExpression in, MaskExpression out, char var, boolean setToOut) {
 
-        String reducedExp = ReducerFactory.reduce(in.getExpression());
-
-        List<String> monomials = ExpressionUtils.toMonomials(reducedExp);
-
-        int index = 0;
-
-        for(String monomial : monomials) {
-            monomials.set(index, differentiateMonomial(monomial, var, index == 0));
-            index++;
-        }
-        String result = String.join("", monomials);
-        out.reload(result);
+        DerivativeTree tree = new DerivativeTree(in.getExpression(), var);
+        out.reload(tree.merge());
 
         if(setToOut) {
             this.mask = out;
@@ -162,37 +153,8 @@ public class MaskOperator {
         return this;
     }
 
-    private String differentiateMonomial(String monomial, char var, boolean firstMonomial) {
-
-        String foundVar = ExpressionUtils.toVariables(monomial);
-        String regex = "(?!"+var+")[a-zA-Z]*";
-
-        foundVar = foundVar.replaceAll(regex, "");
-
-        if(!foundVar.contains(String.valueOf(var))) {
-            return "";
-        }
-
-        if(foundVar.length() == 1) {
-            return monomial.replace(String.valueOf(var), "");
-        }
-
-        String exponent = foundVar.substring(2);
-
-        String powResult = MathUtils.subtract(exponent, "1");
-        String numericValue = monomial.replace(foundVar, "");
-        System.out.println("---> "+exponent+" / "+numericValue);
-        numericValue = MathUtils.mult(exponent, numericValue);
-
-        if(!(numericValue.startsWith("+") && numericValue.startsWith("-")) && !firstMonomial) {
-            numericValue = "+" + numericValue;
-        }
-
-        return numericValue + foundVar.charAt(0) + (powResult.equals("1") ? "" : "^" + powResult);
-    }
-
     /**
-     * Call {@link MaskOperator#reduce(MaskExpression, MaskExpression)} with the mask specified in the last begin call as the out
+     * Calls {@link MaskOperator#reduce(MaskExpression, MaskExpression)} with the mask specified in the last begin call as the out
      * parameter. See the method itself for further information.
      * @return the operator itself for chaining
      */
