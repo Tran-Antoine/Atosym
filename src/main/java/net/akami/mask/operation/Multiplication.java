@@ -11,7 +11,7 @@ import java.util.List;
 public class Multiplication extends BinaryOperationHandler {
 
     private static final Multiplication INSTANCE = new Multiplication();
-    private static final MathContext CONTEXT = new MathContext(100);
+    private static final MathContext CONTEXT = new MathContext(120);
     @Override
     protected String operate(String a, String b) {
 

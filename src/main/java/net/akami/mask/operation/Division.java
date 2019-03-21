@@ -11,6 +11,7 @@ import java.util.List;
 public class Division extends BinaryOperationHandler {
 
     private static final Division INSTANCE = new Division();
+    private static final MathContext CONTEXT = new MathContext(120);
 
     @Override
     protected String operate(String a, String b) {
@@ -43,7 +44,7 @@ public class Division extends BinaryOperationHandler {
     private String numericalDivision(String a, String b) {
         BigDecimal bigA = new BigDecimal(a);
         BigDecimal bigB = new BigDecimal(b);
-        String result = MathUtils.cutSignificantZero(bigA.divide(bigB, MathContext.DECIMAL128).toString());
+        String result = MathUtils.cutSignificantZero(bigA.divide(bigB, CONTEXT).toString());
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
         return result;
     }

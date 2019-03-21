@@ -24,47 +24,7 @@ public class Sum extends BinaryOperationHandler {
         LOGGER.info("---> Sum result of {} |+| {}: {}", a, b, result);
         return result;
     }
-
-    /*public String monomialSum(List<String> monomials, boolean needsFormatting) {
-
-        Map<String, Float> parts = new HashMap<>();
-
-        for(String monomial : monomials) {
-            if(monomial == null || monomial.isEmpty()) continue;
-
-            String numericValue = ExpressionUtils.toNumericValue(monomial);
-            String vars = monomial.replaceAll(Pattern.quote(numericValue), "");
-            while (ExpressionUtils.areEdgesBracketsConnected(vars))
-                vars = vars.substring(1, vars.length()-1);
-            numericValue = FormatterFactory.removeFractions(numericValue);
-
-            LOGGER.info("Vars from {} : {}", monomial, vars);
-            if(!parts.containsKey(vars)) {
-                parts.put(vars, Float.parseFloat(numericValue));
-            } else {
-                parts.put(vars, parts.get(vars) + Float.parseFloat(numericValue));
-            }
-        }
-        clearBuilder();
-        LOGGER.info("Map : {}", parts);
-        for(String vars : parts.keySet()) {
-            float numericValue = parts.get(vars);
-            vars = vars.startsWith("+") ? vars.substring(1) : vars;
-            if (numericValue == 0)
-                continue;
-
-            if(numericValue == 1 && !vars.isEmpty()) {
-                BUILDER.append('+').append(vars);
-            } else if(numericValue == -1 && !vars.isEmpty()) {
-                BUILDER.append("-").append(vars);
-            } else if(numericValue < 0) {
-                BUILDER.append(MathUtils.cutSignificantZero(""+numericValue)).append(vars);
-            } else {
-                BUILDER.append('+').append(MathUtils.cutSignificantZero(""+numericValue)).append(vars);
-            }
-        }
-        return BUILDER.toString().substring(1);
-    }*/
+    
     public String monomialSum(List<String> monomials, boolean needsFormatting) {
 
         List<String> finalMonomials = new ArrayList<>();
