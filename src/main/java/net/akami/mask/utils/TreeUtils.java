@@ -3,7 +3,7 @@ package net.akami.mask.utils;
 import net.akami.mask.tree.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.akami.mask.tree.BinaryTree.Branch;
+import net.akami.mask.tree.Branch;
 
 public class TreeUtils {
 
@@ -21,12 +21,12 @@ public class TreeUtils {
             left = "0";
         String right = exp.substring(index + 1, exp.length() - start);
         LOGGER.debug("Successfully created new branches. Left : {}, Right : {}", left, right);
-        actual.setLeft(tree.new Branch(left));
-        actual.setRight(tree.new Branch(right));
+        actual.setLeft(tree.load(left));
+        actual.setRight(tree.load(right));
         actual.setOperation(sign);
     }
 
-    public static void printBranches(BinaryTree self) {
+    public static void printBranches(BinaryTree<? extends Branch> self) {
         for (Branch branch : self) {
             LOGGER.info("Branch found : {}", branch);
         }

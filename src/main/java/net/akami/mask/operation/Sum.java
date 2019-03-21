@@ -24,7 +24,7 @@ public class Sum extends BinaryOperationHandler {
         LOGGER.info("---> Sum result of {} |+| {}: {}", a, b, result);
         return result;
     }
-    
+
     public String monomialSum(List<String> monomials, boolean needsFormatting) {
 
         List<String> finalMonomials = new ArrayList<>();

@@ -25,9 +25,9 @@ public enum QuaternaryOperationSign {
         return sign;
     }
 
-    public String compute(String a, String altA, String b, String altB) {
+    public String compute(String a, String a2, String b, String b2) {
         Objects.requireNonNull(quaternaryFunction);
-        return quaternaryFunction.compute(a, altA, b, altB);
+        return quaternaryFunction.compute(a, a2, b, b2);
     }
 
     public static QuaternaryOperationSign getBySign(char sign) {

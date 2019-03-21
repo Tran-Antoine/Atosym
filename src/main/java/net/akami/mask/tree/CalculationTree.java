@@ -4,21 +4,21 @@ import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.TreeUtils;
 
-public class CalculationTree extends BinaryTree {
+public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
     public CalculationTree(String initial) {
-        super(initial,'+', '-', '*', '/', '^', ' ');
+        super(initial, '+', '-', '*', '/', '^', ' ');
     }
 
     @Override
-    protected void create(Branch self) {
+    protected void create(T self) {
         for (int i = 0; i < getSplitters().length; i += 2) {
             split(self, getSplitters()[i], getSplitters()[i + 1]);
         }
     }
 
     @Override
-    protected void split(Branch self, char... by) {
+    protected void split(T self, char... by) {
         /*
           Avoids splits with the roots parts. For instance, when splitting by '+' and '-' for the
           expression '5+3*2', the result will be 5+3*2, 5, and 3*2. When splitting by '*' and '/', we don't
@@ -57,7 +57,7 @@ public class CalculationTree extends BinaryTree {
     }
 
     @Override
-    protected void evalBranch(Branch self) {
+    protected void evalBranch(T self) {
         LOGGER.info("Actual branch : {}", self.getExpression());
 
         // We are sure that the branch has a left and a right part, because the branch can be calculated
@@ -65,12 +65,14 @@ public class CalculationTree extends BinaryTree {
         String right = self.getRightValue();
 
         LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, self.getOperation());
-        String value = BinaryOperationSign.getBySign(self.getOperation()).compute(left, right);
+        String value = evalValue(left, right, self.getOperation());
         // The result is defined as the reduced value of the expression
         LOGGER.info("Successfully calculated the value of " + self.getExpression() + " : " + value);
 
-        self.setAlternativeValue(value);
-        self.setLeft(null);
-        self.setRight(null);
+        self.setReducedValue(value);
+    }
+
+    protected String evalValue(String left, String right, char sign) {
+        return BinaryOperationSign.getBySign(sign).compute(left, right);
     }
 }

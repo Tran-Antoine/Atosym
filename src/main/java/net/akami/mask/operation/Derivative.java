@@ -1,9 +1,9 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.tree.BinaryTree;
-import net.akami.mask.tree.BinaryTree.Branch;
+import net.akami.mask.tree.Branch;
 import net.akami.mask.operation.sign.QuaternaryOperationSign;
-import net.akami.mask.tree.CalculationTree;
+import net.akami.mask.tree.Reducer;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -33,17 +33,17 @@ public class Derivative {
     public String differentiate(String origin) {
 
         String formatted = FormatterFactory.formatForCalculations(origin);
-        BinaryTree tree = new CalculationTree(formatted);
+        BinaryTree<Branch> tree = new Reducer(formatted);
         return null;
     }
 
-    public void mergeBranches(BinaryTree tree) {
+    public void mergeBranches(BinaryTree<Branch> tree) {
 
         for(int i = tree.getBranches().size() - 1; i >= 0; i--) {
             Branch branch = tree.getBranches().get(i);
             LOGGER.info("Actual branch : {}", branch.getExpression());
 
-            if (!branch.canBeCalculated()) {
+            if (!branch.canBeEvaluated()) {
                 LOGGER.info("Not calculable : hasChildren : {} / children have no children : {}",
                         branch.hasChildren(), branch.doChildrenHaveChildren());
                 continue;
@@ -53,24 +53,24 @@ public class Derivative {
             String right = branch.getRight().getExpression();
 
             //  We need to check whether a reduced form has been calculated or not
-            if (branch.getLeft().hasAlternativeValue()) {
-                left = branch.getLeft().getAlternativeValue();
+            if (branch.getLeft().hasReducedValue()) {
+                left = branch.getLeft().getReducedValue();
             }
-            if (branch.getRight().hasAlternativeValue()) {
-                right = branch.getRight().getAlternativeValue();
+            if (branch.getRight().hasReducedValue()) {
+                right = branch.getRight().getReducedValue();
             }
             LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, branch.getOperation());
             String value = QuaternaryOperationSign.getBySign(branch.getOperation()).compute(left, null, null, right);
             // The result is defined as the reduced value of the expression
             LOGGER.info("Successfully calculated the value of " + branch.getExpression() + " : " + value);
 
-            branch.setAlternativeValue(value);
+            branch.setReducedValue(value);
             branch.setLeft(null);
             branch.setRight(null);
 
             Branch first = tree.getBranches().get(0);
-            if (first.hasAlternativeValue()) {
-                if (String.valueOf(first.getAlternativeValue()).equals("Infinity"))
+            if (first.hasReducedValue()) {
+                if (String.valueOf(first.getReducedValue()).equals("Infinity"))
                     throw new ArithmeticException();
 
             }

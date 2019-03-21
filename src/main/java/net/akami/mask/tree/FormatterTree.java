@@ -3,19 +3,22 @@ package net.akami.mask.tree;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
-public class FormatterTree extends CalculationTree {
+public class FormatterTree extends CalculationTree<Branch> {
 
     public FormatterTree(String initial) {
         super(FormatterFactory.addMultiplicationSigns(ExpressionUtils.removeEdgeBrackets(initial), true));
     }
 
     @Override
+    protected Branch generate(String origin) {
+        return new Branch(origin);
+    }
+
+    @Override
     protected void evalBranch(Branch self) {
+
         String left = self.getLeftValue();
         String right = self.getRightValue();
-
-        self.setLeft(null);
-        self.setRight(null);
 
         if(evalTrigonometry(self, left, right)) return;
 
@@ -25,11 +28,11 @@ public class FormatterTree extends CalculationTree {
         char operation = self.getOperation();
 
         if(operation == '*') {
-            self.setAlternativeValue(left + right);
+            self.setReducedValue(left + right);
         } else if(operation == '-' && left.equals("0")){
-            self.setAlternativeValue(operation + right);
+            self.setReducedValue(operation + right);
         } else {
-            self.setAlternativeValue(left + operation + right);
+            self.setReducedValue(left + operation + right);
         }
     }
 
@@ -54,36 +57,16 @@ public class FormatterTree extends CalculationTree {
         if(trigonometricSign != '$') {
             switch (trigonometricSign) {
                 case '@':
-                    self.setAlternativeValue("sin("+value+")");
+                    self.setReducedValue("sin("+value+")");
                     break;
                 case '#':
-                    self.setAlternativeValue("cos("+value+")");
+                    self.setReducedValue("cos("+value+")");
                     break;
                 case '§':
-                    self.setAlternativeValue("tan("+value+")");
+                    self.setReducedValue("tan("+value+")");
             }
             return true;
         }
         return false;
     }
-
-    /*@Override
-    protected void split(Branch self, char... by) {
-
-        if(self.hasChildren())
-            return;
-
-        char splitter = by[0]; // '*'
-        String exp = self.getExpression();
-
-        for (int i = exp.length() - 1; i >= 0; i--) {
-            if(exp.charAt(i) == splitter) {
-                boolean bracketsConnected = ExpressionUtils.areEdgesBracketsConnected(exp, true);
-                if(!ExpressionUtils.isSurroundedByParentheses(i, exp)) {
-                    TreeUtils.createNewBranch(this, self, i, splitter, bracketsConnected);
-                    return;
-                }
-            }
-        }
-    }*/
 }

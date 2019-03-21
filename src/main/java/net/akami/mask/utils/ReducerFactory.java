@@ -2,7 +2,8 @@ package net.akami.mask.utils;
 
 import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.tree.BinaryTree;
-import net.akami.mask.tree.CalculationTree;
+import net.akami.mask.tree.Branch;
+import net.akami.mask.tree.Reducer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,7 +25,7 @@ public class ReducerFactory {
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry
         String localExp = FormatterFactory.formatForCalculations(exp);
-        BinaryTree tree = new CalculationTree(localExp);
+        BinaryTree<Branch> tree = new Reducer(localExp);
 
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 

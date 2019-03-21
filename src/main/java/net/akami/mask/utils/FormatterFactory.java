@@ -1,6 +1,7 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.tree.BinaryTree;
+import net.akami.mask.tree.Branch;
 import net.akami.mask.tree.FormatterTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
