@@ -52,7 +52,15 @@ public class EquationTest {
     }*/
 
     @Test
-    public void twoUnknownTwoLinesTest() {
+    public void multiUnknownMultiLines() {
+        BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
+        BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
+        BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));
+
+        Map<Character, String> result2 = EquationSolver.solve(Arrays.asList(b5, b6, b7));
+        Assertions.assertThat(result2.get('x')).isEqualTo("1");
+        Assertions.assertThat(result2.get('y')).isEqualTo("2");
+        Assertions.assertThat(result2.get('z')).isEqualTo("-1");
 
         List<BiMask> test = EquationSolver.build("x=y", "x+y=2");
         Map<Character, String> testSolved = EquationSolver.solve(test);
@@ -72,15 +80,6 @@ public class EquationTest {
         Map<Character, String> result1 = EquationSolver.solve(Arrays.asList(b3, b4));
         Assertions.assertThat(result1.get('x')).isEqualTo("1");
         Assertions.assertThat(result1.get('y')).isEqualTo("4");
-        
-        BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
-        BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
-        BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));
-
-        Map<Character, String> result2 = EquationSolver.solve(Arrays.asList(b5, b6, b7));
-        Assertions.assertThat(result2.get('x')).isEqualTo("1");
-        Assertions.assertThat(result2.get('y')).isEqualTo("2");
-        Assertions.assertThat(result2.get('z')).isEqualTo("-1");
 
         List<BiMask> lines = EquationSolver.build("x+y+z=6", "x+2y+2z=11", "x+3y+z=10");
         Map<Character, String> result3 = EquationSolver.solve(lines);

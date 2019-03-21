@@ -10,18 +10,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Sum extends BinaryOperationHandler {
+public class Adder extends BinaryOperationHandler {
 
-    private static final Sum INSTANCE = new Sum();
+    private static final Adder INSTANCE = new Adder();
 
     @Override
     public String operate(String a, String b) {
-        LOGGER.info("Sum process of {} |+| {}: \n", a, b);
+        LOGGER.info("Adder process of {} |+| {}: \n", a, b);
         List<String> monomials = ExpressionUtils.toMonomials(a);
         monomials.addAll(ExpressionUtils.toMonomials(b));
         LOGGER.info("Monomials : {}", monomials);
         String result = monomialSum(monomials, false);
-        LOGGER.info("---> Sum result of {} |+| {}: {}", a, b, result);
+        LOGGER.info("---> Adder result of {} |+| {}: {}", a, b, result);
         return result;
     }
 
@@ -147,7 +147,7 @@ public class Sum extends BinaryOperationHandler {
         return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
-    public static Sum getInstance() {
+    public static Adder getInstance() {
         return INSTANCE;
     }
 }

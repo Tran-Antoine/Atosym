@@ -8,21 +8,27 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Division extends BinaryOperationHandler {
+public class Divider extends BinaryOperationHandler {
 
-    private static final Division INSTANCE = new Division();
+    private static final Divider INSTANCE = new Divider();
     private static final MathContext CONTEXT = new MathContext(120);
 
     @Override
     protected String operate(String a, String b) {
+        LOGGER.info("Divider process of {} |/| {}: \n", a, b);
+
         // Avoids division by zero error.
         if(a.equals(b))
             return "1";
 
-        LOGGER.info("Division process of {} |/| {}: \n", a, b);
-
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             return numericalDivision(a, b);
+        }
+
+        String unsignedB = b.substring(1);
+        if(unsignedB.contains("+") || unsignedB.contains("-")) {
+            LOGGER.error("Unable to calculate a division, the denominator being a polynomial. Returns a/b");
+            return a+"/"+b;
         }
 
         List<String> numMonomials = ExpressionUtils.toMonomials(a);
@@ -131,7 +137,7 @@ public class Division extends BinaryOperationHandler {
         nPow = nPow.isEmpty() ? "1" : nPow;
         dPow = dPow.isEmpty() ? "1" : dPow;
 
-        String subResult = Subtraction.getInstance().rawOperate(nPow, dPow);
+        String subResult = Subtractor.getInstance().rawOperate(nPow, dPow);
 
         if(ExpressionUtils.isANumber(subResult)) {
             float subNumericResult = Float.parseFloat(subResult);
@@ -153,7 +159,7 @@ public class Division extends BinaryOperationHandler {
         BUILDER.append(1);
         for(String factor : factors) {
             if(factor != null && !factor.equals("1") && !factor.equals("1.0")) {
-                BUILDER.replace(0, BUILDER.length(), Multiplication.getInstance().simpleMult(BUILDER.toString(), factor));
+                BUILDER.replace(0, BUILDER.length(), Multiplicator.getInstance().simpleMult(BUILDER.toString(), factor));
             }
         }
         return BUILDER.toString();
@@ -197,7 +203,7 @@ public class Division extends BinaryOperationHandler {
         return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
-    public static Division getInstance() {
+    public static Divider getInstance() {
         return INSTANCE;
     }
 }

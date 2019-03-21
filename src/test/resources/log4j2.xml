@@ -21,7 +21,7 @@
 
     <Loggers>
         # put DEBUG for debug
-        <Root level="OFF">
+        <Root level="ERROR">
             <AppenderRef ref="STDOUT"/>
             <AppenderRef ref="STDERR"/>
         </Root>

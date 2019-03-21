@@ -4,13 +4,13 @@ import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
-public class Pow extends BinaryOperationHandler {
+public class PowCalculator extends BinaryOperationHandler {
 
-    private static final Pow INSTANCE = new Pow();
+    private static final PowCalculator INSTANCE = new PowCalculator();
 
     @Override
     public String operate(String a, String b) {
-        LOGGER.info("Pow operation process between {} and {} : \n", a, b);
+        LOGGER.info("PowCalculator operation process between {} and {} : \n", a, b);
 
         String aVars = ExpressionUtils.toVariables(a);
         String bVars = ExpressionUtils.toVariables(b);
@@ -25,7 +25,7 @@ public class Pow extends BinaryOperationHandler {
         // If pow value is too high, there is no point in developing the entire expression
         if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199 ||
                 (aVars.length() != 0 && powValue % 1 != 0)) {
-            LOGGER.info("Pow value contains variables or pow value is greater than 199. Returns a^b");
+            LOGGER.info("PowCalculator value contains variables or pow value is greater than 199. Returns a^b");
             a = ExpressionUtils.isReduced(a) ? a : "(" + a + ")";
             b = ExpressionUtils.isReduced(b) ? b : "(" + b + ")";
             return a + "^" + b;
@@ -35,7 +35,7 @@ public class Pow extends BinaryOperationHandler {
         StringBuilder builder = new StringBuilder();
         builder.append(a);
         for (int i = 1; i < powValue; i++) {
-            builder.replace(0, builder.length(), Multiplication.getInstance().rawOperate(builder.toString(), a));
+            builder.replace(0, builder.length(), Multiplicator.getInstance().rawOperate(builder.toString(), a));
             LOGGER.info("{} steps left. Currently : {}", powValue - i - 1, builder.toString());
         }
         return builder.toString();
@@ -51,7 +51,7 @@ public class Pow extends BinaryOperationHandler {
         return MathUtils.cutSignificantZero(FormatterFactory.removeMultiplicationSigns(origin));
     }
 
-    public static Pow getInstance() {
+    public static PowCalculator getInstance() {
         return INSTANCE;
     }
 }

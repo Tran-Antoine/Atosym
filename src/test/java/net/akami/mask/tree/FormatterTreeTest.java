@@ -47,6 +47,11 @@ public class FormatterTreeTest {
         assertTree("5*(2+x+y)", "5(2+x+y)");
     }
 
+    @Test
+    public void bracketsExpression() {
+        assertTree("(5+x)^2", "(5+x)^2");
+    }
+
     public void assertTree(String a, String b) {
         FormatterTree t = new FormatterTree(a);
         Assertions.assertThat(t.merge()).isEqualTo(b);

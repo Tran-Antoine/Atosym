@@ -36,7 +36,6 @@ public enum BinaryOperationSign {
         return binaryFunction.compute(a, b);
     }
 
-
     public static BinaryOperationSign getBySign(char sign) {
         for(BinaryOperationSign operation : values()) {
             if(operation.sign == sign) {

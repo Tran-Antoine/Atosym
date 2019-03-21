@@ -26,6 +26,11 @@ public class DerivativeTreeTest {
         assertDerivative("(x+3)^2", "2*(x+3)");
     }
 
+    @Test
+    public void divisionDerivatives() {
+        assertDerivative("(5x^2+3x)/(4x+1)", "(20x^2+10x+3)/(4x+1)^2");
+    }
+
     public void assertDerivative(String a, String b) {
         DerivativeTree tree = new DerivativeTree(a);
         Assertions.assertThat(tree.merge()).isEqualTo(b);

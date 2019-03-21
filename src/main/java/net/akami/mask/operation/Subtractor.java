@@ -5,13 +5,13 @@ import net.akami.mask.utils.FormatterFactory;
 
 import java.util.List;
 
-public class Subtraction extends BinaryOperationHandler {
+public class Subtractor extends BinaryOperationHandler {
 
-    private static final Subtraction INSTANCE = new Subtraction();
+    private static final Subtractor INSTANCE = new Subtractor();
 
     @Override
     protected String operate(String a, String b) {
-        LOGGER.info("Subtraction process of {} |-| {}: \n", a, b);
+        LOGGER.info("Subtractor process of {} |-| {}: \n", a, b);
 
         List<String> monomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
@@ -29,7 +29,7 @@ public class Subtraction extends BinaryOperationHandler {
             }
         }
         monomials.addAll(bMonomials);
-        return Sum.getInstance().monomialSum(monomials, true);
+        return Adder.getInstance().monomialSum(monomials, true);
     }
 
     @Override
@@ -42,7 +42,7 @@ public class Subtraction extends BinaryOperationHandler {
         return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
-    public static Subtraction getInstance() {
+    public static Subtractor getInstance() {
         return INSTANCE;
     }
 }

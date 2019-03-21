@@ -25,6 +25,10 @@ public class FormatterTree extends CalculationTree<Branch> {
         if(ExpressionUtils.hasHigherPriority(String.valueOf(self.getOperation()), right))
             right = addRequiredBrackets(right);
 
+        if(ExpressionUtils.hasHigherPriority(String.valueOf(self.getOperation()), left))
+            left = addRequiredBrackets(left);
+        // TODO
+
         char operation = self.getOperation();
 
         if(operation == '*') {

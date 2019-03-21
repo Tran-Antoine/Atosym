@@ -1,7 +1,7 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.Division;
+import net.akami.mask.operation.Divider;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -116,7 +116,7 @@ public class ReducerTest {
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test
     public void decomposeExpressionTest() {
-        Division div = Division.getInstance();
+        Divider div = Divider.getInstance();
         Assertions.assertThat(div.simpleDivision("4", "2")).isEqualTo("2");
         Assertions.assertThat(div.simpleDivision("5", "2")).isEqualTo("5/2");
         Assertions.assertThat(div.simpleDivision("6", "4")).isEqualTo("3/2");

@@ -19,19 +19,19 @@ public class MathUtils {
     private static final MathContext TRIGO_CONTEXT = new MathContext(4);
 
     public static String sum(String a, String b) {
-        return Sum.getInstance().rawOperate(a, b);
+        return Adder.getInstance().rawOperate(a, b);
     }
     public static String sum(List<String> monomials) {
-        return Sum.getInstance().monomialSum(monomials, true);
+        return Adder.getInstance().monomialSum(monomials, true);
     }
     public static String subtract(String a, String b) {
-        return Subtraction.getInstance().rawOperate(a, b);
+        return Subtractor.getInstance().rawOperate(a, b);
     }
     public static String mult(String a, String b) {
-        return Multiplication.getInstance().rawOperate(a, b);
+        return Multiplicator.getInstance().rawOperate(a, b);
     }
     public static String divide(String a, String b) {
-        return Division.getInstance().rawOperate(a, b);
+        return Divider.getInstance().rawOperate(a, b);
     }
     public static String diffSum(String a, String altA, String b, String altB) {
         return sum(altA, altB);
@@ -53,9 +53,13 @@ public class MathUtils {
             subtractResult = "^("+subtractResult+')';
         else
             subtractResult = '^'+subtractResult;
-        b = ExpressionUtils.isReduced(b) || ExpressionUtils.areEdgesBracketsConnected(b, true) ? b+"*" : "("+b+")*";
-        if(!ExpressionUtils.isReduced(a))
+
+        if(!ExpressionUtils.isReduced(a) && !ExpressionUtils.areEdgesBracketsConnected(a, false))
             a = '(' + a + ')';
+        if(!ExpressionUtils.isReduced(b) && !ExpressionUtils.areEdgesBracketsConnected(b, false))
+            b = '(' + b + ")*";
+        else
+            b += '*';
 
         if(altA.equals("1"))
             altA = "";
@@ -78,7 +82,7 @@ public class MathUtils {
 
     // TODO : optimize : use other method to chain multiplications
     public static String pow(String a, String b) {
-        return Pow.getInstance().rawOperate(a, b);
+        return PowCalculator.getInstance().rawOperate(a, b);
     }
 
     public static String sin(String a) {
@@ -120,7 +124,7 @@ public class MathUtils {
         float powValue;
 
         if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199) {
-            LOGGER.info("Pow value contains variables or pow value is greater than 9. Returns a^b");
+            LOGGER.info("PowCalculator value contains variables or pow value is greater than 9. Returns a^b");
             return a + "^" + (ExpressionUtils.isReduced(b) ? b : "(" + b + ")");
         }
 

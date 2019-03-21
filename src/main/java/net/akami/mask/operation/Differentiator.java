@@ -13,11 +13,11 @@ import org.slf4j.LoggerFactory;
 /**
  * Does not work yet
  */
-public class Derivative {
+public class Differentiator {
 
-    private static final Derivative INSTANCE = new Derivative();
+    private static final Differentiator INSTANCE = new Differentiator();
     private static final QuaternaryOperationSign[] PROCEDURAL_OPERATIONS;
-    private static final Logger LOGGER = LoggerFactory.getLogger(Derivative.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Differentiator.class);
 
     static {
         PROCEDURAL_OPERATIONS = new QuaternaryOperationSign[]{
@@ -84,10 +84,11 @@ public class Derivative {
         if(element.length() == 1)
             return "1";
 
-        return MathUtils.diffPow(String.valueOf(element.charAt(0)), null, element.substring(2), null);
+        String[] parts = element.split("\\^", 2);
+        return MathUtils.diffPow(parts[0], differentiateElement(parts[0]), parts[1], null);
     }
 
-    public static Derivative getInstance() {
+    public static Differentiator getInstance() {
         return INSTANCE;
     }
 }

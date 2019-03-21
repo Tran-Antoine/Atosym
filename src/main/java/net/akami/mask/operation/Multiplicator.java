@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Multiplication extends BinaryOperationHandler {
+public class Multiplicator extends BinaryOperationHandler {
 
-    private static final Multiplication INSTANCE = new Multiplication();
+    private static final Multiplicator INSTANCE = new Multiplicator();
     private static final MathContext CONTEXT = new MathContext(120);
     @Override
     protected String operate(String a, String b) {
@@ -23,7 +23,7 @@ public class Multiplication extends BinaryOperationHandler {
             LOGGER.info("Trigonometry result : {}", result);
             return result;
         }
-        LOGGER.info("Multiplication process of {} |*| {}: \n", a, b);
+        LOGGER.info("Multiplicator process of {} |*| {}: \n", a, b);
 
         List<String> aMonomials = ExpressionUtils.toMonomials(a);
         List<String> bMonomials = ExpressionUtils.toMonomials(b);
@@ -33,7 +33,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         for (String part : aMonomials) {
             for (String part2 : bMonomials) {
-                LOGGER.error("Treating simple mult : {} |*| {}", part, part2);
+                LOGGER.debug("Treating simple mult : {} |*| {}", part, part2);
                 String result = simpleMult(part, part2);
                 LOGGER.error("Result of simple mult between {} and {} : {}", part, part2, result);
                 boolean first = part.equals(aMonomials.get(0)) && part2.equals(bMonomials.get(0));
@@ -46,7 +46,7 @@ public class Multiplication extends BinaryOperationHandler {
         }
         String unReducedResult = builder.toString();
         LOGGER.info("FINAL RESULT : {}", unReducedResult);
-        String finalResult = Sum.getInstance().operate(unReducedResult, "");
+        String finalResult = Adder.getInstance().operate(unReducedResult, "");
         LOGGER.error("- Result of mult {} |*| {} : {}", a, b, finalResult);
         return finalResult;
     }
@@ -64,7 +64,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
-        LOGGER.error("Variables of {} and {} : {}", a, b, originalVars);
+        LOGGER.debug("Variables of {} and {} : {}", a, b, originalVars);
         a = ExpressionUtils.toNumericValue(a);
         b = ExpressionUtils.toNumericValue(b);
 
@@ -104,7 +104,7 @@ public class Multiplication extends BinaryOperationHandler {
         return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
-    public static Multiplication getInstance() {
+    public static Multiplicator getInstance() {
         return INSTANCE;
     }
 }

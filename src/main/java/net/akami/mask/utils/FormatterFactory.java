@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import static net.akami.mask.utils.ExpressionUtils.MATH_SIGNS;
 import static net.akami.mask.utils.ExpressionUtils.VARIABLES;
+import static net.akami.mask.utils.ExpressionUtils.NUMBERS;
 
 public class FormatterFactory {
 
@@ -60,12 +61,6 @@ public class FormatterFactory {
 
     // TODO : remove 1's in front of variables, remove useless brackets
     public static String formatForVisual(String origin) {
-        /*origin = origin
-                .replaceAll("\\(\\((.*?)\\)(\\*@|@)\\)", "sin\\($1\\)")
-                .replaceAll("\\(\\((.*?)\\)(\\*#|#)\\)", "cos\\($1\\)")
-                .replaceAll("\\(\\((.*?)\\)(\\*§|§)\\)", "tan\\($1\\)");
-
-        return removeMultiplicationSigns(origin);*/
         BinaryTree tree = new FormatterTree(origin);
         return tree.merge();
     }
@@ -108,21 +103,20 @@ public class FormatterFactory {
                 BUILDER.append(c);
             }
         }
-        LOGGER.error("Converted : " + self + " to " + BUILDER.toString());
+        LOGGER.debug("Converted : " + self + " to " + BUILDER.toString());
         return BUILDER.toString();
     }
 
     public static String addAllCoefficients(String origin) {
 
         clearBuilder();
-        for(int i = 0; i<origin.length(); i++) {
+        for(int i = 0; i < origin.length(); i++) {
             String current = String.valueOf(origin.charAt(i));
             String previous = i == 0 ? "$" : String.valueOf(origin.charAt(i-1));
-
-            if(VARIABLES.contains(current) && (ExpressionUtils.MATH_SIGNS.contains(previous) || i== 0)) {
+            String next = i == origin.length()-1 ? "$" : String.valueOf(origin.charAt(i+1));
+            if(VARIABLES.contains(current) && (MATH_SIGNS.contains(previous) || i == 0) && !NUMBERS.contains(next)) {
                 BUILDER.append('1');
             }
-
             BUILDER.append(current);
         }
         return BUILDER.toString();

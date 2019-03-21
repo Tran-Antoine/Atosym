@@ -7,7 +7,7 @@ public class SumTest {
 
     @Test
     public void sum() {
-        Sum sum = new Sum();
+        Adder sum = new Adder();
         Assertions.assertThat(sum.rawOperate("2", "5")).isEqualTo("7");
         Assertions.assertThat(sum.rawOperate("2x", "5")).isEqualTo("2x+5");
         Assertions.assertThat(sum.rawOperate("3x", "5x")).isEqualTo("8x");
@@ -18,8 +18,8 @@ public class SumTest {
 
     @Test
     public void inFormatTest() {
-        Assertions.assertThat(Sum.getInstance().inFormat("5x")).isEqualTo("5x");
-        Assertions.assertThat(Sum.getInstance().inFormat("5x/5")).isEqualTo("1x");
-        Assertions.assertThat(Sum.getInstance().inFormat("3x/4")).isEqualTo("0.75x");
+        Assertions.assertThat(Adder.getInstance().inFormat("5x")).isEqualTo("5x");
+        Assertions.assertThat(Adder.getInstance().inFormat("5x/5")).isEqualTo("1x");
+        Assertions.assertThat(Adder.getInstance().inFormat("3x/4")).isEqualTo("0.75x");
     }
 }

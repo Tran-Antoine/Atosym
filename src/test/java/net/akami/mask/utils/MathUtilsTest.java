@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.Division;
+import net.akami.mask.operation.Divider;
 import net.akami.mask.operation.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class MathUtilsTest {
     @Test
     public void divideTest() {
         Assertions.assertThat(MathUtils.divide("6.4+6.4z", "3.2")).isEqualTo("2+2z");
-        Assertions.assertThat(Division.getInstance().simpleDivision("-2x", "4")).isEqualTo("x/-2");
+        Assertions.assertThat(Divider.getInstance().simpleDivision("-2x", "4")).isEqualTo("x/-2");
     }
 
     @Test
@@ -74,7 +74,7 @@ public class MathUtilsTest {
     @Test
     public void diffPowTest() {
         QuaternaryMathOperation pow = MathUtils::diffPow;
-        Assertions.assertThat(pow.compute("3x", "3", "3", "0")).isEqualTo("3*3x^(2)");
-        Assertions.assertThat(pow.compute("-5x", "-5", "x+1", "1")).isEqualTo("(x+1)*-5x^(x)");
+        Assertions.assertThat(pow.compute("3x", "3", "3", "0")).isEqualTo("3*3x^2*3");
+        Assertions.assertThat(pow.compute("-5x", "-5", "x+1", "1")).isEqualTo("(x+1)*(-5x)^x(-5)");
     }
 }
