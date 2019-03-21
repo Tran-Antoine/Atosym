@@ -17,7 +17,7 @@ public class Multiplication extends BinaryOperationHandler {
 
         LOGGER.error("Operating mult {} * {}", a, b);
         // Means we want to calculate the sin/cos/tan value of 'a'
-        if(ExpressionUtils.isTrigoShortcut(b)) {
+        if(ExpressionUtils.isTrigonometricShortcut(b)) {
             LOGGER.info("Trigonometry calculation with {} and {}", a, b);
             String result = trigonometryOperation(a.isEmpty() ? "0" : a, b);
             LOGGER.info("Trigonometry result : {}", result);
@@ -101,7 +101,7 @@ public class Multiplication extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
-        return ExpressionUtils.addMultShortcut(origin);
+        return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
     public static Multiplication getInstance() {

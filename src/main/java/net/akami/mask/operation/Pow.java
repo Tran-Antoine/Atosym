@@ -48,7 +48,7 @@ public class Pow extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
-        return MathUtils.cutSignificantZero(ExpressionUtils.addMultShortcut(origin));
+        return MathUtils.cutSignificantZero(FormatterFactory.removeMultiplicationSigns(origin));
     }
 
     public static Pow getInstance() {

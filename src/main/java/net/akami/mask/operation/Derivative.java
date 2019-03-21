@@ -1,8 +1,9 @@
 package net.akami.mask.operation;
 
-import net.akami.mask.math.BinaryTree;
-import net.akami.mask.math.BinaryTree.Branch;
+import net.akami.mask.tree.BinaryTree;
+import net.akami.mask.tree.BinaryTree.Branch;
 import net.akami.mask.operation.sign.QuaternaryOperationSign;
+import net.akami.mask.tree.CalculationTree;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -32,8 +33,7 @@ public class Derivative {
     public String differentiate(String origin) {
 
         String formatted = FormatterFactory.formatForCalculations(origin);
-        BinaryTree tree = new BinaryTree();
-        tree.new Branch(formatted);
+        BinaryTree tree = new CalculationTree(formatted);
         return null;
     }
 

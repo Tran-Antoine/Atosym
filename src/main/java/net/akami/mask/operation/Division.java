@@ -1,6 +1,7 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
 import java.math.BigDecimal;
@@ -20,11 +21,7 @@ public class Division extends BinaryOperationHandler {
         LOGGER.info("Division process of {} |/| {}: \n", a, b);
 
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
-            BigDecimal bigA = new BigDecimal(a);
-            BigDecimal bigB = new BigDecimal(b);
-            String result = MathUtils.cutSignificantZero(bigA.divide(bigB, MathContext.DECIMAL128).toString());
-            LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
-            return result;
+            return numericalDivision(a, b);
         }
 
         List<String> numMonomials = ExpressionUtils.toMonomials(a);
@@ -41,6 +38,14 @@ public class Division extends BinaryOperationHandler {
         String divisionResult = String.join("", numMonomials);
         LOGGER.info("++++ Result of division between {} and {} : {}", a, b, divisionResult);
         return divisionResult;
+    }
+
+    private String numericalDivision(String a, String b) {
+        BigDecimal bigA = new BigDecimal(a);
+        BigDecimal bigB = new BigDecimal(b);
+        String result = MathUtils.cutSignificantZero(bigA.divide(bigB, MathContext.DECIMAL128).toString());
+        LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
+        return result;
     }
 
     public String simpleDivision(String a, String b) {
@@ -188,7 +193,7 @@ public class Division extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
-        return ExpressionUtils.addMultShortcut(origin);
+        return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
     public static Division getInstance() {

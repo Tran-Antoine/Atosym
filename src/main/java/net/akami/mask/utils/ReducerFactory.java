@@ -1,8 +1,8 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.exception.MaskException;
 import net.akami.mask.operation.sign.BinaryOperationSign;
-import net.akami.mask.math.BinaryTree;
+import net.akami.mask.tree.BinaryTree;
+import net.akami.mask.tree.CalculationTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,19 +22,17 @@ public class ReducerFactory {
     public static String reduce(String exp) {
         long time = System.nanoTime();
 
-        BinaryTree tree = new BinaryTree();
-
-        // deletes all the spaces, adds the necessary '*'
+        // deletes all the spaces, adds the necessary '*' and formats trigonometry
         String localExp = FormatterFactory.formatForCalculations(exp);
+        BinaryTree tree = new CalculationTree(localExp);
 
-        tree.new Branch(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 
         TreeUtils.printBranches(tree);
         LOGGER.debug("Now merging branches");
         String result;
         try {
-            result = TreeUtils.mergeBranches(tree);
+            result = tree.merge();
         } catch (ArithmeticException | NumberFormatException e) {
             e.printStackTrace();
             if(e instanceof ArithmeticException) {

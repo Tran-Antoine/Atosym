@@ -48,7 +48,7 @@ public class MathUtils {
     public static String diffPow(String a, String altA, String b, String altB) {
         String subtractResult = subtract(b, "1");
         subtractResult = subtractResult.equals("1") ? "" : "^("+subtractResult+")";
-        b = ExpressionUtils.isReduced(b) || ExpressionUtils.areEdgesBracketsConnected(b) ? b+"*" : "("+b+")*";
+        b = ExpressionUtils.isReduced(b) || ExpressionUtils.areEdgesBracketsConnected(b, true) ? b+"*" : "("+b+")*";
         return b+a+subtractResult;
     }
 

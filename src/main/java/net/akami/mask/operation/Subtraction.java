@@ -1,6 +1,7 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class Subtraction extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
-        return ExpressionUtils.addMultShortcut(origin);
+        return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
     public static Subtraction getInstance() {

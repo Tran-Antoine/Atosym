@@ -72,7 +72,7 @@ public class EquationTest {
         Map<Character, String> result1 = EquationSolver.solve(Arrays.asList(b3, b4));
         Assertions.assertThat(result1.get('x')).isEqualTo("1");
         Assertions.assertThat(result1.get('y')).isEqualTo("4");
-
+        
         BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
         BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
         BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));

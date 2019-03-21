@@ -1,5 +1,6 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.operation.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,7 @@ public class ExpressionUtils {
 
     public static List<String> toMonomials(String self) {
 
-        while (ExpressionUtils.areEdgesBracketsConnected(self)) {
+        while (ExpressionUtils.areEdgesBracketsConnected(self, true)) {
             self = self.substring(1, self.length() - 1);
         }
 
@@ -79,7 +80,7 @@ public class ExpressionUtils {
             BUILDER.append(result);
             if (!exponent.equals("1")) {
                 BUILDER.append('^');
-                if (isReduced(exponent) || ExpressionUtils.areEdgesBracketsConnected(exponent)) {
+                if (isReduced(exponent) || ExpressionUtils.areEdgesBracketsConnected(exponent, true)) {
                     BUILDER.append(exponent);
                 } else {
                     BUILDER.append('(').append(exponent).append(')');
@@ -93,8 +94,8 @@ public class ExpressionUtils {
         return exp.contains("@") || exp.contains("#") || exp.contains("§");
     }
 
-    public static boolean isTrigoShortcut(String exp) {
-        return exp.equals("@") || exp.equals("#") || exp.equals("§");
+    public static boolean isTrigonometricShortcut(String exp) {
+        return exp.length() == 1 && TRIGONOMETRY_SHORTCUTS.contains(exp);
     }
 
     /**
@@ -121,7 +122,7 @@ public class ExpressionUtils {
         // Replaces x^2x((x)#) by x^2 * x * ((x)#)
         String result = BUILDER.toString();
         clearBuilder();
-        result = cancelMultShortcut(result);
+        result = FormatterFactory.addMultiplicationSigns(result, false);
 
         String[] varsResult = result.split("\\*");
         // Replaces x by x^1
@@ -165,7 +166,6 @@ public class ExpressionUtils {
                 result.end = exp.length();
             }
         }
-        //removeBrackets(result, exp, index, true);
         LOGGER.debug("Result of group at index {} for {} : {}", index, exp, result.sequence);
         return result;
     }
@@ -194,64 +194,13 @@ public class ExpressionUtils {
             }
         }
 
-        //removeBrackets(result, exp, index, true);
         LOGGER.debug("Sequence {} after pow at index {} found : {}", exp, index, result.sequence);
         return result;
-    }
-
-    public static String keepEachCharacterOnce(String self) {
-        List<String> chars = new ArrayList<>();
-        for (char c : self.toCharArray()) {
-            if (!chars.contains(String.valueOf(c)))
-                chars.add(String.valueOf(c));
-        }
-        return String.join("", chars);
     }
 
     public static boolean isReduced(String self) {
         return !(self.contains("+") || self.contains("-") || self.contains("*") || self.contains("/")
                 || self.contains("^"));
-    }
-
-    private static void clearBuilder() {
-        BUILDER.delete(0, BUILDER.length());
-    }
-
-    public static String cancelMultShortcut(String self) {
-        self = self.replaceAll("\\s", "");
-        clearBuilder();
-
-        for (int i = 0; i < self.length(); i++) {
-            String c = String.valueOf(self.charAt(i));
-            boolean isVar = ExpressionUtils.VARIABLES.contains(c);
-
-            if (isVar && i != 0 && !ExpressionUtils.MATH_SIGNS.contains(String.valueOf(self.charAt(i - 1)))) {
-                BUILDER.append("*").append(c);
-            } else if (i != 0 && c.equals("(") &&
-                    (self.charAt(i - 1) == ')' || !MATH_SIGNS.contains(String.valueOf(self.charAt(i - 1))))) {
-                BUILDER.append("*").append(c);
-            } else if (i != 0 && self.charAt(i - 1) == ')' && !MATH_SIGNS.contains(c) && !TRIGONOMETRY_SHORTCUTS.contains(c)) {
-                BUILDER.append("*").append(c);
-            } else {
-                BUILDER.append(c);
-            }
-        }
-        LOGGER.error("Converted : " + self + " to " + BUILDER.toString());
-        return BUILDER.toString();
-    }
-
-    public static String addMultShortcut(String self) {
-        clearBuilder();
-        BUILDER.append(self);
-        for (int i = 1; i < self.length() - 1; i++) {
-            char c = self.charAt(i);
-
-            if (c == '*' && VARIABLES.contains(String.valueOf(self.charAt(i + 1)))) {
-                BUILDER.setCharAt(i, '$');
-            }
-
-        }
-        return BUILDER.toString().replace("$", "");
     }
 
     public static String toVariablesType(List<EquationSolver.BiMask> biMasks) {
@@ -302,9 +251,10 @@ public class ExpressionUtils {
      * @return
      */
     public static List<String> decompose(String exp) {
+
         LOGGER.info("Now decomposing expression {}", exp);
         List<String> elements = new ArrayList<>();
-        elements.addAll(Arrays.asList(cancelMultShortcut(exp).split("\\*")));
+        elements.addAll(Arrays.asList(FormatterFactory.addMultiplicationSigns(exp, false).split("\\*")));
         List<String> decomposedElements = new ArrayList<>();
         // We can't use a classic for each loop since the size of the list will be modified
         for (int i = 0; i < elements.size(); i++) {
@@ -314,11 +264,8 @@ public class ExpressionUtils {
                 LOGGER.info("Decomposed {}, result : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
-            } else {
-                LOGGER.debug("{} is not a number", element);
-                if (element.length() > 2 && element.charAt(1) == '^') {
-                    decomposePoweredVariable(element, i, elements, decomposedElements);
-                }
+            } else if (!isExpressionTrigonometric(element) && element.length() > 2 && element.charAt(1) == '^') {
+                decomposePoweredVariable(element, i, elements, decomposedElements);
             }
         }
         elements.addAll(decomposedElements);
@@ -329,7 +276,7 @@ public class ExpressionUtils {
 
     private static void decomposePoweredVariable(String origin, int i, List<String> in, List<String> out) {
         String exponent = origin.substring(2);
-        while (ExpressionUtils.areEdgesBracketsConnected(exponent))
+        while (ExpressionUtils.areEdgesBracketsConnected(exponent, true))
             exponent = exponent.substring(1, exponent.length() - 1);
         if (ExpressionUtils.isANumber(exponent)) {
             float exponentValue = Float.parseFloat(exponent);
@@ -397,12 +344,13 @@ public class ExpressionUtils {
         return exp.charAt(0) == '+' || exp.charAt(0) == '-';
     }
 
-    public static boolean areEdgesBracketsConnected(String exp) {
+    public static boolean areEdgesBracketsConnected(String exp, boolean falseIfTrigonometry) {
         if (exp.isEmpty() || exp.charAt(0) != '(') {
             return false;
         }
 
-        if(exp.length() > 1 && ExpressionUtils.TRIGONOMETRY_SHORTCUTS.contains(String.valueOf(exp.charAt(exp.length()-2)))) {
+        if(exp.length() > 1 &&
+                ExpressionUtils.isExpressionTrigonometric(String.valueOf(exp.charAt(exp.length()-2))) && falseIfTrigonometry) {
             return false;
         }
 
@@ -452,6 +400,55 @@ public class ExpressionUtils {
         return false;
     }
 
+    public static String toNumericValue(String exp) {
+        if (exp.isEmpty())
+            return "0";
+
+        exp = FormatterFactory.addAllCoefficients(FormatterFactory.removeMultiplicationSigns(exp))
+                // deletes trigonometry stuff
+                .replaceAll("\\(\\(.+\\)([@#§])\\)"+"(\\^([0-9.]+|((1|)[a-zA-DF-Z]))|)", "")
+                // deletes variables + their pow value
+                .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
+                .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")
+                .replaceAll("\\s", "");
+
+        if (exp.equals("-") || exp.equals("+") || exp.isEmpty()) {
+            exp = exp + "1";
+        }
+
+        if(exp.contains("/")) {
+            String[] parts = exp.split("/", 2);
+            return MathUtils.divide(parts[0], parts[1]);
+        }
+
+        return exp;
+    }
+
+    public static String removeEdgeBrackets(String exp) {
+        while(areEdgesBracketsConnected(exp, false))
+            exp = exp.substring(1, exp.length()-1);
+        return exp;
+    }
+
+    public static boolean hasHigherPriority(String a, String b) {
+        return levelFor(a) > levelFor(b);
+    }
+
+    private static int levelFor(String self) {
+        int level = 3;
+
+        for(char c : self.toCharArray()) {
+            BinaryOperationSign sign = BinaryOperationSign.getBySign(c);
+            if(sign == null) continue;
+
+            int cLevel = sign.getPriorityLevel();
+
+            if(level > cLevel)
+                level = cLevel;
+        }
+        return level;
+    }
+
     public static class SequenceCalculationResult {
         private String sequence;
         private int start;
@@ -470,22 +467,7 @@ public class ExpressionUtils {
         }
     }
 
-    public static String toNumericValue(String exp) {
-        if (exp.isEmpty())
-            return "0";
-
-        exp = ExpressionUtils.addMultShortcut(exp)
-                // deletes trigonometry stuff
-                .replaceAll("\\(\\(.+\\)([@#§])\\)"+"(\\^([0-9.]+|((1|)[a-zA-DF-Z]))|)", "")
-                // deletes variables + their pow value
-                .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
-                .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")
-                .replaceAll("\\s", "");
-
-        if (exp.equals("-") || exp.equals("+")) {
-            exp = exp + "1";
-        }
-
-        return exp.isEmpty() || exp.startsWith("/") ? "1" + exp : exp;
+    private static void clearBuilder() {
+        BUILDER.delete(0, BUILDER.length());
     }
 }

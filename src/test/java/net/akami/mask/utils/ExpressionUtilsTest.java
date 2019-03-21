@@ -16,11 +16,11 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toNumericValue("5x")).isEqualTo("5");
         Assertions.assertThat(toNumericValue("0.3xyz")).isEqualTo("0.3");
         Assertions.assertThat(toNumericValue("x^2")).isEqualTo("1");
-        Assertions.assertThat(toNumericValue("3x/2")).isEqualTo("3/2");
-        Assertions.assertThat(toNumericValue("x/3")).isEqualTo("1/3");
+        Assertions.assertThat(toNumericValue("3x/2")).isEqualTo("1.5");
+        Assertions.assertThat(toNumericValue("x/3")).isEqualTo("0.3333333333333333333333333333333333");
         Assertions.assertThat(toNumericValue("-3x")).isEqualTo("-3");
         Assertions.assertThat(toNumericValue("-1")).isEqualTo("-1");
-        Assertions.assertThat(toNumericValue("2*y/3")).isEqualTo("2/3");
+        Assertions.assertThat(toNumericValue("2*y/3")).isEqualTo("0.6666666666666666666666666666666667");
         Assertions.assertThat(toNumericValue("0.4")).isEqualTo("0.4");
         Assertions.assertThat(toNumericValue("3x^(2y+1)")).isEqualTo("3");
         Assertions.assertThat(toNumericValue("3((x)@)")).isEqualTo("3");
@@ -37,7 +37,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void cancelMultShortcutTest() {
-        Assertions.assertThat(ExpressionUtils.cancelMultShortcut("3x*(4x^2-3x) + 3/4")).isEqualTo("3*x*(4*x^2-3*x)+3/4");
+        Assertions.assertThat(FormatterFactory.addMultiplicationSigns("3x*(4x^2-3x) + 3/4", false)).isEqualTo("3*x*(4*x^2-3*x)+3/4");
     }
 
     @Test

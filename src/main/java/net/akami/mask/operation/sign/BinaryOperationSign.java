@@ -6,23 +6,29 @@ import java.util.Objects;
 
 public enum BinaryOperationSign {
 
-    SUM('+', MathUtils::sum),
-    SUBTRACT('-', MathUtils::subtract),
-    MULT('*', MathUtils::mult),
-    DIVIDE('/', MathUtils::divide),
-    POW('^', MathUtils::pow),
-    NONE(' ', null);
+    SUM('+', MathUtils::sum, 0),
+    SUBTRACT('-', MathUtils::subtract, 0),
+    MULT('*', MathUtils::mult, 1),
+    DIVIDE('/', MathUtils::divide, 1),
+    POW('^', MathUtils::pow, 2),
+    NONE(' ', null, 2);
 
     private char sign;
     private BinaryMathOperation binaryFunction;
+    private int priorityLevel;
 
-    BinaryOperationSign(char sign, BinaryMathOperation function) {
+    BinaryOperationSign(char sign, BinaryMathOperation function, int priorityLevel) {
         this.sign = sign;
         this.binaryFunction = function;
+        this.priorityLevel = priorityLevel;
     }
 
     public char getSign() {
         return sign;
+    }
+
+    public int getPriorityLevel() {
+        return priorityLevel;
     }
 
     public String compute(String a, String b) {

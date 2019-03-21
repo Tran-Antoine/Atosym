@@ -3,6 +3,7 @@ package net.akami.mask.structure;
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 import org.slf4j.Logger;
@@ -129,7 +130,7 @@ public class EquationSolver {
         String numericLeftValue = ExpressionUtils.toNumericValue(MathUtils.sum(leftMonomials));
         String rightValue = MathUtils.sum(rightMonomials);
         LOGGER.info("Final step : dividing {} by {}", rightValue, numericLeftValue);
-        return ExpressionUtils.addMultShortcut(MathUtils.divide(rightValue, numericLeftValue));
+        return FormatterFactory.removeMultiplicationSigns(MathUtils.divide(rightValue, numericLeftValue));
     }
 
     private static void replaceExistingSolutions(List<String> target, char var, Map<Character, String> solutions) {

@@ -147,7 +147,7 @@ public class Sum extends BinaryOperationHandler {
     private void replaceMonomialsByResult(String initialMonomial, String vars, int index, Map<BigDecimal, Integer> others,
                                           List<String> initialMonomials, List<String> finalMonomials) {
         LOGGER.debug("Init : {}, Final : {}. Vars : {}", initialMonomial, finalMonomials, vars);
-        while(ExpressionUtils.areEdgesBracketsConnected(initialMonomial))
+        while(ExpressionUtils.areEdgesBracketsConnected(initialMonomial, true))
             initialMonomial = initialMonomial.substring(1, initialMonomial.length()-1);
         LOGGER.info("Numeric value of {} : {}", initialMonomial, ExpressionUtils.toNumericValue(initialMonomial));
         BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(initialMonomial));
@@ -184,7 +184,7 @@ public class Sum extends BinaryOperationHandler {
             LOGGER.debug("RETURNED 0");
             return "0";
         }
-        return ExpressionUtils.addMultShortcut(origin);
+        return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
     public static Sum getInstance() {

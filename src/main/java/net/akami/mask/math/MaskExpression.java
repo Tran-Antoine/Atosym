@@ -76,8 +76,9 @@ public class MaskExpression {
             this.expression = "undefined";
             this.variables = new char[]{};
         } else {
-            this.expression = FormatterFactory.formatTrigonometry(ExpressionUtils.cancelMultShortcut(newExp.replaceAll("\\s", "")));
-            this.expression = ExpressionUtils.addMultShortcut(this.expression);
+            this.expression = FormatterFactory.formatTrigonometry(FormatterFactory.addMultiplicationSigns(newExp
+                    .replaceAll("\\s", ""), false));
+            this.expression = FormatterFactory.removeMultiplicationSigns(this.expression);
             System.out.println("Expression found : "+this.expression);
             checkExpressionValidity();
             this.variables = createVariables();
