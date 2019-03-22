@@ -12,15 +12,15 @@ public class Branch<T extends Branch> {
     private String reducedValue;
 
     public Branch(String expression) {
-        this.expression = deleteUselessBrackets(expression);
+        this.expression = branchFormat(expression);
         reduced = false;
     }
 
-    private String deleteUselessBrackets(String exp) {
-        while(ExpressionUtils.areEdgesBracketsConnected(exp, false)) {
-            exp = exp.substring(1, exp.length()-1);
+    protected String branchFormat(String initial) {
+        while(ExpressionUtils.areEdgesBracketsConnected(initial, true)) {
+            initial = initial.substring(1, initial.length()-1);
         }
-        return exp;
+        return initial;
     }
 
     @Override

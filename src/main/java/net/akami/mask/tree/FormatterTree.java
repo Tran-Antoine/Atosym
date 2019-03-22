@@ -3,19 +3,19 @@ package net.akami.mask.tree;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
-public class FormatterTree extends CalculationTree<Branch> {
+public class FormatterTree extends CalculationTree<FormatterBranch> {
 
     public FormatterTree(String initial) {
         super(FormatterFactory.addMultiplicationSigns(ExpressionUtils.removeEdgeBrackets(initial), true));
     }
 
     @Override
-    protected Branch generate(String origin) {
-        return new Branch(origin);
+    protected FormatterBranch generate(String origin) {
+        return new FormatterBranch(origin);
     }
 
     @Override
-    protected void evalBranch(Branch self) {
+    protected void evalBranch(FormatterBranch self) {
 
         String left = self.getLeftValue();
         String right = self.getRightValue();

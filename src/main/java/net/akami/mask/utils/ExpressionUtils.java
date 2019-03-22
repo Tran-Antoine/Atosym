@@ -407,6 +407,7 @@ public class ExpressionUtils {
         exp = FormatterFactory.addAllCoefficients(FormatterFactory.removeMultiplicationSigns(exp))
                 // deletes trigonometry stuff
                 .replaceAll("\\(\\(.+\\)([@#§])\\)"+"(\\^([0-9.]+|((1|)[a-zA-DF-Z]))|)", "")
+                .replaceAll("\\(.+\\)([@#§])"+"(\\^([0-9.]+|((1|)[a-zA-DF-Z]))|)", "")
                 // deletes variables + their pow value
                 .replaceAll("[a-zA-DF-Z]\\^(([a-zA-DF-Z0-9^]+)|\\((.+\\)))", "")
                 .replaceAll("(\\*[a-zA-DF-Z])|[a-zA-DF-Z]", "")

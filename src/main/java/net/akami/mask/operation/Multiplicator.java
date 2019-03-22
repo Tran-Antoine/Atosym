@@ -65,9 +65,10 @@ public class Multiplicator extends BinaryOperationHandler {
         String concatenated = a + "*" + b;
         String originalVars = ExpressionUtils.toVariables(concatenated);
         LOGGER.debug("Variables of {} and {} : {}", a, b, originalVars);
+        LOGGER.error("Numeric value of {} and {}", a, b);
         a = ExpressionUtils.toNumericValue(a);
         b = ExpressionUtils.toNumericValue(b);
-
+        LOGGER.error("are {} and {}", a, b);
         BigDecimal aValue = new BigDecimal(a);
         BigDecimal bValue = new BigDecimal(b);
         String floatResult = MathUtils.cutSignificantZero(aValue.multiply(bValue, CONTEXT).toString());
