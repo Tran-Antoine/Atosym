@@ -4,19 +4,14 @@ import net.akami.mask.operation.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.MathContext;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import net.akami.mask.utils.ExpressionUtils.SequenceCalculationResult;
 
 // TODO : add more temporary variables
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
-    private static final StringBuilder BUILDER = new StringBuilder();
-    private static final MathContext TRIGO_CONTEXT = new MathContext(4);
 
     public static String sum(String a, String b) {
         return Adder.getInstance().rawOperate(a, b);
@@ -104,14 +99,8 @@ public class MathUtils {
         }
         return "("+a+")"+opChar;
     }
-    /**
-     * Method currently in development. Do not use
-     *
-     * @param a
-     * @param b
-     * @return
-     */
-    public static String highPow(String a, String b) {
+
+    /*public static String highPow(String a, String b) {
         String aVars = ExpressionUtils.toVariables(a);
         String bVars = ExpressionUtils.toVariables(b);
 
@@ -179,7 +168,7 @@ public class MathUtils {
             }
         }
         return finalResult.toString();
-    }
+    }*/
 
     public static String roundPeriodicSeries(String value) {
         if(!value.contains(".")) return value;
@@ -198,8 +187,61 @@ public class MathUtils {
         return self.endsWith(".0") ? self.substring(0, self.length() - 2) : self;
     }
 
-    private static void clearBuilder() {
-        BUILDER.delete(0, BUILDER.length());
+    /**
+     * The reason why it returns an array of strings instead of an array of integers is that
+     * it is easier to deal with strings during the reduction process
+     * @param self the number to decompose
+     * @return a list of strings being the divided version of the given parameter
+     */
+    public static List<String> decomposeNumber(float self) {
+        LOGGER.info("Now decomposing float {}", self);
+
+        List<String> results = new ArrayList<>();
+        if (self % 1 != 0) {
+            LOGGER.info("Non-integer given, returns it");
+            results.add(String.valueOf(self));
+            return results;
+        }
+        if (self < 0) {
+            results.add("-1");
+            self *= -1;
+        }
+
+        List<Integer> dividers = getDividers(self);
+
+        int index = 0;
+        while (index < dividers.size()) {
+            int divider = dividers.get(index);
+            if (self % divider == 0) {
+                LOGGER.error("{} is a divider of {}", divider, self);
+                results.add(String.valueOf(divider));
+                self /= divider;
+            } else {
+                LOGGER.error("{} is not a divider of {}", divider, self);
+                index++;
+            }
+        }
+        LOGGER.error("Result : {}", results);
+        return results;
+    }
+
+    public static List<Integer> getDividers(float self) {
+        List<Integer> dividers = new ArrayList<>();
+        // Builds the dividers array
+        for (int i = 2; i <= self; i++) {
+            boolean unique = true;
+            for (int j = 2; j < i; j++) {
+                if (i % j == 0 && (j != i && i != 2)) {
+                    unique = false;
+                    break;
+                }
+            }
+            if (unique) {
+                dividers.add(i);
+                continue;
+            }
+        }
+        return dividers;
     }
 
     @FunctionalInterface

@@ -94,9 +94,8 @@ public class Multiplicator extends BinaryOperationHandler {
 
     @Override
     public String inFormat(String origin) {
-        LOGGER.info("Formatting : {}", origin);
         String result = FormatterFactory.removeFractions(origin);
-        LOGGER.info("{} became {}", origin, result);
+        LOGGER.debug("{} became {}", origin, result);
         return result;
     }
 

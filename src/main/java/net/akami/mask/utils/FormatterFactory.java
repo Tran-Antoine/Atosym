@@ -1,15 +1,12 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.tree.BinaryTree;
-import net.akami.mask.tree.Branch;
 import net.akami.mask.tree.FormatterTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import static net.akami.mask.utils.ExpressionUtils.MATH_SIGNS;
-import static net.akami.mask.utils.ExpressionUtils.VARIABLES;
-import static net.akami.mask.utils.ExpressionUtils.NUMBERS;
+import static net.akami.mask.utils.ExpressionUtils.*;
 
 public class FormatterFactory {
 
@@ -17,32 +14,31 @@ public class FormatterFactory {
     private static final StringBuilder BUILDER = new StringBuilder();
 
     public static String removeFractions(String origin) {
-        if(!origin.contains("/"))
+        // Avoids pointless instructions
+        if(!origin.contains("/") || ExpressionUtils.isExpressionTrigonometric(origin))
             return origin;
 
-        while(ExpressionUtils.areEdgesBracketsConnected(origin, true)) {
-            LOGGER.info("{} has connected brackets", origin);
-            origin = origin.substring(1, origin.length() - 1);
-        }
-        if (ExpressionUtils.isTrigonometricShortcut(origin))
-            return origin;
+        origin = ExpressionUtils.removeEdgeBrackets(origin, false);
 
         StringBuilder builder = new StringBuilder();
         List<String> monomials = ExpressionUtils.toMonomials(origin);
         for (String monomial : monomials) {
-            String vars = ExpressionUtils.toVariables(monomial);
-            LOGGER.debug("Vars from {} : {}", origin, vars);
-            String numericValue = ExpressionUtils.toNumericValue(monomial);
-            LOGGER.debug("Treating {}, vars : {}, numericValue : {}", monomial, vars, numericValue);
-            if (builder.length() != 0 && !ExpressionUtils.isSigned(numericValue)) {
-                builder.append('+');
-            }
-            builder.append(MathUtils.breakNumericalFraction(numericValue)).append(vars);
+            removeMonomialFraction(monomial, builder);
         }
         if(builder.length() == 0)
             builder.append(0);
         LOGGER.debug("Removed the fractions, {} became {}", origin, builder);
         return builder.toString();
+    }
+
+    private static void removeMonomialFraction(String monomial, StringBuilder builder) {
+        String vars = ExpressionUtils.toVariables(monomial);
+        String numericValue = ExpressionUtils.toNumericValue(monomial);
+        LOGGER.debug("Treating {}, vars : {}, numericValue : {}", monomial, vars, numericValue);
+        if (builder.length() != 0 && !ExpressionUtils.isSigned(numericValue)) {
+            builder.append('+');
+        }
+        builder.append(MathUtils.breakNumericalFraction(numericValue)).append(vars);
     }
 
     public static String formatForCalculations(String origin) {
@@ -59,7 +55,6 @@ public class FormatterFactory {
         return origin;
     }
 
-    // TODO : remove 1's in front of variables, remove useless brackets
     public static String formatForVisual(String origin) {
         BinaryTree tree = new FormatterTree(origin);
         return tree.merge();

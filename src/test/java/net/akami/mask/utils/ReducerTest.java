@@ -101,17 +101,6 @@ public class ReducerTest {
 
     }
 
-
-    @Test
-    public void groupingWorks() {
-        ExpressionUtils.SequenceCalculationResult r1 = ExpressionUtils.groupAfter(1, "3^(4+x)");
-        ExpressionUtils.SequenceCalculationResult r2 = ExpressionUtils.groupAfter(1, "3^9876");
-        Assertions.assertThat(r1.getStart()).isEqualTo(3);
-        Assertions.assertThat(r1.getEnd()).isEqualTo(6);
-        Assertions.assertThat(r2.getStart()).isEqualTo(2);
-        Assertions.assertThat(r2.getEnd()).isEqualTo(6);
-    }
-
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test
@@ -123,7 +112,7 @@ public class ReducerTest {
         Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
 
         StringBuilder builder = new StringBuilder();
-        ExpressionUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
+        MathUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
         builder.deleteCharAt(builder.length()-1);
         Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
     }

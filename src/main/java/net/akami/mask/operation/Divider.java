@@ -28,6 +28,10 @@ public class Divider extends BinaryOperationHandler {
         String unsignedB = b.substring(1);
         if(unsignedB.contains("+") || unsignedB.contains("-")) {
             LOGGER.error("Unable to calculate a division, the denominator being a polynomial. Returns a/b");
+            if(!ExpressionUtils.isReduced(a))
+                a = '(' + a + ')';
+            if(!ExpressionUtils.isReduced(b))
+                b = '(' + b + ')';
             return a+"/"+b;
         }
 
@@ -200,7 +204,8 @@ public class Divider extends BinaryOperationHandler {
 
     @Override
     public String outFormat(String origin) {
-        return FormatterFactory.removeMultiplicationSigns(origin);
+        origin = FormatterFactory.removeMultiplicationSigns(origin);
+        return origin;
     }
 
     public static Divider getInstance() {
