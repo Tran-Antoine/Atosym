@@ -11,7 +11,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
     }
 
     @Override
-    protected void create(T self) {
+    protected void begin(T self) {
         for (int i = 0; i < getSplitters().length; i += 2) {
             split(self, getSplitters()[i], getSplitters()[i + 1]);
         }

@@ -2,6 +2,10 @@ package net.akami.mask.tree;
 
 import net.akami.mask.utils.ExpressionUtils;
 
+/**
+ *
+ * @param <T> must be the kind of branch itself, except if the children are different kind of branches
+ */
 public class Branch<T extends Branch> {
 
     private T left;

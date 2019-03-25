@@ -4,20 +4,16 @@ import net.akami.mask.exception.MaskException;
 import net.akami.mask.math.MaskExpression;
 import net.akami.mask.tree.DerivativeTree;
 import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 public class MaskOperator {
 
-    public static final String NON_VARIABLES = "0123456789+-*=^.";
     private static final MaskOperator instance = new MaskOperator();
 
     private MaskExpression mask;
-
-
+    
     /**
      * Gets the static instance of {@link MaskOperator}, though no {@link MaskExpression} will be used by default
      * @return the static instance of {@link MaskOperator}

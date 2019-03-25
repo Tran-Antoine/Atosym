@@ -11,11 +11,11 @@ import java.util.Optional;
 /**
  * A Binary tree handles branch splitting, evaluating and merging with the given behaviours. <br/> <br/>
  * When instantiating a BinaryTree, note that the splitting should automatically and instantly be performed
- * in the {@link BinaryTree#create(Branch)}, starting off with the given branch. <br/>
- * This {@link BinaryTree#create(Branch)} method must define how a branch must be divided according to ALL the splitters, whereas
+ * in the {@link BinaryTree#begin(Branch)}, starting off with the given branch. <br/>
+ * This {@link BinaryTree#begin(Branch)} method must define how a branch must be divided according to ALL the splitters, whereas
  * {@link BinaryTree#split(Branch, char...)} defines how each branch must be divided, according to the splitter(s) given.
  * <br/> <br/>
- * In other words, the create method defines how and with which parameter the split method will be called.
+ * In other words, the begin method defines how and with which parameter the split method will be called.
  *
  * @param <T> what kind of branch will be handled by the tree.
  * @author Antoine Tran
@@ -26,18 +26,38 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     private List<T> branches;
     private char[] splitters;
 
+    /**
+     * Available constructor for any binary tree. Note that as soon as the tree is created, the splitting will
+     * automatically begin.
+     * @param expression the initial expression that forms the top of the tree
+     * @param splitters the chars used to split the tree, see {@link BinaryTree#begin(Branch)} for further information.
+     */
     public BinaryTree(String expression, char... splitters) {
         this.branches = new ArrayList<>();
         this.splitters = splitters;
         load(expression);
     }
 
+    /**
+     * Loads a new branch for the given expression. Note that {@link BinaryTree#generate(String)} should
+     * never be used outside binary classes, since it should only return a branch from the given expression, whereas
+     * the load() method performs necessary actions for splitting the tree.
+     * @param expression
+     * @return a branch created from the expression given
+     */
     public T load(String expression) {
         T initial = generate(expression);
         branches.add(initial);
-        create(initial);
+        begin(initial);
         return initial;
     }
+
+    /**
+     * Defines how the splitting of a defined branch must be planned. <br/>
+     * In other words, begin must call the split() method one or more times according to the different splitters.
+     * @param self the branch itself
+     */
+    protected abstract void begin(T self);
 
     /**
      * Defines how each branch must be split. Note that checks concerning size / values of the char array are
@@ -46,16 +66,29 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * @param by the 'splitters', which are used to determine the left and right part of the branch
      */
     protected abstract void split(T self, char... by);
-    protected abstract void create(T self);
+
+    /**
+     * @param origin the string the branch must be based on
+     * @return a branch getting along with the tree, from the origin given
+     */
     protected abstract T generate(String origin);
 
     /**
+     * Defines how a branch must be evaluated.
      * Note that if the branch type used hasn't redefined the canBeEvaluated method, you are guaranteed that
      * the branch has a left and a right part.
-     * @param self
+     * @param self the branch itself
      */
     protected abstract void evalBranch(T self);
 
+    /**
+     * Merges the whole tree. The usual behavior is to go from the last branch to the first one,
+     * see if the current actually is calculable, and if yes then calls the {@link BinaryTree#evalBranch(Branch)}
+     * method. <br/>
+     * If the finalResult method does not return an empty optional, the value found is returned <br/>
+     * Note that the merge method can be redefined if the behavior does not suits the tree.
+     * @return the reduced value of the first branch, while finalResult() is not redefined
+     */
     public String merge() {
         /*
         If we give a very simple expression such as '50' to the reducer, it will detect that no operation
@@ -79,6 +112,8 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
             }
 
             evalBranch(self);
+            if(self.getReducedValue() != null && self.getReducedValue().equals("Infinity"))
+                throw new ArithmeticException("Infinity value found");
 
             if(finalResult().isPresent()) {
                 return finalResult().get();
@@ -87,12 +122,13 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
         return null;
     }
 
+    /**
+     * Defines whether the final result has been calculated or not.
+     * @return the final result if calculated, otherwise an empty optional-
+     */
     public Optional<String> finalResult() {
         T first = getBranches().get(0);
         if (first.hasReducedValue()) {
-            if (String.valueOf(first.getReducedValue()).equals("Infinity"))
-                throw new ArithmeticException();
-
             return Optional.of(String.valueOf(first.getReducedValue()));
         }
         return Optional.empty();
