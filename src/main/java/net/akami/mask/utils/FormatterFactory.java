@@ -15,7 +15,7 @@ public class FormatterFactory {
 
     public static String removeFractions(String origin) {
         // Avoids pointless instructions
-        if(!origin.contains("/") || ExpressionUtils.isExpressionTrigonometric(origin))
+        if(!origin.contains("/") || ExpressionUtils.isTrigonometric(origin))
             return origin;
 
         origin = ExpressionUtils.removeEdgeBrackets(origin, false);

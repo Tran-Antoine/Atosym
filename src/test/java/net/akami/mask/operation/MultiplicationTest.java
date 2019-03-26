@@ -1,5 +1,6 @@
 package net.akami.mask.operation;
 
+import net.akami.mask.handler.Multiplicator;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.sign.BinaryOperationSign;
+import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,7 +90,7 @@ public class ExpressionUtils {
         return BUILDER.toString();
     }
 
-    public static boolean isExpressionTrigonometric(String exp) {
+    public static boolean isTrigonometric(String exp) {
         return exp.contains("@") || exp.contains("#") || exp.contains("§");
     }
 
@@ -201,7 +201,7 @@ public class ExpressionUtils {
                 LOGGER.info("Decomposed {}, result : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
-            } else if (!isExpressionTrigonometric(element) && element.length() > 2 && element.charAt(1) == '^') {
+            } else if (!isTrigonometric(element) && element.length() > 2 && element.charAt(1) == '^') {
                 decomposePoweredVariable(element, i, elements, decomposedElements);
             }
         }
@@ -230,7 +230,7 @@ public class ExpressionUtils {
     public static boolean isANumber(String exp) {
         if (exp.length() == 0)
             return false;
-        return exp.substring(1).matches("[\\d.]+") || NUMBERS.contains(exp);
+        return exp.substring(1).matches("[\\d]+(.[\\d]+|)") || NUMBERS.contains(exp);
     }
 
     public static boolean isSigned(String exp) {
@@ -243,7 +243,7 @@ public class ExpressionUtils {
         }
 
         if(exp.length() > 1 &&
-                ExpressionUtils.isExpressionTrigonometric(String.valueOf(exp.charAt(exp.length()-2))) && falseIfTrigonometry) {
+                ExpressionUtils.isTrigonometric(String.valueOf(exp.charAt(exp.length()-2))) && falseIfTrigonometry) {
             return false;
         }
 

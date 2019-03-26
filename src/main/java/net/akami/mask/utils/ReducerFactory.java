@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.sign.BinaryOperationSign;
+import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.tree.BinaryTree;
 import net.akami.mask.tree.Branch;
 import net.akami.mask.tree.Reducer;

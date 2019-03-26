@@ -1,7 +1,7 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.Divider;
-import net.akami.mask.operation.sign.QuaternaryOperationSign.QuaternaryMathOperation;
+import net.akami.mask.handler.Divider;
+import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

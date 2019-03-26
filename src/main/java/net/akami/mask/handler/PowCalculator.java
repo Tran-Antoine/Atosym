@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
@@ -25,7 +25,7 @@ public class PowCalculator extends BinaryOperationHandler {
         // If pow value is too high, there is no point in developing the entire expression
         if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199 ||
                 (aVars.length() != 0 && powValue % 1 != 0)) {
-            LOGGER.info("PowCalculator value contains variables or pow value is greater than 199. Returns a^b");
+            LOGGER.info("Pow value contains variables or pow value is greater than 199. Returns a^b");
             a = ExpressionUtils.isReduced(a) ? a : "(" + a + ")";
             b = ExpressionUtils.isReduced(b) ? b : "(" + b + ")";
             return a + "^" + b;

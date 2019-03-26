@@ -28,6 +28,9 @@ public class EquationSolver {
     public static Map<Character, String> solve(List<BiMask> biMasks) {
         MaskOperator op = MaskOperator.begin();
         for(BiMask biMask : biMasks) {
+            if(ExpressionUtils.getMaximalNumericPower(biMask.left.getExpression()+'='+biMask.right.getExpression()) > 1)
+                throw new IllegalStateException("Cannot solve squared or more equations");
+
             op.reduce(biMask.left, biMask.left).reduce(biMask.right, biMask.right);
         }
 

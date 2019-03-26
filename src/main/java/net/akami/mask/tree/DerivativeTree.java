@@ -1,7 +1,7 @@
 package net.akami.mask.tree;
 
-import net.akami.mask.operation.sign.BinaryOperationSign;
-import net.akami.mask.operation.sign.QuaternaryOperationSign;
+import net.akami.mask.handler.sign.BinaryOperationSign;
+import net.akami.mask.handler.sign.QuaternaryOperationSign;
 import net.akami.mask.utils.FormatterFactory;
 
 import java.util.Optional;

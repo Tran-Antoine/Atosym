@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.*;
+import net.akami.mask.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,7 +94,7 @@ public class MathUtils {
 
     public static String trigonometryOperation(String a, char opChar, UnaryOperation operation) {
         if(ExpressionUtils.isANumber(a)) {
-            double result = operation.compute(Math.toRadians(Double.valueOf(a)));
+            double result = operation.compute(Double.valueOf(a));
             return String.valueOf(result > 10E-15 ? result : 0);
         }
         return "("+a+")"+opChar;

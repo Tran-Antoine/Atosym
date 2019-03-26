@@ -1,9 +1,21 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public abstract class BinaryOperationHandler {
+
+    public static final BinaryOperationHandler[] DEFAULT_OPERATIONS = {
+            new Adder(),
+            new Subtractor(),
+            new Multiplicator(),
+            new Divider(),
+            new PowCalculator()
+    };
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
     protected final StringBuilder BUILDER = new StringBuilder();
