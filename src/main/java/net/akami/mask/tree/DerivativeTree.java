@@ -33,7 +33,9 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
         String derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
-        self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right));
+        // It can avoid a long execution time. The initial branch does not need a reduced value
+        if(getBranches().indexOf(self) != 0)
+            self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right));
         self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 

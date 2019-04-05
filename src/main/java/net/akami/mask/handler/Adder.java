@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -10,9 +11,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Adder extends BinaryOperationHandler {
+public class Adder extends BinaryOperation {
 
     private static final Adder INSTANCE = new Adder();
+
+    public Adder() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Adder(MaskContext context) {
+        super('+', context);
+    }
 
     @Override
     public String operate(String a, String b) {
@@ -58,7 +67,6 @@ public class Adder extends BinaryOperationHandler {
         return needsFormatting ? outFormat(result) : result;
     }
 
-    // TODO : Stop using this map
     private void fillMonomialList(String monomial, int i, List<String> initialMonomials, List<String> finalMonomials) {
         String vars = ExpressionUtils.toVariables(monomial);
         LOGGER.debug("Analyzing monomial {} : {}, found \"{}\" as variables", i, monomial, vars);

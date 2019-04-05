@@ -1,12 +1,21 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
-public class PowCalculator extends BinaryOperationHandler {
+public class PowCalculator extends BinaryOperation {
 
     private static final PowCalculator INSTANCE = new PowCalculator();
+
+    public PowCalculator() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public PowCalculator(MaskContext context) {
+        super('^', context);
+    }
 
     @Override
     public String operate(String a, String b) {

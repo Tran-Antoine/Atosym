@@ -174,7 +174,7 @@ public class MathUtils {
         if(!value.contains(".")) return value;
 
         String[] parts = value.split("\\.");
-        if(parts[1].matches("[9]+")) {
+        if(parts[1].matches("[9]+") && parts[1].length() > 15) {
             return String.valueOf(Integer.parseInt(parts[0]) + 1);
         }
         if(parts[1].matches("[0]+"))

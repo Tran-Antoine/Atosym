@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -8,10 +9,19 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Multiplicator extends BinaryOperationHandler {
+public class Multiplicator extends BinaryOperation {
 
     private static final Multiplicator INSTANCE = new Multiplicator();
     private static final MathContext CONTEXT = new MathContext(120);
+
+    public Multiplicator() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Multiplicator(MaskContext context) {
+        super('*', context);
+    }
+
     @Override
     protected String operate(String a, String b) {
 

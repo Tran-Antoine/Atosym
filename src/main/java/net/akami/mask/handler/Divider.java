@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -8,10 +9,18 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Divider extends BinaryOperationHandler {
+public class Divider extends BinaryOperation {
 
     private static final Divider INSTANCE = new Divider();
     private static final MathContext CONTEXT = new MathContext(120);
+
+    public Divider() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Divider(MaskContext context) {
+        super('/', context);
+    }
 
     @Override
     protected String operate(String a, String b) {

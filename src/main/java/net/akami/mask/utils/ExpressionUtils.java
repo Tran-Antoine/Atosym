@@ -230,7 +230,7 @@ public class ExpressionUtils {
     public static boolean isANumber(String exp) {
         if (exp.length() == 0)
             return false;
-        return exp.substring(1).matches("[\\d]+(.[\\d]+|)") || NUMBERS.contains(exp);
+        return exp.matches("(\\+|-|)[\\d]+(\\.[\\d]+|)") || NUMBERS.contains(exp);
     }
 
     public static boolean isSigned(String exp) {
@@ -259,8 +259,7 @@ public class ExpressionUtils {
             }
         }
         if (left >= 0) {
-            exp = exp.substring(1, exp.length() - 1);
-            LOGGER.debug("Connected brackets found at position 0 and last, new expression : {}", exp);
+            LOGGER.debug("Connected brackets found at position 0 and last");
             return true;
         }
         return false;
@@ -268,15 +267,16 @@ public class ExpressionUtils {
 
     public static boolean isSurroundedByParentheses(int index, String exp) {
 
+        int b = ExpressionUtils.areEdgesBracketsConnected(exp, false) ? 1 : 0;
         // In case the exp is 5*-3 or 5/-3
-        if (index > 0 && (exp.charAt(index - 1) == '/' || exp.charAt(index - 1) == '*')) {
+        if (index > 0+b && (exp.charAt(index - 1-b) == '/' || exp.charAt(index - 1-b) == '*')) {
             LOGGER.info("Character at index {} in {} is right after * or /. Is surrounded = true", index, exp);
             return true;
         }
 
         int leftParenthesis = 0;
 
-        for (int i = 0; i < exp.length(); i++) {
+        for (int i = 0+b; i < exp.length()-b; i++) {
             if (exp.charAt(i) == '(') {
                 leftParenthesis++;
             }

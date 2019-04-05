@@ -2,12 +2,13 @@ package net.akami.mask.tree;
 
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.TreeUtils;
 
 public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
     public CalculationTree(String initial) {
-        super(initial, '+', '-', '*', '/', '^', ' ');
+        super(FormatterFactory.addMultiplicationSigns(initial, true), '+', '-', '*', '/', '^', ' ');
     }
 
     @Override
@@ -45,7 +46,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
             if ((c == c1 || c == c2)) {
                 LOGGER.debug("Checking if sign {} at index {} is surrounded in {}", c, i, this);
                 boolean bracketsConnected = ExpressionUtils.areEdgesBracketsConnected(expression, false);
-
+                LOGGER.info("Brackets connected : {}", bracketsConnected);
                 if (!ExpressionUtils.isSurroundedByParentheses(i, expression)) {
                     LOGGER.debug("Found a place to split at index {}, character '{}'", i, c);
                     TreeUtils.createNewBranch(this, self, i, c, bracketsConnected);
