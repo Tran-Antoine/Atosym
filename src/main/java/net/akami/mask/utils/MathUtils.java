@@ -106,9 +106,9 @@ public class MathUtils {
 
         LOGGER.debug("aVars : {}, bVars : {}", aVars, bVars);
         if (aVars.length() == 0 && bVars.length() == 0) {
-            String result = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
-            LOGGER.info("No variable found, return a^b value : {}", result);
-            return result;
+            String findResult = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
+            LOGGER.info("No variable found, return a^b value : {}", findResult);
+            return findResult;
         }
         float powValue;
 

@@ -66,8 +66,10 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * usually not needed, since the user is supposed to know what the array must be.
      * @param self the current branch not split yet
      * @param by the 'splitters', which are used to determine the left and right part of the branch
+     *
+     * @return whether the branch could be split with the chars given or not
      */
-    protected abstract void split(T self, char... by);
+    protected abstract boolean split(T self, char... by);
 
     /**
      * @param origin the string the branch must be based on
@@ -77,7 +79,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
     /**
      * Defines how a branch must be evaluated.
-     * Note that if the branch type used hasn't redefined the canBeEvaluated method, you are guaranteed that
+     * Note that if the branch type used hasn't redefined the {@code canBeEvaluated} method, you are guaranteed that
      * the branch has a left and a right part.
      * @param self the branch itself
      */
@@ -108,8 +110,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
             T self = getBranches().get(i);
 
             if (!self.canBeEvaluated()) {
-                LOGGER.info("Not calculable : hasChildren : {} / children have no children : {}",
-                        self.hasChildren(), self.doChildrenHaveChildren());
+                LOGGER.info("Not calculable : ");
                 continue;
             }
 
@@ -125,8 +126,8 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     }
 
     /**
-     * Defines whether the final result has been calculated or not.
-     * @return the final result if calculated, otherwise an empty optional.
+     * Defines whether the final findResult has been calculated or not.
+     * @return the final findResult if calculated, otherwise an empty optional.
      */
     public Optional<String> finalResult() {
         T first = getBranches().get(0);

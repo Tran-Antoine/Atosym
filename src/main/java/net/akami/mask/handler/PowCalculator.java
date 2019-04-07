@@ -14,7 +14,7 @@ public class PowCalculator extends BinaryOperation {
     }
 
     public PowCalculator(MaskContext context) {
-        super('^', context);
+        super(context);
     }
 
     @Override

@@ -16,7 +16,7 @@ import net.akami.mask.utils.FormatterFactory;
 public class MaskExpression {
 
     /**
-     * Temporary instance that can be used when only the result of an expression is needed, to avoid multiple instances.
+     * Temporary instance that can be used when only the findResult of an expression is needed, to avoid multiple instances.
      * <br/>
      * Be aware that once you did a calculation with it by setting it as the out parameter, if you
      * want the int value of TEMP for instance, you need to call {@link MaskOperator#asExpression(MaskExpression)}

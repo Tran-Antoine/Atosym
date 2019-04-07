@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
 import net.akami.mask.handler.Multiplicator;
 import org.assertj.core.api.Assertions;

@@ -13,7 +13,7 @@ public class Subtractor extends BinaryOperation {
     }
 
     public Subtractor(MaskContext context) {
-        super('-', context);
+        super(context);
     }
 
     private static final Subtractor INSTANCE = new Subtractor();

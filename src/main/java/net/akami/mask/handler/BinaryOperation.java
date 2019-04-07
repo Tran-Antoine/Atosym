@@ -18,12 +18,10 @@ public abstract class BinaryOperation implements CancellableHandler, PostCalcula
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperation.class);
     protected final StringBuilder BUILDER = new StringBuilder();
-    private char sign;
     protected MaskContext context;
     private CalculationCanceller[] cancellers;
 
-    public BinaryOperation(char sign, MaskContext context) {
-        this.sign = sign;
+    public BinaryOperation(MaskContext context) {
         this.context = context;
         this.cancellers = new CalculationCanceller[]{new CalculationCache()};
     }
@@ -34,7 +32,7 @@ public abstract class BinaryOperation implements CancellableHandler, PostCalcula
 
     public String rawOperate(String a, String b) {
         if(isCancellable(a, b)) {
-            return result(a, b);
+            return findResult(a, b);
         }
         String result = outFormat(operate(inFormat(a), inFormat(b)));
         postCalculation(a, b, result);
@@ -51,7 +49,7 @@ public abstract class BinaryOperation implements CancellableHandler, PostCalcula
     }
 
     @Override
-    public CalculationCanceller[] getCancellers() {
+    public CalculationCanceller[] getAffections() {
         return cancellers;
     }
 }

@@ -20,7 +20,7 @@ public class Adder extends BinaryOperation {
     }
 
     public Adder(MaskContext context) {
-        super('+', context);
+        super(context);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Adder extends BinaryOperation {
         monomials.addAll(ExpressionUtils.toMonomials(b));
         LOGGER.info("Monomials : {}", monomials);
         String result = monomialSum(monomials, false);
-        LOGGER.info("---> Adder result of {} |+| {}: {}", a, b, result);
+        LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;
     }
 
@@ -104,7 +104,7 @@ public class Adder extends BinaryOperation {
 
     /**
      * Calculates the monomialSum of all numeric values of the monomials having vars as their unknown part, then
-     * removes the calculated values from the initial list, and adds the result into the final list.
+     * removes the calculated values from the initial list, and adds the findResult into the final list.
      *
      * Example :
      *

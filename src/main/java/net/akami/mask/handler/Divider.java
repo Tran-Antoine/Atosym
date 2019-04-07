@@ -19,7 +19,7 @@ public class Divider extends BinaryOperation {
     }
 
     public Divider(MaskContext context) {
-        super('/', context);
+        super(context);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class Divider extends BinaryOperation {
         LOGGER.info("Simple division proceeded. NumFactors : {}, DenFactors : {}", numFactors, denFactors);
         String finalNum = assembleFactors(numFactors);
         String finalDen = assembleFactors(denFactors);
-        LOGGER.debug("Raw result : {} / {}", finalNum, finalDen);
+        LOGGER.debug("Raw findResult : {} / {}", finalNum, finalDen);
         if(finalDen.isEmpty() || finalDen.equals("1") || finalDen.equals("1.0")) {
             return finalNum;
         }

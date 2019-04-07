@@ -198,7 +198,7 @@ public class ExpressionUtils {
             String element = elements.get(i);
             if (isANumber(element)) {
                 List<String> decomposedLocal = MathUtils.decomposeNumber(Float.parseFloat(element));
-                LOGGER.info("Decomposed {}, result : {}", element, decomposedLocal);
+                LOGGER.info("Decomposed {}, findResult : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
             } else if (!isTrigonometric(element) && element.length() > 2 && element.charAt(1) == '^') {

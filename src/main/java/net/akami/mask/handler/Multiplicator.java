@@ -19,7 +19,7 @@ public class Multiplicator extends BinaryOperation {
     }
 
     public Multiplicator(MaskContext context) {
-        super('*', context);
+        super(context);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class Multiplicator extends BinaryOperation {
         if(ExpressionUtils.isTrigonometricShortcut(b)) {
             LOGGER.info("Trigonometry calculation with {} and {}", a, b);
             String result = trigonometryOperation(a.isEmpty() ? "0" : a, b);
-            LOGGER.info("Trigonometry result : {}", result);
+            LOGGER.info("Trigonometry findResult : {}", result);
             return result;
         }
         LOGGER.info("Multiplicator process of {} |*| {}: \n", a, b);
@@ -67,7 +67,7 @@ public class Multiplicator extends BinaryOperation {
      *
      * @param a the first value
      * @param b the second value
-     * @return the result of the multiplication between a and b
+     * @return the findResult of the multiplication between a and b
      * @throws IllegalArgumentException if a and b are not monomials
      */
     public String simpleMult(String a, String b) {
@@ -87,7 +87,7 @@ public class Multiplicator extends BinaryOperation {
                 return originalVars;
             }
         }
-        LOGGER.debug("Float result : {}", floatResult);
+        LOGGER.debug("Float findResult : {}", floatResult);
         return floatResult + originalVars;
     }
 
