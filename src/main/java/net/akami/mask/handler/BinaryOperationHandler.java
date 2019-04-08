@@ -1,8 +1,8 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.CalculationCache;
-import net.akami.mask.operation.CalculationCanceller;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.affection.CalculationCache;
+import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.affection.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

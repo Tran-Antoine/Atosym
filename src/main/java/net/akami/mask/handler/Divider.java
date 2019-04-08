@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;

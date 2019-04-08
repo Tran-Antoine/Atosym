@@ -1,21 +1,17 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.CalculationCanceller;
+import net.akami.mask.affection.CalculationCanceller;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public interface CancellableHandler extends AffectionHandler<CalculationCanceller, String> {
 
     @Override
     default String findResult(String... input) {
-        Map<Integer, CalculationCanceller> compatibles = new HashMap<>();
-        for(CalculationCanceller affection : getAffections()) {
-            if(affection.appliesTo(input))
-                compatibles.put(affection.priorityLevel(), affection);
-        }
-        return compatibles.get(Collections.max(compatibles.keySet())).resultIfCancelled(input);
+        List<CalculationCanceller> compatibles = compatibleAffectionsFor(input);
+        Collections.sort(compatibles);
+
+        return compatibles.get(0).resultIfCancelled(input);
     }
 
     default boolean isCancellable(String... input) {

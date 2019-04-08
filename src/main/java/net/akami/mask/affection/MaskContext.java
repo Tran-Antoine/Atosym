@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.affection;
 
 import net.akami.mask.handler.AffectionHandler;
 

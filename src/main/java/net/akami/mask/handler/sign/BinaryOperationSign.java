@@ -1,5 +1,7 @@
 package net.akami.mask.handler.sign;
 
+import net.akami.mask.affection.CalculationCache;
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.MathUtils;
 
 import java.util.Objects;
@@ -108,8 +110,8 @@ public enum BinaryOperationSign {
      * result will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
      * <p></p>
      *
-     * The {@link net.akami.mask.operation.MaskContext} also influences whether the calculation will be performed or not,
-     * if {@code b} is an integer. In fact, the context (or more precisely the {@link net.akami.mask.operation.CalculationCache})
+     * The {@link MaskContext} also influences whether the calculation will be performed or not,
+     * if {@code b} is an integer. In fact, the context (or more precisely the {@link CalculationCache})
      * determines the maximal value of {@code b} before cancelling the operation.
      * <p></p>
      * Examples :

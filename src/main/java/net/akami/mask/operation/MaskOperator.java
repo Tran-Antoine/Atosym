@@ -1,5 +1,6 @@
 package net.akami.mask.operation;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.handler.BinaryOperationHandler;
 
 public class MaskOperator {
