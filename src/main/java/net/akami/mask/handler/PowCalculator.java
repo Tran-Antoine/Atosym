@@ -5,7 +5,7 @@ import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
-public class PowCalculator extends BinaryOperation {
+public class PowCalculator extends BinaryOperationHandler {
 
     private static final PowCalculator INSTANCE = new PowCalculator();
 

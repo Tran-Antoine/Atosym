@@ -27,7 +27,6 @@ public class FormatterTree extends CalculationTree<FormatterBranch> {
 
         if(ExpressionUtils.hasHigherPriority(String.valueOf(self.getOperation()), left))
             left = addRequiredBrackets(left);
-        // TODO
 
         char operation = self.getOperation();
 

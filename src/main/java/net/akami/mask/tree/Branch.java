@@ -101,15 +101,55 @@ public class Branch<T extends Branch> {
         return right.getExpression();
     }
 
+    /**
+     * @return the left part of the branch, null if not calculated
+     */
     public T getLeft()               { return left;         }
+    /**
+     * @return the right part of the branch, null if not calculated
+     */
     public T getRight()              { return right;        }
+
+    /**
+     * @return the formatted expression initially given
+     */
     public String getExpression()    { return expression;   }
+
+    /**
+     * @return the reduced value of the branch, null if not calculated / calculable
+     */
     public String getReducedValue()  { return reducedValue; }
+
+    /**
+     * @return the char corresponding to a defined calculation behavior. Empty if the branch is not split
+     */
     public char getOperation()       { return operation;    }
+
+    /**
+     * @return whether the branch has a reduced value or not
+     */
     public boolean hasReducedValue() { return reduced;      }
 
+    /**
+     * @param operation the char found that defines the calculation behavior.
+     *                  See {@link net.akami.mask.handler.sign.BinaryOperationSign} and
+     *                  {@link net.akami.mask.handler.sign.QuaternaryOperationSign} for further information
+     */
     public void setOperation(char operation)  { this.operation = operation; }
+
+    /**
+     * @param left the left value found of the branch, according to the {@code load} method
+     */
     public void setLeft(T left)               { this.left = left;           }
+
+    /**
+     * @param right the right value found of the branch, according to the {@code load} method
+     */
     public void setRight(T right)             { this.right = right;         }
+
+    /**
+     * @param value the reduced value of the branch. Once the method is called, {@link Branch#hasReducedValue()}
+     *              will always return true.
+     */
     public void setReducedValue(String value) { this.reducedValue = value; reduced = true; }
 }

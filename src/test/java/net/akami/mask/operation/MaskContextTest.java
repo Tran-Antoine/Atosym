@@ -1,7 +1,6 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.handler.Adder;
-import net.akami.mask.handler.BinaryOperation;
 import org.junit.Test;
 
 public class MaskContextTest {

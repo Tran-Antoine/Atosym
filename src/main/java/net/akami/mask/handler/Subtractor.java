@@ -6,7 +6,7 @@ import net.akami.mask.utils.FormatterFactory;
 
 import java.util.List;
 
-public class Subtractor extends BinaryOperation {
+public class Subtractor extends BinaryOperationHandler {
 
     public Subtractor() {
         this(MaskContext.DEFAULT);

@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Adder extends BinaryOperation {
+public class Adder extends BinaryOperationHandler {
 
     private static final Adder INSTANCE = new Adder();
 

@@ -97,6 +97,7 @@ public class EquationSolver {
             String keySolution = solutions.get(key);
             // TODO : use imageFor method
             if(keySolution.contains(String.valueOf(var))) {
+                // TODO
                 String newKeySolution = null;//ReducerFactory.reduce(op.replace(var, varSolution, keySolution));
                 solutions.put(key, newKeySolution);
                 LOGGER.info("Previous solution of {} contained {}. {} was replaced by {}", key, var, keySolution, newKeySolution);

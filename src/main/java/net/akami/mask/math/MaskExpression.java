@@ -6,7 +6,7 @@ import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
 /**
- * MaskExpression is the core object of the mask library. It handles a String, which corresponds to the expression,
+ * MaskExpression is the core object of the library's operation system. It handles a String, which corresponds to the expression,
  * and an array of variables, used to solve the expression for values, or to provide images of the function.
  *
  * It is a mutable class, hence the expression can be modified. When doing some calculations with an expression, you
@@ -89,7 +89,8 @@ public class MaskExpression {
         if(expression.length() == 0)
             return;
         if(".*/^".contains(String.valueOf(expression.charAt(0)))
-                || ".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1))))
+                || ".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1)))
+                || !expression.matches("[a-zA-Z0-9.+\\-*/^]+"))
             throw new MaskException("Expression not valid", this);
     }
 

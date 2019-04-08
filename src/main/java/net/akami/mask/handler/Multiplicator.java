@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Multiplicator extends BinaryOperation {
+public class Multiplicator extends BinaryOperationHandler {
 
     private static final Multiplicator INSTANCE = new Multiplicator();
     private static final MathContext CONTEXT = new MathContext(120);

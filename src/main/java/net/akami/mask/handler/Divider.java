@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Divider extends BinaryOperation {
+public class Divider extends BinaryOperationHandler {
 
     private static final Divider INSTANCE = new Divider();
     private static final MathContext CONTEXT = new MathContext(120);

@@ -6,9 +6,9 @@ import net.akami.mask.operation.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BinaryOperation implements CancellableHandler, PostCalculationActionable {
+public abstract class BinaryOperationHandler implements CancellableHandler, PostCalculationActionable {
 
-    public static final BinaryOperation[] DEFAULT_OPERATIONS = {
+    public static final BinaryOperationHandler[] DEFAULT_OPERATIONS = {
             new Adder(),
             new Subtractor(),
             new Multiplicator(),
@@ -16,12 +16,12 @@ public abstract class BinaryOperation implements CancellableHandler, PostCalcula
             new PowCalculator()
     };
 
-    protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperation.class);
+    protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
     protected final StringBuilder BUILDER = new StringBuilder();
     protected MaskContext context;
     private CalculationCanceller[] cancellers;
 
-    public BinaryOperation(MaskContext context) {
+    public BinaryOperationHandler(MaskContext context) {
         this.context = context;
         this.cancellers = new CalculationCanceller[]{new CalculationCache()};
     }
