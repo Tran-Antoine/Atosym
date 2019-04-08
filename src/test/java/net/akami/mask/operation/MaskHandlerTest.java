@@ -1,5 +1,6 @@
 package net.akami.mask.operation;
 
+import net.akami.mask.affection.CalculationCache;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -10,6 +11,11 @@ public class MaskHandlerTest {
 
     private MaskHandler handler = new MaskHandler();
 
+    public MaskHandlerTest() {
+        for(CalculationCache cache : handler.getContext().getAffections(CalculationCache.class)) {
+            cache.setCapacity(400);
+        }
+    }
     @Test
     public void reducerTest() {
         prepare("(x+y)^2");
