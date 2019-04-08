@@ -1,9 +1,0 @@
-net.akami.mask.core
-net.akami.mask.exception
-net.akami.mask.handler
-net.akami.mask.handler.sign
-net.akami.mask.math
-net.akami.mask.operation
-net.akami.mask.structure
-net.akami.mask.tree
-net.akami.mask.utils
