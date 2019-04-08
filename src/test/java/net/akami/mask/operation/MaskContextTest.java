@@ -25,19 +25,19 @@ public class MaskContextTest {
     public void sortTest() {
 
         List<CalculationAffection> list = new ArrayList<>();
-        testWithLevel(list, 3);
-        testWithLevel(list, 5);
-        testWithLevel(list, 1);
+        testWithLevel(list, 3.0f);
+        testWithLevel(list, 5.0f);
+        testWithLevel(list, 1.0f);
 
         Collections.sort(list);
         String s = "";
         for(CalculationAffection affection : list) {
             s += String.valueOf(affection.priorityLevel());
         }
-        Assertions.assertThat(s).isEqualTo("531");
+        Assertions.assertThat(s).isEqualTo("5.03.01.0");
     }
 
-    private void testWithLevel(List<CalculationAffection> list, int level) {
+    private void testWithLevel(List<CalculationAffection> list, float level) {
         list.add(new CalculationAffection() {
             @Override
             public boolean appliesTo(String... input) {
