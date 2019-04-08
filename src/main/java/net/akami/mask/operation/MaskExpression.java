@@ -1,7 +1,6 @@
-package net.akami.mask.math;
+package net.akami.mask.operation;
 
 import net.akami.mask.exception.MaskException;
-import net.akami.mask.operation.MaskOperator;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
@@ -11,7 +10,7 @@ import net.akami.mask.utils.FormatterFactory;
  *
  * It is a mutable class, hence the expression can be modified. When doing some calculations with an expression, you
  * will be asked to choose the original expression (in) plus the expression that will be affected by the
- * calculation(out).
+ * calculation (out).
  */
 public class MaskExpression {
 
@@ -19,15 +18,15 @@ public class MaskExpression {
      * Temporary instance that can be used when only the findResult of an expression is needed, to avoid multiple instances.
      * <br/>
      * Be aware that once you did a calculation with it by setting it as the out parameter, if you
-     * want the int value of TEMP for instance, you need to call {@link MaskOperator#asExpression(MaskExpression)}
-     * and not {@link MaskOperator#asExpression()}, otherwise you'll get the non-temporary expression
+     * want the int value of TEMP for instance, you need to call {@link MaskHandler#asExpression(MaskExpression)}
+     * and not {@link MaskHandler#asExpression()}, otherwise you'll get the non-temporary expression
      * you based yourself on for the calculation.
      * <br/>
      * Here is an example :
      *
      * <pre>
      * MaskExpression base = new MaskExpression(2x);
-     * MaskOperator operator = MaskOperator.begin(base);
+     * MaskHandler operator = MaskHandler.begin(base);
      * String exp = operator.imageFor(MaskExpression.TEMP, false, 5).asExpression();
      * System.out.println(exp);
      *
@@ -36,7 +35,7 @@ public class MaskExpression {
      * -----------------
      *
      * MaskExpression base = new MaskExpression(2x);
-     * MaskOperator operator = MaskOperator.begin(base);
+     * MaskHandler operator = MaskHandler.begin(base);
      * String exp = operator.imageFor(MaskExpression.TEMP, false, 5).asExpression(MaskExpression.TEMP);
      * System.out.println(exp);
      *
@@ -90,7 +89,7 @@ public class MaskExpression {
             return;
         if(".*/^".contains(String.valueOf(expression.charAt(0)))
                 || ".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1)))
-                || !expression.matches("[a-zA-Z0-9.+\\-*/^]+"))
+                || !expression.matches("[a-zA-Z0-9.+\\-*/^()]+"))
             throw new MaskException("Expression not valid", this);
     }
 

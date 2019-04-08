@@ -1,5 +1,6 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.tree.BinaryTree;
 import net.akami.mask.tree.Branch;
@@ -21,6 +22,10 @@ public class ReducerFactory {
     }
 
     public static String reduce(String exp) {
+        return reduce(exp, MaskContext.DEFAULT);
+    }
+
+    public static String reduce(String exp, MaskContext context) {
         long time = System.nanoTime();
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry

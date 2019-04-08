@@ -45,7 +45,7 @@ public class MaskContextTest {
             }
 
             @Override
-            public int priorityLevel() {
+            public float priorityLevel() {
                 return level;
             }
         });

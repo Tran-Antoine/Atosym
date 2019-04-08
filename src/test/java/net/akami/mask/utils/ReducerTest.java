@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.math.MaskExpression;
+import net.akami.mask.operation.MaskExpression;
 import net.akami.mask.handler.Divider;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

@@ -26,7 +26,7 @@ public class CalculationCache implements CalculationCanceller {
     }
 
     @Override
-    public int priorityLevel() {
+    public float priorityLevel() {
         return 0;
     }
 

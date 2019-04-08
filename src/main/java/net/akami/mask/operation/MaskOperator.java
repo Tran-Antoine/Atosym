@@ -1,26 +1,19 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.affection.MaskContext;
-import net.akami.mask.handler.BinaryOperationHandler;
 
-public class MaskOperator {
+import java.util.Arrays;
+import java.util.List;
 
-    private MaskContext context;
-    private BinaryOperationHandler[] supportedOperations;
+public interface MaskOperator<E> {
 
-    public MaskOperator() {
-        this.context = MaskContext.DEFAULT;
-        this.supportedOperations = BinaryOperationHandler.DEFAULT_OPERATIONS;
-    }
+    void compute(MaskExpression in, MaskExpression out, E extraData, MaskContext context);
 
-    public <T extends BinaryOperationHandler> T getHandler(Class<T> type) {
-        for(BinaryOperationHandler handler : supportedOperations) {
-            if(handler.getClass().equals(type)) return (T) handler;
-        }
-        return null;
-    }
-
-    public MaskContext getContext() {
-        return context;
+    static List<MaskOperator> defaultOperators() {
+        return Arrays.asList(
+                new MaskReducer(),
+                new MaskDerivativeCalculator(),
+                new MaskImageCalculator()
+        );
     }
 }

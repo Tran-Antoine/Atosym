@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO : add more temporary variables
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);

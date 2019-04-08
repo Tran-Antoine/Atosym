@@ -1,11 +1,10 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.MaskOperator;
+import net.akami.mask.operation.MaskExpression;
+import net.akami.mask.operation.MaskHandler;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
-import net.akami.mask.utils.ReducerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,7 +25,7 @@ public class EquationSolver {
     }
 
     public static Map<Character, String> solve(List<BiMask> biMasks) {
-        MaskOperator op = null;//MaskOperator.begin();
+        MaskHandler op = null;//MaskHandler.begin();
         for(BiMask biMask : biMasks) {
             if(ExpressionUtils.getMaximalNumericPower(biMask.left.getExpression()+'='+biMask.right.getExpression()) > 1)
                 throw new IllegalStateException("Cannot solve squared or more equations");
@@ -90,7 +89,7 @@ public class EquationSolver {
 
     private static void replaceSolutionInOthers(char var, String varSolution, Map<Character, String> solutions) {
 
-        MaskOperator op = null;//MaskOperator.begin();
+        MaskHandler op = null;//MaskHandler.begin();
         for(char key : solutions.keySet()) {
             if(var == key) continue;
 
@@ -140,7 +139,7 @@ public class EquationSolver {
     private static void replaceExistingSolutions(List<String> target, char var, Map<Character, String> solutions) {
         LOGGER.info("Before replacing existing solutions : {}", target);
         List<String> additionalSolutions = new ArrayList<>();
-        MaskOperator op = null;//MaskOperator.begin(MaskExpression.TEMP);
+        MaskHandler op = null;//MaskHandler.begin(MaskExpression.TEMP);
         for(int i = 0; i < target.size(); i++) {
             String monomial = target.get(i);
             LOGGER.info("Analyzing monomial {}.", monomial);
