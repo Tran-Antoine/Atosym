@@ -11,6 +11,10 @@ import net.akami.mask.utils.TreeUtils;
  *
  * To respect the priority of operations, the {@code begin} method tries to split the expression with (+ -) first, then
  * with (* /), and eventually with (^). Whenever a valid splitter is found, the branch ceases to be analyzed.
+ *
+ * Note that the class is abstract because the {@link BinaryTree#generate(String)} method needs to be defined, since
+ * the generic parameter is not defined. If you look for the most basic calculation tree handling simple branches, see
+ * {@link ReducerTree} for further information.
  * @param <T> What kind of branch is handled by the tree
  *
  * @author Antoine Tran

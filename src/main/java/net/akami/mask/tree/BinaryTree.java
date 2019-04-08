@@ -72,6 +72,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     protected abstract boolean split(T self, char... by);
 
     /**
+     * Allows the class itself to instantiate branches from a given expression
      * @param origin the string the branch must be based on
      * @return a branch getting along with the kind of tree being used, from the given origin
      */
