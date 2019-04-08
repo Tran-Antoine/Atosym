@@ -1,9 +1,10 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.sign.BinaryOperationSign;
+import net.akami.mask.affection.MaskContext;
+import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.tree.BinaryTree;
 import net.akami.mask.tree.Branch;
-import net.akami.mask.tree.Reducer;
+import net.akami.mask.tree.ReducerTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +22,15 @@ public class ReducerFactory {
     }
 
     public static String reduce(String exp) {
+        return reduce(exp, MaskContext.DEFAULT);
+    }
+
+    public static String reduce(String exp, MaskContext context) {
         long time = System.nanoTime();
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry
         String localExp = FormatterFactory.formatForCalculations(exp);
-        BinaryTree<Branch> tree = new Reducer(localExp);
+        BinaryTree<Branch> tree = new ReducerTree(localExp);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 
         TreeUtils.printBranches(tree);

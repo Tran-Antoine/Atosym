@@ -1,5 +1,6 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -12,6 +13,15 @@ public class Multiplicator extends BinaryOperationHandler {
 
     private static final Multiplicator INSTANCE = new Multiplicator();
     private static final MathContext CONTEXT = new MathContext(120);
+
+    public Multiplicator() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Multiplicator(MaskContext context) {
+        super(context);
+    }
+
     @Override
     protected String operate(String a, String b) {
 
@@ -20,7 +30,7 @@ public class Multiplicator extends BinaryOperationHandler {
         if(ExpressionUtils.isTrigonometricShortcut(b)) {
             LOGGER.info("Trigonometry calculation with {} and {}", a, b);
             String result = trigonometryOperation(a.isEmpty() ? "0" : a, b);
-            LOGGER.info("Trigonometry result : {}", result);
+            LOGGER.info("Trigonometry findResult : {}", result);
             return result;
         }
         LOGGER.info("Multiplicator process of {} |*| {}: \n", a, b);
@@ -57,7 +67,7 @@ public class Multiplicator extends BinaryOperationHandler {
      *
      * @param a the first value
      * @param b the second value
-     * @return the result of the multiplication between a and b
+     * @return the findResult of the multiplication between a and b
      * @throws IllegalArgumentException if a and b are not monomials
      */
     public String simpleMult(String a, String b) {
@@ -77,7 +87,7 @@ public class Multiplicator extends BinaryOperationHandler {
                 return originalVars;
             }
         }
-        LOGGER.debug("Float result : {}", floatResult);
+        LOGGER.debug("Float findResult : {}", floatResult);
         return floatResult + originalVars;
     }
 

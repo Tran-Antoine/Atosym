@@ -1,4 +1,4 @@
-package net.akami.mask.operation.sign;
+package net.akami.mask.handler.sign;
 
 import net.akami.mask.utils.MathUtils;
 

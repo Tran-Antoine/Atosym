@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.*;
+import net.akami.mask.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-// TODO : add more temporary variables
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
@@ -94,7 +93,7 @@ public class MathUtils {
 
     public static String trigonometryOperation(String a, char opChar, UnaryOperation operation) {
         if(ExpressionUtils.isANumber(a)) {
-            double result = operation.compute(Math.toRadians(Double.valueOf(a)));
+            double result = operation.compute(Double.valueOf(a));
             return String.valueOf(result > 10E-15 ? result : 0);
         }
         return "("+a+")"+opChar;
@@ -106,9 +105,9 @@ public class MathUtils {
 
         LOGGER.debug("aVars : {}, bVars : {}", aVars, bVars);
         if (aVars.length() == 0 && bVars.length() == 0) {
-            String result = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
-            LOGGER.info("No variable found, return a^b value : {}", result);
-            return result;
+            String findResult = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
+            LOGGER.info("No variable found, return a^b value : {}", findResult);
+            return findResult;
         }
         float powValue;
 
@@ -174,7 +173,7 @@ public class MathUtils {
         if(!value.contains(".")) return value;
 
         String[] parts = value.split("\\.");
-        if(parts[1].matches("[9]+")) {
+        if(parts[1].matches("[9]+") && parts[1].length() > 15) {
             return String.valueOf(Integer.parseInt(parts[0]) + 1);
         }
         if(parts[1].matches("[0]+"))

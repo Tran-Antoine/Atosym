@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A Binary tree handles branch splitting, evaluating and merging with the given behaviours. <br/> <br/>
+ * A Binary tree handles branch splitting, evaluating and merging with the defined behaviours. <br/> <br/>
  * When instantiating a BinaryTree, note that the splitting should automatically and instantly be performed
  * in the {@link BinaryTree#begin(Branch)}, starting off with the given branch. <br/>
  * This {@link BinaryTree#begin(Branch)} method must define how a branch must be divided according to ALL the splitters, whereas
  * {@link BinaryTree#split(Branch, char...)} defines how each branch must be divided, according to the splitter(s) given.
  * <br/> <br/>
  * In other words, the begin method defines how and with which parameter the split method will be called.
+ *
+ * Note that BinaryTree implements {@link Iterable}, so that you can actually use for each loops with it.
  *
  * @param <T> what kind of branch will be handled by the tree.
  * @author Antoine Tran
@@ -64,18 +66,21 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * usually not needed, since the user is supposed to know what the array must be.
      * @param self the current branch not split yet
      * @param by the 'splitters', which are used to determine the left and right part of the branch
+     *
+     * @return whether the branch could be split with the chars given or not
      */
-    protected abstract void split(T self, char... by);
+    protected abstract boolean split(T self, char... by);
 
     /**
+     * Allows the class itself to instantiate branches from a given expression
      * @param origin the string the branch must be based on
-     * @return a branch getting along with the tree, from the origin given
+     * @return a branch getting along with the kind of tree being used, from the given origin
      */
     protected abstract T generate(String origin);
 
     /**
      * Defines how a branch must be evaluated.
-     * Note that if the branch type used hasn't redefined the canBeEvaluated method, you are guaranteed that
+     * Note that if the branch type used hasn't redefined the {@code canBeEvaluated} method, you are guaranteed that
      * the branch has a left and a right part.
      * @param self the branch itself
      */
@@ -93,7 +98,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
         /*
         If we give a very simple expression such as '50' to the reducer, it will detect that no operation
         needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
-         */
+        */
         if (getBranches().size() == 1 && !branches.get(0).canBeEvaluated()) {
             LOGGER.debug("Only one branch found. Returns it.");
             return getBranches().get(0).getExpression();
@@ -106,8 +111,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
             T self = getBranches().get(i);
 
             if (!self.canBeEvaluated()) {
-                LOGGER.info("Not calculable : hasChildren : {} / children have no children : {}",
-                        self.hasChildren(), self.doChildrenHaveChildren());
+                LOGGER.info("Not calculable : ");
                 continue;
             }
 
@@ -123,8 +127,8 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     }
 
     /**
-     * Defines whether the final result has been calculated or not.
-     * @return the final result if calculated, otherwise an empty optional-
+     * Defines whether the final findResult has been calculated or not.
+     * @return the final findResult if calculated, otherwise an empty optional.
      */
     public Optional<String> finalResult() {
         T first = getBranches().get(0);
@@ -134,6 +138,10 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
         return Optional.empty();
     }
 
+    /**
+     *
+     * @return the iterator of the branches' list
+     */
     @Override
     public final Iterator<T> iterator() {
         return branches.iterator();

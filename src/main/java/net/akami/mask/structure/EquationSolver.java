@@ -1,11 +1,12 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.MaskOperator;
+import net.akami.mask.operation.MaskExpression;
+import net.akami.mask.operation.MaskHandler;
+import net.akami.mask.operation.MaskImageCalculator;
+import net.akami.mask.operation.MaskReducer;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
-import net.akami.mask.utils.ReducerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +15,7 @@ import java.util.*;
 public class EquationSolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EquationSolver.class);
+    private static final MaskHandler handler = new MaskHandler();
 
     public static List<BiMask> build(String... lines) {
         List<BiMask> biMasks = new ArrayList<>();
@@ -26,9 +28,13 @@ public class EquationSolver {
     }
 
     public static Map<Character, String> solve(List<BiMask> biMasks) {
-        MaskOperator op = MaskOperator.begin();
+
         for(BiMask biMask : biMasks) {
-            op.reduce(biMask.left, biMask.left).reduce(biMask.right, biMask.right);
+            if(ExpressionUtils.getMaximalNumericPower(biMask.left.getExpression()+'='+biMask.right.getExpression()) > 1)
+                throw new IllegalStateException("Cannot solve squared or more equations");
+
+            handler.compute(MaskReducer.class, biMask.left, biMask.left, null)
+                    .compute(MaskReducer.class, biMask.right, biMask.right, null);
         }
 
         LOGGER.info("\nNow solving the equations\n");
@@ -87,14 +93,18 @@ public class EquationSolver {
 
     private static void replaceSolutionInOthers(char var, String varSolution, Map<Character, String> solutions) {
 
-        MaskOperator op = MaskOperator.begin();
         for(char key : solutions.keySet()) {
             if(var == key) continue;
 
             String keySolution = solutions.get(key);
             // TODO : use imageFor method
             if(keySolution.contains(String.valueOf(var))) {
-                String newKeySolution = ReducerFactory.reduce(op.replace(var, varSolution, keySolution));
+                Map<Character, String> image = new HashMap<>();
+                image.put(var, varSolution);
+
+                MaskExpression temp = MaskExpression.TEMP;
+                temp.reload(keySolution);
+                String newKeySolution = handler.compute(MaskImageCalculator.class, temp, null, image).asExpression();
                 solutions.put(key, newKeySolution);
                 LOGGER.info("Previous solution of {} contained {}. {} was replaced by {}", key, var, keySolution, newKeySolution);
             }
@@ -136,27 +146,20 @@ public class EquationSolver {
     private static void replaceExistingSolutions(List<String> target, char var, Map<Character, String> solutions) {
         LOGGER.info("Before replacing existing solutions : {}", target);
         List<String> additionalSolutions = new ArrayList<>();
-        MaskOperator op = MaskOperator.begin(MaskExpression.TEMP);
+
         for(int i = 0; i < target.size(); i++) {
             String monomial = target.get(i);
             LOGGER.info("Analyzing monomial {}.", monomial);
             String localVars = ExpressionUtils.toVariablesType(monomial);
-            String[] presentSolutions = new String[localVars.length()];
-            int j = 0;
-            // Building the values array
-            for(char localVar : localVars.toCharArray()) {
-                String replacement = solutions.get(localVar);
 
-                // If we are analyzing y, we don't want it to be replaced
-                if(localVar == var) {
-                    presentSolutions[j++] = localVars;
-                } else {
-                    presentSolutions[j++] = replacement;
-                }
-            }
-            LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, presentSolutions);
+            LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, solutions);
             MaskExpression.TEMP.reload(monomial);
-            String transformed = op.imageFor(presentSolutions).asExpression();
+            handler.begin(MaskExpression.TEMP);
+
+            Map<Character, String> copy = new HashMap<>(solutions);
+            copy.remove(var);
+
+            String transformed = handler.compute(MaskImageCalculator.class, null, copy).asExpression();
             target.set(i, null);
             // If the solution if x+1, we can't add "x+1", we must add "+x" and "+1"
             LOGGER.error("For {} found {}, added {}",monomial, transformed, ExpressionUtils.toMonomials(transformed));

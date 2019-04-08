@@ -1,5 +1,6 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
+import net.akami.mask.handler.Adder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

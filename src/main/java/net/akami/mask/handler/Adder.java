@@ -1,5 +1,6 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -14,6 +15,14 @@ public class Adder extends BinaryOperationHandler {
 
     private static final Adder INSTANCE = new Adder();
 
+    public Adder() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Adder(MaskContext context) {
+        super(context);
+    }
+
     @Override
     public String operate(String a, String b) {
         LOGGER.info("Adder process of {} |+| {}: \n", a, b);
@@ -21,7 +30,7 @@ public class Adder extends BinaryOperationHandler {
         monomials.addAll(ExpressionUtils.toMonomials(b));
         LOGGER.info("Monomials : {}", monomials);
         String result = monomialSum(monomials, false);
-        LOGGER.info("---> Adder result of {} |+| {}: {}", a, b, result);
+        LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;
     }
 
@@ -58,7 +67,6 @@ public class Adder extends BinaryOperationHandler {
         return needsFormatting ? outFormat(result) : result;
     }
 
-    // TODO : Stop using this map
     private void fillMonomialList(String monomial, int i, List<String> initialMonomials, List<String> finalMonomials) {
         String vars = ExpressionUtils.toVariables(monomial);
         LOGGER.debug("Analyzing monomial {} : {}, found \"{}\" as variables", i, monomial, vars);
@@ -96,7 +104,7 @@ public class Adder extends BinaryOperationHandler {
 
     /**
      * Calculates the monomialSum of all numeric values of the monomials having vars as their unknown part, then
-     * removes the calculated values from the initial list, and adds the result into the final list.
+     * removes the calculated values from the initial list, and adds the findResult into the final list.
      *
      * Example :
      *

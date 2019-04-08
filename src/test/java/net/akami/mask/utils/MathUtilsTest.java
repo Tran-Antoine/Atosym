@@ -1,7 +1,7 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.Divider;
-import net.akami.mask.operation.sign.QuaternaryOperationSign.QuaternaryMathOperation;
+import net.akami.mask.handler.Divider;
+import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -12,6 +12,7 @@ public class MathUtilsTest {
 
     @Test
     public void sumTest() {
+        Assertions.assertThat(MathUtils.sum("3x-2", "x")).isEqualTo("4x-2");
         Assertions.assertThat(MathUtils.sum("((x)#)^2", "")).isEqualTo("((x)#)^2");
         List<String> monomials = Arrays.asList("2xyz", "2xyz", "2xyz");
         Assertions.assertThat(MathUtils.sum(monomials)).isEqualTo("6xyz");

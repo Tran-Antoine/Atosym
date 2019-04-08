@@ -1,11 +1,20 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
 import java.util.List;
 
 public class Subtractor extends BinaryOperationHandler {
+
+    public Subtractor() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Subtractor(MaskContext context) {
+        super(context);
+    }
 
     private static final Subtractor INSTANCE = new Subtractor();
 

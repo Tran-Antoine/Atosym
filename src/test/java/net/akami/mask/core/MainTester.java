@@ -1,7 +1,6 @@
 package net.akami.mask.core;
 
-import net.akami.mask.math.MaskExpression;
-import net.akami.mask.operation.MaskOperator;
+import net.akami.mask.operation.MaskExpression;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Scanner;
@@ -13,7 +12,7 @@ public class MainTester {
         Scanner sc = new Scanner(System.in);
         String expression;
         MaskExpression.TEMP.reload(sc.nextLine());
-        System.out.println(MaskOperator.begin(MaskExpression.TEMP).differentiate('x').asExpression());
+        //System.out.println(MaskHandler.begin(MaskExpression.TEMP).differentiate('x').asExpression());
 
         System.out.println("Next expression to reduce : ");
         while(!(expression = sc.nextLine()).isEmpty()) {

@@ -1,5 +1,6 @@
-package net.akami.mask.operation;
+package net.akami.mask.handler;
 
+import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -12,6 +13,14 @@ public class Divider extends BinaryOperationHandler {
 
     private static final Divider INSTANCE = new Divider();
     private static final MathContext CONTEXT = new MathContext(120);
+
+    public Divider() {
+        this(MaskContext.DEFAULT);
+    }
+
+    public Divider(MaskContext context) {
+        super(context);
+    }
 
     @Override
     protected String operate(String a, String b) {
@@ -81,7 +90,7 @@ public class Divider extends BinaryOperationHandler {
         LOGGER.info("Simple division proceeded. NumFactors : {}, DenFactors : {}", numFactors, denFactors);
         String finalNum = assembleFactors(numFactors);
         String finalDen = assembleFactors(denFactors);
-        LOGGER.debug("Raw result : {} / {}", finalNum, finalDen);
+        LOGGER.debug("Raw findResult : {} / {}", finalNum, finalDen);
         if(finalDen.isEmpty() || finalDen.equals("1") || finalDen.equals("1.0")) {
             return finalNum;
         }

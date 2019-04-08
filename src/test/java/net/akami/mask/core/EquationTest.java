@@ -1,6 +1,6 @@
 package net.akami.mask.core;
 
-import net.akami.mask.math.MaskExpression;
+import net.akami.mask.operation.MaskExpression;
 import net.akami.mask.structure.EquationSolver;
 import net.akami.mask.utils.ExpressionUtils;
 import org.assertj.core.api.Assertions;
@@ -53,6 +53,13 @@ public class EquationTest {
 
     @Test
     public void multiUnknownMultiLines() {
+
+        List<BiMask> test = EquationSolver.build("x=y", "x+y=2");
+        Map<Character, String> testSolved = EquationSolver.solve(test);
+        Assertions.assertThat(testSolved.get('x')).isEqualTo("1");
+        Assertions.assertThat(testSolved.get('y')).isEqualTo("1");
+
+
         BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
         BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
         BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));
@@ -61,11 +68,6 @@ public class EquationTest {
         Assertions.assertThat(result2.get('x')).isEqualTo("1");
         Assertions.assertThat(result2.get('y')).isEqualTo("2");
         Assertions.assertThat(result2.get('z')).isEqualTo("-1");
-
-        List<BiMask> test = EquationSolver.build("x=y", "x+y=2");
-        Map<Character, String> testSolved = EquationSolver.solve(test);
-        Assertions.assertThat(testSolved.get('x')).isEqualTo("1");
-        Assertions.assertThat(testSolved.get('y')).isEqualTo("1");
 
         BiMask b1 = new BiMask(new MaskExpression("3x+2y"), new MaskExpression("7x"));
         BiMask b2 = new BiMask(new MaskExpression("6x"), new MaskExpression("3y"));
