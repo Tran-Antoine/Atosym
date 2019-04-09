@@ -45,7 +45,7 @@ public abstract class BinaryOperationHandler implements CancellableHandler, Post
 
     @Override
     public void postCalculation(String a, String b, String result) {
-        getAffection(CalculationCache.class).get().push(a+'|'+b, result);
+        getAffection(CalculationCache.class).ifPresent(cache -> cache.push(a+'|'+b, result));
     }
 
     @Override

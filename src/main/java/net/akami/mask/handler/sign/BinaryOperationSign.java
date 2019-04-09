@@ -107,7 +107,7 @@ public enum BinaryOperationSign {
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
      * to the power of a non integer number, as well as any algebraic exponent won't be calculated, thus the returned
-     * result will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
+     * result will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending on the case, so that the priority of operations is respected.
      * <p></p>
      *
      * The {@link MaskContext} also influences whether the calculation will be performed or not,

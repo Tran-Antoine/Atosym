@@ -22,6 +22,7 @@ public class Multiplicator extends BinaryOperationHandler {
         super(context);
     }
 
+    // TODO : add possible support for log / acos etc functions defined by the user
     @Override
     protected String operate(String a, String b) {
 

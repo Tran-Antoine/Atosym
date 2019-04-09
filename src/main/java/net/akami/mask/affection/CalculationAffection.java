@@ -12,7 +12,7 @@ import net.akami.mask.handler.IOModificationHandler;
  *
  * The two main behavior types provided by the API are the {@link IOCalculationModifier}
  * and the {@link CalculationCanceller} (both inheriting from this interface), which both define what exactly
- * the modification should be, depending of the input string given.
+ * the modification should be, depending on the input string given.
  * <p></p>
  *
  * CalculationAffections must be handled by an {@link net.akami.mask.handler.AffectionHandler} compatible with
@@ -56,12 +56,15 @@ public interface CalculationAffection extends Comparable<CalculationAffection> {
      * he wants between others already existing affections. If an integer was being used, only 3 affections could fit
      * between a level 1 priority affection and a level 5 priority affection.
      * <p></p>
-     * Note that all affections that are both cancellable and input modifiers should logically check for cancelling first.
+     * Note that all affection handlers that are both cancellable and input modifiers should logically check for cancelling first.
      * @return the priority of the affection. Between two different affections, the one with the greatest priority level
      *         will take effect first. If two affections of the same type have the same priority level (which should not happen),
      *         one will be randomly taking effect first.
      */
     float priorityLevel();
+
+    void enable();
+    void disable();
 
     /**
      * Compares the affection itself with another {@link CalculationAffection}. The {@code compareTo} method

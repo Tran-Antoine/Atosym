@@ -6,6 +6,7 @@ import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
