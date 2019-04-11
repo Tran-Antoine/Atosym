@@ -6,6 +6,7 @@ import net.akami.mask.handler.Adder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -14,7 +15,7 @@ public class MaskContextTest {
 
     @Test
     public void getAffectionsErrorTest() {
-        MaskContext context = new MaskContext();
+        MaskContext context = new MaskContext(MathContext.DECIMAL128);
 
         context.addHandler(new Adder());
 
@@ -43,6 +44,11 @@ public class MaskContextTest {
             public boolean appliesTo(String... input) {
                 return false;
             }
+
+            @Override
+            public void enable() { }
+            @Override
+            public void disable() { }
 
             @Override
             public float priorityLevel() {

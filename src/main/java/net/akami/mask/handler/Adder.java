@@ -4,6 +4,8 @@ import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -15,7 +17,6 @@ import java.util.Map;
 public class Adder extends BinaryOperationHandler {
 
     private static final Adder INSTANCE = new Adder();
-
     public Adder() {
         this(MaskContext.DEFAULT);
     }

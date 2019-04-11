@@ -63,7 +63,14 @@ public interface CalculationAffection extends Comparable<CalculationAffection> {
      */
     float priorityLevel();
 
+    /**
+     * Defines the actions that must be performed before the affection is ready to use
+     */
     void enable();
+
+    /**
+     * Defines the actions that must be performed before the affection is considered as not usable
+     */
     void disable();
 
     /**
