@@ -31,3 +31,7 @@ See [releases](https://github.com/Askigh/Mask/releases) section for the last rel
 
 > See the wiki for all the required information. Note that the wiki is incompatible with the master branch, containing the new
 architecture. An updated version will come soon
+
+## Also
+
+If you want to check a direct implementation of the Mask library, see [MaskInterface](https://github.com/lolilolulolilol/MaskInterface)
