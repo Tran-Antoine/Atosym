@@ -8,7 +8,7 @@ Mask is a free open source library that helps the user dealing with calculations
 * Reduction / Expansion of any polynomial, giving the most reduced result.
 * Calculation of an image from any function with the given x / y / ... values
 * Calculation of the derivative of any function
-* Calculation of the solution(s) of any system of equations given, containing n variables
+* Calculation of the solution(s) of any system of first degree equations given, containing n variables
 
 ***
 
@@ -29,4 +29,5 @@ See [releases](https://github.com/Askigh/Mask/releases) section for the last rel
 
 ## How to use it
 
-> See the wiki for all the required information
+> See the wiki for all the required information. Note that the wiki is incompatible with the master branch, containing the new
+architecture. An updated version will come soon
