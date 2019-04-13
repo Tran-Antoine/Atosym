@@ -4,7 +4,7 @@ import net.akami.mask.utils.MathUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-public class PowTest {
+public class PowCalculatorTest {
 
     @Test
     public void powTest() {

@@ -1,11 +1,15 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.handler.Multiplicator;
+import net.akami.mask.utils.MathUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-public class MultiplicationTest {
+public class MultiplicatorTest {
 
+    @Test
+    public void multTest() {
+        Assertions.assertThat(MathUtils.mult("3", "x/3")).isEqualTo("x");
+    }
     @Test
     public void inFormatTest() {
         Multiplicator mult = Multiplicator.getInstance();

@@ -12,7 +12,6 @@ public class MainTester {
         Scanner sc = new Scanner(System.in);
         String expression;
         MaskExpression.TEMP.reload(sc.nextLine());
-        //System.out.println(MaskHandler.begin(MaskExpression.TEMP).differentiate('x').asExpression());
 
         System.out.println("Next expression to reduce : ");
         while(!(expression = sc.nextLine()).isEmpty()) {

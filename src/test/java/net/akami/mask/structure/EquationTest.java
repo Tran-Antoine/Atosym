@@ -1,4 +1,4 @@
-package net.akami.mask.core;
+package net.akami.mask.structure;
 
 import net.akami.mask.operation.MaskExpression;
 import net.akami.mask.structure.EquationSolver;

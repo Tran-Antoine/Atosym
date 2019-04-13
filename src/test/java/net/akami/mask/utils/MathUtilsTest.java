@@ -12,17 +12,7 @@ public class MathUtilsTest {
 
     @Test
     public void sumTest() {
-        Assertions.assertThat(MathUtils.sum("3x-2", "x")).isEqualTo("4x-2");
-        Assertions.assertThat(MathUtils.sum("((x)#)^2", "")).isEqualTo("((x)#)^2");
-        List<String> monomials = Arrays.asList("2xyz", "2xyz", "2xyz");
-        Assertions.assertThat(MathUtils.sum(monomials)).isEqualTo("6xyz");
-        Assertions.assertThat(MathUtils.sum("(y^2+y)", "0")).isEqualTo("y^2+y");
-        Assertions.assertThat(MathUtils.sum("y^2", "y")).isEqualTo("y^2+y");
-        Assertions.assertThat(MathUtils.sum("2xyz+2xyz+2xyz", "")).isEqualTo("6xyz");
-        Assertions.assertThat(MathUtils.sum("1", "5x^2y")).isEqualTo("1+5x^2y");
-        Assertions.assertThat(MathUtils.sum("0.4", "y")).isEqualTo("0.4+y");
-        Assertions.assertThat(MathUtils.sum("1/2", "y")).isEqualTo("0.5+y");
-        Assertions.assertThat(MathUtils.sum("2/5", "y")).isEqualTo("0.4+y");
+
         //Assertions.assertThat(MathUtils.sum("2y/3", "5/3")).isEqualTo("2y/3+5/3");
     }
 
