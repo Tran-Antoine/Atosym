@@ -1,42 +1,11 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class MathUtilsTest {
 
-    @Test
-    public void sumTest() {
-
-        //Assertions.assertThat(MathUtils.sum("2y/3", "5/3")).isEqualTo("2y/3+5/3");
-    }
-
-    @Test
-    public void multTest() {
-        Assertions.assertThat(FormatterFactory.formatForVisual(MathUtils.mult("5","((x)#)"))).isEqualTo("5cos(x)");
-        Assertions.assertThat(MathUtils.mult("x^11","x")).isEqualTo("x^12");
-        Assertions.assertThat(MathUtils.mult("x^11","x+2")).isEqualTo("x^12+2x^11");
-        Assertions.assertThat(MathUtils.mult("x^(y^2)","x^y")).isEqualTo("x^(y^2+y)");
-        Assertions.assertThat(MathUtils.mult("x^2+2xy+2xz+y^2+2yz+z^2", "x+y+z")).isEqualTo("x^3+3x^2y+3x^2z+3xy^2+6xyz+3xz^2+y^3+3y^2z+3yz^2+z^3");
-        Assertions.assertThat(MathUtils.mult("3","x")).isEqualTo("3x");
-        Assertions.assertThat(MathUtils.mult("3x","x")).isEqualTo("3x^2");
-        Assertions.assertThat(MathUtils.mult("x^2+2x+1","x+1")).isEqualTo("x^3+3x^2+3x+1");
-        Assertions.assertThat(MathUtils.mult("xy^2","x")).isEqualTo("x^2y^2");
-        Assertions.assertThat(MathUtils.mult("3x^2y+3xy^2+y^3","x+y")).isEqualTo("3x^3y+6x^2y^2+4xy^3+y^4");
-        Assertions.assertThat(MathUtils.mult("2xz+y^2", "x+y")).isEqualTo("2x^2z+2xyz+xy^2+y^3");
-        Assertions.assertThat(MathUtils.mult("2xz+y^2", "x+y+z")).isEqualTo("2x^2z+2xyz+2xz^2+xy^2+y^3+y^2z");
-    }
-
-    @Test
-    public void divideTest() {
-        Assertions.assertThat(MathUtils.divide("6.4+6.4z", "3.2")).isEqualTo("2+2z");
-        Assertions.assertThat(Divider.getInstance().simpleDivision("-2x", "4")).isEqualTo("x/-2");
-    }
 
     @Test
     public void diffSumTest() {

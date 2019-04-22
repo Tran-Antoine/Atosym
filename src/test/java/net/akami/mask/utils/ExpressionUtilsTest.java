@@ -17,12 +17,10 @@ public class ExpressionUtilsTest {
         Assertions.assertThat(toNumericValue("0.3xyz")).isEqualTo("0.3");
         Assertions.assertThat(toNumericValue("x^2")).isEqualTo("1");
         Assertions.assertThat(toNumericValue("3x/2")).isEqualTo("1.5");
-        Assertions.assertThat(toNumericValue("x/3")).isEqualTo("0.3333333333333333333333333333333333333333333333333" +
-                "33333333333333333333333333333333333333333333333333333333333333333333333");
+        Assertions.assertThat(toNumericValue("x/3").matches("0\\.[3]+")).isEqualTo(true);
         Assertions.assertThat(toNumericValue("-3x")).isEqualTo("-3");
         Assertions.assertThat(toNumericValue("-1")).isEqualTo("-1");
-        Assertions.assertThat(toNumericValue("2*y/3")).isEqualTo("0.6666666666666666666666666666666666666666666666" +
-                "66666666666666666666666666666666666666666666666666666666666666666666666667");
+        Assertions.assertThat(toNumericValue("2*y/3").matches("0\\.[6]+7")).isEqualTo(true);
         Assertions.assertThat(toNumericValue("0.4")).isEqualTo("0.4");
         Assertions.assertThat(toNumericValue("3x^(2y+1)")).isEqualTo("3");
         Assertions.assertThat(toNumericValue("3((x)@)")).isEqualTo("3");

@@ -15,11 +15,11 @@ public class DividerTest {
         Assertions.assertThat(div.simpleDivision("5", "2")).isEqualTo("5/2");
         Assertions.assertThat(div.simpleDivision("6", "4")).isEqualTo("3/2");
         Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
-
+        Assertions.assertThat(div.rawOperate("6.4+6.4z", "3.2")).isEqualTo("2+2z");
+        Assertions.assertThat(div.rawOperate("-2x", "4")).isEqualTo("x/-2");
         StringBuilder builder = new StringBuilder();
         MathUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
-        builder.deleteCharAt(builder.length()-1);
-        Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
+        Assertions.assertThat(builder.toString()).isEqualTo("2*3*3*");
     }
 
     @Test
