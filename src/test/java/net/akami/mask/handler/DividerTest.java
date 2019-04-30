@@ -1,32 +1,44 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.utils.MathUtils;
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 public class DividerTest {
 
+    Divider DIV = new Divider();
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test
     public void decomposeExpressionTest() {
-        Divider div = Divider.getInstance();
-        Assertions.assertThat(div.simpleDivision("4", "2")).isEqualTo("2");
-        Assertions.assertThat(div.simpleDivision("5", "2")).isEqualTo("5/2");
-        Assertions.assertThat(div.simpleDivision("6", "4")).isEqualTo("3/2");
-        Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
-        Assertions.assertThat(div.rawOperate("6.4+6.4z", "3.2")).isEqualTo("2+2z");
-        Assertions.assertThat(div.rawOperate("-2x", "4")).isEqualTo("x/-2");
         StringBuilder builder = new StringBuilder();
         MathUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
-        Assertions.assertThat(builder.toString()).isEqualTo("2*3*3*");
+        assertThat(builder.toString()).isEqualTo("2*3*3*");
     }
 
     @Test
     public void divisionsTest() {
-        Assertions.assertThat(MathUtils.divide("5+6", "3")).isEqualTo("5/3+2");
-        Assertions.assertThat(MathUtils.divide("6+x", "2")).isEqualTo("3+x/2");
-        Assertions.assertThat(MathUtils.divide("2x", "x")).isEqualTo("2");
-        Assertions.assertThat(MathUtils.divide("2x+3", "x")).isEqualTo("2+3/x");
+        assertDivision("4", "2","2");
+        assertDivision("6.4+6.4z", "3.2","2+2z");
+        assertDivision("-2x", "4","x/-2");
+        assertDivision("5+6", "3","5/3+2");
+        assertDivision("6+x", "2","3+x/2");
+        assertDivision("2x", "x","2");
+        assertDivision("2x+3", "x","2+3/x");
+    }
+
+    @Test
+    public void simpleDivisionTest() {
+        assertSimpleDivision("5", "2","5/2");
+        assertSimpleDivision("6", "4","3/2");
+        assertSimpleDivision("18", "16","9/8");
+    }
+
+    private void assertDivision(String a, String b, String result) {
+        assertThat(DIV.rawOperate(a, b)).isEqualTo(result);
+    }
+
+    private void assertSimpleDivision(String a, String b, String result) {
+        assertThat(DIV.simpleDivision(a, b)).isEqualTo(result);
     }
 }

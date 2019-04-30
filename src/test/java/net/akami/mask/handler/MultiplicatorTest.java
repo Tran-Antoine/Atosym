@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import org.assertj.core.api.Assertions;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 public class MultiplicatorTest {
@@ -39,10 +39,10 @@ public class MultiplicatorTest {
 
     @Test
     public void inFormatTest() {
-        Assertions.assertThat(MULT.inFormat("8x+y-3")).isEqualTo("8x+y-3");
+        assertThat(MULT.inFormat("8x+y-3")).isEqualTo("8x+y-3");
     }
 
     private void assertOperation(String i1, String i2, String result) {
-        Assertions.assertThat(MULT.rawOperate(i1, i2)).isEqualTo(result);
+        assertThat(MULT.rawOperate(i1, i2)).isEqualTo(result);
     }
 }
