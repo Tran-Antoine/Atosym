@@ -25,6 +25,7 @@ public class ExpressionUtilsTest {
         assertNumericValue("((3x)@)","1");
         assertNumericValue("1*y^2","1");
         assertNumericValue("3x^2y^2","3");
+        assertNumericValue("(3x)@", "1");
         assertThat(toNumericValue("x/3").matches("0\\.[3]+")).isEqualTo(true);
         assertThat(toNumericValue("2*y/3").matches("0\\.[6]+7")).isEqualTo(true);
     }
@@ -72,10 +73,6 @@ public class ExpressionUtilsTest {
 
     private void assertClearNonVariables(String input, String result) {
         assertThat(String.join("",clearNonVariables(input))).isEqualTo(result);
-    }
-    @Test
-    public void toNumericValueTest() {
-        System.out.println(ExpressionUtils.toNumericValue("(3x)@"));
     }
 }
 
