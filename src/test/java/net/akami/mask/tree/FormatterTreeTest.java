@@ -7,36 +7,25 @@ public class FormatterTreeTest {
 
     @Test
     public void simpleMult() {
-        FormatterTree t = new FormatterTree("5*x");
-        System.out.println(t.getBranches());
-        Assertions.assertThat(t.merge()).isEqualTo("5x");
+        assertTree("5*x", "5x");
     }
 
     @Test
     public void trickyMult() {
-        FormatterTree t = new FormatterTree("5*x*y*z");
-
-        Assertions.assertThat(t.merge()).isEqualTo("5xyz");
+        assertTree("5*x*y*z", "5xyz");
     }
 
     @Test
     public void simpleTrigonometry() {
-        FormatterTree t2 = new FormatterTree("5*((x)@)");
-        Assertions.assertThat(t2.merge()).isEqualTo("5sin(x)");
-
-        FormatterTree t = new FormatterTree("((x)@)");
-        Assertions.assertThat(t.merge()).isEqualTo("sin(x)");
+        assertTree("5*((x)@)", "5sin(x)");
+        assertTree("((x)@)", "sin(x)");
     }
 
     @Test
     public void trickyTrigonometry() {
-        FormatterTree t = new FormatterTree("((((x)@))@)");
-        FormatterTree t2 = new FormatterTree("((((x)@))#)");
-        FormatterTree t3 = new FormatterTree("5((((x)@))#)");
-
-        Assertions.assertThat(t.merge()).isEqualTo("sin(sin(x))");
-        Assertions.assertThat(t2.merge()).isEqualTo("cos(sin(x))");
-        Assertions.assertThat(t3.merge()).isEqualTo("5cos(sin(x))");
+        assertTree("((((x)@))@)", "sin(sin(x))");
+        assertTree("((((x)@))#)", "cos(sin(x))");
+        assertTree("5((((x)@))#)", "5cos(sin(x))");
     }
 
     @Test
