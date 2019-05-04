@@ -15,7 +15,7 @@ public class CalculationCache implements CalculationCanceller {
 
     @Override
     public boolean appliesTo(String... input) {
-        return cache.containsKey(input[0]+'|'+input[1]);
+        return cache.containsKey(String.join("|", input));
     }
 
     public void push(String initial, String result) {

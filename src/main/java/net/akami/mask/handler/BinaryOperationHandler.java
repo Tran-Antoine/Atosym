@@ -6,7 +6,7 @@ import net.akami.mask.affection.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BinaryOperationHandler implements CancellableHandler, PostCalculationActionable {
+public abstract class BinaryOperationHandler implements IODefaultFormatter, CancellableHandler, PostCalculationActionable {
 
     public static final BinaryOperationHandler[] DEFAULT_OPERATIONS = {
             new Adder(),
@@ -27,8 +27,6 @@ public abstract class BinaryOperationHandler implements CancellableHandler, Post
     }
 
     protected abstract String operate(String a, String b);
-    public abstract String inFormat(String origin);
-    public abstract String outFormat(String origin);
 
     public String rawOperate(String a, String b) {
         if(isCancellable(a, b)) {
