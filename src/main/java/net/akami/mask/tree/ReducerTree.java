@@ -1,5 +1,7 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.operation.MaskContext;
+
 /**
  * Most basic implementation of the {@link CalculationTree} class. It defines the {@code generate} method by instating
  * a classic {@link Branch} with the given expression.
@@ -8,8 +10,8 @@ package net.akami.mask.tree;
  */
 public class ReducerTree extends CalculationTree<Branch> {
 
-    public ReducerTree(String initial) {
-        super(initial);
+    public ReducerTree(String initial, MaskContext context) {
+        super(initial, context);
     }
 
     @Override

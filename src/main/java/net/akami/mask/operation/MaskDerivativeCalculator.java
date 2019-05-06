@@ -6,7 +6,7 @@ public class MaskDerivativeCalculator implements MaskOperator<Character> {
 
     @Override
     public void compute(MaskExpression in, MaskExpression out, Character var, MaskContext context) {
-        DerivativeTree tree = new DerivativeTree(in.getExpression(), var);
+        DerivativeTree tree = new DerivativeTree(in.getExpression(), var, context);
         out.reload(tree.merge());
     }
 }

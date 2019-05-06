@@ -30,7 +30,7 @@ public class ReducerFactory {
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry
         String localExp = FormatterFactory.formatForCalculations(exp);
-        BinaryTree<Branch> tree = new ReducerTree(localExp);
+        BinaryTree<Branch> tree = new ReducerTree(localExp, context);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 
         TreeUtils.printBranches(tree);

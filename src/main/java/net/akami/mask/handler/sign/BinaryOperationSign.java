@@ -155,10 +155,9 @@ public enum BinaryOperationSign {
         return priorityLevel;
     }
 
-    // TODO : ADD MATH CONTEXT PARAMETER
-    public String compute(String a, String b) {
+    public String compute(String a, String b, MaskContext context) {
         Objects.requireNonNull(binaryFunction);
-        return binaryFunction.compute(a, b);
+        return binaryFunction.compute(a, b, context);
     }
 
     public static BinaryOperationSign getBySign(char sign) {
@@ -172,6 +171,6 @@ public enum BinaryOperationSign {
 
     @FunctionalInterface
     private interface BinaryMathCalculation {
-        String compute(String a, String b);
+        String compute(String a, String b, MaskContext context);
     }
 }

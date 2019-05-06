@@ -2,6 +2,7 @@ package net.akami.mask.tree;
 
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.handler.sign.QuaternaryOperationSign;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.FormatterFactory;
 
 import java.util.Optional;
@@ -27,8 +28,8 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
      * @param initial the
      * @param var
      */
-    public DerivativeTree(String initial, char var) {
-        super(FormatterFactory.formatForCalculations(initial));
+    public DerivativeTree(String initial, char var, MaskContext context) {
+        super(FormatterFactory.formatForCalculations(initial), context);
         this.var = var;
     }
 
@@ -52,7 +53,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
         if(getBranches().indexOf(self) != 0)
-            self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right));
+            self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
         self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 

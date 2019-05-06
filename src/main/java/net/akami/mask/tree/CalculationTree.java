@@ -1,6 +1,7 @@
 package net.akami.mask.tree;
 
 import net.akami.mask.handler.sign.BinaryOperationSign;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.TreeUtils;
@@ -22,8 +23,11 @@ import net.akami.mask.utils.TreeUtils;
 // TODO : add context
 public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
-    public CalculationTree(String initial) {
+    protected final MaskContext context;
+
+    public CalculationTree(String initial, MaskContext context) {
         super(FormatterFactory.addMultiplicationSigns(initial, true), '+', '-', '*', '/', '^', ' ');
+        this.context = context;
     }
 
     /**
@@ -98,6 +102,6 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
      * @return
      */
     protected String evalValue(String left, String right, char sign) {
-        return BinaryOperationSign.getBySign(sign).compute(left, right);
+        return BinaryOperationSign.getBySign(sign).compute(left, right, context);
     }
 }

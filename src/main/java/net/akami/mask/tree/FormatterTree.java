@@ -6,7 +6,8 @@ import net.akami.mask.utils.FormatterFactory;
 public class FormatterTree extends CalculationTree<FormatterBranch> {
 
     public FormatterTree(String initial) {
-        super(FormatterFactory.addMultiplicationSigns(ExpressionUtils.removeEdgeBrackets(initial, false), true));
+        super(FormatterFactory.addMultiplicationSigns(
+                ExpressionUtils.removeEdgeBrackets(initial, false), true), null);
     }
 
     @Override

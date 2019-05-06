@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.operation.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -37,8 +38,9 @@ public class DerivativeTreeTest {
         assertDerivative("5x+y", "1", 'y');
         assertDerivative("5xy", "5x", 'y');
     }
+
     public void assertDerivative(String a, String b, char var) {
-        DerivativeTree tree = new DerivativeTree(a, var);
+        DerivativeTree tree = new DerivativeTree(a, var, MaskContext.DEFAULT);
         Assertions.assertThat(tree.merge()).isEqualTo(b);
     }
 }
