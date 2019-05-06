@@ -4,7 +4,7 @@ import net.akami.mask.handler.IOModificationHandler;
 
 /**
  * The CalculationAffection interface defines the behavior of an expression modifier, in the context of
- * mathematical calculations. Modifier can change the input string given, change the result calculated or even
+ * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
  * cancel the calculation.
  * Since the different affections might have completely different behaviors, no other
  * methods than {@code appliesTo} and {@code priorityLevel} can be directly implemented from subclasses.
@@ -46,7 +46,7 @@ public interface CalculationAffection extends Comparable<CalculationAffection> {
 
     /**
      * Because several affections might want to affect a single input at the same time, the priority level
-     * method help the handler deciding which affect will modify the input / cancel the calculation first.
+     * method helps the handler deciding which affect will modify the input / cancel the calculation first.
      * <p></p>
      * For instance, the "let fraction or divide" cancelling affect will have a greater priority level than the
      * cache canceller, because even if the result of the operation has already been calculated, it is up to the

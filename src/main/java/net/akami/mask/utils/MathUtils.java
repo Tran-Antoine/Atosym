@@ -94,7 +94,7 @@ public class MathUtils {
             double result = operation.compute(Double.valueOf(a));
             return String.valueOf(Math.abs(result) > 10E-15 ? result : 0);
         }
-        return "("+a+")"+opChar;
+        return "(("+a+")"+opChar+")";
     }
 
     public static String roundPeriodicSeries(String value) {
