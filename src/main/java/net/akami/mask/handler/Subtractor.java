@@ -1,22 +1,17 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
+import net.akami.mask.utils.MathUtils;
 
 import java.util.List;
 
 public class Subtractor extends BinaryOperationHandler {
 
-    public Subtractor() {
-        this(MaskContext.DEFAULT);
-    }
-
     public Subtractor(MaskContext context) {
         super(context);
     }
-
-    private static final Subtractor INSTANCE = new Subtractor();
 
     @Override
     protected String operate(String a, String b) {
@@ -38,7 +33,7 @@ public class Subtractor extends BinaryOperationHandler {
             }
         }
         monomials.addAll(bMonomials);
-        return Adder.getInstance().monomialSum(monomials, true);
+        return MathUtils.sum(monomials, context);
     }
 
     @Override
@@ -49,9 +44,5 @@ public class Subtractor extends BinaryOperationHandler {
     @Override
     public String outFormat(String origin) {
         return FormatterFactory.removeMultiplicationSigns(origin);
-    }
-
-    public static Subtractor getInstance() {
-        return INSTANCE;
     }
 }

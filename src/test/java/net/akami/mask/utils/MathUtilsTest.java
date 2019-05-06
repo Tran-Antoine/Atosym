@@ -2,6 +2,7 @@ package net.akami.mask.utils;
 
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
+import net.akami.mask.operation.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -45,7 +46,9 @@ public class MathUtilsTest {
     @Test
     public void divideTest() {
         Assertions.assertThat(MathUtils.divide("6.4+6.4z", "3.2")).isEqualTo("2+2z");
-        Assertions.assertThat(Divider.getInstance().simpleDivision("-2x", "4")).isEqualTo("x/-2");
+        MaskContext defaultContext = MaskContext.DEFAULT;
+
+        Assertions.assertThat(defaultContext.getBinaryOperation(Divider.class).simpleDivision("-2x", "4")).isEqualTo("x/-2");
     }
 
     @Test

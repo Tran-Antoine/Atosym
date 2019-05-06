@@ -1,7 +1,7 @@
 package net.akami.mask.handler.sign;
 
 import net.akami.mask.affection.CalculationCache;
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.MathUtils;
 
 import java.util.Objects;

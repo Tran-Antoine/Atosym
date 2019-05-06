@@ -2,19 +2,11 @@ package net.akami.mask.handler;
 
 import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public abstract class BinaryOperationHandler implements IODefaultFormatter, CancellableHandler, PostCalculationActionable {
-
-    public static final BinaryOperationHandler[] DEFAULT_OPERATIONS = {
-            new Adder(),
-            new Subtractor(),
-            new Multiplicator(),
-            new Divider(),
-            new PowCalculator()
-    };
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
     protected final StringBuilder BUILDER = new StringBuilder();
@@ -49,5 +41,16 @@ public abstract class BinaryOperationHandler implements IODefaultFormatter, Canc
     @Override
     public CalculationCanceller[] getAffections() {
         return cancellers;
+    }
+
+    public static BinaryOperationHandler[] generateDefaultHandlers(MaskContext context) {
+        return new BinaryOperationHandler[]{
+
+                new Adder(context),
+                new Subtractor(context),
+                new Multiplicator(context),
+                new Divider(context),
+                new PowCalculator(context)
+        };
     }
 }

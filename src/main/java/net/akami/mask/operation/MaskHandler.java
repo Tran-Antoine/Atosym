@@ -1,14 +1,12 @@
 package net.akami.mask.operation;
 
-import net.akami.mask.affection.MaskContext;
-import net.akami.mask.handler.BinaryOperationHandler;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
 public class MaskHandler {
+
+    public static final MaskHandler DEFAULT = new MaskHandler();
 
     private MaskExpression current;
     private MaskContext context;

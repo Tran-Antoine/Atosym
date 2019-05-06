@@ -1,7 +1,5 @@
 package net.akami.mask.operation;
 
-import net.akami.mask.affection.MaskContext;
-
 import java.util.Arrays;
 import java.util.List;
 

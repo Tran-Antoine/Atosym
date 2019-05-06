@@ -1,17 +1,11 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
 public class PowCalculator extends BinaryOperationHandler {
-
-    private static final PowCalculator INSTANCE = new PowCalculator();
-
-    public PowCalculator() {
-        this(MaskContext.DEFAULT);
-    }
 
     public PowCalculator(MaskContext context) {
         super(context);
@@ -44,7 +38,7 @@ public class PowCalculator extends BinaryOperationHandler {
         StringBuilder builder = new StringBuilder();
         builder.append(a);
         for (int i = 1; i < powValue; i++) {
-            builder.replace(0, builder.length(), Multiplicator.getInstance().rawOperate(builder.toString(), a));
+            builder.replace(0, builder.length(), MathUtils.mult(builder.toString(), a, context));
             LOGGER.info("{} steps left. Currently : {}", powValue - i - 1, builder.toString());
         }
         return builder.toString();
@@ -58,9 +52,5 @@ public class PowCalculator extends BinaryOperationHandler {
     @Override
     public String outFormat(String origin) {
         return MathUtils.cutSignificantZero(FormatterFactory.removeMultiplicationSigns(origin));
-    }
-
-    public static PowCalculator getInstance() {
-        return INSTANCE;
     }
 }

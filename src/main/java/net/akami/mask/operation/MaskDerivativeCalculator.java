@@ -1,6 +1,5 @@
 package net.akami.mask.operation;
 
-import net.akami.mask.affection.MaskContext;
 import net.akami.mask.tree.DerivativeTree;
 
 public class MaskDerivativeCalculator implements MaskOperator<Character> {

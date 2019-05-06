@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -11,12 +11,7 @@ import java.util.List;
 
 public class Divider extends BinaryOperationHandler {
 
-    private static final Divider INSTANCE = new Divider();
     private static final MathContext CONTEXT = new MathContext(120);
-
-    public Divider() {
-        this(MaskContext.DEFAULT);
-    }
 
     public Divider(MaskContext context) {
         super(context);
@@ -150,7 +145,7 @@ public class Divider extends BinaryOperationHandler {
         nPow = nPow.isEmpty() ? "1" : nPow;
         dPow = dPow.isEmpty() ? "1" : dPow;
 
-        String subResult = Subtractor.getInstance().rawOperate(nPow, dPow);
+        String subResult = MathUtils.subtract(nPow, dPow, context);
 
         if(ExpressionUtils.isANumber(subResult)) {
             float subNumericResult = Float.parseFloat(subResult);
@@ -172,7 +167,8 @@ public class Divider extends BinaryOperationHandler {
         BUILDER.append(1);
         for(String factor : factors) {
             if(factor != null && !factor.equals("1") && !factor.equals("1.0")) {
-                BUILDER.replace(0, BUILDER.length(), Multiplicator.getInstance().simpleMult(BUILDER.toString(), factor));
+                Multiplicator handler = context.getBinaryOperation(Multiplicator.class);
+                BUILDER.replace(0, BUILDER.length(), handler.simpleMult(BUILDER.toString(), factor));
             }
         }
         return BUILDER.toString();
@@ -215,9 +211,5 @@ public class Divider extends BinaryOperationHandler {
     public String outFormat(String origin) {
         origin = FormatterFactory.removeMultiplicationSigns(origin);
         return origin;
-    }
-
-    public static Divider getInstance() {
-        return INSTANCE;
     }
 }

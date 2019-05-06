@@ -1,7 +1,6 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.affection.CalculationAffection;
-import net.akami.mask.affection.MaskContext;
 import net.akami.mask.handler.Adder;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -16,8 +15,7 @@ public class MaskContextTest {
     public void getAffectionsErrorTest() {
         MaskContext context = new MaskContext();
 
-        context.addHandler(new Adder());
-
+        context.addHandler(new Adder(context));
         context.getAffections(CalculationAffection.class);
     }
 

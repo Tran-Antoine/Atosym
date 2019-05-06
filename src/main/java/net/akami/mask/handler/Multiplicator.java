@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.MaskContext;
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -11,12 +11,7 @@ import java.util.List;
 
 public class Multiplicator extends BinaryOperationHandler {
 
-    private static final Multiplicator INSTANCE = new Multiplicator();
     private static final MathContext CONTEXT = new MathContext(120);
-
-    public Multiplicator() {
-        this(MaskContext.DEFAULT);
-    }
 
     public Multiplicator(MaskContext context) {
         super(context);
@@ -56,7 +51,7 @@ public class Multiplicator extends BinaryOperationHandler {
         }
         String unReducedResult = builder.toString();
         LOGGER.info("FINAL RESULT : {}", unReducedResult);
-        String finalResult = Adder.getInstance().operate(unReducedResult, "");
+        String finalResult = MathUtils.sum(unReducedResult, "", context);
         LOGGER.error("- Result of mult {} |*| {} : {}", a, b, finalResult);
         return finalResult;
     }
@@ -114,7 +109,4 @@ public class Multiplicator extends BinaryOperationHandler {
         return FormatterFactory.removeMultiplicationSigns(origin);
     }
 
-    public static Multiplicator getInstance() {
-        return INSTANCE;
-    }
 }

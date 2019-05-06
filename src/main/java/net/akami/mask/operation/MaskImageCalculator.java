@@ -1,6 +1,5 @@
 package net.akami.mask.operation;
 
-import net.akami.mask.affection.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.ReducerFactory;
 
