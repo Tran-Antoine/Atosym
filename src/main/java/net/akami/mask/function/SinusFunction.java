@@ -7,8 +7,8 @@ public class SinusFunction extends MathFunction implements TrigonometryOperation
     }
 
     @Override
-    protected String operate(String input) {
-        return trigonometryOperation(input, super.binding);
+    protected String operate(String... input) {
+        return trigonometryOperation(input[0], super.binding);
     }
 
     @Override

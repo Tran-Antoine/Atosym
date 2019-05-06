@@ -33,7 +33,7 @@ public abstract class BinaryOperationHandler implements IODefaultFormatter, Canc
             return findResult(a, b);
         }
         String result = outFormat(operate(inFormat(a), inFormat(b)));
-        postCalculation(a, b, result);
+        postCalculation(result, a, b);
         return result;
     }
 
@@ -42,8 +42,8 @@ public abstract class BinaryOperationHandler implements IODefaultFormatter, Canc
     }
 
     @Override
-    public void postCalculation(String a, String b, String result) {
-        getAffection(CalculationCache.class).get().push(a+'|'+b, result);
+    public void postCalculation(String result, String... input) {
+        getAffection(CalculationCache.class).get().push(input[0]+'|'+input[1], result);
     }
 
     @Override

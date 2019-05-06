@@ -2,5 +2,5 @@ package net.akami.mask.handler;
 
 public interface PostCalculationActionable {
 
-    void postCalculation(String a, String b, String result);
+    void postCalculation(String result, String... input);
 }

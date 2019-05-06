@@ -11,6 +11,7 @@ public interface TrigonometryOperation {
             double result = getOperation().compute(Double.valueOf(input));
             return String.valueOf(result > 10E-15 ? result : 0);
         }
+        // TODO : check, should there be more () ?
         return "("+input+")"+opChar;
     }
 
