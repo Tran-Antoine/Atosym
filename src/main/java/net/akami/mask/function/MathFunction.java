@@ -61,6 +61,15 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
         return Optional.empty();
     }
 
+    public static Optional<MathFunction> getByExpression(String self) {
+        for(char c : self.toCharArray()) {
+            Optional<MathFunction> function = getByBinding(c);
+            if(function.isPresent())
+                return function;
+        }
+        return Optional.empty();
+    }
+
     // TODO do something working for all functions.
     @Override
     public void postCalculation(String result, String... input) {

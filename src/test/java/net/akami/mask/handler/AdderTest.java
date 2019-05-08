@@ -1,6 +1,8 @@
 package net.akami.mask.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import net.akami.mask.operation.MaskContext;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -8,8 +10,7 @@ import java.util.List;
 
 public class AdderTest {
 
-    private static final Adder SUM = new Adder();
-
+    private final Adder SUM = MaskContext.DEFAULT.getBinaryOperation(Adder.class);
     @Test
     public void sumTest() {
         assertSum("2", "5","7");

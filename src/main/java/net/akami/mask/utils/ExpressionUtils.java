@@ -25,9 +25,7 @@ public class ExpressionUtils {
 
     public static List<String> toMonomials(String self) {
 
-        while (ExpressionUtils.areEdgesBracketsConnected(self, true)) {
-            self = self.substring(1, self.length() - 1);
-        }
+        self = removeEdgeBrackets(self, true);
 
         List<String> monomials = new ArrayList<>();
         int lastIndex = 0;

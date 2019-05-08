@@ -1,12 +1,13 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.MathUtils;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 public class DividerTest {
 
-    Divider DIV = new Divider();
+    private final Divider DIV = MaskContext.DEFAULT.getBinaryOperation(Divider.class);
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test

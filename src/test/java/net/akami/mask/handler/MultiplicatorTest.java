@@ -1,11 +1,13 @@
 package net.akami.mask.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import net.akami.mask.operation.MaskContext;
 import org.junit.Test;
 
 public class MultiplicatorTest {
 
-    private static final Multiplicator MULT = new Multiplicator();
+    private final Multiplicator MULT = MaskContext.DEFAULT.getBinaryOperation(Multiplicator.class);
 
     @Test
     public void multTest() {
