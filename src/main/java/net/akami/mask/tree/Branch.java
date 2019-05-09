@@ -88,17 +88,13 @@ public class Branch<T extends Branch> {
      * @return the left expression if it does not have a reduced value, otherwise its reduced value
      */
     public String getLeftValue() {
-        if(left.hasReducedValue())
-            return left.getReducedValue();
-        return left.getExpression();
+        return left.getReducedValue();
     }
     /**
      * @return the right expression if it does not have a reduced value, otherwise its reduced value.
      */
     public String getRightValue() {
-        if(right.hasReducedValue())
-            return right.getReducedValue();
-        return right.getExpression();
+        return right.getReducedValue();
     }
 
     /**

@@ -97,7 +97,6 @@ public class EquationSolver {
             if(var == key) continue;
 
             String keySolution = solutions.get(key);
-            // TODO : use imageFor method
             if(keySolution.contains(String.valueOf(var))) {
                 Map<Character, String> image = new HashMap<>();
                 image.put(var, varSolution);

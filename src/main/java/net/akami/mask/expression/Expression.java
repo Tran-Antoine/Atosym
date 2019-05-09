@@ -67,7 +67,7 @@ public class Expression {
 
     public Expression simpleMult(Expression other) {
         Monomial firstA = (Monomial) monomials[0];
-        Monomial secondA = (Monomial) monomials[0];
+        Monomial secondA = (Monomial) other.monomials[0];
 
         Variable[] firstVars = firstA.getVariables();
         Variable[] secondVars = secondA.getVariables();

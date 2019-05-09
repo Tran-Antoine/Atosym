@@ -2,9 +2,7 @@ package net.akami.mask.utils;
 
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.handler.sign.BinaryOperationSign;
-import net.akami.mask.tree.BinaryTree;
-import net.akami.mask.tree.Branch;
-import net.akami.mask.tree.ReducerTree;
+import net.akami.mask.tree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

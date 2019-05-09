@@ -8,8 +8,18 @@ public class Monomial implements ExpressionElement {
 
     public Monomial(float numericValue, Variable[] variables) {
         this.variables = variables;
-        this.expression = numericValue + variablesToString();
         this.numericValue = numericValue;
+        this.expression = loadExpression();
+    }
+
+    private String loadExpression() {
+        if(variables == null)
+            return String.valueOf(numericValue);
+
+        if(numericValue == 1)
+            return variablesToString();
+
+        return numericValue + variablesToString();
     }
 
     public boolean hasSameVariablePartAs(Monomial other) {

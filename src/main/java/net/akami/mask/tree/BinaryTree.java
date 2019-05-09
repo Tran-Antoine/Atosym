@@ -112,6 +112,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
             if (!self.canBeEvaluated()) {
                 LOGGER.info("Not calculable : ");
+                self.setReducedValue(self.getExpression());
                 continue;
             }
 

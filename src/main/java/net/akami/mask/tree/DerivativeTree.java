@@ -41,6 +41,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     @Override
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
+            self.setReducedValue(self.getExpression());
             self.setDerivativeValue(differentiateElement(self.getExpression()));
             return;
         }
