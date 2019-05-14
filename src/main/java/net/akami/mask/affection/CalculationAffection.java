@@ -30,7 +30,7 @@ import net.akami.mask.handler.IOModificationHandler;
  *
  * @author Antoine Tran
  */
-public interface CalculationAffection extends Comparable<CalculationAffection> {
+public interface CalculationAffection<T> extends Comparable<CalculationAffection> {
 
     /**
      * Checks a validity between the input given and the behavior of the current affection.
@@ -42,7 +42,7 @@ public interface CalculationAffection extends Comparable<CalculationAffection> {
      * @param input the given input string that will be checked
      * @return whether the given input can be modified or if the calculation can be cancelled
      */
-    boolean appliesTo(String... input);
+    boolean appliesTo(T... input);
 
     /**
      * Because several affections might want to affect a single input at the same time, the priority level

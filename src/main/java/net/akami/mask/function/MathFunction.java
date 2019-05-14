@@ -36,7 +36,8 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
 
     public String rawOperate(String... input) {
         if(isCancellable(input)) {
-            return findResult(input);
+            return null;
+            // TODO return findResult(input);
         }
         return operate(input);
     }
@@ -72,13 +73,22 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
 
     // TODO do something working for all functions.
     @Override
-    public void postCalculation(String result, String... input) {
-        String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        getAffection(CalculationCache.class).get().push(calculation, result);
+    public void postCalculation(Object result, Object... input) {
+        // TODO
+        //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
+        //getAffection(CalculationCache.class).get().push(calculation, result);
     }
 
     @Override
     public CalculationCanceller[] getAffections() {
         return cancellers;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof MathFunction))
+            return false;
+
+        return this.binding == ((MathFunction) obj).binding;
     }
 }

@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-public interface PostCalculationActionable {
+public interface PostCalculationActionable<T> {
 
-    void postCalculation(String result, String... input);
+    void postCalculation(T result, T... input);
 }

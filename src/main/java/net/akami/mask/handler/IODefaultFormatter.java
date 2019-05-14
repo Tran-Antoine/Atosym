@@ -1,7 +1,7 @@
 package net.akami.mask.handler;
 
-public interface IODefaultFormatter {
+public interface IODefaultFormatter<T> {
 
-    String inFormat(String input);
-    String outFormat(String input);
+    T inFormat(T input);
+    T outFormat(T input);
 }

@@ -8,25 +8,25 @@ import java.util.Objects;
 public class Expression {
 
     private final String expression;
-    private ExpressionElement[] monomials;
+    private final ExpressionElement[] elements;
 
     public Expression(float value) {
-        this.monomials = new ExpressionElement[]{new NumberElement(value)};
-        this.expression = join(monomials);
+        this.elements = new ExpressionElement[]{new NumberElement(value)};
+        this.expression = join(elements);
     }
 
     public Expression(String expression) {
         this.expression = Objects.requireNonNull(expression);
-        this.monomials = simpleAnalyze();
+        this.elements = simpleAnalyze();
     }
 
     public Expression(ExpressionElement singleElement) {
-        this.monomials = new ExpressionElement[]{singleElement};
+        this.elements = new ExpressionElement[]{singleElement};
         this.expression = singleElement.getExpression();
     }
 
-    public Expression(ExpressionElement[] monomials) {
-        this.monomials = monomials;
+    public Expression(ExpressionElement... monomials) {
+        this.elements = monomials;
         this.expression = join(monomials);
     }
 
@@ -52,22 +52,9 @@ public class Expression {
         throw new RuntimeException("Unreachable statement : couldn't identify the simple expression given : "+expression);
     }
 
-    public Expression simpleSum(Expression other) {
-
-        Monomial firstA = (Monomial) monomials[0];
-        Monomial secondA = (Monomial) other.monomials[0];
-
-        if(firstA.hasSameVariablePartAs(secondA)) {
-            // TODO : Use BigDecimal
-            float floatResult = firstA.getNumericValue() + secondA.getNumericValue();
-            return new Expression(new Monomial(floatResult, firstA.getVariables()));
-        }
-        return new Expression(new ExpressionElement[]{firstA, secondA});
-    }
-
     public Expression simpleMult(Expression other) {
-        Monomial firstA = (Monomial) monomials[0];
-        Monomial secondA = (Monomial) other.monomials[0];
+        Monomial firstA = (Monomial) elements[0];
+        Monomial secondA = (Monomial) other.elements[0];
 
         Variable[] firstVars = firstA.getVariables();
         Variable[] secondVars = secondA.getVariables();
@@ -100,5 +87,17 @@ public class Expression {
     @Override
     public String toString() {
         return expression;
+    }
+
+    public ExpressionElement[] getElements() {
+        return elements;
+    }
+
+    public int length() {
+        return elements.length;
+    }
+
+    public ExpressionElement get(int index) {
+        return elements[index];
     }
 }

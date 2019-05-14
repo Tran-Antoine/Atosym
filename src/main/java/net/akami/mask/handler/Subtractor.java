@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
@@ -7,18 +8,18 @@ import net.akami.mask.utils.MathUtils;
 
 import java.util.List;
 
-public class Subtractor extends BinaryOperationHandler {
+public class Subtractor extends BinaryOperationHandler<Expression> {
 
     public Subtractor(MaskContext context) {
         super(context);
     }
 
     @Override
-    protected String operate(String a, String b) {
+    protected Expression operate(Expression a, Expression b) {
         LOGGER.info("Subtractor process of {} |-| {}: \n", a, b);
 
-        List<String> monomials = ExpressionUtils.toMonomials(a);
-        List<String> bMonomials = ExpressionUtils.toMonomials(b);
+        List<String> monomials = null;//ExpressionUtils.toMonomials(a);
+        List<String> bMonomials = null;//ExpressionUtils.toMonomials(b);
 
         // Changes the sign of the monomials that need to be subtracted
         for (int i = 0; i < bMonomials.size(); i++) {
@@ -33,16 +34,16 @@ public class Subtractor extends BinaryOperationHandler {
             }
         }
         monomials.addAll(bMonomials);
-        return MathUtils.sum(monomials, context);
+        return null;//MathUtils.sum(monomials, context);
     }
 
     @Override
-    public String inFormat(String origin) {
+    public Expression inFormat(Expression origin) {
         return origin;
     }
 
     @Override
-    public String outFormat(String origin) {
-        return FormatterFactory.removeMultiplicationSigns(origin);
+    public Expression outFormat(Expression origin) {
+        return origin;
     }
 }

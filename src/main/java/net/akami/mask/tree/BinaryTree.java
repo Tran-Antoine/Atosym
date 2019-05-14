@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,7 +113,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
             if (!self.canBeEvaluated()) {
                 LOGGER.info("Not calculable : ");
-                self.setReducedValue(self.getExpression());
+                self.setReducedValue(new Expression(self.getExpression()));
                 continue;
             }
 

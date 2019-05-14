@@ -1,5 +1,8 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.ExpressionElement;
+
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.handler.*;
 import static net.akami.mask.operation.MaskContext.DEFAULT;
@@ -14,36 +17,37 @@ public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
 
-    public static String sum(String a, String b)      { return sum(a, b, DEFAULT);      }
-    public static String sum(List<String> monomials)  { return sum(monomials, DEFAULT); }
-    public static String subtract(String a, String b) { return subtract(a, b, DEFAULT); }
-    public static String mult(String a, String b)     { return mult(a, b, DEFAULT);     }
-    public static String divide(String a, String b)   { return divide(a, b, DEFAULT);   }
-    public static String pow(String a, String b)      { return pow(a, b, DEFAULT);   }
+    public static String sum(Expression a, Expression b)      { return sum(a, b, DEFAULT);      }
+    public static Expression sum(List<ExpressionElement> monomials)  { return sum(monomials, DEFAULT); }
+    //public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
+    public static String mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
+    public static String divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
+    public static String pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);   }
 
-    public static String sum(String a, String b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
-    public static String subtract(String a, String b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
-    public static String mult(String a, String b, MaskContext context)     { return context.binaryCompute(a, b, Multiplicator.class); }
-    public static String divide(String a, String b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
-    public static String pow(String a, String b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
-    public static String sum(List<String> monomials, MaskContext context)  {
-        return context.getBinaryOperation(Adder.class).monomialSum(monomials, true);
+    public static String sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
+    public static String subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
+    public static String mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
+    public static String divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
+    public static String pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
+    public static Expression sum(List<ExpressionElement> monomials, MaskContext context)  {
+        return null;//context.getBinaryOperation(Adder.class).monomialSum(monomials, true);
     }
 
     public static String diffSum(String a, String altA, String b, String altB) {
-        return sum(altA, altB);
+        return null; // TODO return sum(altA, altB);
     }
     public static String diffSubtract(String a, String altA, String b, String altB) {
-        return subtract(altA, altB);
+        return null; // TODO return subtract(altA, altB);
     }
     public static String diffMult(String a, String altA, String b, String altB) {
-        return sum(mult(altA, b), mult(altB, a));
+        return null; // TODO return sum(mult(altA, b), mult(altB, a));
     }
     public static String diffDivide(String a, String altA, String b, String altB) {
-        return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
+        return null; // TODO return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
     }
     public static String diffPow(String a, String altA, String b, String altB) {
-        String subtractResult = subtract(b, "1");
+        return null;
+        /*String subtractResult = subtract(b, "1");
         if(subtractResult.equals("1"))
             subtractResult = "";
         else if(!ExpressionUtils.isReduced(subtractResult))
@@ -65,13 +69,13 @@ public class MathUtils {
         else
             altA = '*' + altA;
 
-        return b+a+subtractResult+altA;
+        return b+a+subtractResult+altA;*/
     }
 
     public static String breakNumericalFraction(String self) {
         for(int i = 0; i < self.length(); i++) {
             if(self.charAt(i) == '/') {
-                return divide(self.substring(0, i), self.substring(i+1));
+                // TODO return divide(self.substring(0, i), self.substring(i+1));
             }
         }
         return self;

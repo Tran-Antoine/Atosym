@@ -18,8 +18,8 @@ public class FormatterTree extends CalculationTree<FormatterBranch> {
     @Override
     protected void evalBranch(FormatterBranch self) {
 
-        String left = self.getLeftValue();
-        String right = self.getRightValue();
+        String left = null;self.getLeftValue();
+        String right = null;self.getRightValue();
 
         if(evalTrigonometry(self, left, right)) return;
 
@@ -32,11 +32,11 @@ public class FormatterTree extends CalculationTree<FormatterBranch> {
         char operation = self.getOperation();
 
         if(operation == '*') {
-            self.setReducedValue(left + right);
+            //self.setReducedValue(left + right);
         } else if(operation == '-' && left.equals("0")){
-            self.setReducedValue(operation + right);
+            //self.setReducedValue(operation + right);
         } else {
-            self.setReducedValue(left + operation + right);
+            //self.setReducedValue(left + operation + right);
         }
     }
 
@@ -61,13 +61,13 @@ public class FormatterTree extends CalculationTree<FormatterBranch> {
         if(trigonometricSign != '$') {
             switch (trigonometricSign) {
                 case '@':
-                    self.setReducedValue("sin("+value+")");
+                    //self.setReducedValue("sin("+value+")");
                     break;
                 case '#':
-                    self.setReducedValue("cos("+value+")");
+                    //self.setReducedValue("cos("+value+")");
                     break;
                 case '§':
-                    self.setReducedValue("tan("+value+")");
+                    //self.setReducedValue("tan("+value+")");
             }
             return true;
         }

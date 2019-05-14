@@ -1,6 +1,8 @@
 package net.akami.mask.expression;
 
-public interface ExpressionElement {
+import net.akami.mask.utils.Mergeable;
+
+public interface ExpressionElement<T extends ExpressionElement> extends Mergeable<T> {
 
     String getExpression();
 }

@@ -8,7 +8,7 @@ package net.akami.mask.affection;
  * For instance, the {@link CalculationCache} checks whether the expression has already been evaluated, and gives
  * the result stored if it is the case.
  */
-public interface CalculationCanceller extends CalculationAffection {
+public interface CalculationCanceller<T> extends CalculationAffection<T> {
 
     /**
      * Defines what result must be returned instead of the initial calculation.
@@ -19,5 +19,5 @@ public interface CalculationCanceller extends CalculationAffection {
      * @return a result that might be different or not than the result that would have been computed without the
      * intervention of the canceller.
      */
-    String resultIfCancelled(String... input);
+    T resultIfCancelled(T... input);
 }

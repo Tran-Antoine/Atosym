@@ -1,20 +1,34 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.function.MathFunction;
+import net.akami.mask.handler.Adder;
+import net.akami.mask.operation.MaskContext;
+import net.akami.mask.utils.Mergeable;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class Variable implements ExpressionElement, Comparable<Variable> {
+public class Variable implements Comparable<Variable>, Mergeable<Variable> {
 
-    private char var;
-    private Expression exponent;
-    private MathFunction function;
+    private final char var;
+    private final Expression exponent;
+    private final MathFunction function;
+    private final String expression;
+    private final MaskContext context;
 
-    public Variable(char var, Expression exponent, MathFunction function) {
+    public Variable(char var, MaskContext context) {
+        this(var, null, context);
+    }
+
+    public Variable(char var, Expression exponent, MaskContext context) {
+        this(var, exponent, null, context);
+    }
+
+    public Variable(char var, Expression exponent, MathFunction function, MaskContext context) {
         this.var = var;
         this.exponent = exponent == null ? new Expression(1) : exponent;
         this.function = function;
+        this.expression = loadExpression();
+        this.context = context == null ? MaskContext.DEFAULT : context;
     }
 
     @Override
@@ -27,37 +41,21 @@ public class Variable implements ExpressionElement, Comparable<Variable> {
     }
 
     public static Variable[] combine(Variable[] a1, Variable[] a2) {
-        if(a1 == null) return a2;
-        if(a2 == null) return a1;
-        List<Variable> finalVars = new ArrayList<>();
-        int i = 0;
-        for(Variable var1 : a1) {
-            int j = 0;
-            for(Variable var2 : a2) {
-                if (var2 != null) {
-                    if (var1.var == var2.var && var1.function == var2.function) {
-                        a1[i] = null;
-                        a2[j] = null;
-                        Expression newExponent = var1.exponent.simpleSum(var2.exponent);
-                        finalVars.add(new Variable(var1.var, newExponent, var1.function));
-                        break;
-                    }
-                }
-                j++;
-            }
-            i++;
-        }
-        finalVars.addAll(Arrays.asList(a1).stream().filter(Objects::nonNull).collect(Collectors.toList()));
-        finalVars.addAll(Arrays.asList(a2).stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        if(a1 == null) a1 = new Variable[0];
+        if(a2 == null) a2 = new Variable[0];
+        List<Variable> finalVars = Mergeable.merge(Arrays.asList(a1), Arrays.asList(a2));
         Collections.sort(finalVars);
-        return finalVars.toArray(new Variable[finalVars.size()]);
+        return finalVars.toArray(new Variable[0]);
     }
 
-    @Override
-    public String getExpression() {
+    private String loadExpression() {
         String result = exponent == null || exponent.toString().equals("1.0") || exponent.toString().equals("1")
                 ? String.valueOf(var) : var + "^" + exponent.toString();
         return result;
+    }
+
+    public String getExpression() {
+        return expression;
     }
 
     @Override
@@ -68,5 +66,28 @@ public class Variable implements ExpressionElement, Comparable<Variable> {
     @Override
     public int compareTo(Variable o) {
         return this.var - o.var;
+    }
+
+    @Override
+    public boolean isMergeable(Variable other) {
+
+        boolean equalVars = var == other.var;
+        boolean noFunction = function == other.function;
+
+        if(!equalVars) return false;
+        if(noFunction) return true;
+
+        if(function == null || other.function == null)
+            return false;
+
+        return function.equals(other.function);
+    }
+
+    @Override
+    public Variable mergeElement(Variable other) {
+        Adder operator = context.getBinaryOperation(Adder.class);
+
+        Expression newExponent = operator.simpleSum(this.exponent, other.exponent);
+        return new Variable(this.var, newExponent, this.function, this.context);
     }
 }

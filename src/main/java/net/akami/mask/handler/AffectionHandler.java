@@ -18,7 +18,7 @@ public interface AffectionHandler<T extends CalculationAffection, R> {
         return Optional.empty();
     }
 
-    default List<T> compatibleAffectionsFor(String... input) {
+    default List<T> compatibleAffectionsFor(R... input) {
         List<T> compatibles = new ArrayList<>();
 
         for(T affection : getAffections()) {
@@ -29,5 +29,5 @@ public interface AffectionHandler<T extends CalculationAffection, R> {
         return compatibles;
     }
 
-    R findResult(String... input);
+    R findResult(R... input);
 }

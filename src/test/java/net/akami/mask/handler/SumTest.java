@@ -8,7 +8,7 @@ public class SumTest {
 
     private final Adder sum = MaskContext.DEFAULT.getBinaryOperation(Adder.class);
 
-    @Test
+    /*@Test
     public void sum() {
         Assertions.assertThat(sum.rawOperate("2", "5")).isEqualTo("7");
         Assertions.assertThat(sum.rawOperate("2x", "5")).isEqualTo("2x+5");
@@ -23,5 +23,5 @@ public class SumTest {
         Assertions.assertThat(sum.inFormat("5x")).isEqualTo("5x");
         Assertions.assertThat(sum.inFormat("5x/5")).isEqualTo("1x");
         Assertions.assertThat(sum.inFormat("3x/4")).isEqualTo("0.75x");
-    }
+    }*/
 }

@@ -136,10 +136,10 @@ public class EquationSolver {
         rearrange(leftMonomials, rightMonomials, var, true);
         rearrange(rightMonomials, leftMonomials, var, false);
 
-        String numericLeftValue = ExpressionUtils.toNumericValue(MathUtils.sum(leftMonomials));
-        String rightValue = MathUtils.sum(rightMonomials);
+        String numericLeftValue = null;//ExpressionUtils.toNumericValue(MathUtils.sum(leftMonomials));
+        String rightValue = null;//MathUtils.sum(rightMonomials);
         LOGGER.info("Final step : dividing {} by {}", rightValue, numericLeftValue);
-        return FormatterFactory.removeMultiplicationSigns(MathUtils.divide(rightValue, numericLeftValue));
+        return null;//FormatterFactory.removeMultiplicationSigns(MathUtils.divide(rightValue, numericLeftValue));
     }
 
     private static void replaceExistingSolutions(List<String> target, char var, Map<Character, String> solutions) {

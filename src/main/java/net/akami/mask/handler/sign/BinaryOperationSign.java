@@ -1,6 +1,7 @@
 package net.akami.mask.handler.sign;
 
 import net.akami.mask.affection.CalculationCache;
+import net.akami.mask.expression.Expression;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.MathUtils;
 
@@ -40,7 +41,7 @@ public enum BinaryOperationSign {
      *  3y-2  +   y     = 4y-2
      * </pre>
      */
-    SUM('+', MathUtils::sum, 0),
+    SUM('+', null/*MathUtils::sum*/, 0),
 
     /**
      * Subtraction operator, computes a - b using the {@link MathUtils#subtract(String, String)} method.
@@ -58,7 +59,7 @@ public enum BinaryOperationSign {
      *  3y-2  -   y     = 2y-2
      * </pre>
      */
-    SUBTRACT('-', MathUtils::subtract, 0),
+    SUBTRACT('-', null/*MathUtils::subtract*/, 0),
 
     /**
      * Mult operator, computes a * b using the {@link MathUtils#mult(String, String)} method.
@@ -76,7 +77,7 @@ public enum BinaryOperationSign {
      *  3y-2  *  x+y    = 3xy+3y^2-2x-2y
      * </pre>
      */
-    MULT('*', MathUtils::mult, 1),
+    MULT('*', null/*MathUtils::mult*/, 1),
 
     /**
      * Division operator, computes a / b using the {@link MathUtils#divide(String, String)} method.
@@ -99,7 +100,7 @@ public enum BinaryOperationSign {
      *  3y-2  /  x+y    = Not calculable yet. Returns (3y-2)/(x+y)
      * </pre>
      */
-    DIVIDE('/', MathUtils::divide, 1),
+    DIVIDE('/', null/*MathUtils::divide*/, 1),
 
     /**
      * Pow operator, computes a ^ b using the {@link MathUtils#pow(String, String)} method.
@@ -123,7 +124,7 @@ public enum BinaryOperationSign {
      *  3y-2  ^  x+y    = (3y-2)^(x+y)
      * </pre>
      */
-    POW('^', MathUtils::pow, 2),
+    POW('^', null/*,MathUtils::pow*/, 2),
 
     /**
      * The None operator does not have any other utility than making the amount of operations an even number.
@@ -155,7 +156,7 @@ public enum BinaryOperationSign {
         return priorityLevel;
     }
 
-    public String compute(String a, String b, MaskContext context) {
+    public Expression compute(Expression a, Expression b, MaskContext context) {
         Objects.requireNonNull(binaryFunction);
         return binaryFunction.compute(a, b, context);
     }
@@ -171,6 +172,12 @@ public enum BinaryOperationSign {
 
     @FunctionalInterface
     private interface BinaryMathCalculation {
-        String compute(String a, String b, MaskContext context);
+        Expression compute(Expression a, Expression b, MaskContext context);
+    }
+
+    private interface Test {
+        String compute(String a, String b, MaskContext c);
+
+        static Test test(){return null;}
     }
 }

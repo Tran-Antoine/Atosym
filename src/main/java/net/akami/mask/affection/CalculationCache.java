@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author Antoine Tran
  */
-public class CalculationCache implements CalculationCanceller {
+public class CalculationCache implements CalculationCanceller<String> {
 
     private Map<String, String> cache = new HashMap<>();
     private int capacity = 200;

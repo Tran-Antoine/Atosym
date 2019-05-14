@@ -1,13 +1,13 @@
 package net.akami.mask.operation;
 
 import net.akami.mask.affection.CalculationAffection;
-import net.akami.mask.handler.Adder;
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.AffectionHandler;
 import net.akami.mask.handler.BinaryOperationHandler;
 
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MaskContext {
 
@@ -15,6 +15,7 @@ public class MaskContext {
 
     private List<AffectionHandler> affectionHandlers = new ArrayList<>();
     private BinaryOperationHandler[] binaryHandlers;
+    private MathContext bigDecimalContext = new MathContext(150);
 
     public MaskContext() {
         this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
@@ -48,10 +49,10 @@ public class MaskContext {
         return null;
     }
 
-    public String binaryCompute(String a, String b, Class<? extends BinaryOperationHandler> clazz) {
+    public String binaryCompute(Expression a, Expression b, Class<? extends BinaryOperationHandler> clazz) {
 
         BinaryOperationHandler handler = getBinaryOperation(clazz);
-        return handler.rawOperate(a, b);
+        return null;//handler.rawOperate(a, b);
     }
 
     public <T extends BinaryOperationHandler> T getBinaryOperation(Class<T> clazz) {

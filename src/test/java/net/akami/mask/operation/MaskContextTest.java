@@ -36,7 +36,7 @@ public class MaskContextTest {
     }
 
     private void testWithLevel(List<CalculationAffection> list, float level) {
-        list.add(new CalculationAffection() {
+        list.add(new CalculationAffection<String>() {
             @Override
             public boolean appliesTo(String... input) {
                 return false;

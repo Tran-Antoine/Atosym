@@ -5,7 +5,7 @@ import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
-public class PowCalculator extends BinaryOperationHandler {
+public class PowCalculator extends BinaryOperationHandler<String> {
 
     public PowCalculator(MaskContext context) {
         super(context);
@@ -38,7 +38,7 @@ public class PowCalculator extends BinaryOperationHandler {
         StringBuilder builder = new StringBuilder();
         builder.append(a);
         for (int i = 1; i < powValue; i++) {
-            builder.replace(0, builder.length(), MathUtils.mult(builder.toString(), a, context));
+            builder.replace(0, builder.length(), null/*MathUtils.mult(builder.toString(), a, context)*/);
             LOGGER.info("{} steps left. Currently : {}", powValue - i - 1, builder.toString());
         }
         return builder.toString();

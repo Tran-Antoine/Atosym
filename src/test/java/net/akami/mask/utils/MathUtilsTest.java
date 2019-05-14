@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MathUtilsTest {
 
-    @Test
+    /*@Test
     public void sumTest() {
         Assertions.assertThat(MathUtils.sum("3x-2", "x")).isEqualTo("4x-2");
         Assertions.assertThat(MathUtils.sum("((x)#)^2", "")).isEqualTo("((x)#)^2");
@@ -51,7 +51,7 @@ public class MathUtilsTest {
         MaskContext defaultContext = MaskContext.DEFAULT;
 
         Assertions.assertThat(defaultContext.getBinaryOperation(Divider.class).simpleDivision("-2x", "4")).isEqualTo("x/-2");
-    }
+    }*/
 
     @Test
     public void diffSumTest() {

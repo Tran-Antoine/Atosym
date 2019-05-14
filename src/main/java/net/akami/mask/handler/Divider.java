@@ -1,5 +1,9 @@
 package net.akami.mask.handler;
 
+import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
@@ -9,7 +13,7 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;
 
-public class Divider extends BinaryOperationHandler {
+public class Divider extends BinaryOperationHandler<Expression> {
 
     private static final MathContext CONTEXT = new MathContext(120);
 
@@ -18,49 +22,43 @@ public class Divider extends BinaryOperationHandler {
     }
 
     @Override
-    protected String operate(String a, String b) {
+    public Expression operate(Expression a, Expression b) {
         LOGGER.info("Divider process of {} |/| {}: \n", a, b);
 
         // Avoids division by zero error.
         if(a.equals(b))
-            return "1";
+            return new Expression(1);
 
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
-            return numericalDivision(a, b);
+            // We are guaranteed that both expression have only one element, which is a monomial
+            return numericalDivision((Monomial) a.get(0), (Monomial) b.get(0));
         }
 
-        String unsignedB = b.substring(1);
-        if(unsignedB.contains("+") || unsignedB.contains("-")) {
-            LOGGER.error("Unable to calculate a division, the denominator being a polynomial. Returns a/b");
-            if(!ExpressionUtils.isReduced(a))
-                a = '(' + a + ')';
-            if(!ExpressionUtils.isReduced(b))
-                b = '(' + b + ')';
-            return a+"/"+b;
+        if(b.length() > 1) {
+            LOGGER.error("Unable to calculate the division, the denominator being a polynomial. Returns a/b");
+            throw new RuntimeException("Unsupported operation for now. Denominator will need to be an expression rather than a monomial");
         }
 
-        List<String> numMonomials = ExpressionUtils.toMonomials(a);
-        int index = 0;
-        for(String numMonomial : numMonomials) {
-            String divisionResult = simpleDivision(numMonomial, b);
-            LOGGER.info("Result of simple division between {} and {} : {}", numMonomial, b, divisionResult);
-            if(divisionResult.startsWith("+") || divisionResult.startsWith("-") || index == 0) {
-                numMonomials.set(index++, divisionResult);
-            } else {
-                numMonomials.set(index++, "+" + divisionResult);
-            }
+        ExpressionElement[] finalElements = new ExpressionElement[a.length()];
+        int i = 0;
+
+        for(ExpressionElement numPart : a.getElements()) {
+            finalElements[i++] = simpleDivision(numPart, b.get(0));
         }
-        String divisionResult = String.join("", numMonomials);
-        LOGGER.info("Result of division between {} and {} : {}", a, b, divisionResult);
-        return divisionResult;
+
+        return new Expression(finalElements);
     }
 
-    private String numericalDivision(String a, String b) {
-        BigDecimal bigA = new BigDecimal(a);
-        BigDecimal bigB = new BigDecimal(b);
-        String result = MathUtils.cutSignificantZero(bigA.divide(bigB, CONTEXT).toString());
+    private Expression numericalDivision(Monomial a, Monomial b) {
+        BigDecimal bigA = new BigDecimal(a.getNumericValue());
+        BigDecimal bigB = new BigDecimal(b.getNumericValue());
+        float result = bigA.divide(bigB, CONTEXT).floatValue();
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
-        return result;
+        return new Expression(result);
+    }
+
+    public ExpressionElement simpleDivision(ExpressionElement a, ExpressionElement b) {
+        
     }
 
     public String simpleDivision(String a, String b) {
@@ -145,7 +143,7 @@ public class Divider extends BinaryOperationHandler {
         nPow = nPow.isEmpty() ? "1" : nPow;
         dPow = dPow.isEmpty() ? "1" : dPow;
 
-        String subResult = MathUtils.subtract(nPow, dPow, context);
+        String subResult = null;//MathUtils.subtract(nPow, dPow, context);
 
         if(ExpressionUtils.isANumber(subResult)) {
             float subNumericResult = Float.parseFloat(subResult);
@@ -167,8 +165,8 @@ public class Divider extends BinaryOperationHandler {
         BUILDER.append(1);
         for(String factor : factors) {
             if(factor != null && !factor.equals("1") && !factor.equals("1.0")) {
-                Multiplicator handler = context.getBinaryOperation(Multiplicator.class);
-                BUILDER.replace(0, BUILDER.length(), handler.simpleMult(BUILDER.toString(), factor));
+                Multiplier handler = context.getBinaryOperation(Multiplier.class);
+                //TODO BUILDER.replace(0, BUILDER.length(), handler.simpleMult(BUILDER.toString(), factor));
             }
         }
         return BUILDER.toString();
@@ -203,13 +201,12 @@ public class Divider extends BinaryOperationHandler {
     }
 
     @Override
-    public String inFormat(String origin) {
+    public Expression inFormat(Expression origin) {
         return origin;
     }
 
     @Override
-    public String outFormat(String origin) {
-        origin = FormatterFactory.removeMultiplicationSigns(origin);
+    public Expression outFormat(Expression origin) {
         return origin;
     }
 }

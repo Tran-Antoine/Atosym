@@ -8,13 +8,13 @@ import java.util.List;
 public interface IOModificationHandler extends AffectionHandler<IOCalculationModifier, String[]> {
 
     @Override
-    default String[] findResult(String... input) {
+    default String[] findResult(String[]... input) {
         List<IOCalculationModifier> affections = compatibleAffectionsFor(input);
         Collections.sort(affections);
         for(IOCalculationModifier affection : affections) {
-            input = affection.modify(input);
+            // TODO input = affection.modify(input);
         }
 
-        return input;
+        return null;//input;
     }
 }

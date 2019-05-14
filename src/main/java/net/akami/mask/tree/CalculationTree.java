@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
@@ -80,11 +81,11 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
         LOGGER.info("Actual branch : {}", self.getExpression());
 
         // We are sure that the branch has a left and a right part, because the branch can be calculated
-        String left = self.getLeftValue();
-        String right = self.getRightValue();
+        Expression left = self.getLeftValue();
+        Expression right = self.getRightValue();
 
         LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, self.getOperation());
-        String value = evalValue(left, right, self.getOperation());
+        Expression value = evalValue(left, right, self.getOperation());
         // The findResult is defined as the reduced value of the expression
         LOGGER.info("Successfully calculated the value of " + self.getExpression() + " : " + value);
 
@@ -100,7 +101,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
      * @param sign the operation sign corresponding to a calculation
      * @return
      */
-    protected String evalValue(String left, String right, char sign) {
+    protected Expression evalValue(Expression left, Expression right, char sign) {
         return BinaryOperationSign.getBySign(sign).compute(left, right, context);
     }
 }

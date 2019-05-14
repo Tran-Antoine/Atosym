@@ -1,5 +1,8 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
@@ -65,7 +68,7 @@ public class ExpressionUtils {
         for (String var : vars) {
             String[] varExp = var.split("\\^", 2);
             if (reducedVars.containsKey(varExp[0])) {
-                reducedVars.put(varExp[0], MathUtils.sum(reducedVars.get(varExp[0]), varExp[1]));
+                reducedVars.put(varExp[0], null/*MathUtils.sum(reducedVars.get(varExp[0]), varExp[1])*/);
             } else {
                 reducedVars.put(varExp[0], varExp[1]);
             }
@@ -225,6 +228,13 @@ public class ExpressionUtils {
         }
     }
 
+    public static boolean isANumber(Expression exp) {
+        if(exp.length() != 1) return false;
+
+        ExpressionElement element = exp.getElements()[0];
+        return element instanceof Monomial && ((Monomial) element).getVariables() == null;
+    }
+
     public static boolean isANumber(String exp) {
         if (exp.length() == 0)
             return false;
@@ -311,7 +321,7 @@ public class ExpressionUtils {
 
         if(exp.contains("/")) {
             String[] parts = exp.split("/", 2);
-            return MathUtils.divide(parts[0], parts[1]);
+            return null;// MathUtils.divide(parts[0], parts[1]);
         }
 
         return exp;

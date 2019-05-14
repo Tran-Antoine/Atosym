@@ -4,17 +4,17 @@ import net.akami.mask.affection.CalculationCanceller;
 
 import java.util.*;
 
-public interface CancellableHandler extends AffectionHandler<CalculationCanceller, String> {
+public interface CancellableHandler<T> extends AffectionHandler<CalculationCanceller<T>, T> {
 
     @Override
-    default String findResult(String... input) {
-        List<CalculationCanceller> compatibles = compatibleAffectionsFor(input);
+    default T findResult(T... input) {
+        List<CalculationCanceller<T>> compatibles = compatibleAffectionsFor(input);
         Collections.sort(compatibles);
 
         return compatibles.get(0).resultIfCancelled(input);
     }
 
-    default boolean isCancellable(String... input) {
+    default boolean isCancellable(T... input) {
         for(CalculationCanceller affection : getAffections()) {
             if(affection.appliesTo(input))
                 return true;

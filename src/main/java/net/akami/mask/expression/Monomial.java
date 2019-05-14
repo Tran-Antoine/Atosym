@@ -1,10 +1,12 @@
 package net.akami.mask.expression;
 
-public class Monomial implements ExpressionElement {
+import java.math.BigDecimal;
 
-    private String expression;
-    private float numericValue;
-    private Variable[] variables;
+public class Monomial implements ExpressionElement<Monomial> {
+
+    private final String expression;
+    private final float numericValue;
+    private final Variable[] variables;
 
     public Monomial(float numericValue, Variable[] variables) {
         this.variables = variables;
@@ -13,28 +15,24 @@ public class Monomial implements ExpressionElement {
     }
 
     private String loadExpression() {
-        if(variables == null)
-            return String.valueOf(numericValue);
 
-        if(numericValue == 1)
-            return variablesToString();
+        if(variables == null)  return String.valueOf(numericValue);
+        if(numericValue == 1)  return variablesToString();
+        if(numericValue == -1) return '-' + variablesToString();
 
         return numericValue + variablesToString();
     }
 
     public boolean hasSameVariablePartAs(Monomial other) {
 
-        if(this.variables == other.variables)
-            return true;
-
-        if(this.variables.length != other.variables.length)
-            return false;
+        if(this.variables == other.variables) return true;
+        if(this.variables == null || other.variables == null) return false;
+        if(this.variables.length != other.variables.length) return false;
 
         for(int i = 0; i < variables.length; i++) {
             if(!this.variables[i].equals(other.variables[i]))
                 return false;
         }
-
         return true;
     }
 
@@ -43,17 +41,32 @@ public class Monomial implements ExpressionElement {
     }
 
     public String variablesToString() {
-
-        if(variables == null) {
-            return "";
-        }
+        if(variables == null) return "";
 
         StringBuilder builder = new StringBuilder();
-
         for(Variable var : variables)
             builder.append(var.getExpression());
-
         return builder.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof Monomial))
+            return false;
+
+        Monomial other = (Monomial) obj;
+        return this.expression.equals(other.expression);
+    }
+
+    @Override
+    public boolean isMergeable(Monomial other) {
+        return hasSameVariablePartAs(other);
+    }
+
+    @Override
+    public Monomial mergeElement(Monomial other) {
+        float floatResult = new BigDecimal(numericValue).add(new BigDecimal(other.getNumericValue())).floatValue();
+        return new Monomial(floatResult, variables);
     }
 
     public Variable[] getVariables() {
@@ -63,5 +76,10 @@ public class Monomial implements ExpressionElement {
     @Override
     public String getExpression() {
         return expression;
+    }
+
+    @Override
+    public String toString() {
+        return getExpression();
     }
 }

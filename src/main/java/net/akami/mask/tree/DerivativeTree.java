@@ -41,20 +41,21 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     @Override
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
-            self.setReducedValue(self.getExpression());
+            //self.setReducedValue(self.getExpression());
             self.setDerivativeValue(differentiateElement(self.getExpression()));
             return;
         }
 
-        String left = self.getLeftValue(); // either a reduced or the original expression
-        String right = self.getRightValue(); // either a reduced or the original expression
+        String left = null;self.getLeftValue(); // either a reduced or the original expression
+        String right = null;self.getRightValue(); // either a reduced or the original expression
         String derLeft = self.getLeft().getDerivativeValue(); // we know it has one
         String derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
-        if(getBranches().indexOf(self) != 0)
-            self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
+        if(getBranches().indexOf(self) != 0) {
+            //self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
+        }
         self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 
