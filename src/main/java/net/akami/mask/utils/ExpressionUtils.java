@@ -3,6 +3,7 @@ package net.akami.mask.utils;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.ExpressionElement;
 import net.akami.mask.expression.Monomial;
+import net.akami.mask.expression.Variable;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
@@ -230,9 +231,14 @@ public class ExpressionUtils {
 
     public static boolean isANumber(Expression exp) {
         if(exp.length() != 1) return false;
+        return isANumber(exp.get(0));
+    }
 
-        ExpressionElement element = exp.getElements()[0];
-        return element instanceof Monomial && ((Monomial) element).getVariables() == null;
+    public static boolean isANumber(ExpressionElement element) {
+        if(!(element instanceof Monomial)) return false;
+
+        Variable[] vars = ((Monomial) element).getVariables();
+        return vars == null || vars.length == 0;
     }
 
     public static boolean isANumber(String exp) {

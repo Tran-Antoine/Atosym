@@ -1,59 +1,63 @@
 package net.akami.mask.expression;
 
-import java.math.BigDecimal;
+public class SimpleFraction implements ExpressionElement {
 
-public class SimpleFraction implements ExpressionElement<SimpleFraction> {
+    private final ExpressionElement numerator;
+    private final Expression denominator;
+    private final String expression;
 
-    private final Monomial numerator;
-    private final Monomial denominator;
-
-    public SimpleFraction(Monomial numerator, Monomial denominator) {
-        this.numerator = numerator;
-        this.denominator = denominator;
+    public SimpleFraction(float numerator, Expression denominator) {
+        this(new NumberElement(numerator), denominator);
     }
 
-    @Override
-    public String getExpression() {
+    public SimpleFraction(ExpressionElement numerator, Expression denominator) {
+        this.numerator = numerator;
+        this.denominator = denominator;
+        this.expression = loadExpression();
+    }
+
+    private String loadExpression() {
+
         StringBuilder builder = new StringBuilder();
-        boolean numRequiresBrackets = numerator.getNumericValue() != 1 && numerator.getNumericValue() != -1;
-        boolean denRequiresBrackets = denominator.getNumericValue() != 1 && denominator.getNumericValue() != -1;
+        boolean numRequiresBrackets = true;
+        boolean denRequiresBrackets = true;
+
+        if(numerator instanceof Monomial) {
+            numRequiresBrackets = ((Monomial) numerator).requiresBrackets();
+        }
+
+        if(denominator.length() == 1) {
+            ExpressionElement first = denominator.get(0);
+            if(first instanceof Monomial) {
+                denRequiresBrackets = ((Monomial) first).requiresBrackets();
+            }
+        }
 
         if(numRequiresBrackets) builder.append('(');
         builder.append(numerator.getExpression());
         if(numRequiresBrackets) builder.append(')');
         builder.append('/');
         if(denRequiresBrackets) builder.append('(');
-        builder.append(denominator.getExpression());
+        builder.append(denominator.toString());
         if(denRequiresBrackets) builder.append(')');
 
         return builder.toString();
     }
 
     @Override
-    public boolean isMergeable(SimpleFraction other) {
-        return hasSameDenominatorAs(other) && numerator.hasSameVariablePartAs(other.numerator);
-    }
-
-    @Override
-    public SimpleFraction mergeElement(SimpleFraction other) {
-
-        BigDecimal b1 = new BigDecimal(numerator.getNumericValue());
-        BigDecimal b2 = new BigDecimal(other.numerator.getNumericValue());
-        float floatResult = b1.add(b2).floatValue();
-
-        Monomial newNumerator = new Monomial(floatResult, numerator.getVariables());
-        return new SimpleFraction(newNumerator, denominator);
+    public String getExpression() {
+        return expression;
     }
 
     public boolean hasSameDenominatorAs(SimpleFraction other) {
         return denominator.equals(other.denominator);
     }
 
-    public Monomial getNumerator() {
+    public ExpressionElement getNumerator() {
         return numerator;
     }
 
-    public Monomial getDenominator() {
+    public Expression getDenominator() {
         return denominator;
     }
 }

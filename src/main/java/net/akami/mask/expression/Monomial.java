@@ -2,13 +2,13 @@ package net.akami.mask.expression;
 
 import java.math.BigDecimal;
 
-public class Monomial implements ExpressionElement<Monomial> {
+public class Monomial implements ExpressionElement {
 
     private final String expression;
     private final float numericValue;
     private final Variable[] variables;
 
-    public Monomial(float numericValue, Variable[] variables) {
+    public Monomial(float numericValue, Variable... variables) {
         this.variables = variables;
         this.numericValue = numericValue;
         this.expression = loadExpression();
@@ -49,6 +49,15 @@ public class Monomial implements ExpressionElement<Monomial> {
         return builder.toString();
     }
 
+    public boolean requiresBrackets() {
+        int count = 0;
+        if(Math.abs(numericValue) != 1)                count++;
+        if(variables != null && variables.length != 0) count++;
+        if(variables != null && variables.length > 1)  count++;
+
+        return count > 1;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Monomial))
@@ -58,16 +67,6 @@ public class Monomial implements ExpressionElement<Monomial> {
         return this.expression.equals(other.expression);
     }
 
-    @Override
-    public boolean isMergeable(Monomial other) {
-        return hasSameVariablePartAs(other);
-    }
-
-    @Override
-    public Monomial mergeElement(Monomial other) {
-        float floatResult = new BigDecimal(numericValue).add(new BigDecimal(other.getNumericValue())).floatValue();
-        return new Monomial(floatResult, variables);
-    }
 
     public Variable[] getVariables() {
         return variables;

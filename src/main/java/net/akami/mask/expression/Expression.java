@@ -10,9 +10,21 @@ public class Expression {
     private final String expression;
     private final ExpressionElement[] elements;
 
-    public Expression(float value) {
+    private Expression(float value) {
         this.elements = new ExpressionElement[]{new NumberElement(value)};
         this.expression = join(elements);
+    }
+
+    public static Expression of(float value) {
+        return new Expression(value);
+    }
+
+    public static Expression of(ExpressionElement singleElement) {
+        return new Expression(singleElement);
+    }
+
+    public static Expression of(char var) {
+        return Expression.of(new Monomial(1, new Variable(var, null, null)));
     }
 
     public Expression(String expression) {
@@ -20,7 +32,7 @@ public class Expression {
         this.elements = simpleAnalyze();
     }
 
-    public Expression(ExpressionElement singleElement) {
+    private Expression(ExpressionElement singleElement) {
         this.elements = new ExpressionElement[]{singleElement};
         this.expression = singleElement.getExpression();
     }
@@ -43,24 +55,11 @@ public class Expression {
 
         if(expression.matches("[a-zA-DF-Z]")) {
             return new ExpressionElement[]{
-                    new Monomial(1, new Variable[]{
-                            new Variable(expression.charAt(0), null, null)
-                    })
+                    new Monomial(1, new Variable(expression.charAt(0), null, null))
             };
         }
 
         throw new RuntimeException("Unreachable statement : couldn't identify the simple expression given : "+expression);
-    }
-
-    public Expression simpleMult(Expression other) {
-        Monomial firstA = (Monomial) elements[0];
-        Monomial secondA = (Monomial) other.elements[0];
-
-        Variable[] firstVars = firstA.getVariables();
-        Variable[] secondVars = secondA.getVariables();
-
-        float floatResult = firstA.getNumericValue() * secondA.getNumericValue();
-        return new Expression(new Monomial(floatResult, Variable.combine(firstVars, secondVars)));
     }
 
     private String join(ExpressionElement[] monomials) {

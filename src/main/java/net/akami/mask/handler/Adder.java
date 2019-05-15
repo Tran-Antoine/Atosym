@@ -1,10 +1,8 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
+import net.akami.mask.merge.MergeManager;
 import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.MathUtils;
-import net.akami.mask.utils.Mergeable;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -23,7 +21,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
         List<ExpressionElement> bElements = Arrays.asList(b.getElements());
         LOGGER.info("Monomials : {} and {}", aElements, bElements);
 
-        ExpressionElement[] elements = Mergeable.merge(aElements, bElements).toArray(new ExpressionElement[0]);
+        ExpressionElement[] elements = MergeManager.merge(aElements, bElements, ExpressionElement.class).toArray(new ExpressionElement[0]);
         Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;

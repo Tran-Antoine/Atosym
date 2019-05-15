@@ -8,7 +8,6 @@ import net.akami.mask.operation.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,13 +24,6 @@ public class ExpressionTester {
     }
 
     @Test
-    public void combineVars() {
-        assertCombineVars(new char[]{'y'}, new char[]{'y'}, "y^2.0");
-        assertCombineVars(new char[]{'x'}, new char[]{'y'}, "xy");
-        assertCombineVars(new char[]{'x', 'y'}, new char[]{'x', 'y'}, "x^2.0y^2.0");
-    }
-
-    @Test
     public void simpleMult() {
         assertSimpleMult("x", "x", "x^2.0");
         assertSimpleMult("3", "2", "6.0");
@@ -40,16 +32,23 @@ public class ExpressionTester {
 
     @Test
     public void mult() {
-        Expression e1 = new Expression("3").simpleMult(new Expression("y"));
-        Expression e2 = new Expression("2").simpleMult(new Expression("x"));
-        assertThat(e1.simpleMult(e2).toString()).isEqualTo("6.0xy");
+        Expression e1 = multiplier.operate(Expression.of(3), Expression.of('y'));
+        Expression e2 = multiplier.operate(Expression.of(2), Expression.of('x'));
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("6.0xy");
     }
 
     @Test
     public void multiElementsMult() {
         Expression e1 = new Expression(new NumberElement(3), create(1, 'x'));
         Expression e2 = new Expression(new NumberElement(2), create(1, 'x'));
-        System.out.println(multiplier.operate(e1, e2));
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("5.0x+6.0+x^2.0");
+
+        Expression f1 = Expression.of(new SimpleFraction(6, Expression.of('x')));
+        Expression f2 = Expression.of(3);
+        Expression f3 = Expression.of(new SimpleFraction(new SimpleFraction(5, Expression.of('z')), Expression.of('y')));
+
+        assertThat(multiplier.operate(f1, f3).toString()).isEqualTo("(30.0/z)/(xy)");
+        assertThat(multiplier.operate(f1, f2).toString()).isEqualTo("18.0/x");
     }
 
 
@@ -63,8 +62,8 @@ public class ExpressionTester {
 
     @Test
     public void fractionTest() {
-        Expression e1 = new Expression(new SimpleFraction(create(1, 'x'), create(3,'y')));
-        Expression e2 = new Expression(new SimpleFraction(create(2, 'x'), create(3,'y')));
+        Expression e1 = new Expression(new SimpleFraction(create(1, 'x'), Expression.of(create(3,'y'))));
+        Expression e2 = new Expression(new SimpleFraction(create(2, 'x'), Expression.of(create(3,'y'))));
 
         assertThat(adder.operate(e1, e2).toString()).isEqualTo("(3.0x)/(3.0y)");
     }
@@ -72,7 +71,7 @@ public class ExpressionTester {
     @Test
     public void multiGenericSum() {
         Expression e1 = new Expression(create(2, 'x'));
-        Expression e2 = new Expression(new SimpleFraction(create(1, 'x'), create(1, 'y')));
+        Expression e2 = new Expression(new SimpleFraction(create(1, 'x'), Expression.of(create(1, 'y'))));
 
         assertThat(adder.operate(e1, e2).toString()).isEqualTo("2.0x+x/y");
     }
@@ -85,27 +84,7 @@ public class ExpressionTester {
     }
 
     private Monomial create(float a, char v) {
-        return new Monomial(a, new Variable[]{new Variable(v, null, null)});
-    }
-
-    private void assertCombineVars(char[] v1, char[] v2, String result) {
-        Variable[] variables = Variable.combine(get(v1), get(v2));
-        List<String> converted = Arrays.asList(variables)
-                .stream()
-                .map(Variable::getExpression)
-                .collect(Collectors.toList());
-
-        Assertions.assertThat(String.join("", converted)).isEqualTo(result);
-    }
-
-    private Variable[] get(char... input) {
-        Variable[] vars = new Variable[input.length];
-
-        int i = 0;
-        for(char s : input) {
-            vars[i++] = new Variable(s, null, null);
-        }
-        return vars;
+        return new Monomial(a, new Variable(v, null, null));
     }
 
     private void assertSimpleSum(String a, String b, String result) {
@@ -117,6 +96,6 @@ public class ExpressionTester {
     private void assertSimpleMult(String a, String b, String result) {
         Expression e1 = new Expression(a);
         Expression e2 = new Expression(b);
-        assertThat(e1.simpleMult(e2).toString()).isEqualTo(result);
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo(result);
     }
 }

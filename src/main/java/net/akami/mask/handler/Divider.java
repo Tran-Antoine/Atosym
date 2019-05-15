@@ -1,16 +1,15 @@
 package net.akami.mask.handler;
 
-import com.sun.org.apache.bcel.internal.generic.MONITORENTER;
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
-import net.akami.mask.expression.Monomial;
+import net.akami.mask.expression.*;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Divider extends BinaryOperationHandler<Expression> {
@@ -25,40 +24,87 @@ public class Divider extends BinaryOperationHandler<Expression> {
     public Expression operate(Expression a, Expression b) {
         LOGGER.info("Divider process of {} |/| {}: \n", a, b);
 
-        // Avoids division by zero error.
+        if(b.length() == 1 && b.get(0) instanceof Monomial && ((Monomial) b.get(0)).getNumericValue() == 0)
+            throw new IllegalArgumentException("Could not compute a division by zero");
+
+        // Avoids division by zero error after simplifying all the elements.
         if(a.equals(b))
-            return new Expression(1);
+            return Expression.of(1);
 
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             // We are guaranteed that both expression have only one element, which is a monomial
-            return numericalDivision((Monomial) a.get(0), (Monomial) b.get(0));
+            return Expression.of(numericalDivision((Monomial) a.get(0), (Monomial) b.get(0)));
         }
 
         if(b.length() > 1) {
             LOGGER.error("Unable to calculate the division, the denominator being a polynomial. Returns a/b");
-            throw new RuntimeException("Unsupported operation for now. Denominator will need to be an expression rather than a monomial");
+            return uncompletedDivision(a, b);
         }
 
-        ExpressionElement[] finalElements = new ExpressionElement[a.length()];
-        int i = 0;
+        List<ExpressionElement> finalElements = new ArrayList<>(a.length());
 
         for(ExpressionElement numPart : a.getElements()) {
-            finalElements[i++] = simpleDivision(numPart, b.get(0));
+            finalElements.addAll(simpleDivision(numPart, b.get(0)));
         }
 
-        return new Expression(finalElements);
+        return new Expression(finalElements.toArray(new ExpressionElement[0]));
     }
 
-    private Expression numericalDivision(Monomial a, Monomial b) {
-        BigDecimal bigA = new BigDecimal(a.getNumericValue());
-        BigDecimal bigB = new BigDecimal(b.getNumericValue());
-        float result = bigA.divide(bigB, CONTEXT).floatValue();
+    private NumberElement numericalDivision(Monomial a, Monomial b) {
+        float result = floatDivision(a.getNumericValue(), b.getNumericValue());
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
-        return new Expression(result);
+        return new NumberElement(result);
     }
 
-    public ExpressionElement simpleDivision(ExpressionElement a, ExpressionElement b) {
-        
+    private float floatDivision(float a, float b) {
+        BigDecimal bigA = new BigDecimal(a);
+        BigDecimal bigB = new BigDecimal(b);
+        return bigA.divide(bigB).floatValue();
+    }
+
+    private Expression uncompletedDivision(Expression a, Expression b) {
+        SimpleFraction[] fractions = new SimpleFraction[a.length()];
+        int i = 0;
+
+        for(ExpressionElement element : a.getElements()) {
+            fractions[i++] = new SimpleFraction(element, b);
+        }
+
+        return new Expression(fractions);
+    }
+
+    public List<ExpressionElement> simpleDivision(ExpressionElement a, ExpressionElement b) {
+        if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
+            return Collections.singletonList(numericalDivision((Monomial) a, (Monomial) b));
+        }
+
+        Multiplier multiplier = context.getHandler(Multiplier.class);
+
+        if(a instanceof SimpleFraction) {
+            SimpleFraction aFrac = (SimpleFraction) a;
+            Expression newDen = operate(aFrac.getDenominator(), Expression.of(b));
+            return Collections.singletonList(new SimpleFraction(a, newDen));
+        }
+
+        if(b instanceof SimpleFraction) {
+            SimpleFraction bFrac = (SimpleFraction) b;
+            Expression temporaryNum = multiplier.operate(Expression.of(a), bFrac.getDenominator());
+            List<ExpressionElement> finalElements = new ArrayList<>(temporaryNum.length());
+            for(ExpressionElement temporaryElement : temporaryNum.getElements()) {
+                finalElements.addAll(simpleDivision(temporaryElement, ((SimpleFraction) b).getNumerator()));
+            }
+            return finalElements;
+        }
+
+        Monomial monA = (Monomial) a;
+        Monomial monB = (Monomial) b;
+        return Collections.singletonList(monomialDivision(monA, monB));
+    }
+
+    // TODO : fill the method
+    private ExpressionElement monomialDivision(Monomial a, Monomial b) {
+
+        return null;
     }
 
     public String simpleDivision(String a, String b) {
@@ -177,14 +223,14 @@ public class Divider extends BinaryOperationHandler<Expression> {
         float numericResult;
         boolean simplified = false;
         if (Math.abs(numerator) > Math.abs(denominator)) {
-            numericResult = Float.parseFloat(rawOperate("" + numerator, "" + denominator));
+            numericResult = floatDivision(numerator, denominator);
             if (numericResult % 1 == 0) {
                 values[0] = numericResult;
                 values[1] = 1;
                 simplified = true;
             }
         } else {
-            numericResult = Float.parseFloat(rawOperate("" + denominator, "" + numerator));
+            numericResult = floatDivision(denominator, numerator);
             if (numericResult % 1 == 0) {
                 values[0] = 1;
                 values[1] = numericResult;

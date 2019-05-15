@@ -1,16 +1,11 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
+import net.akami.mask.merge.MergeManager;
 import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
-import net.akami.mask.utils.Mergeable;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Multiplier extends BinaryOperationHandler<Expression> {
@@ -36,40 +31,50 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
             }
         }
 
-        List<ExpressionElement> mergedElements = Mergeable.merge(elements);
+        List<ExpressionElement> mergedElements = MergeManager.merge(elements, ExpressionElement.class);
         return new Expression(mergedElements.toArray(new ExpressionElement[0]));
     }
 
     public ExpressionElement simpleMult(ExpressionElement a, ExpressionElement b) {
 
-        Monomial numA, numB, denA = null, denB = null;
+        ExpressionElement numA, numB;
+        Expression denA = null, denB = null;
 
         if(a instanceof SimpleFraction) {
             numA = ((SimpleFraction) a).getNumerator();
             denA = ((SimpleFraction) a).getDenominator();
         } else {
-            numA = (Monomial) a;
+            numA = a;
         }
+
         if(b instanceof SimpleFraction) {
             numB = ((SimpleFraction) b).getNumerator();
             denB = ((SimpleFraction) b).getDenominator();
         } else {
-            numB = (Monomial) b;
+            numB = b;
         }
 
-        Monomial finalNumerator = simpleMonomialMult(numA, numB);
+        ExpressionElement newNumerator;
 
-        if(denA == null && denB == null) return finalNumerator;
+        if(numA instanceof Monomial && numB instanceof Monomial) {
+            newNumerator = simpleMonomialMult((Monomial) numA, (Monomial) numB);
+        } else {
+            LOGGER.info("Recursive call");
+            newNumerator = simpleMult(numA, numB);
+        }
 
-        denA = denA == null ? new NumberElement(1) : denA;
-        denB = denB == null ? new NumberElement(1) : denB;
+        Expression newDenominator = null;
 
-        Monomial finalDenominator = simpleMonomialMult(denA, denB);
+        if(denA == null && denB == null) return newNumerator;
+        if(denA == null) newDenominator = denB;
+        if(denB == null) newDenominator = denA;
+        LOGGER.info("Potential recursive call");
+        if(newDenominator == null) newDenominator = operate(denA, denB);
 
-        return new SimpleFraction(finalNumerator, finalDenominator);
-     }
+        return new SimpleFraction(newNumerator, newDenominator);
+    }
 
-     private Monomial simpleMonomialMult(Monomial a, Monomial b) {
+    private Monomial simpleMonomialMult(Monomial a, Monomial b) {
          BigDecimal bigA = new BigDecimal(a.getNumericValue());
          BigDecimal bigB = new BigDecimal(b.getNumericValue());
          float numResult = bigA.multiply(bigB).floatValue();

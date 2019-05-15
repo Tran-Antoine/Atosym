@@ -1,13 +1,13 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.function.MathFunction;
-import net.akami.mask.handler.Adder;
+import net.akami.mask.merge.MergeManager;
 import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.Mergeable;
+import net.akami.mask.utils.ExpressionUtils;
 
 import java.util.*;
 
-public class Variable implements Comparable<Variable>, Mergeable<Variable> {
+public class Variable implements Comparable<Variable> {
 
     private final char var;
     private final Expression exponent;
@@ -25,7 +25,7 @@ public class Variable implements Comparable<Variable>, Mergeable<Variable> {
 
     public Variable(char var, Expression exponent, MathFunction function, MaskContext context) {
         this.var = var;
-        this.exponent = exponent == null ? new Expression(1) : exponent;
+        this.exponent = exponent == null ? Expression.of(1) : exponent;
         this.function = function;
         this.expression = loadExpression();
         this.context = context == null ? MaskContext.DEFAULT : context;
@@ -43,9 +43,31 @@ public class Variable implements Comparable<Variable>, Mergeable<Variable> {
     public static Variable[] combine(Variable[] a1, Variable[] a2) {
         if(a1 == null) a1 = new Variable[0];
         if(a2 == null) a2 = new Variable[0];
-        List<Variable> finalVars = Mergeable.merge(Arrays.asList(a1), Arrays.asList(a2));
+        List<Variable> finalVars = MergeManager.merge(Arrays.asList(a1), Arrays.asList(a2), Variable.class);
         Collections.sort(finalVars);
         return finalVars.toArray(new Variable[0]);
+    }
+
+    public static List<Variable> dissociate(Variable[] a) {
+
+        List<Variable> finalVars = new ArrayList<>();
+
+        for(Variable current : a) {
+            if(current.exponent != null && ExpressionUtils.isANumber(current.exponent)) {
+                float expValue = ((Monomial) current.exponent.get(0)).getNumericValue();
+
+                while (expValue > 1) {
+                    finalVars.add(new Variable(current.var, current.context));
+                    expValue--;
+                }
+
+                if (expValue != 0)
+                    finalVars.add(new Variable(current.var, Expression.of(expValue), current.context));
+            } else {
+                finalVars.add(current);
+            }
+        }
+        return finalVars;
     }
 
     private String loadExpression() {
@@ -58,6 +80,22 @@ public class Variable implements Comparable<Variable>, Mergeable<Variable> {
         return expression;
     }
 
+    public char getVar() {
+        return var;
+    }
+
+    public MathFunction getFunction() {
+        return function;
+    }
+
+    public MaskContext getContext() {
+        return context;
+    }
+
+    public Expression getExponent() {
+        return exponent;
+    }
+
     @Override
     public String toString() {
         return getExpression();
@@ -68,26 +106,5 @@ public class Variable implements Comparable<Variable>, Mergeable<Variable> {
         return this.var - o.var;
     }
 
-    @Override
-    public boolean isMergeable(Variable other) {
 
-        boolean equalVars = var == other.var;
-        boolean noFunction = function == other.function;
-
-        if(!equalVars) return false;
-        if(noFunction) return true;
-
-        if(function == null || other.function == null)
-            return false;
-
-        return function.equals(other.function);
-    }
-
-    @Override
-    public Variable mergeElement(Variable other) {
-        Adder operator = context.getBinaryOperation(Adder.class);
-
-        Expression newExponent = operator.simpleSum(this.exponent, other.exponent);
-        return new Variable(this.var, newExponent, this.function, this.context);
-    }
 }
