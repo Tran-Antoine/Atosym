@@ -238,7 +238,32 @@ public class ExpressionUtils {
         if(!(element instanceof Monomial)) return false;
 
         List<Variable> vars = ((Monomial) element).getVariables();
-        return vars == null || vars.size() == 0;
+        return vars.size() == 0;
+    }
+
+    public static boolean isAnInteger(Expression exp) {
+        if(exp.length() != 1) return false;
+        return isAnInteger(exp.get(0));
+    }
+
+    public static boolean isAnInteger(ExpressionElement element) {
+        if(!(element instanceof Monomial)) return false;
+
+        List<Variable> vars = ((Monomial) element).getVariables();
+        return vars.size() == 0 && ((Monomial) element).getNumericValue() % 1 == 0;
+    }
+
+    public static String chainElements(List<ExpressionElement> elements) {
+        StringBuilder builder = new StringBuilder();
+        for(ExpressionElement element : elements) {
+            String expression = element.getRawExpression();
+            if(builder.length() == 0 || ExpressionUtils.isSigned(expression)) {
+                builder.append(expression);
+            } else {
+                builder.append('+').append(expression);
+            }
+        }
+        return builder.toString();
     }
 
     public static boolean isANumber(String exp) {

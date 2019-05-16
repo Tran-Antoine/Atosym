@@ -3,7 +3,7 @@ package net.akami.mask.function;
 public class CosineFunction extends MathFunction implements TrigonometryOperation {
 
     public CosineFunction() {
-        super('#');
+        super('#', "cos");
     }
 
     @Override

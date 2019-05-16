@@ -104,7 +104,7 @@ public class ReducerTest {
 
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
-    @Test
+    /*@Test
     public void decomposeExpressionTest() {
         Divider div = MaskContext.DEFAULT.getBinaryOperation(Divider.class);
         Assertions.assertThat(div.simpleDivision("4", "2")).isEqualTo("2");
@@ -116,7 +116,7 @@ public class ReducerTest {
         MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));
         builder.deleteCharAt(builder.length()-1);
         Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
-    }
+    }*/
 
     /*@Test
     public void divisionsTest() {

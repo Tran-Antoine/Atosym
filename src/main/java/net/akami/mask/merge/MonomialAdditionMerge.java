@@ -14,11 +14,14 @@ public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
     @Override
     public boolean isMergeable(Monomial a, Monomial b) {
-        return a.hasSameVariablePartAs(b);
+        boolean layer = a.isEncapsulated() || b.isEncapsulated();
+        return (a.hasSameVariablePartAs(b) && !layer) || a.equals(b);
     }
 
     @Override
     public Monomial mergeElement(Monomial a, Monomial b) {
+
+        // TODO : what if a and b are encapsulated
         float floatResult = new BigDecimal(a.getNumericValue()).add(new BigDecimal(b.getNumericValue())).floatValue();
         return new Monomial(floatResult, a.getVariables());
     }

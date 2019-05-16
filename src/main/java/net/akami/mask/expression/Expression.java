@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Expression {
+public class Expression implements ExpressionEncapsulator {
 
     private final String expression;
     private final List<ExpressionElement> elements;
@@ -30,14 +30,19 @@ public class Expression {
         return Expression.of(new Monomial(1, new Variable(var, null, null)));
     }
 
+    public Expression(List<ExpressionElement> elements) {
+        this.elements = Collections.unmodifiableList(elements);
+        this.expression = join(this.elements);
+    }
+
     public Expression(String expression) {
         this.expression = Objects.requireNonNull(expression);
         this.elements = Collections.singletonList(simpleAnalyze());
     }
 
-    public Expression(ExpressionElement... monomials) {
-        this.elements = Arrays.asList(monomials);
-        this.expression = join(elements);
+    public Expression(ExpressionElement... elements) {
+        this.elements = Arrays.asList(elements);
+        this.expression = join(this.elements);
     }
 
     private ExpressionElement simpleAnalyze() {
@@ -58,17 +63,19 @@ public class Expression {
         throw new RuntimeException("Unreachable statement : couldn't identify the simple expression given : "+expression);
     }
 
-    private String join(List<ExpressionElement> monomials) {
-        StringBuilder builder = new StringBuilder();
-        for(ExpressionElement element : monomials) {
-            String expression = element.getExpression();
-            if(builder.length() == 0 || ExpressionUtils.isSigned(expression)) {
-                builder.append(expression);
-            } else {
-                builder.append('+').append(expression);
-            }
-        }
-        return builder.toString();
+    @Override
+    public String[] getEncapsulationString() {
+        // We always need brackets, otherwise it would not be used as en encapsulation
+        ExpressionElement first;
+        boolean noBrackets = length() == 1 && (first = elements.get(0)) instanceof Monomial
+                && ((Monomial) first).requiresBrackets();
+
+        String formattedExpression = noBrackets ? expression : '('+expression+')';
+        return new String[]{"(", ")^"+formattedExpression};
+    }
+
+    private String join(List<ExpressionElement> elements) {
+        return ExpressionUtils.chainElements(elements);
     }
 
     @Override

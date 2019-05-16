@@ -1,11 +1,12 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.*;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Subtractor extends BinaryOperationHandler<Expression> {
@@ -18,23 +19,14 @@ public class Subtractor extends BinaryOperationHandler<Expression> {
     protected Expression operate(Expression a, Expression b) {
         LOGGER.info("Subtractor process of {} |-| {}: \n", a, b);
 
-        List<String> monomials = null;//ExpressionUtils.toMonomials(a);
-        List<String> bMonomials = null;//ExpressionUtils.toMonomials(b);
+        List<ExpressionElement> opposite = new ArrayList<>(b.length());
 
-        // Changes the sign of the monomials that need to be subtracted
-        for (int i = 0; i < bMonomials.size(); i++) {
-            String m = bMonomials.get(i);
-
-            if (m.startsWith("+")) {
-                bMonomials.set(i, "-" + m.substring(1));
-            } else if (m.startsWith("-")) {
-                bMonomials.set(i, "+" + m.substring(1));
-            } else {
-                bMonomials.set(i, "-" + m);
-            }
+        for(ExpressionElement bElement : b.getElements()) {
+            Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+            opposite.add(multiplier.simpleMult(new NumberElement(-1.0f), bElement));
         }
-        monomials.addAll(bMonomials);
-        return null;//MathUtils.sum(monomials, context);
+
+        return context.getBinaryOperation(Adder.class).operate(a, new Expression(opposite));
     }
 
     @Override

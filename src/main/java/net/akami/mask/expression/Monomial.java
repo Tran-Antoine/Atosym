@@ -7,21 +7,34 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Monomial implements ExpressionElement {
+public class Monomial extends ExpressionElement {
 
     private final String expression;
     private final float numericValue;
     private final List<Variable> variables;
 
     public Monomial(char var, MaskContext context) {
-        this(1.0f, new Variable(var, context));
+        this(var, context, Collections.emptyList());
+    }
+
+    public Monomial(char var, MaskContext context, List<ExpressionEncapsulator> layers) {
+        this(1.0f, layers, new Variable(var, context));
     }
 
     public Monomial(float numericValue, Variable... variables) {
+        this(numericValue, Arrays.asList(variables), Collections.emptyList());
+    }
+
+    public Monomial(float numericValue, List<ExpressionEncapsulator> layers, Variable... variables) {
         this(numericValue, Arrays.asList(variables));
     }
 
     public Monomial(float numericValue, List<Variable> variables) {
+        this(numericValue, variables, Collections.emptyList());
+    }
+
+    public Monomial(float numericValue, List<Variable> variables, List<ExpressionEncapsulator> layers) {
+        super(layers);
         this.variables = Objects.requireNonNull(Collections.unmodifiableList(variables));
         this.numericValue = numericValue;
         this.expression = loadExpression();
@@ -75,7 +88,7 @@ public class Monomial implements ExpressionElement {
             return false;
 
         Monomial other = (Monomial) obj;
-        return this.expression.equals(other.expression);
+        return this.expression.equals(other.expression) && hasSameEncapsulationAs(other);
     }
 
 
@@ -84,12 +97,12 @@ public class Monomial implements ExpressionElement {
     }
 
     @Override
-    public String getExpression() {
+    public String getRawExpression() {
         return expression;
     }
 
     @Override
     public String toString() {
-        return getExpression();
+        return getRawExpression();
     }
 }

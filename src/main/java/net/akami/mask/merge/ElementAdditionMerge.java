@@ -9,7 +9,7 @@ public class ElementAdditionMerge implements MergeBehavior<ExpressionElement> {
 
     @Override
     public boolean isMergeable(ExpressionElement a, ExpressionElement b) {
-        if(!a.isCompatible(b)) return false;
+        if(!a.isCompatibleWith(b)) return false;
 
         MergeBehavior mergeBehavior = MergeManager.getByHandledType(a.getClass());
         return mergeBehavior.isMergeable(a, b);

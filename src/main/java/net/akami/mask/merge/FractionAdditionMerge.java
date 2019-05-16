@@ -10,7 +10,7 @@ public class FractionAdditionMerge implements MergeBehavior<SimpleFraction> {
 
     @Override
     public boolean isMergeable(SimpleFraction a, SimpleFraction b) {
-        if(!b.getNumerator().isCompatible(a.getNumerator()))
+        if(!b.getNumerator().isCompatibleWith(a.getNumerator()))
             return false;
 
         MergeBehavior mergeBehavior = MergeManager.getByHandledType(a.getNumerator().getClass());

@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-public class FunctionSign implements ExpressionElement {
+public class FunctionSign extends ExpressionElement {
 
     private final char binding;
 
@@ -9,7 +9,7 @@ public class FunctionSign implements ExpressionElement {
     }
 
     @Override
-    public String getExpression() {
+    public String getRawExpression() {
         return String.valueOf(binding);
     }
 }

@@ -3,7 +3,7 @@ package net.akami.mask.function;
 public class TangentFunction extends MathFunction implements TrigonometryOperation {
 
     public TangentFunction() {
-        super('§');
+        super('§', "tan");
     }
 
     @Override

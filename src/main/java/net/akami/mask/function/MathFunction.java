@@ -2,6 +2,7 @@ package net.akami.mask.function;
 
 import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.expression.ExpressionEncapsulator;
 import net.akami.mask.handler.CancellableHandler;
 import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class MathFunction implements CancellableHandler, PostCalculationActionable {
+public abstract class MathFunction implements CancellableHandler, PostCalculationActionable, ExpressionEncapsulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
     private static final List<MathFunction> functions = new ArrayList<>();
@@ -26,9 +27,11 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
 
     private final CalculationCanceller[] cancellers = {new CalculationCache()};
     protected final char binding;
+    protected final String name;
 
-    public MathFunction(char binding) {
+    public MathFunction(char binding, String name) {
         this.binding = binding;
+        this.name = name;
         addToFunctions();
     }
 
@@ -90,5 +93,13 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
             return false;
 
         return this.binding == ((MathFunction) obj).binding;
+    }
+
+    @Override
+    public String[] getEncapsulationString() {
+        String[] parts = new String[2];
+        parts[0] = name + '(';
+        parts[1] = ")";
+        return parts;
     }
 }

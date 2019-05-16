@@ -3,7 +3,7 @@ package net.akami.mask.function;
 public class SinusFunction extends MathFunction implements TrigonometryOperation {
 
     public SinusFunction() {
-        super('@');
+        super('@', "sin");
     }
 
     @Override

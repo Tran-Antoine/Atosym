@@ -1,56 +1,40 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
 
-public class PowCalculator extends BinaryOperationHandler<String> {
+import java.math.BigDecimal;
+
+public class PowCalculator extends BinaryOperationHandler<Expression> {
 
     public PowCalculator(MaskContext context) {
         super(context);
     }
 
     @Override
-    public String operate(String a, String b) {
+    public Expression operate(Expression a, Expression b) {
         LOGGER.info("PowCalculator operation process between {} and {} : \n", a, b);
 
-        String aVars = ExpressionUtils.toVariables(a);
-        String bVars = ExpressionUtils.toVariables(b);
-
-        LOGGER.debug("aVars : {}, bVars : {}", aVars, bVars);
-        if (aVars.length() == 0 && bVars.length() == 0) {
-            String result = String.valueOf(Math.pow(Float.parseFloat(a), Float.parseFloat(b)));
-            LOGGER.info("No variable found, return a^b value : {}", result);
-            return result;
-        }
-        float powValue;
-        // If pow value is too high, there is no point in developing the entire expression
-        if (bVars.length() != 0 || (powValue = Float.parseFloat(b)) > 199 ||
-                (aVars.length() != 0 && powValue % 1 != 0)) {
-            LOGGER.info("Pow value contains variables or pow value is greater than 199. Returns a^b");
-            a = ExpressionUtils.isReduced(a) ? a : "(" + a + ")";
-            b = ExpressionUtils.isReduced(b) ? b : "(" + b + ")";
-            return a + "^" + b;
+        if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
+            float aFloat = ((Monomial) a.get(0)).getNumericValue();
+            float bFloat = ((Monomial) b.get(0)).getNumericValue();
+            return Expression.of((float) Math.pow(aFloat, bFloat));
         }
 
-        clearBuilder();
-        StringBuilder builder = new StringBuilder();
-        builder.append(a);
-        for (int i = 1; i < powValue; i++) {
-            builder.replace(0, builder.length(), null/*MathUtils.mult(builder.toString(), a, context)*/);
-            LOGGER.info("{} steps left. Currently : {}", powValue - i - 1, builder.toString());
-        }
-        return builder.toString();
+        return null;
     }
 
     @Override
-    public String inFormat(String origin) {
-        return FormatterFactory.removeFractions(origin);
+    public Expression inFormat(Expression origin) {
+        return origin;
     }
 
     @Override
-    public String outFormat(String origin) {
-        return MathUtils.cutSignificantZero(FormatterFactory.removeMultiplicationSigns(origin));
+    public Expression outFormat(Expression origin) {
+        return origin;
     }
 }

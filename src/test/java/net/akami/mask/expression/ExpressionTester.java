@@ -49,7 +49,6 @@ public class ExpressionTester {
         assertThat(multiplier.operate(f1, f2).toString()).isEqualTo("18.0/x");
     }
 
-
     @Test
     public void multiMonomialsSum() {
         Expression e1 = new Expression(new NumberElement(2), create(3, 'x'));
@@ -88,11 +87,11 @@ public class ExpressionTester {
         Monomial m3 = create(6, 'x');
         Monomial m4 = new Monomial(12, new Variable('x', Expression.of(2), DEFAULT));
 
-        assertThat(divider.monomialDivision(m1, m2).getExpression()).isEqualTo("x/y");
-        assertThat(divider.monomialDivision(m1, m3).getExpression()).isEqualTo("1.0/2.0");
-        assertThat(divider.monomialDivision(m2, m3).getExpression()).isEqualTo("y/(2.0x)");
-        assertThat(divider.monomialDivision(m4, m3).getExpression()).isEqualTo("2.0x");
-        assertThat(divider.monomialDivision(m3, m4).getExpression()).isEqualTo("1.0/(2.0x)");
+        assertThat(divider.monomialDivision(m1, m2).getRawExpression()).isEqualTo("x/y");
+        assertThat(divider.monomialDivision(m1, m3).getRawExpression()).isEqualTo("1.0/2.0");
+        assertThat(divider.monomialDivision(m2, m3).getRawExpression()).isEqualTo("y/(2.0x)");
+        assertThat(divider.monomialDivision(m4, m3).getRawExpression()).isEqualTo("2.0x");
+        assertThat(divider.monomialDivision(m3, m4).getRawExpression()).isEqualTo("1.0/(2.0x)");
     }
 
     @Test
@@ -103,9 +102,9 @@ public class ExpressionTester {
         Monomial m1 = new Monomial('x', DEFAULT);
         Monomial m2 = new Monomial('y', DEFAULT);
 
-        assertThat(divider.simpleDivision(f1, m1).get(0).getExpression()).isEqualTo("3.0/x^2.0");
-        assertThat(divider.simpleDivision(f1, m2).get(0).getExpression()).isEqualTo("3.0/(xy)");
-        assertThat(divider.simpleDivision(f1, f2).get(0).getExpression()).isEqualTo("3.0/4.0");
+        assertThat(divider.simpleDivision(f1, m1).get(0).getRawExpression()).isEqualTo("3.0/x^2.0");
+        assertThat(divider.simpleDivision(f1, m2).get(0).getRawExpression()).isEqualTo("3.0/(xy)");
+        assertThat(divider.simpleDivision(f1, f2).get(0).getRawExpression()).isEqualTo("3.0/4.0");
     }
 
     private Monomial create(float a, char v) {

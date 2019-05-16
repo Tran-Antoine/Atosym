@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-public class SimpleFraction implements ExpressionElement {
+public class SimpleFraction extends ExpressionElement {
 
     private final ExpressionElement numerator;
     private final Expression denominator;
@@ -34,7 +34,7 @@ public class SimpleFraction implements ExpressionElement {
         }
 
         if(numRequiresBrackets) builder.append('(');
-        builder.append(numerator.getExpression());
+        builder.append(numerator.getRawExpression());
         if(numRequiresBrackets) builder.append(')');
         builder.append('/');
         if(denRequiresBrackets) builder.append('(');
@@ -45,7 +45,7 @@ public class SimpleFraction implements ExpressionElement {
     }
 
     @Override
-    public String getExpression() {
+    public String getRawExpression() {
         return expression;
     }
 
