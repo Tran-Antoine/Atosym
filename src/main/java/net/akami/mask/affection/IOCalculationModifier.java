@@ -21,7 +21,7 @@ public interface IOCalculationModifier extends CalculationAffection {
     /**
      * Defines how a given input must be formatted.
      * <p></p>
-     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(String...)}
+     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(Object...)}
      * method should already take care of that.
      * @param input the given input
      * @return the formatted version of the input

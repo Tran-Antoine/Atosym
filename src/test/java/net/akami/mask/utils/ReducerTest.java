@@ -113,7 +113,7 @@ public class ReducerTest {
         Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
 
         StringBuilder builder = new StringBuilder();
-        MathUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
+        MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));
         builder.deleteCharAt(builder.length()-1);
         Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
     }

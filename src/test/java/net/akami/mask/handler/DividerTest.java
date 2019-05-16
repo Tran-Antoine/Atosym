@@ -13,7 +13,7 @@ public class DividerTest {
     @Test
     public void decomposeExpressionTest() {
         StringBuilder builder = new StringBuilder();
-        MathUtils.decomposeNumber(18).forEach(x -> builder.append(x).append("*"));
+        MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));
         assertThat(builder.toString()).isEqualTo("2*3*3*");
     }
 

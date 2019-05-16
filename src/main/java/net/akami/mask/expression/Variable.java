@@ -40,15 +40,15 @@ public class Variable implements Comparable<Variable> {
         return var == other.var && exponent.equals(other.exponent);
     }
 
-    public static Variable[] combine(Variable[] a1, Variable[] a2) {
-        if(a1 == null) a1 = new Variable[0];
-        if(a2 == null) a2 = new Variable[0];
-        List<Variable> finalVars = MergeManager.merge(Arrays.asList(a1), Arrays.asList(a2), Variable.class);
+    public static Variable[] combine(List<Variable> a1, List<Variable> a2) {
+        if(a1.isEmpty()) a1 = Collections.emptyList();
+        if(a2.isEmpty()) a2 = Collections.emptyList();
+        List<Variable> finalVars = MergeManager.secureMerge(a1, a2, Variable.class);
         Collections.sort(finalVars);
         return finalVars.toArray(new Variable[0]);
     }
 
-    public static List<Variable> dissociate(Variable[] a) {
+    public static List<Variable> dissociate(List<Variable> a) {
 
         List<Variable> finalVars = new ArrayList<>();
 

@@ -199,7 +199,7 @@ public class ExpressionUtils {
         for (int i = 0; i < elements.size(); i++) {
             String element = elements.get(i);
             if (isANumber(element)) {
-                List<String> decomposedLocal = MathUtils.decomposeNumber(Float.parseFloat(element));
+                List<String> decomposedLocal = MathUtils.decomposeNumberToString(Float.parseFloat(element));
                 LOGGER.info("Decomposed {}, findResult : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
@@ -237,8 +237,8 @@ public class ExpressionUtils {
     public static boolean isANumber(ExpressionElement element) {
         if(!(element instanceof Monomial)) return false;
 
-        Variable[] vars = ((Monomial) element).getVariables();
-        return vars == null || vars.length == 0;
+        List<Variable> vars = ((Monomial) element).getVariables();
+        return vars == null || vars.size() == 0;
     }
 
     public static boolean isANumber(String exp) {

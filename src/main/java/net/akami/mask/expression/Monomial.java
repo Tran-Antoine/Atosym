@@ -1,36 +1,47 @@
 package net.akami.mask.expression;
 
-import java.math.BigDecimal;
+import net.akami.mask.operation.MaskContext;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 public class Monomial implements ExpressionElement {
 
     private final String expression;
     private final float numericValue;
-    private final Variable[] variables;
+    private final List<Variable> variables;
+
+    public Monomial(char var, MaskContext context) {
+        this(1.0f, new Variable(var, context));
+    }
 
     public Monomial(float numericValue, Variable... variables) {
-        this.variables = variables;
+        this(numericValue, Arrays.asList(variables));
+    }
+
+    public Monomial(float numericValue, List<Variable> variables) {
+        this.variables = Objects.requireNonNull(Collections.unmodifiableList(variables));
         this.numericValue = numericValue;
         this.expression = loadExpression();
     }
 
     private String loadExpression() {
 
-        if(variables == null)  return String.valueOf(numericValue);
-        if(numericValue == 1)  return variablesToString();
-        if(numericValue == -1) return '-' + variablesToString();
+        if(variables.isEmpty()) return String.valueOf(numericValue);
+        if(numericValue == 1)   return variablesToString();
+        if(numericValue == -1)  return '-' + variablesToString();
 
         return numericValue + variablesToString();
     }
 
     public boolean hasSameVariablePartAs(Monomial other) {
 
-        if(this.variables == other.variables) return true;
-        if(this.variables == null || other.variables == null) return false;
-        if(this.variables.length != other.variables.length) return false;
+        if(this.variables.size() != other.variables.size()) return false;
 
-        for(int i = 0; i < variables.length; i++) {
-            if(!this.variables[i].equals(other.variables[i]))
+        for(int i = 0; i < variables.size(); i++) {
+            if(!this.variables.get(i).equals(other.variables.get(i)))
                 return false;
         }
         return true;
@@ -41,7 +52,7 @@ public class Monomial implements ExpressionElement {
     }
 
     public String variablesToString() {
-        if(variables == null) return "";
+        if(variables.isEmpty()) return "";
 
         StringBuilder builder = new StringBuilder();
         for(Variable var : variables)
@@ -51,9 +62,9 @@ public class Monomial implements ExpressionElement {
 
     public boolean requiresBrackets() {
         int count = 0;
-        if(Math.abs(numericValue) != 1)                count++;
-        if(variables != null && variables.length != 0) count++;
-        if(variables != null && variables.length > 1)  count++;
+        if(Math.abs(numericValue) != 1) count++;
+        if(variables.size() != 0)       count++;
+        if(variables.size() > 1)        count++;
 
         return count > 1;
     }
@@ -68,7 +79,7 @@ public class Monomial implements ExpressionElement {
     }
 
 
-    public Variable[] getVariables() {
+    public List<Variable> getVariables() {
         return variables;
     }
 

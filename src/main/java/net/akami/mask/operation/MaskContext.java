@@ -67,4 +67,8 @@ public class MaskContext {
     public void addHandler(AffectionHandler handler) {
         affectionHandlers.add(handler);
     }
+
+    public MathContext getMathContext() {
+        return bigDecimalContext;
+    }
 }

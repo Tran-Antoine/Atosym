@@ -19,13 +19,12 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
         LOGGER.error("Operating mult {} * {}", a, b);
         // TODO : add support for functions
-        if(a.getElements()[0] instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
-        if(b.getElements()[0] instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
+        if(a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
+        if(b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
 
         List<ExpressionElement> elements = new ArrayList<>(a.length()*b.length());
 
         for(ExpressionElement elemA : a.getElements()) {
-
             for(ExpressionElement elemB : b.getElements()) {
                 elements.add(simpleMult(elemA, elemB));
             }
@@ -68,9 +67,10 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         if(denA == null && denB == null) return newNumerator;
         if(denA == null) newDenominator = denB;
         if(denB == null) newDenominator = denA;
-        LOGGER.info("Potential recursive call");
         if(newDenominator == null) newDenominator = operate(denA, denB);
-
+        // TODO maybe change for a more generic way ?
+        if(newDenominator.length() == 1)
+            return context.getBinaryOperation(Divider.class).simpleDivision(newNumerator, newDenominator.get(0)).get(0);
         return new SimpleFraction(newNumerator, newDenominator);
     }
 
@@ -80,7 +80,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
          float numResult = bigA.multiply(bigB).floatValue();
          Variable[] numVariables = Variable.combine(a.getVariables(), b.getVariables());
          return new Monomial(numResult, numVariables);
-     }
+    }
 
     @Override
     public Expression inFormat(Expression origin) {

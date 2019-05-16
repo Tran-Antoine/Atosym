@@ -22,12 +22,12 @@ public class VariableTest {
         Variable[] simple = {new Variable('x', Expression.of(5), MaskContext.DEFAULT)};
         Variable[] fraction = {new Variable('x', Expression.of(2.5f), MaskContext.DEFAULT)};
         Variable[] irreducible = {new Variable('x', Expression.of('y'), MaskContext.DEFAULT)};
-        assertDissociateVars(simple, "xxxxx");
-        assertDissociateVars(fraction, "xxx^0.5");
-        assertDissociateVars(irreducible, "x^y");
+        assertDissociateVars(Arrays.asList(simple), "xxxxx");
+        assertDissociateVars(Arrays.asList(fraction), "xxx^0.5");
+        assertDissociateVars(Arrays.asList(irreducible), "x^y");
     }
 
-    private void assertDissociateVars(Variable[] input, String result) {
+    private void assertDissociateVars(List<Variable> input, String result) {
         List<String> converted = Variable.dissociate(input)
                 .stream()
                 .map(Variable::getExpression)
@@ -45,13 +45,13 @@ public class VariableTest {
         assertThat(String.join("", converted)).isEqualTo(result);
     }
 
-    private Variable[] get(char... input) {
+    private List<Variable> get(char... input) {
         Variable[] vars = new Variable[input.length];
 
         int i = 0;
         for(char s : input) {
             vars[i++] = new Variable(s, null, null);
         }
-        return vars;
+        return Arrays.asList(vars);
     }
 }

@@ -124,7 +124,7 @@ public class MathUtils {
      * @param self the number to decompose
      * @return a list of strings being the divided version of the given parameter
      */
-    public static List<String> decomposeNumber(float self) {
+    public static List<String> decomposeNumberToString(float self) {
         LOGGER.info("Now decomposing float {}", self);
 
         List<String> results = new ArrayList<>();
@@ -155,6 +155,37 @@ public class MathUtils {
         LOGGER.error("Result : {}", results);
         return results;
     }
+    public static List<Float> decomposeNumber(float self) {
+        LOGGER.info("Now decomposing float {}", self);
+
+        List<Float> results = new ArrayList<>();
+        if (self % 1 != 0) {
+            LOGGER.info("Non-integer given, returns it");
+            results.add(self);
+            return results;
+        }
+        if (self < 0) {
+            results.add(-1.0f);
+            self *= -1;
+        }
+
+        List<Integer> dividers = getDividers(self);
+
+        int index = 0;
+        while (index < dividers.size()) {
+            int divider = dividers.get(index);
+            if (self % divider == 0) {
+                LOGGER.debug("{} is a divider of {}", divider, self);
+                results.add((float) divider);
+                self /= divider;
+            } else {
+                LOGGER.debug("{} is not a divider of {}", divider, self);
+                index++;
+            }
+        }
+        LOGGER.info("Result : {} (decomposition of {})", results, self);
+        return results;
+    }
 
     public static List<Integer> getDividers(float self) {
         List<Integer> dividers = new ArrayList<>();
@@ -169,7 +200,6 @@ public class MathUtils {
             }
             if (unique) {
                 dividers.add(i);
-                continue;
             }
         }
         return dividers;

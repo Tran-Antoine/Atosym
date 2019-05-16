@@ -1,16 +1,17 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
+import net.akami.mask.merge.MergeBehavior;
+import net.akami.mask.merge.MergeManager;
+import net.akami.mask.merge.PairNullifying;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Divider extends BinaryOperationHandler<Expression> {
 
@@ -50,16 +51,16 @@ public class Divider extends BinaryOperationHandler<Expression> {
         return new Expression(finalElements.toArray(new ExpressionElement[0]));
     }
 
-    private NumberElement numericalDivision(Monomial a, Monomial b) {
+    public NumberElement numericalDivision(Monomial a, Monomial b) {
         float result = floatDivision(a.getNumericValue(), b.getNumericValue());
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
         return new NumberElement(result);
     }
 
-    private float floatDivision(float a, float b) {
+    public float floatDivision(float a, float b) {
         BigDecimal bigA = new BigDecimal(a);
         BigDecimal bigB = new BigDecimal(b);
-        return bigA.divide(bigB).floatValue();
+        return bigA.divide(bigB, context.getMathContext()).floatValue();
     }
 
     private Expression uncompletedDivision(Expression a, Expression b) {
@@ -78,12 +79,12 @@ public class Divider extends BinaryOperationHandler<Expression> {
             return Collections.singletonList(numericalDivision((Monomial) a, (Monomial) b));
         }
 
-        Multiplier multiplier = context.getHandler(Multiplier.class);
+        Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
 
         if(a instanceof SimpleFraction) {
             SimpleFraction aFrac = (SimpleFraction) a;
-            Expression newDen = operate(aFrac.getDenominator(), Expression.of(b));
-            return Collections.singletonList(new SimpleFraction(a, newDen));
+            Expression newDen = multiplier.operate(aFrac.getDenominator(), Expression.of(b));
+            return Collections.singletonList(new SimpleFraction(aFrac.getNumerator(), newDen));
         }
 
         if(b instanceof SimpleFraction) {
@@ -102,10 +103,45 @@ public class Divider extends BinaryOperationHandler<Expression> {
     }
 
     // TODO : fill the method
-    private ExpressionElement monomialDivision(Monomial a, Monomial b) {
+    public ExpressionElement monomialDivision(Monomial a, Monomial b) {
 
-        return null;
+        if(a.equals(b)) return new NumberElement(1);
+
+        List<Float> numValues = MathUtils.decomposeNumber(a.getNumericValue());
+        List<Variable> numVars = Variable.dissociate(a.getVariables());
+
+        List<Float> denValues = MathUtils.decomposeNumber(b.getNumericValue());
+        List<Variable> denVars = Variable.dissociate(b.getVariables());
+
+        MergeBehavior<Object> nullifying = MergeManager.getByType(PairNullifying.class);
+        MergeManager.merge(numValues, denValues, nullifying);
+        MergeManager.merge(numVars, denVars, nullifying);
+
+        filter(numValues, numVars, denValues, denVars);
+
+        float finalNumValue = 1;
+        for(float f : numValues) finalNumValue *= f;
+
+        float finalDenValue = 1;
+        for(float f : denValues) finalDenValue *= f;
+
+        if(finalDenValue == 1 && denVars.isEmpty())
+            return new Monomial(finalNumValue, numVars);
+
+        if(finalNumValue == 1 && numVars.isEmpty())
+            return new SimpleFraction(new NumberElement(1), Expression.of(new Monomial(finalDenValue, denVars)));
+
+        Monomial finalNumerator = new Monomial(finalNumValue, numVars);
+        Expression finalDenominator = Expression.of(new Monomial(finalDenValue, denVars));
+        return new SimpleFraction(finalNumerator, finalDenominator);
     }
+
+    private void filter(List... targets) {
+        for(List list : targets) {
+            list.removeAll(Collections.singleton(null));
+        }
+    }
+
 
     public String simpleDivision(String a, String b) {
         List<String> numFactors = ExpressionUtils.decompose(a);

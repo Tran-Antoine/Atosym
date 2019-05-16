@@ -60,4 +60,9 @@ public class SimpleFraction implements ExpressionElement {
     public Expression getDenominator() {
         return denominator;
     }
+
+    @Override
+    public String toString() {
+        return expression;
+    }
 }
