@@ -14,8 +14,7 @@ public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
     @Override
     public boolean isMergeable(Monomial a, Monomial b) {
-        boolean layer = a.isEncapsulated() || b.isEncapsulated();
-        return (a.hasSameVariablePartAs(b) && !layer) || a.equals(b);
+        return a.hasSameVariablePartAs(b);
     }
 
     @Override

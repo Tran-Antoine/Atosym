@@ -7,6 +7,7 @@ import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 
+import net.akami.mask.handler.PowCalculator;
 import org.junit.Test;
 
 public class ExpressionTester {
@@ -14,6 +15,7 @@ public class ExpressionTester {
     private final Adder adder = new Adder(DEFAULT);
     private final Multiplier multiplier = new Multiplier(DEFAULT);
     private final Divider divider = new Divider(DEFAULT);
+    private final PowCalculator pow = new PowCalculator(DEFAULT);
 
     @Test
     public void basicSum() {
@@ -85,7 +87,7 @@ public class ExpressionTester {
         Monomial m1 = create(3, 'x');
         Monomial m2 = create(3, 'y');
         Monomial m3 = create(6, 'x');
-        Monomial m4 = new Monomial(12, new Variable('x', Expression.of(2), DEFAULT));
+        Monomial m4 = new Monomial(12, new SimpleVariable('x', Expression.of(2), DEFAULT));
 
         assertThat(divider.monomialDivision(m1, m2).getRawExpression()).isEqualTo("x/y");
         assertThat(divider.monomialDivision(m1, m3).getRawExpression()).isEqualTo("1.0/2.0");
@@ -107,8 +109,20 @@ public class ExpressionTester {
         assertThat(divider.simpleDivision(f1, f2).get(0).getRawExpression()).isEqualTo("3.0/4.0");
     }
 
+    @Test
+    public void powTest() {
+
+        Expression e1 = Expression.of(new Monomial(3, new SimpleVariable('x', DEFAULT)));
+        Expression e2 = Expression.of(3);
+        Expression e3 = Expression.of('y');
+        Expression e4 = Expression.of(2.5f);
+
+        assertThat(pow.operate(e1, e2).toString()).isEqualTo("27.0x^3.0");
+        assertThat(pow.operate(e1, e3).toString()).isEqualTo("(3.0x)^y");
+    }
+
     private Monomial create(float a, char v) {
-        return new Monomial(a, new Variable(v, null, null));
+        return new Monomial(a, new SimpleVariable(v, null, null));
     }
 
     private void assertSimpleSum(String a, String b, String result) {

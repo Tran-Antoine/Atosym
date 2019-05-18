@@ -15,4 +15,5 @@ public class CosineFunction extends MathFunction implements TrigonometryOperatio
     public UnaryOperation getOperation() {
         return Math::cos;
     }
+
 }

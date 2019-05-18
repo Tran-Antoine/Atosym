@@ -1,5 +1,7 @@
 package net.akami.mask.expression;
 
+import net.akami.mask.encapsulator.CompleteCoverEncapsulator;
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.function.MathFunction;
 import net.akami.mask.utils.ExpressionUtils;
 
@@ -8,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Expression implements ExpressionEncapsulator {
+public class Expression implements ExpressionEncapsulator, Cloneable {
 
     private final String expression;
     private final List<ExpressionElement> elements;
@@ -27,7 +29,7 @@ public class Expression implements ExpressionEncapsulator {
     }
 
     public static Expression of(char var) {
-        return Expression.of(new Monomial(1, new Variable(var, null, null)));
+        return Expression.of(new Monomial(1, new SimpleVariable(var, null, null)));
     }
 
     public Expression(List<ExpressionElement> elements) {
@@ -42,7 +44,7 @@ public class Expression implements ExpressionEncapsulator {
 
     public Expression(ExpressionElement... elements) {
         this.elements = Arrays.asList(elements);
-        this.expression = join(this.elements);
+        this.expression = elements.length == 1 ? elements[0].getExpression() : join(this.elements);
     }
 
     private ExpressionElement simpleAnalyze() {
@@ -57,25 +59,38 @@ public class Expression implements ExpressionEncapsulator {
             return new FunctionSign(expression.charAt(0));
 
         if(expression.matches("[a-zA-DF-Z]")) {
-            return new Monomial(1, new Variable(expression.charAt(0), null, null));
+            return new Monomial(1, new SimpleVariable(expression.charAt(0), null, null));
         }
 
         throw new RuntimeException("Unreachable statement : couldn't identify the simple expression given : "+expression);
     }
 
     @Override
-    public String[] getEncapsulationString() {
-        // We always need brackets, otherwise it would not be used as en encapsulation
+    public String[] getEncapsulationString(List<ExpressionElement> elements, int index, List<ExpressionEncapsulator> others) {
         ExpressionElement first;
-        boolean noBrackets = length() == 1 && (first = elements.get(0)) instanceof Monomial
-                && ((Monomial) first).requiresBrackets();
+        boolean endNoBrackets = length() == 1 && (first = this.elements.get(0)) instanceof Monomial
+                && !((Monomial) first).requiresBrackets();
 
-        String formattedExpression = noBrackets ? expression : '('+expression+')';
-        return new String[]{"(", ")^"+formattedExpression};
+        boolean beginNoBrackets = false;
+
+        if (elements.size() == 1 && elements.get(0) instanceof Monomial) {
+            Monomial exponent = (Monomial) elements.get(0);
+            if(!exponent.requiresBrackets()) beginNoBrackets = true;
+
+            if(!beginNoBrackets && index != 0) {
+                if(others.get(index-1) instanceof CompleteCoverEncapsulator) beginNoBrackets = true;
+            }
+        }
+
+
+        String begin = beginNoBrackets ? "" : "(";
+        String half = beginNoBrackets  ? "" : ")";
+        String formattedEnd = endNoBrackets ? this.expression : '('+ this.expression +')';
+        return new String[]{begin, half+'^'+formattedEnd};
     }
 
     private String join(List<ExpressionElement> elements) {
-        return ExpressionUtils.chainElements(elements);
+        return ExpressionUtils.chainElements(elements, ExpressionElement::getExpression);
     }
 
     @Override
@@ -101,5 +116,10 @@ public class Expression implements ExpressionEncapsulator {
 
     public ExpressionElement get(int index) {
         return elements.get(index);
+    }
+
+    @Override
+    public Object clone() {
+        return new Expression(getElements());
     }
 }

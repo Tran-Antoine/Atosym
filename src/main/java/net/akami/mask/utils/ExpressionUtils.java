@@ -1,15 +1,14 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
-import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.Variable;
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.expression.*;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -253,10 +252,26 @@ public class ExpressionUtils {
         return vars.size() == 0 && ((Monomial) element).getNumericValue() % 1 == 0;
     }
 
-    public static String chainElements(List<ExpressionElement> elements) {
+    public static String encapsulate(List<ExpressionElement> elements, List<ExpressionEncapsulator> layers) {
+        StringBuilder builder = new StringBuilder();
+        for(int i = layers.size()-1; i >= 0; i--) {
+            builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
+        }
+
+        builder.append(chainElements(elements, ExpressionElement::getRawExpression));
+
+        int i = 0;
+        for(ExpressionEncapsulator encapsulator : layers) {
+            builder.append(encapsulator.getEncapsulationString(elements, i++, layers)[1]);
+        }
+
+        return builder.toString();
+    }
+
+    public static String chainElements(List<ExpressionElement> elements, Function<ExpressionElement, String> expFunction) {
         StringBuilder builder = new StringBuilder();
         for(ExpressionElement element : elements) {
-            String expression = element.getRawExpression();
+            String expression = expFunction.apply(element);
             if(builder.length() == 0 || ExpressionUtils.isSigned(expression)) {
                 builder.append(expression);
             } else {

@@ -2,6 +2,7 @@ package net.akami.mask.handler;
 
 import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.encapsulator.MergePropertyManager;
 import net.akami.mask.operation.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +11,13 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
     protected final StringBuilder BUILDER = new StringBuilder();
+    protected MergePropertyManager propertyManager;
     protected MaskContext context;
     private CalculationCanceller[] cancellers;
 
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
+        this.propertyManager = new MergePropertyManager(context);
         this.cancellers = new CalculationCanceller[]{new CalculationCache()};
     }
 
@@ -52,5 +55,9 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
                 new Divider(context),
                 new PowCalculator(context)
         };
+    }
+
+    public MergePropertyManager getPropertyManager() {
+        return propertyManager;
     }
 }

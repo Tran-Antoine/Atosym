@@ -19,9 +19,9 @@ public class VariableTest {
 
     @Test
     public void dissociateVars() {
-        Variable[] simple = {new Variable('x', Expression.of(5), MaskContext.DEFAULT)};
-        Variable[] fraction = {new Variable('x', Expression.of(2.5f), MaskContext.DEFAULT)};
-        Variable[] irreducible = {new Variable('x', Expression.of('y'), MaskContext.DEFAULT)};
+        SimpleVariable[] simple = {new SimpleVariable('x', Expression.of(5), MaskContext.DEFAULT)};
+        SimpleVariable[] fraction = {new SimpleVariable('x', Expression.of(2.5f), MaskContext.DEFAULT)};
+        SimpleVariable[] irreducible = {new SimpleVariable('x', Expression.of('y'), MaskContext.DEFAULT)};
         assertDissociateVars(Arrays.asList(simple), "xxxxx");
         assertDissociateVars(Arrays.asList(fraction), "xxx^0.5");
         assertDissociateVars(Arrays.asList(irreducible), "x^y");
@@ -36,7 +36,7 @@ public class VariableTest {
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        Variable[] variables = Variable.combine(get(v1), get(v2));
+        Variable[] variables = Variable.combine(get(v1), get(v2), null);
         List<String> converted = Arrays.asList(variables)
                 .stream()
                 .map(Variable::getExpression)
@@ -46,11 +46,11 @@ public class VariableTest {
     }
 
     private List<Variable> get(char... input) {
-        Variable[] vars = new Variable[input.length];
+        SimpleVariable[] vars = new SimpleVariable[input.length];
 
         int i = 0;
         for(char s : input) {
-            vars[i++] = new Variable(s, null, null);
+            vars[i++] = new SimpleVariable(s, null, null);
         }
         return Arrays.asList(vars);
     }

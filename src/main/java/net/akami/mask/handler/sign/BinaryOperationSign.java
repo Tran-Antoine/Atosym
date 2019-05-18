@@ -174,10 +174,4 @@ public enum BinaryOperationSign {
     private interface BinaryMathCalculation {
         Expression compute(Expression a, Expression b, MaskContext context);
     }
-
-    private interface Test {
-        String compute(String a, String b, MaskContext c);
-
-        static Test test(){return null;}
-    }
 }

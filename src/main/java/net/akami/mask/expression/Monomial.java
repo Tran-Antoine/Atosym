@@ -13,28 +13,16 @@ public class Monomial extends ExpressionElement {
     private final float numericValue;
     private final List<Variable> variables;
 
-    public Monomial(char var, MaskContext context) {
-        this(var, context, Collections.emptyList());
-    }
 
-    public Monomial(char var, MaskContext context, List<ExpressionEncapsulator> layers) {
-        this(1.0f, layers, new Variable(var, context));
+    public Monomial(char var, MaskContext context) {
+        this(1.0f, new SimpleVariable(var, context));
     }
 
     public Monomial(float numericValue, Variable... variables) {
-        this(numericValue, Arrays.asList(variables), Collections.emptyList());
-    }
-
-    public Monomial(float numericValue, List<ExpressionEncapsulator> layers, Variable... variables) {
         this(numericValue, Arrays.asList(variables));
     }
 
     public Monomial(float numericValue, List<Variable> variables) {
-        this(numericValue, variables, Collections.emptyList());
-    }
-
-    public Monomial(float numericValue, List<Variable> variables, List<ExpressionEncapsulator> layers) {
-        super(layers);
         this.variables = Objects.requireNonNull(Collections.unmodifiableList(variables));
         this.numericValue = numericValue;
         this.expression = loadExpression();
@@ -78,6 +66,7 @@ public class Monomial extends ExpressionElement {
         if(Math.abs(numericValue) != 1) count++;
         if(variables.size() != 0)       count++;
         if(variables.size() > 1)        count++;
+        if(expression.startsWith("(") && expression.endsWith(")")) count = 0;
 
         return count > 1;
     }
@@ -88,7 +77,7 @@ public class Monomial extends ExpressionElement {
             return false;
 
         Monomial other = (Monomial) obj;
-        return this.expression.equals(other.expression) && hasSameEncapsulationAs(other);
+        return this.expression.equals(other.expression);
     }
 
 

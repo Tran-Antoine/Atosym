@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.encapsulator.PowMultiplicationProperty;
 import net.akami.mask.expression.*;
 import net.akami.mask.merge.MergeManager;
 import net.akami.mask.operation.MaskContext;
@@ -12,6 +13,12 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
     public Multiplier(MaskContext context) {
         super(context);
+
+        addDefaultProperties();
+    }
+
+    private void addDefaultProperties() {
+        super.getPropertyManager().addProperty(new PowMultiplicationProperty(context));
     }
 
     @Override
@@ -78,7 +85,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
          BigDecimal bigA = new BigDecimal(a.getNumericValue());
          BigDecimal bigB = new BigDecimal(b.getNumericValue());
          float numResult = bigA.multiply(bigB).floatValue();
-         Variable[] numVariables = Variable.combine(a.getVariables(), b.getVariables());
+         Variable[] numVariables = Variable.combine(a.getVariables(), b.getVariables(), propertyManager);
          return new Monomial(numResult, numVariables);
     }
 

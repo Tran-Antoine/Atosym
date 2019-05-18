@@ -1,68 +1,48 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.function.MathFunction;
+import net.akami.mask.encapsulator.MergePropertyManager;
 import net.akami.mask.merge.MergeManager;
+import net.akami.mask.merge.VariableCombination;
 import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class Variable implements Comparable<Variable> {
+public interface Variable<T extends Variable<T>> extends Comparable<T>{
 
-    private final char var;
-    private final Expression exponent;
-    private final MathFunction function;
-    private final String expression;
-    private final MaskContext context;
-
-    public Variable(char var, MaskContext context) {
-        this(var, null, context);
-    }
-
-    public Variable(char var, Expression exponent, MaskContext context) {
-        this(var, exponent, null, context);
-    }
-
-    public Variable(char var, Expression exponent, MathFunction function, MaskContext context) {
-        this.var = var;
-        this.exponent = exponent == null ? Expression.of(1) : exponent;
-        this.function = function;
-        this.expression = loadExpression();
-        this.context = context == null ? MaskContext.DEFAULT : context;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if(!(obj instanceof Variable)) return false;
-
-        Variable other = (Variable) obj;
-
-        return var == other.var && exponent.equals(other.exponent);
-    }
-
-    public static Variable[] combine(List<Variable> a1, List<Variable> a2) {
+    static Variable[] combine(List<Variable> a1, List<Variable> a2, MergePropertyManager manager) {
         if(a1.isEmpty()) a1 = Collections.emptyList();
         if(a2.isEmpty()) a2 = Collections.emptyList();
+        MergeManager.getByType(VariableCombination.class).setPropertyManager(manager);
         List<Variable> finalVars = MergeManager.secureMerge(a1, a2, Variable.class);
         Collections.sort(finalVars);
         return finalVars.toArray(new Variable[0]);
     }
 
-    public static List<Variable> dissociate(List<Variable> a) {
+    static List<Variable> dissociate(List<Variable> a) {
 
         List<Variable> finalVars = new ArrayList<>();
 
-        for(Variable current : a) {
-            if(current.exponent != null && ExpressionUtils.isANumber(current.exponent)) {
-                float expValue = ((Monomial) current.exponent.get(0)).getNumericValue();
+        for(Variable var : a) {
+            if(!(var instanceof SimpleVariable)) {finalVars.add(var); continue; }
+
+            SimpleVariable current = (SimpleVariable) var;
+            Expression exponent = current.getExponent();
+            char varChar = current.getVar();
+            MaskContext context = current.getContext();
+
+            if(exponent != null && ExpressionUtils.isANumber(exponent)) {
+                float expValue = ((Monomial) exponent.get(0)).getNumericValue();
 
                 while (expValue > 1) {
-                    finalVars.add(new Variable(current.var, current.context));
+                    finalVars.add(new SimpleVariable(varChar, context));
                     expValue--;
                 }
 
                 if (expValue != 0)
-                    finalVars.add(new Variable(current.var, Expression.of(expValue), current.context));
+                    finalVars.add(new SimpleVariable(varChar, Expression.of(expValue), context));
             } else {
                 finalVars.add(current);
             }
@@ -70,41 +50,5 @@ public class Variable implements Comparable<Variable> {
         return finalVars;
     }
 
-    private String loadExpression() {
-        String result = exponent == null || exponent.toString().equals("1.0") || exponent.toString().equals("1")
-                ? String.valueOf(var) : var + "^" + exponent.toString();
-        return result;
-    }
-
-    public String getExpression() {
-        return expression;
-    }
-
-    public char getVar() {
-        return var;
-    }
-
-    public MathFunction getFunction() {
-        return function;
-    }
-
-    public MaskContext getContext() {
-        return context;
-    }
-
-    public Expression getExponent() {
-        return exponent;
-    }
-
-    @Override
-    public String toString() {
-        return getExpression();
-    }
-
-    @Override
-    public int compareTo(Variable o) {
-        return this.var - o.var;
-    }
-
-
+    String getExpression();
 }

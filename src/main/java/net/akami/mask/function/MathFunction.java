@@ -2,7 +2,9 @@ package net.akami.mask.function;
 
 import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.expression.ExpressionEncapsulator;
+import net.akami.mask.encapsulator.CompleteCoverEncapsulator;
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.expression.ExpressionElement;
 import net.akami.mask.handler.CancellableHandler;
 import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
@@ -13,9 +15,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class MathFunction implements CancellableHandler, PostCalculationActionable, ExpressionEncapsulator {
+public abstract class MathFunction implements CancellableHandler<String>, PostCalculationActionable, CompleteCoverEncapsulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
+    // TODO : implement in MaskContext, remove static
     private static final List<MathFunction> functions = new ArrayList<>();
 
     static {
@@ -96,7 +99,7 @@ public abstract class MathFunction implements CancellableHandler, PostCalculatio
     }
 
     @Override
-    public String[] getEncapsulationString() {
+    public String[] getEncapsulationString(List<ExpressionElement> elements, int index, List<ExpressionEncapsulator> others) {
         String[] parts = new String[2];
         parts[0] = name + '(';
         parts[1] = ")";

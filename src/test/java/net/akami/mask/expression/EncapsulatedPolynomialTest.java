@@ -1,5 +1,6 @@
 package net.akami.mask.expression;
 
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import org.junit.Test;
@@ -15,7 +16,7 @@ public class EncapsulatedPolynomialTest {
     @Test
     public void getExpressionTest() {
 
-        List<ExpressionElement> monomials = Arrays.asList(new Monomial(5, new Variable('x', DEFAULT)),
+        List<ExpressionElement> monomials = Arrays.asList(new Monomial(5, new SimpleVariable('x', DEFAULT)),
                 new Monomial(3));
 
         List<ExpressionEncapsulator> layers = Arrays.asList(
@@ -23,7 +24,7 @@ public class EncapsulatedPolynomialTest {
                 new CosineFunction(),
                 new SinusFunction()
         );
-        EncapsulatedPolynomial polynomial = new EncapsulatedPolynomial(monomials, layers);
+        ComposedVariable polynomial = new ComposedVariable(monomials, layers);
 
         assertThat(polynomial.getExpression()).isEqualTo("sin(cos((5.0x+3.0)^(5.0x+3.0)))");
     }

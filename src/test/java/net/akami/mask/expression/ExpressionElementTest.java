@@ -1,13 +1,23 @@
 package net.akami.mask.expression;
 
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.function.CosineFunction;
+
+import static net.akami.mask.operation.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
+import net.akami.mask.handler.Adder;
+import net.akami.mask.merge.MergeBehavior;
+import net.akami.mask.merge.MergeManager;
+import net.akami.mask.merge.MonomialAdditionMerge;
+import net.akami.mask.merge.VariableCombination;
+import net.akami.mask.operation.MaskContext;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class ExpressionElementTest {
@@ -24,10 +34,12 @@ public class ExpressionElementTest {
                 new SinusFunction()
         );
 
-        Monomial m1 = new NumberElement(0, layers1);
-        Monomial m2 = new NumberElement(1, layers2);
+        List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
 
-        assertThat(m1.hasSameEncapsulationAs(m2)).isEqualTo(false);
+        ComposedVariable c1 = new ComposedVariable(single,layers1);
+        ComposedVariable c2 = new ComposedVariable(single, layers2);
+
+        assertThat(c1.equals(c2)).isEqualTo(false);
     }
 
     @Test
@@ -41,9 +53,14 @@ public class ExpressionElementTest {
                 new SinusFunction(),
                 new CosineFunction()
         );
-        Monomial m1 = new NumberElement(0, layers1);
-        Monomial m2 = new NumberElement(0, layers2);
+        List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
 
-        assertThat(m1.hasSameEncapsulationAs(m2)).isEqualTo(false);
+        ComposedVariable m1 = new ComposedVariable(single, layers1);
+        ComposedVariable m2 = new ComposedVariable(single, layers2);
+
+        VariableCombination behavior = MergeManager.getByType(VariableCombination.class);
+        behavior.setPropertyManager(DEFAULT.getBinaryOperation(Adder.class).getPropertyManager());
+        assertThat(m1.equals(m2)).isEqualTo(false);
+        assertThat(behavior.isMergeable(m1, m2)).isEqualTo(false);
     }
 }
