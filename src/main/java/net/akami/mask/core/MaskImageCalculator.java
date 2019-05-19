@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.core;
 
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.ReducerFactory;
@@ -13,7 +13,7 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
         for(Character c : extraData.keySet()) {
             input = replace(c, extraData.get(c), input);
         }
-        out.reload(ReducerFactory.reduce(input, context));
+        out.reload(ReducerFactory.reduce(input, context).toString());
     }
 
     public String replace(char var, String value, String self) {

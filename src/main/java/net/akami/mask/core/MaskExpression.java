@@ -1,10 +1,13 @@
-package net.akami.mask.operation;
+package net.akami.mask.core;
 
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
 /**
+ *
+ * NOTE : THIS CLASS WILL SOON BE REPLACED BY THE EXPRESSION CLASS
+ *
  * MaskExpression is the core object of the library's operation system. It handles a String, which corresponds to the expression,
  * and an array of variables, used to solve the expression for values, or to provide images of the function.
  *
@@ -18,15 +21,15 @@ public class MaskExpression {
      * Temporary instance that can be used when only the findResult of an expression is needed, to avoid multiple instances.
      * <br/>
      * Be aware that once you did a calculation with it by setting it as the out parameter, if you
-     * want the int value of TEMP for instance, you need to call {@link MaskHandler#asExpression(MaskExpression)}
-     * and not {@link MaskHandler#asExpression()}, otherwise you'll get the non-temporary expression
+     * want the int value of TEMP for instance, you need to call {@link MaskOperatorHandler#asExpression(MaskExpression)}
+     * and not {@link MaskOperatorHandler#asExpression()}, otherwise you'll get the non-temporary expression
      * you based yourself on for the calculation.
      * <br/>
      * Here is an example :
      *
      * <pre>
      * MaskExpression base = new MaskExpression(2x);
-     * MaskHandler operator = MaskHandler.begin(base);
+     * MaskOperatorHandler operator = MaskOperatorHandler.begin(base);
      * String exp = operator.imageFor(MaskExpression.TEMP, false, 5).asExpression();
      * System.out.println(exp);
      *
@@ -35,7 +38,7 @@ public class MaskExpression {
      * -----------------
      *
      * MaskExpression base = new MaskExpression(2x);
-     * MaskHandler operator = MaskHandler.begin(base);
+     * MaskOperatorHandler operator = MaskOperatorHandler.begin(base);
      * String exp = operator.imageFor(MaskExpression.TEMP, false, 5).asExpression(MaskExpression.TEMP);
      * System.out.println(exp);
      *

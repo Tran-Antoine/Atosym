@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.core;
 
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class MaskHandlerTest {
 
-    private MaskHandler handler = new MaskHandler();
+    private MaskOperatorHandler handler = new MaskOperatorHandler();
 
     @Test
     public void reducerTest() {

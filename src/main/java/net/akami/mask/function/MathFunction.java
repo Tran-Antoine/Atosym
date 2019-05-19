@@ -1,7 +1,7 @@
 package net.akami.mask.function;
 
-import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.encapsulator.CompleteCoverEncapsulator;
 import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.expression.ExpressionElement;
@@ -10,31 +10,28 @@ import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+/**
+ * Represents a mathematical function matching the following syntax : {@code name(p1, p2, ...)}.
+ * <pre></pre>
+ * The currently available functions are the trigonometry functions exclusively. More functions with multiple
+ * parameters, such as {@code log} or {@code root} will be added in the future.
+ * @author Antoine Tran
+ */
 public abstract class MathFunction implements CancellableHandler<String>, PostCalculationActionable, CompleteCoverEncapsulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
-    // TODO : implement in MaskContext, remove static
-    private static final List<MathFunction> functions = new ArrayList<>();
 
-    static {
-        functions.addAll(Arrays.asList(
-                new SinusFunction(),
-                new CosineFunction(),
-                new TangentFunction()));
-    }
-
-    private final CalculationCanceller[] cancellers = {new CalculationCache()};
+    protected final List<CalculationCanceller<String>> cancellers = new ArrayList<>();
     protected final char binding;
     protected final String name;
+    private final MaskContext context;
 
-    public MathFunction(char binding, String name) {
+    public MathFunction(char binding, String name, MaskContext context) {
         this.binding = binding;
         this.name = name;
+        this.context = context;
         addToFunctions();
     }
 
@@ -49,44 +46,27 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
     }
 
     private void addToFunctions() {
-        getByBinding(this.binding).ifPresent(e -> {
-            functions.remove(e);
+        context.getFunctionByBinding(this.binding).ifPresent(e -> {
+            context.removeFunction(e.getClass());
             LOGGER.warn("New function added, although another existing function with the same binding has been found.");
         });
-        functions.add(this);
+        context.addFunction(this);
     }
 
     public boolean exists() {
-        return getByBinding(this.binding).isPresent();
-    }
-
-    public static Optional<MathFunction> getByBinding(char binding) {
-        for(MathFunction function : functions) {
-            if(function.binding == binding)
-                return Optional.of(function);
-        }
-        return Optional.empty();
-    }
-
-    public static Optional<MathFunction> getByExpression(String self) {
-        for(char c : self.toCharArray()) {
-            Optional<MathFunction> function = getByBinding(c);
-            if(function.isPresent())
-                return function;
-        }
-        return Optional.empty();
+        return context.getFunctionByBinding(this.binding).isPresent();
     }
 
     // TODO do something working for all functions.
     @Override
     public void postCalculation(Object result, Object... input) {
-        // TODO
+        // TODO complete
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
         //getAffection(CalculationCache.class).get().push(calculation, result);
     }
 
     @Override
-    public CalculationCanceller[] getAffections() {
+    public List<CalculationCanceller<String>> getAffections() {
         return cancellers;
     }
 
@@ -104,5 +84,17 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
         parts[0] = name + '(';
         parts[1] = ")";
         return parts;
+    }
+
+    public char getBinding() {
+        return binding;
+    }
+
+    public static Set<MathFunction> generateDefaultFunctions(MaskContext context) {
+        return new HashSet<>(Arrays.asList(
+                new SinusFunction(context),
+                new CosineFunction(context),
+                new TangentFunction(context)
+        ));
     }
 }

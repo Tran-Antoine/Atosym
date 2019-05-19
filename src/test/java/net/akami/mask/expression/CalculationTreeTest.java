@@ -4,7 +4,7 @@ import net.akami.mask.tree.CalculationTree;
 import net.akami.mask.tree.ReducerTree;
 import org.junit.Test;
 
-import static net.akami.mask.operation.MaskContext.DEFAULT;
+import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CalculationTreeTest {

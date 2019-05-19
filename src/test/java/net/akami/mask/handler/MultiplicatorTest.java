@@ -2,7 +2,7 @@ package net.akami.mask.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import org.junit.Test;
 
 public class MultiplicatorTest {

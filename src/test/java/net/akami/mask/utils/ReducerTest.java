@@ -1,42 +1,44 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.MaskExpression;
-import org.assertj.core.api.Assertions;
+import net.akami.mask.core.MaskExpression;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ReducerTest {
 
     @Test
     public void singleNumberReduction() {
         String s1 = "5";
-        Assertions.assertThat(ReducerFactory.reduce(s1)).isEqualTo("5");
+        assertReduction(s1, "5");
     }
+
     @Test
     public void basicOperationAndRandomSpaces() {
         String s2 = "5 + 10     ";
-        Assertions.assertThat(ReducerFactory.reduce(s2)).isEqualTo("15.0");
+        assertReduction(s2, "15.0");
     }
     @Test
     public void operationWithPriorityFromLeftToRight() {
         String s3 = "5*2 + 2";
         String s3b = "0 + 4";
-        Assertions.assertThat(ReducerFactory.reduce(s3)).isEqualTo("12.0");
-        Assertions.assertThat(ReducerFactory.reduce(s3b)).isEqualTo("4.0");
+        assertReduction(s3, "12.0");
+        assertReduction(s3b, "4.0");
     }
     @Test
     public void operationThatNeedsPriorityCheck() {
         String s4 = "5 + 3 * 2";
-        Assertions.assertThat(ReducerFactory.reduce(s4)).isEqualTo("11.0");
+        assertReduction(s4, "11.0");
     }
     @Test
     public void longOperationWithMultiSigns() {
         String s5 = "4*6/2-10*18+3";
-        Assertions.assertThat(ReducerFactory.reduce(s5)).isEqualTo("-165.0");
+        assertReduction(s5, "-165.0");
     }
     @Test
     public void samePriorityLevelTest() {
         String s6 = "2/2*2";
-        Assertions.assertThat(ReducerFactory.reduce(s6)).isEqualTo("2.0");
+        assertReduction(s6, "2.0");
     }
 
     @Test
@@ -47,19 +49,19 @@ public class ReducerTest {
         String s11 = "4x * 2y";
         String s12 = "4x + 3x";
         String s13 = "4x + 3x * 2y";
-        Assertions.assertThat(ReducerFactory.reduce(s9)).isEqualTo("5.0x+2.0y");
-        Assertions.assertThat(ReducerFactory.reduce(s9b)).isEqualTo("5.0x");
-        Assertions.assertThat(ReducerFactory.reduce(s10)).isEqualTo("10.0x^2.0");
-        Assertions.assertThat(ReducerFactory.reduce(s11)).isEqualTo("8.0xy");
-        Assertions.assertThat(ReducerFactory.reduce(s12)).isEqualTo("7.0x");
-        Assertions.assertThat(ReducerFactory.reduce(s13)).isEqualTo("4.0x+6.0xy");
+        assertReduction(s9, "5.0x+2.0y");
+        assertReduction(s9b, "5.0x");
+        assertReduction(s10, "10.0x^2.0");
+        assertReduction(s11, "8.0xy");
+        assertReduction(s12, "7.0x");
+        assertReduction(s13, "4.0x+6.0xy");
     }
 
 
     @Test
     public void initExpressionVariablesCorrectly() {
         MaskExpression expression = new MaskExpression("xxxy");
-        Assertions.assertThat(expression.getVariablesAmount()).isEqualTo(2);
+        assertThat(expression.getVariablesAmount()).isEqualTo(2);
     }
 
     @Test
@@ -68,33 +70,36 @@ public class ReducerTest {
         String s15 = "(((((5)))))";
         String s16 = "((((5)*3)*2)*1)";
         String s17 = "(8x+y-3)*(1+2-2)+12^(0+4-3)";
-        Assertions.assertThat(ReducerFactory.reduce(s14)).isEqualTo("6.0x+12.0y-24.0z");
-        Assertions.assertThat(ReducerFactory.reduce(s15)).isEqualTo("5");
-        Assertions.assertThat(ReducerFactory.reduce(s16)).isEqualTo("30.0");
-        Assertions.assertThat(ReducerFactory.reduce(s17)).isEqualTo("8.0x+y+9.0");
+        assertReduction(s14, "6.0x+12.0y-24.0z");
+        assertReduction(s15, "5");
+        assertReduction(s16, "30.0");
+        assertReduction(s17, "8.0x+y+9.0");
     }
 
     @Test
     public void multiPowTest() {
         String s18 = "x^y*x^(y^2)";
-        Assertions.assertThat(ReducerFactory.reduce(s18)).isEqualTo("x^(y^2.0+y)");
+        assertReduction(s18, "x^(y^2.0+y)");
     }
 
     @Test
     public void negativeStartTest() {
         String s19 = "-6-1";
-        Assertions.assertThat(ReducerFactory.reduce(s19)).isEqualTo("-7.0");
+        assertReduction(s19, "-7.0");
     }
 
     // TODO : Fix, s21 is wrong !
     @Test
     public void poweredBracketsTest() {
         String s20 = "(3+x)^2";
-        String s21 = "(x+y+z)^5";
-        String s22 = "(x+y+z)^2";
-        Assertions.assertThat(ReducerFactory.reduce(s20)).isEqualTo("x^2.0+6.0x+9.0");
-        Assertions.assertThat(ReducerFactory.reduce(s22)).isEqualTo("x^2.0+y^2.0+z^2.0+2.0xy+2.0xz+2.0yz");
+        String s21 = "(x+y+z)^2";
+        assertReduction(s20, "x^2.0+6.0x+9.0");
+        assertReduction(s21, "x^2.0+y^2.0+z^2.0+2.0xy+2.0xz+2.0yz");
 
+    }
+
+    private void assertReduction(String s1, String s) {
+        assertThat(ReducerFactory.reduce(s1).toString()).isEqualTo(s);
     }
 
     // It won't support factorisation for now. Therefore :

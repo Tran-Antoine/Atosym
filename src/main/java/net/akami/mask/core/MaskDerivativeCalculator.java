@@ -1,4 +1,4 @@
-package net.akami.mask.operation;
+package net.akami.mask.core;
 
 import net.akami.mask.tree.DerivativeTree;
 

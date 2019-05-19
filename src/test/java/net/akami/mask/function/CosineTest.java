@@ -1,11 +1,12 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class CosineTest {
 
-    private final CosineFunction function = new CosineFunction();
+    private final CosineFunction function = new CosineFunction(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

@@ -13,6 +13,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Probably 95% of this class will be (unfortunately) deleted soon, replaced by the new expression system, a much faster
+ * and more reliable approach.
+ */
 public class ExpressionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtils.class);

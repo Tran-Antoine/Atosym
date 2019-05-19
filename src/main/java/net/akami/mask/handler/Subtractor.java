@@ -1,10 +1,7 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
-import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
+import net.akami.mask.core.MaskContext;
 
 import java.util.ArrayList;
 import java.util.List;

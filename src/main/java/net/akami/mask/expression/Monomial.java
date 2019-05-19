@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 
 import java.util.Arrays;

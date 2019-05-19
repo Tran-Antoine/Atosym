@@ -1,10 +1,12 @@
-package net.akami.mask.encapsulator;
+package net.akami.mask.encapsulator.property;
 
+import net.akami.mask.encapsulator.ExponentEncapsulator;
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.expression.ComposedVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.ExpressionElement;
 import net.akami.mask.handler.Adder;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +43,7 @@ public class PowMultiplicationProperty implements EncapsulatorMergeProperty {
         Expression last2 = (Expression) l2.get(l2.size()-1);
 
         Adder operator = context.getBinaryOperation(Adder.class);
-        copy.add(operator.operate(last1, last2));
+        copy.add(ExponentEncapsulator.fromExpression(operator.operate(last1, last2)));
         return new ComposedVariable(insights, copy);
     }
 }

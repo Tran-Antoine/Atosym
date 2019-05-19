@@ -1,6 +1,6 @@
 package net.akami.mask.exception;
 
-import net.akami.mask.operation.MaskExpression;
+import net.akami.mask.core.MaskExpression;
 
 /**
  * MaskException is the common runtime exception handled by the library. It is thrown when a MaskExpression is

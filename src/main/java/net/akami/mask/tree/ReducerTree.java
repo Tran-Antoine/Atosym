@@ -1,6 +1,6 @@
 package net.akami.mask.tree;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 
 /**
  * Most basic implementation of the {@link CalculationTree} class. It defines the {@code generate} method by instating

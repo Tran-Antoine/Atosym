@@ -1,7 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.MaskContext;
-import org.assertj.core.api.Assertions;
+import net.akami.mask.core.MaskContext;
 import org.junit.Test;
 
 public class MultiplicationTest {

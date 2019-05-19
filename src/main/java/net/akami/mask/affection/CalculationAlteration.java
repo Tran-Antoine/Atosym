@@ -1,12 +1,13 @@
 package net.akami.mask.affection;
 
+import net.akami.mask.handler.AlterationHandler;
 import net.akami.mask.handler.IOModificationHandler;
 
 /**
- * The CalculationAffection interface defines the behavior of an expression modifier, in the context of
+ * The CalculationAlteration interface defines the behavior of an expression modifier, in the context of
  * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
  * cancel the calculation.
- * Since the different affections might have completely different behaviors, no other
+ * Since the different alterations might have completely different behaviors, no other
  * methods than {@code appliesTo} and {@code priorityLevel} can be directly implemented from subclasses.
  * <p></p>
  *
@@ -15,14 +16,14 @@ import net.akami.mask.handler.IOModificationHandler;
  * the modification should be, depending of the input string given.
  * <p></p>
  *
- * CalculationAffections must be handled by an {@link net.akami.mask.handler.AffectionHandler} compatible with
- * the type of affection managed, determining when exactly in the process of the calculations a modification must be done.
+ * CalculationAffections must be handled by an {@link AlterationHandler} compatible with
+ * the type of alteration managed, determining when exactly in the process of the calculations a modification must be done.
  * <p></p>
  *
- * Because of the priority level feature, a handler must be easily able to sort its affections from the greater priority
- * to the least. Hence the interface extends {@link Comparable}. If you want to sort a list of affections, do the following :
+ * Because of the priority level feature, a handler must be easily able to sort its alterations from the greater priority
+ * to the least. Hence the interface extends {@link Comparable}. If you want to sort a list of alterations, do the following :
  * <pre>{@code
- * List<T> compatibles = compatibleAffectionsFor(input);
+ * List<T> compatibles = someAlterationHandler.compatibleAlterationsFor(input);
  * Collections.sort(compatibles);
  * }</pre>
  * @see net.akami.mask.handler.CancellableHandler
@@ -30,7 +31,7 @@ import net.akami.mask.handler.IOModificationHandler;
  *
  * @author Antoine Tran
  */
-public interface CalculationAffection<T> extends Comparable<CalculationAffection> {
+public interface CalculationAlteration<T> extends Comparable<CalculationAlteration> {
 
     /**
      * Checks a validity between the input given and the behavior of the current affection.
@@ -64,14 +65,14 @@ public interface CalculationAffection<T> extends Comparable<CalculationAffection
     float priorityLevel();
 
     /**
-     * Compares the affection itself with another {@link CalculationAffection}. The {@code compareTo} method
+     * Compares the affection itself with another {@link CalculationAlteration}. The {@code compareTo} method
      * helps a handler sort its array of affections, so that he gets them from the most priority affection to the least.
      * @param other another affection to compare to the affection itself
      * @return a negative number if the current priority is greater that the other's, 0 if both have the same priority,
      *         and a positive number if the current priority if less than the other's.
      */
     @Override
-    default int compareTo(CalculationAffection other) {
+    default int compareTo(CalculationAlteration other) {
         float r = other.priorityLevel() - priorityLevel();
         return r < 0 ? -1 : r > 0 ? 1 : 0;
     }

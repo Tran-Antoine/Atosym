@@ -1,11 +1,12 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class SinusTest {
 
-    private final SinusFunction function = new SinusFunction();
+    private final SinusFunction function = new SinusFunction(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

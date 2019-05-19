@@ -1,9 +1,11 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
+
 public class SinusFunction extends MathFunction implements TrigonometryOperation {
 
-    public SinusFunction() {
-        super('@', "sin");
+    public SinusFunction(MaskContext context) {
+        super('@', "sin", context);
     }
 
     @Override

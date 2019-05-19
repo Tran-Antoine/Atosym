@@ -1,8 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.MaskContext;
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
+import net.akami.mask.core.MaskContext;
 
 public class SumTest {
 

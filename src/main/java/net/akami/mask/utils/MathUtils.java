@@ -1,11 +1,10 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.handler.*;
-import static net.akami.mask.operation.MaskContext.DEFAULT;
+import static net.akami.mask.core.MaskContext.DEFAULT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,7 +26,7 @@ public class MathUtils {
     public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
     public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
     public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
-    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
+    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerCalculator.class); }
 
     public static String diffSum(String a, String altA, String b, String altB) {
         return null; // TODO return sum(altA, altB);
@@ -152,9 +151,20 @@ public class MathUtils {
         return results;
     }
     public static List<Float> decomposeNumber(float self) {
+        return decomposeNumber(self, 0);
+    }
+
+    // TODO use BigDecimal ?
+    public static List<Float> decomposeNumber(float self, float other) {
         LOGGER.info("Now decomposing float {}", self);
 
         List<Float> results = new ArrayList<>();
+        if(other != 0 && self % other == 0) {
+            float divResult = self / other;
+            self /= divResult;
+            results.add(divResult);
+        }
+
         if (self % 1 != 0) {
             LOGGER.info("Non-integer given, returns it");
             results.add(self);

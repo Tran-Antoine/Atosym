@@ -1,5 +1,6 @@
-package net.akami.mask.encapsulator;
+package net.akami.mask.encapsulator.property;
 
+import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.expression.ComposedVariable;
 import net.akami.mask.expression.ExpressionElement;
 

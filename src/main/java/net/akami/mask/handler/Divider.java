@@ -4,7 +4,7 @@ import net.akami.mask.expression.*;
 import net.akami.mask.merge.MergeBehavior;
 import net.akami.mask.merge.MergeManager;
 import net.akami.mask.merge.PairNullifying;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 
@@ -105,10 +105,13 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
         if(a.equals(b)) return new NumberElement(1);
 
-        List<Float> numValues = MathUtils.decomposeNumber(a.getNumericValue());
+        float aNumeric = a.getNumericValue();
+        float bNumeric = b.getNumericValue();
+
+        List<Float> numValues = MathUtils.decomposeNumber(aNumeric, bNumeric);
         List<Variable> numVars = Variable.dissociate(a.getVariables());
 
-        List<Float> denValues = MathUtils.decomposeNumber(b.getNumericValue());
+        List<Float> denValues = MathUtils.decomposeNumber(bNumeric, aNumeric);
         List<Variable> denVars = Variable.dissociate(b.getVariables());
 
         MergeBehavior<Object> nullifying = MergeManager.getByType(PairNullifying.class);

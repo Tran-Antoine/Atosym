@@ -1,26 +1,22 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.encapsulator.ExponentEncapsulator;
 import net.akami.mask.expression.*;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class PowCalculator extends BinaryOperationHandler<Expression> {
+public class PowerCalculator extends BinaryOperationHandler<Expression> {
 
-    public PowCalculator(MaskContext context) {
+    public PowerCalculator(MaskContext context) {
         super(context);
     }
 
     @Override
     public Expression operate(Expression a, Expression b) {
-        LOGGER.info("PowCalculator operation process between {} and {} : \n", a, b);
+        LOGGER.info("PowerCalculator operation process between {} and {} : \n", a, b);
 
         if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             return fullNumericPow(a, b);
@@ -64,7 +60,7 @@ public class PowCalculator extends BinaryOperationHandler<Expression> {
 
     private Expression layerPow(Expression a, Expression b) {
         List<ExpressionElement> insights = a.getElements();
-        ComposedVariable variable = new ComposedVariable(insights, Collections.singletonList(b));
+        ComposedVariable variable = new ComposedVariable(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
         Expression newExpression = Expression.of(new Monomial(1, variable));
         return newExpression;
     }

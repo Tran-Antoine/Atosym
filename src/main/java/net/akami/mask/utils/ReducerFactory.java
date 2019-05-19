@@ -1,11 +1,15 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.tree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Class which will be merged with the {@link net.akami.mask.core.MaskReducer} class soon.
+ */
 public class ReducerFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
@@ -19,11 +23,11 @@ public class ReducerFactory {
         };
     }
 
-    public static String reduce(String exp) {
+    public static Expression reduce(String exp) {
         return reduce(exp, MaskContext.DEFAULT);
     }
 
-    public static String reduce(String exp, MaskContext context) {
+    public static Expression reduce(String exp, MaskContext context) {
         long time = System.nanoTime();
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry
@@ -33,9 +37,9 @@ public class ReducerFactory {
 
         TreeUtils.printBranches(tree);
         LOGGER.debug("Now merging branches");
-        String result;
+        Expression result;
         try {
-            result = tree.merge().toString();
+            result = tree.merge();
         } catch (ArithmeticException | NumberFormatException e) {
             e.printStackTrace();
             if(e instanceof ArithmeticException) {

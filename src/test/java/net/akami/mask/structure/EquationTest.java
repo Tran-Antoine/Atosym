@@ -1,7 +1,6 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.operation.MaskExpression;
-import net.akami.mask.structure.EquationSolver;
+import net.akami.mask.core.MaskExpression;
 import net.akami.mask.utils.ExpressionUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;

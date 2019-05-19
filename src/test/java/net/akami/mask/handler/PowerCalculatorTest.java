@@ -2,12 +2,12 @@ package net.akami.mask.handler;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import org.junit.Test;
 
-public class PowCalculatorTest {
+public class PowerCalculatorTest {
 
-    PowCalculator POW = MaskContext.DEFAULT.getBinaryOperation(PowCalculator.class);
+    PowerCalculator POW = MaskContext.DEFAULT.getBinaryOperation(PowerCalculator.class);
 
     @Test
     public void powTest() {

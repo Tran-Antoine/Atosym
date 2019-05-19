@@ -1,11 +1,13 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.encapsulator.MergePropertyManager;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.encapsulator.property.MergePropertyManager;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.*;
 
 public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>, CancellableHandler<T>, PostCalculationActionable<T> {
 
@@ -13,12 +15,12 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
     protected final StringBuilder BUILDER = new StringBuilder();
     protected MergePropertyManager propertyManager;
     protected MaskContext context;
-    private CalculationCanceller[] cancellers;
+    private List<CalculationCanceller<T>> cancellers;
 
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
         this.propertyManager = new MergePropertyManager(context);
-        this.cancellers = new CalculationCanceller[]{/*new CalculationCache()*/};
+        this.cancellers = new ArrayList<>();
     }
 
     protected abstract T operate(T a, T b);
@@ -42,19 +44,18 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
     }
 
     @Override
-    public CalculationCanceller[] getAffections() {
+    public List<CalculationCanceller<T>> getAffections() {
         return cancellers;
     }
 
-    public static BinaryOperationHandler[] generateDefaultHandlers(MaskContext context) {
-        return new BinaryOperationHandler[]{
-
+    public static Set<BinaryOperationHandler<Expression>> generateDefaultHandlers(MaskContext context) {
+        return new HashSet<>(Arrays.asList(
                 new Adder(context),
                 new Subtractor(context),
                 new Multiplier(context),
                 new Divider(context),
-                new PowCalculator(context)
-        };
+                new PowerCalculator(context)
+        ));
     }
 
     public MergePropertyManager getPropertyManager() {

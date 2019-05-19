@@ -1,9 +1,11 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
+
 public class CosineFunction extends MathFunction implements TrigonometryOperation {
 
-    public CosineFunction() {
-        super('#', "cos");
+    public CosineFunction(MaskContext context) {
+        super('#', "cos", context);
     }
 
     @Override

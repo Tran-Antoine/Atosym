@@ -3,7 +3,7 @@ package net.akami.mask.affection;
 import net.akami.mask.handler.IODefaultFormatter;
 
 /**
- * The IOCalculationModifier class is one of the two core object of the affection system, provided by the API.
+ * The IOCalculationModifier class is one of the two core object of the alteration system, provided by the API.
  * An IOModifier checks whether a given expression needs to be formatted or not. If yes, it replaces the input by its
  * formatted version. The modifications can be applied before or after performing a calculation.
  * <p></p>
@@ -14,9 +14,9 @@ import net.akami.mask.handler.IODefaultFormatter;
  * <p></p>
  * Note that IOCalculationModifiers are different than the {@link IODefaultFormatter}s.
  * Basically, the default formatters cannot be enabled / disabled, nor configured. They exist for handlers requiring
- * expressions under a certain format to work. They thus aren't part of the affection system.
+ * expressions under a certain format to work. They thus aren't part of the alteration system.
  */
-public interface IOCalculationModifier extends CalculationAffection {
+public interface IOCalculationModifier extends CalculationAlteration {
 
     /**
      * Defines how a given input must be formatted.

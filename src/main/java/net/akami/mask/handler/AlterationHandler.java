@@ -1,14 +1,14 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.CalculationAffection;
+import net.akami.mask.affection.CalculationAlteration;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public interface AffectionHandler<T extends CalculationAffection, R> {
+public interface AlterationHandler<T extends CalculationAlteration, R> {
 
-    T[] getAffections();
+    List<T> getAffections();
 
     default <S extends T> Optional<S> getAffection(Class<S> type) {
         for(T affection : getAffections()) {
@@ -18,7 +18,7 @@ public interface AffectionHandler<T extends CalculationAffection, R> {
         return Optional.empty();
     }
 
-    default List<T> compatibleAffectionsFor(R... input) {
+    default List<T> compatibleAlterationsFor(R... input) {
         List<T> compatibles = new ArrayList<>();
 
         for(T affection : getAffections()) {

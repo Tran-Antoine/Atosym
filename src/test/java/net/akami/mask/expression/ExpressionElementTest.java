@@ -3,17 +3,14 @@ package net.akami.mask.expression;
 import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.function.CosineFunction;
 
-import static net.akami.mask.operation.MaskContext.DEFAULT;
+import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
 import net.akami.mask.handler.Adder;
-import net.akami.mask.merge.MergeBehavior;
 import net.akami.mask.merge.MergeManager;
-import net.akami.mask.merge.MonomialAdditionMerge;
 import net.akami.mask.merge.VariableCombination;
-import net.akami.mask.operation.MaskContext;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -26,12 +23,12 @@ public class ExpressionElementTest {
     public void compareDifferentLayers() {
 
         List<ExpressionEncapsulator> layers1 = Arrays.asList(
-                new CosineFunction(),
-                new TangentFunction()
+                new CosineFunction(DEFAULT),
+                new TangentFunction(DEFAULT)
         );
         List<ExpressionEncapsulator> layers2 = Arrays.asList(
-                new CosineFunction(),
-                new SinusFunction()
+                new CosineFunction(DEFAULT),
+                new SinusFunction(DEFAULT)
         );
 
         List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
@@ -46,12 +43,12 @@ public class ExpressionElementTest {
     public void compareSameLayersInDifferentOrders() {
 
         List<ExpressionEncapsulator> layers1 = Arrays.asList(
-                new CosineFunction(),
-                new SinusFunction()
+                new CosineFunction(DEFAULT),
+                new SinusFunction(DEFAULT)
         );
         List<ExpressionEncapsulator> layers2 = Arrays.asList(
-                new SinusFunction(),
-                new CosineFunction()
+                new SinusFunction(DEFAULT),
+                new CosineFunction(DEFAULT)
         );
         List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
 

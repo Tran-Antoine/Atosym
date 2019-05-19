@@ -11,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.Arrays;
 import java.util.List;
 
-import static net.akami.mask.operation.MaskContext.DEFAULT;
+import static net.akami.mask.core.MaskContext.DEFAULT;
 
 public class ComposedVariableTest {
 
@@ -24,15 +24,15 @@ public class ComposedVariableTest {
                 new NumberElement(3), new Monomial(3, new SimpleVariable('x', DEFAULT)));
 
         List<ExpressionEncapsulator> layers = Arrays.asList(
-                new CosineFunction(),
-                new SinusFunction(),
-                new TangentFunction()
+                new CosineFunction(DEFAULT),
+                new SinusFunction(DEFAULT),
+                new TangentFunction(DEFAULT)
         );
 
         List<ExpressionEncapsulator> layers2 = Arrays.asList(
-                new CosineFunction(),
-                new TangentFunction(),
-                new SinusFunction()
+                new CosineFunction(DEFAULT),
+                new TangentFunction(DEFAULT),
+                new SinusFunction(DEFAULT)
         );
 
         ComposedVariable cVar1 = new ComposedVariable(elements, layers);
@@ -45,7 +45,7 @@ public class ComposedVariableTest {
     @Test
     public void composedMultTest() {
 
-        List<ExpressionEncapsulator> layers = Arrays.asList(new CosineFunction(), new SinusFunction());
+        List<ExpressionEncapsulator> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
         Expression insights = multiplier.operate(Expression.of('x'), Expression.of('y'));
         Monomial m1 = new Monomial(2, new ComposedVariable(insights.getElements(), layers));
         Monomial m2 = new Monomial(5, new ComposedVariable(insights.getElements(), layers));

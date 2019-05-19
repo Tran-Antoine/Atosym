@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 

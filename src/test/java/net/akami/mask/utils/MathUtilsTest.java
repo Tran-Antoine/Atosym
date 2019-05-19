@@ -1,15 +1,10 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
-import net.akami.mask.operation.MaskContext;
-import org.assertj.core.api.Assertions;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MathUtilsTest {
 

@@ -1,13 +1,13 @@
 package net.akami.mask.expression;
 
-import static net.akami.mask.operation.MaskContext.DEFAULT;
+import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 
-import net.akami.mask.handler.PowCalculator;
+import net.akami.mask.handler.PowerCalculator;
 import org.junit.Test;
 
 public class ExpressionTester {
@@ -15,7 +15,7 @@ public class ExpressionTester {
     private final Adder adder = new Adder(DEFAULT);
     private final Multiplier multiplier = new Multiplier(DEFAULT);
     private final Divider divider = new Divider(DEFAULT);
-    private final PowCalculator pow = new PowCalculator(DEFAULT);
+    private final PowerCalculator pow = new PowerCalculator(DEFAULT);
 
     @Test
     public void basicSum() {

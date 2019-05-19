@@ -1,12 +1,10 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.operation.MaskExpression;
-import net.akami.mask.operation.MaskHandler;
-import net.akami.mask.operation.MaskImageCalculator;
-import net.akami.mask.operation.MaskReducer;
+import net.akami.mask.core.MaskExpression;
+import net.akami.mask.core.MaskOperatorHandler;
+import net.akami.mask.core.MaskImageCalculator;
+import net.akami.mask.core.MaskReducer;
 import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +13,7 @@ import java.util.*;
 public class EquationSolver {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EquationSolver.class);
-    private static final MaskHandler handler = new MaskHandler();
+    private static final MaskOperatorHandler handler = new MaskOperatorHandler();
 
     public static List<BiMask> build(String... lines) {
         List<BiMask> biMasks = new ArrayList<>();

@@ -2,7 +2,7 @@ package net.akami.mask.tree;
 
 import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.sign.BinaryOperationSign;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.TreeUtils;

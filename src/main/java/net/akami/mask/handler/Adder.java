@@ -2,7 +2,7 @@ package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
 import net.akami.mask.merge.MergeManager;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 
 import java.math.BigDecimal;
 import java.util.*;

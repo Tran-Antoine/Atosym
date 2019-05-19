@@ -1,7 +1,8 @@
 package net.akami.mask.merge;
 
+import net.akami.mask.encapsulator.ExponentEncapsulator;
 import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.encapsulator.MergePropertyManager;
+import net.akami.mask.encapsulator.property.MergePropertyManager;
 import net.akami.mask.expression.ComposedVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.SimpleVariable;
@@ -73,7 +74,7 @@ public class VariableCombination implements MergeBehavior<Variable> {
 
     private ComposedVariable identicalVariables(ComposedVariable a) {
         List<ExpressionEncapsulator> layers = new ArrayList<>(a.getLayers());
-        layers.add(Expression.of(2));
+        layers.add(new ExponentEncapsulator(2));
         return new ComposedVariable(a.getElements(), layers);
     }
 

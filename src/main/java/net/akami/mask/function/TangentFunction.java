@@ -1,9 +1,11 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
+
 public class TangentFunction extends MathFunction implements TrigonometryOperation {
 
-    public TangentFunction() {
-        super('§', "tan");
+    public TangentFunction(MaskContext context) {
+        super('§', "tan", context);
     }
 
     @Override
