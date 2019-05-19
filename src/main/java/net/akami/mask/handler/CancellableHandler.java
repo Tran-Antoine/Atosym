@@ -15,7 +15,7 @@ public interface CancellableHandler<T> extends AffectionHandler<CalculationCance
     }
 
     default boolean isCancellable(T... input) {
-        for(CalculationCanceller affection : getAffections()) {
+        for(CalculationCanceller<T> affection : getAffections()) {
             if(affection.appliesTo(input))
                 return true;
         }

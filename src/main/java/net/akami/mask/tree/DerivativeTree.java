@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.handler.sign.QuaternaryOperationSign;
 import net.akami.mask.operation.MaskContext;
@@ -42,21 +43,21 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
             //self.setReducedValue(self.getRawExpression());
-            self.setDerivativeValue(differentiateElement(self.getExpression()));
+            //self.setDerivativeValue(differentiateElement(self.getExpression()));
             return;
         }
 
         String left = null;self.getLeftValue(); // either a reduced or the original expression
         String right = null;self.getRightValue(); // either a reduced or the original expression
-        String derLeft = self.getLeft().getDerivativeValue(); // we know it has one
-        String derRight = self.getRight().getDerivativeValue(); // we know it has one
+        //String derLeft = self.getLeft().getDerivativeValue(); // we know it has one
+        //String derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
         if(getBranches().indexOf(self) != 0) {
             //self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
         }
-        self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
+        // TODO self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 
     public String differentiateElement(String element) {
@@ -68,7 +69,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     }
 
     @Override
-    public Optional<String> finalResult() {
+    public Optional<Expression> finalResult() {
         DerivativeBranch first = getBranches().get(0);
         if(first.getDerivativeValue() != null) {
             return Optional.of(first.getDerivativeValue());

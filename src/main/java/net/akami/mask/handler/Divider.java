@@ -112,8 +112,8 @@ public class Divider extends BinaryOperationHandler<Expression> {
         List<Variable> denVars = Variable.dissociate(b.getVariables());
 
         MergeBehavior<Object> nullifying = MergeManager.getByType(PairNullifying.class);
-        MergeManager.merge(numValues, denValues, nullifying);
-        MergeManager.merge(numVars, denVars, nullifying);
+        MergeManager.nonSortedMerge(numValues, denValues, nullifying, false);
+        MergeManager.nonSortedMerge(numVars, denVars, nullifying, false);
 
         filter(numValues, numVars, denValues, denVars);
 

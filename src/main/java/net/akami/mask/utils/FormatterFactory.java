@@ -57,7 +57,7 @@ public class FormatterFactory {
 
     public static String formatForVisual(String origin) {
         BinaryTree tree = new FormatterTree(origin);
-        return tree.merge();
+        return tree.merge().toString();
     }
 
     public static String removeMultiplicationSigns(String self) {

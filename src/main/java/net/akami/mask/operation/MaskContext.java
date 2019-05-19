@@ -49,10 +49,9 @@ public class MaskContext {
         return null;
     }
 
-    public String binaryCompute(Expression a, Expression b, Class<? extends BinaryOperationHandler> clazz) {
-
-        BinaryOperationHandler handler = getBinaryOperation(clazz);
-        return null;//handler.rawOperate(a, b);
+    public <T> T binaryCompute(T a, T b, Class<? extends BinaryOperationHandler<T>> clazz) {
+        BinaryOperationHandler<T> handler = getBinaryOperation(clazz);
+        return handler.rawOperate(a, b);
     }
 
     public <T extends BinaryOperationHandler> T getBinaryOperation(Class<T> clazz) {

@@ -26,7 +26,7 @@ import java.util.Objects;
 public enum BinaryOperationSign {
 
     /**
-     * Sum operator, computes a + b using the {@link MathUtils#sum(String, String)} method.
+     * Sum operator, computes a + b using the {@link MathUtils#sum(Expression, Expression)} method.
      * <p></p>
      * This operator can deal with a chain of additions / subtractions. Therefore, there will not be any problem
      * if the a or b value happens to be a polynomial.
@@ -41,10 +41,10 @@ public enum BinaryOperationSign {
      *  3y-2  +   y     = 4y-2
      * </pre>
      */
-    SUM('+', null/*MathUtils::sum*/, 0),
+    SUM('+', MathUtils::sum, 0),
 
     /**
-     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(String, String)} method.
+     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(Expression, Expression)} method.
      * <p></p>
      * This operator works the same way as the {@code SUM} operator, except that it multiply all the monomials
      * found in the {@code b} input by -1.
@@ -59,10 +59,10 @@ public enum BinaryOperationSign {
      *  3y-2  -   y     = 2y-2
      * </pre>
      */
-    SUBTRACT('-', null/*MathUtils::subtract*/, 0),
+    SUBTRACT('-', MathUtils::subtract, 0),
 
     /**
-     * Mult operator, computes a * b using the {@link MathUtils#mult(String, String)} method.
+     * Mult operator, computes a * b using the {@link MathUtils#mult(Expression, Expression)} method.
      * <p></p>
      * It also supports polynomial multiplication (not only the monomial ones) thus distributivity.
      * <p></p>
@@ -77,10 +77,10 @@ public enum BinaryOperationSign {
      *  3y-2  *  x+y    = 3xy+3y^2-2x-2y
      * </pre>
      */
-    MULT('*', null/*MathUtils::mult*/, 1),
+    MULT('*', MathUtils::mult, 1),
 
     /**
-     * Division operator, computes a / b using the {@link MathUtils#divide(String, String)} method.
+     * Division operator, computes a / b using the {@link MathUtils#divide(Expression, Expression)} method.
      *
      * Note that only the following division types are supported by now :
      *
@@ -100,10 +100,10 @@ public enum BinaryOperationSign {
      *  3y-2  /  x+y    = Not calculable yet. Returns (3y-2)/(x+y)
      * </pre>
      */
-    DIVIDE('/', null/*MathUtils::divide*/, 1),
+    DIVIDE('/', MathUtils::divide, 1),
 
     /**
-     * Pow operator, computes a ^ b using the {@link MathUtils#pow(String, String)} method.
+     * Pow operator, computes a ^ b using the {@link MathUtils#pow(Expression, Expression)} method.
      * <p></p>
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
@@ -124,7 +124,7 @@ public enum BinaryOperationSign {
      *  3y-2  ^  x+y    = (3y-2)^(x+y)
      * </pre>
      */
-    POW('^', null/*,MathUtils::pow*/, 2),
+    POW('^', MathUtils::pow, 2),
 
     /**
      * The None operator does not have any other utility than making the amount of operations an even number.

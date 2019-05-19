@@ -1,13 +1,17 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.operation.MaskContext;
+import net.akami.mask.utils.ExpressionUtils;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class Monomial extends ExpressionElement {
+/**
+ * Note: this class has a natural ordering that is inconsistent with equals.
+ */
+public class Monomial extends ExpressionElement<Monomial> {
 
     private final String expression;
     private final float numericValue;
@@ -30,6 +34,7 @@ public class Monomial extends ExpressionElement {
 
     private String loadExpression() {
 
+        if(numericValue == 0) return "";
         if(variables.isEmpty()) return String.valueOf(numericValue);
         if(numericValue == 1)   return variablesToString();
         if(numericValue == -1)  return '-' + variablesToString();
@@ -93,5 +98,42 @@ public class Monomial extends ExpressionElement {
     @Override
     public String toString() {
         return getRawExpression();
+    }
+
+    // We assume the two monomials cannot have the same variable part
+    @Override
+    public int compareTo(Monomial o) {
+        if(variables.isEmpty()) return 1;
+        if(o.variables.isEmpty()) return -1;
+        if(!areVariablesExclusivelySimples() || !o.areVariablesExclusivelySimples()) return 0;
+
+        float selfDegree = getMaxDegree();
+        float oDegree = o.getMaxDegree();
+
+        if(selfDegree > oDegree) return -1;
+        if(selfDegree < oDegree) return 1;
+
+        return 0;
+    }
+
+    public float getMaxDegree() {
+        float initial = 0;
+
+        for(Variable var : variables) {
+            if(!(var instanceof SimpleVariable)) continue;
+            Expression exponent = ((SimpleVariable) var).getExponent();
+            if(ExpressionUtils.isANumber(exponent)) {
+                float value = Float.parseFloat(exponent.toString());
+                if(value > initial) initial = value;
+            }
+        }
+        return initial;
+    }
+
+    public boolean areVariablesExclusivelySimples() {
+        for (Variable variable : variables) {
+            if (variable instanceof ComposedVariable) return false;
+        }
+        return true;
     }
 }

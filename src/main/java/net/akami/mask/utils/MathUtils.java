@@ -17,21 +17,17 @@ public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
 
-    public static String sum(Expression a, Expression b)      { return sum(a, b, DEFAULT);      }
-    public static Expression sum(List<ExpressionElement> monomials)  { return sum(monomials, DEFAULT); }
-    //public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
-    public static String mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
-    public static String divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
-    public static String pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);   }
+    public static Expression sum(Expression a, Expression b)      { return sum(a, b, DEFAULT);      }
+    public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
+    public static Expression mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
+    public static Expression divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
+    public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);   }
 
-    public static String sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
-    public static String subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
-    public static String mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
-    public static String divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
-    public static String pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
-    public static Expression sum(List<ExpressionElement> monomials, MaskContext context)  {
-        return null;//context.getBinaryOperation(Adder.class).monomialSum(monomials, true);
-    }
+    public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
+    public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
+    public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
+    public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
+    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
 
     public static String diffSum(String a, String altA, String b, String altB) {
         return null; // TODO return sum(altA, altB);

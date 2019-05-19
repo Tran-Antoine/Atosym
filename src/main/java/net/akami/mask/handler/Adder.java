@@ -21,7 +21,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
         List<ExpressionElement> bElements = b.getElements();
         LOGGER.info("Monomials : {} and {}", aElements, bElements);
 
-        ExpressionElement[] elements = MergeManager.secureMerge(aElements, bElements, ExpressionElement.class).toArray(new ExpressionElement[0]);
+        List<ExpressionElement> elements = MergeManager.secureMerge(aElements, bElements, ExpressionElement.class);
         Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;

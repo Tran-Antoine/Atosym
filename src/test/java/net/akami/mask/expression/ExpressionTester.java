@@ -41,7 +41,7 @@ public class ExpressionTester {
     public void multiElementsMult() {
         Expression e1 = new Expression(new NumberElement(3), create(1, 'x'));
         Expression e2 = new Expression(new NumberElement(2), create(1, 'x'));
-        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("5.0x+6.0+x^2.0");
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("x^2.0+5.0x+6.0");
 
         Expression f1 = Expression.of(new SimpleFraction(6, Expression.of('x')));
         Expression f2 = Expression.of(3);
@@ -56,7 +56,7 @@ public class ExpressionTester {
         Expression e1 = new Expression(new NumberElement(2), create(3, 'x'));
         Expression e2 = new Expression(new NumberElement(3), create(2, 'x'), create(1, 'y'));
 
-        assertThat(adder.operate(e1, e2).toString()).isEqualTo("5.0+5.0x+y");
+        assertThat(adder.operate(e1, e2).toString()).isEqualTo("5.0x+y+5.0");
     }
 
     @Test

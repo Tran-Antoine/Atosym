@@ -18,7 +18,7 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
         this.propertyManager = new MergePropertyManager(context);
-        this.cancellers = new CalculationCanceller[]{new CalculationCache()};
+        this.cancellers = new CalculationCanceller[]{/*new CalculationCache()*/};
     }
 
     protected abstract T operate(T a, T b);

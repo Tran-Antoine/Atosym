@@ -72,6 +72,7 @@ public interface CalculationAffection<T> extends Comparable<CalculationAffection
      */
     @Override
     default int compareTo(CalculationAffection other) {
-        return (int) (other.priorityLevel() - priorityLevel());
+        float r = other.priorityLevel() - priorityLevel();
+        return r < 0 ? -1 : r > 0 ? 1 : 0;
     }
 }

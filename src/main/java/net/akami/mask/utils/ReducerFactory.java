@@ -35,7 +35,7 @@ public class ReducerFactory {
         LOGGER.debug("Now merging branches");
         String result;
         try {
-            result = tree.merge();
+            result = tree.merge().toString();
         } catch (ArithmeticException | NumberFormatException e) {
             e.printStackTrace();
             if(e instanceof ArithmeticException) {
@@ -47,6 +47,6 @@ public class ReducerFactory {
 
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
-        return FormatterFactory.formatForVisual(result);
+        return result;
     }
 }

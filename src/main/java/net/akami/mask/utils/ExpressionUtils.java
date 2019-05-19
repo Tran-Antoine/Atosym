@@ -272,6 +272,8 @@ public class ExpressionUtils {
         StringBuilder builder = new StringBuilder();
         for(ExpressionElement element : elements) {
             String expression = expFunction.apply(element);
+            if(expression.isEmpty()) continue;
+
             if(builder.length() == 0 || ExpressionUtils.isSigned(expression)) {
                 builder.append(expression);
             } else {

@@ -1,5 +1,7 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
+
 /**
  * Implementation of the base Branch class. The {@link DerivativeBranch} class brings two changes :
  * <br/>
@@ -10,7 +12,7 @@ package net.akami.mask.tree;
  */
 public class DerivativeBranch extends Branch<DerivativeBranch> {
 
-    private String derivativeValue;
+    private Expression derivativeValue;
 
     public DerivativeBranch(String expression) {
         super(expression);
@@ -26,11 +28,11 @@ public class DerivativeBranch extends Branch<DerivativeBranch> {
         return true;
     }
 
-    public String getDerivativeValue() {
+    public Expression getDerivativeValue() {
         return derivativeValue;
     }
 
-    public void setDerivativeValue(String derivativeValue) {
+    public void setDerivativeValue(Expression derivativeValue) {
         this.derivativeValue = derivativeValue;
     }
 }

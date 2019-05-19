@@ -13,7 +13,7 @@ public class MaskHandlerTest {
     @Test
     public void reducerTest() {
         prepare("(x+y)^2");
-        assertOperator(MaskReducer.class, null, "x^2+2xy+y^2");
+        assertOperator(MaskReducer.class, null, "x^2.0+y^2.0+2.0xy");
         end();
     }
 
@@ -29,7 +29,8 @@ public class MaskHandlerTest {
         prepare("4x^2-5y");
         Map<Character, String> images = new HashMap<>();
         images.put('x', "2");
-        assertOperator(MaskImageCalculator.class, images, "16-5y");
+        // TODO : implement a better comparison that would make sure that the expression doesn't start with '-'
+        assertOperator(MaskImageCalculator.class, images, "-5.0y+16.0");
     }
 
     private void prepare(String in) {
