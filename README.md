@@ -32,6 +32,10 @@ See [releases](https://github.com/Askigh/Mask/releases) section for the last rel
 > See the wiki for all the required information. Note that the wiki is incompatible with the master branch, containing the new
 architecture. An updated version will come soon
 
+## Documentation
+
+The documentation is available on the repository's description. Note that the API still being at an early stage, the javadoc is quite incomplete for now.
+
 ## Also
 
 If you want to check a direct implementation of the Mask library, see [MaskInterface](https://github.com/lolilolulolilol/MaskInterface)
