@@ -21,7 +21,7 @@ public class ComposedVariableTest {
     public void getExpressionTest() {
 
         List<ExpressionElement> elements = Arrays.asList(
-                new NumberElement(3), new Monomial(3, new SimpleVariable('x', DEFAULT)));
+                new NumberElement(3), new ExpressionElement(3, new SimpleVariable('x', DEFAULT)));
 
         List<ExpressionEncapsulator> layers = Arrays.asList(
                 new CosineFunction(DEFAULT),
@@ -35,9 +35,9 @@ public class ComposedVariableTest {
                 new SinusFunction(DEFAULT)
         );
 
-        ComposedVariable cVar1 = new ComposedVariable(elements, layers);
-        ComposedVariable cVar2 = new ComposedVariable(elements, layers);
-        ComposedVariable cVar3 = new ComposedVariable(elements, layers2);
+        IrreducibleVarPart cVar1 = new IrreducibleVarPart(elements, layers);
+        IrreducibleVarPart cVar2 = new IrreducibleVarPart(elements, layers);
+        IrreducibleVarPart cVar3 = new IrreducibleVarPart(elements, layers2);
         assertThat(cVar1).isEqualTo(cVar2);
         assertThat(cVar1).isNotEqualTo(cVar3);
     }
@@ -47,8 +47,8 @@ public class ComposedVariableTest {
 
         List<ExpressionEncapsulator> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
         Expression insights = multiplier.operate(Expression.of('x'), Expression.of('y'));
-        Monomial m1 = new Monomial(2, new ComposedVariable(insights.getElements(), layers));
-        Monomial m2 = new Monomial(5, new ComposedVariable(insights.getElements(), layers));
+        ExpressionElement m1 = new ExpressionElement(2, new IrreducibleVarPart(insights.getElements(), layers));
+        ExpressionElement m2 = new ExpressionElement(5, new IrreducibleVarPart(insights.getElements(), layers));
 
         Expression result = multiplier.operate(Expression.of(m1), Expression.of(m2));
         assertThat(result.toString()).isEqualTo("10.0sin(cos(xy))^2.0");

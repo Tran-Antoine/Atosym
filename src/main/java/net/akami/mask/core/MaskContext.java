@@ -20,7 +20,7 @@ import java.util.*;
  * mathematical patterns that are supported by the API, or, on the other hand, remove some undesired features provided
  * by default, which will make your calculations run faster. <p>
  * Furthermore, the environment gives you a total control over inputs and outputs, which means that a single expression
- * can result in different outcomes. You will for instance be able to decide whether {@code 5/2} will remain {@code 5/2} or
+ * can merge in different outcomes. You will for instance be able to decide whether {@code 5/2} will remain {@code 5/2} or
  * will be reduced as {@code 2.5}. <p>
  * For further information about inputs and outputs alteration, see {@link CalculationAlteration} and
  * {@link AlterationHandler}.
@@ -42,6 +42,7 @@ import java.util.*;
  *      <li> A {@link MathContext}, used to define the amount of significant digits for calculations.
  *  </pre>
  *
+ * 
  * @author Antoine Tran
  */
 public class MaskContext {

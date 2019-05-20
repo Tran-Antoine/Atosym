@@ -86,8 +86,8 @@ public enum BinaryOperationSign {
      *
      * <ul>
      * <li> Numeric a and b </li>
-     * <li> Monomial / Numeric a and b </li>
-     * <li> Polynomial a and Monomial / Numeric b </li>
+     * <li> ExpressionElement / Numeric a and b </li>
+     * <li> Polynomial a and ExpressionElement / Numeric b </li>
      * </ul>
      * In other words, b can not be a polynomial, even if simplifications could technically be performed.
      * <p></p>
@@ -108,7 +108,7 @@ public enum BinaryOperationSign {
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
      * to the power of a non integer number, as well as any algebraic exponent won't be calculated, thus the returned
-     * result will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
+     * merge will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
      * <p></p>
      *
      * The {@link MaskContext} also influences whether the calculation will be performed or not,

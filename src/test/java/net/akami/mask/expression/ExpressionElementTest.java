@@ -31,10 +31,10 @@ public class ExpressionElementTest {
                 new SinusFunction(DEFAULT)
         );
 
-        List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
+        List<ExpressionElement> single = Collections.singletonList(new NumberElement(1));
 
-        ComposedVariable c1 = new ComposedVariable(single,layers1);
-        ComposedVariable c2 = new ComposedVariable(single, layers2);
+        IrreducibleVarPart c1 = new IrreducibleVarPart(single,layers1);
+        IrreducibleVarPart c2 = new IrreducibleVarPart(single, layers2);
 
         assertThat(c1.equals(c2)).isEqualTo(false);
     }
@@ -50,10 +50,10 @@ public class ExpressionElementTest {
                 new SinusFunction(DEFAULT),
                 new CosineFunction(DEFAULT)
         );
-        List<ExpressionElement> single = Collections.singletonList(new Monomial(1));
+        List<ExpressionElement> single = Collections.singletonList(new NumberElement(1));
 
-        ComposedVariable m1 = new ComposedVariable(single, layers1);
-        ComposedVariable m2 = new ComposedVariable(single, layers2);
+        IrreducibleVarPart m1 = new IrreducibleVarPart(single, layers1);
+        IrreducibleVarPart m2 = new IrreducibleVarPart(single, layers2);
 
         VariableCombination behavior = MergeManager.getByType(VariableCombination.class);
         behavior.setPropertyManager(DEFAULT.getBinaryOperation(Adder.class).getPropertyManager());

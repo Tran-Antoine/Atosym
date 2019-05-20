@@ -7,17 +7,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class ComposedVariable implements Variable<ComposedVariable> {
+public class IrreducibleVarPart implements Variable<IrreducibleVarPart>, Cloneable {
 
     private final List<ExpressionEncapsulator> layers;
     private final List<ExpressionElement> elements;
     private String finalExpression;
 
-    public ComposedVariable(List<ExpressionElement> parts) {
+    public IrreducibleVarPart(List<ExpressionElement> parts) {
         this(parts, Collections.emptyList());
     }
 
-    public ComposedVariable(List<ExpressionElement> parts, List<ExpressionEncapsulator> layers) {
+    public IrreducibleVarPart(List<ExpressionElement> parts, List<ExpressionEncapsulator> layers) {
         this.elements = Collections.unmodifiableList(Objects.requireNonNull(parts));
         this.layers = Collections.unmodifiableList(Objects.requireNonNull(layers));
 
@@ -28,9 +28,9 @@ public class ComposedVariable implements Variable<ComposedVariable> {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof ComposedVariable)) return false;
+        if(!(obj instanceof IrreducibleVarPart)) return false;
 
-        ComposedVariable other = (ComposedVariable) obj;
+        IrreducibleVarPart other = (IrreducibleVarPart) obj;
 
         if(this.length() != other.length()) return false;
         if(!layers.equals(other.layers)) return false;
@@ -65,7 +65,7 @@ public class ComposedVariable implements Variable<ComposedVariable> {
     }
 
     @Override
-    public int compareTo(ComposedVariable o) {
+    public int compareTo(IrreducibleVarPart o) {
         return 0;
     }
 
@@ -75,5 +75,15 @@ public class ComposedVariable implements Variable<ComposedVariable> {
 
     public List<ExpressionElement> getElements() {
         return elements;
+    }
+
+    public ExpressionEncapsulator getLayer(int i) {
+        if(i < 0) return layers.get(layers.size()-i);
+        else return layers.get(i);
+    }
+
+    @Override
+    public Object clone() {
+        return new IrreducibleVarPart(getElements());
     }
 }

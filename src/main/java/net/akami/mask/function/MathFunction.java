@@ -32,7 +32,6 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
         this.binding = binding;
         this.name = name;
         this.context = context;
-        addToFunctions();
     }
 
     protected abstract String operate(String... input);
@@ -45,14 +44,6 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
         return operate(input);
     }
 
-    private void addToFunctions() {
-        context.getFunctionByBinding(this.binding).ifPresent(e -> {
-            context.removeFunction(e.getClass());
-            LOGGER.warn("New function added, although another existing function with the same binding has been found.");
-        });
-        context.addFunction(this);
-    }
-
     public boolean exists() {
         return context.getFunctionByBinding(this.binding).isPresent();
     }
@@ -62,7 +53,7 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
     public void postCalculation(Object result, Object... input) {
         // TODO complete
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        //getAffection(CalculationCache.class).get().push(calculation, result);
+        //getAffection(CalculationCache.class).get().push(calculation, merge);
     }
 
     @Override

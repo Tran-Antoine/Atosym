@@ -3,7 +3,7 @@ package net.akami.mask.merge;
 import net.akami.mask.encapsulator.ExponentEncapsulator;
 import net.akami.mask.encapsulator.ExpressionEncapsulator;
 import net.akami.mask.encapsulator.property.MergePropertyManager;
-import net.akami.mask.expression.ComposedVariable;
+import net.akami.mask.expression.IrreducibleVarPart;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.SimpleVariable;
 import net.akami.mask.expression.Variable;
@@ -27,9 +27,9 @@ public class VariableCombination implements MergeBehavior<Variable> {
 
         if(!a.getClass().equals(b.getClass())) return false;
 
-        if(a instanceof ComposedVariable || b instanceof ComposedVariable) {
-            ComposedVariable compA = (ComposedVariable) a;
-            ComposedVariable compB = (ComposedVariable) b;
+        if(a instanceof IrreducibleVarPart || b instanceof IrreducibleVarPart) {
+            IrreducibleVarPart compA = (IrreducibleVarPart) a;
+            IrreducibleVarPart compB = (IrreducibleVarPart) b;
             return a.equals(b) || propertyManager.getComposedResult(compA, compB).isPresent();
         }
 
@@ -50,17 +50,17 @@ public class VariableCombination implements MergeBehavior<Variable> {
     @Override
     public Variable mergeElement(Variable a, Variable b) {
 
-        if(a instanceof ComposedVariable || b instanceof ComposedVariable) {
+        if(a instanceof IrreducibleVarPart || b instanceof IrreducibleVarPart) {
             if(propertyManager == null) {
                LOGGER.error("UNDEFINED PROPERTY MANAGER");
                throw new IllegalStateException();
             }
 
             if(a.equals(b)) {
-                return identicalVariables((ComposedVariable) a);
+                return identicalVariables((IrreducibleVarPart) a);
             }
 
-            return propertyManager.getComposedResult((ComposedVariable) a, (ComposedVariable) b).get();
+            return propertyManager.getComposedResult((IrreducibleVarPart) a, (IrreducibleVarPart) b).get();
         }
 
         SimpleVariable simpleA = (SimpleVariable) a;
@@ -72,10 +72,10 @@ public class VariableCombination implements MergeBehavior<Variable> {
         return new SimpleVariable(simpleA.getVar(), newExponent, simpleA.getFunction(), simpleA.getContext());
     }
 
-    private ComposedVariable identicalVariables(ComposedVariable a) {
+    private IrreducibleVarPart identicalVariables(IrreducibleVarPart a) {
         List<ExpressionEncapsulator> layers = new ArrayList<>(a.getLayers());
         layers.add(new ExponentEncapsulator(2));
-        return new ComposedVariable(a.getElements(), layers);
+        return new IrreducibleVarPart(a.getElements(), layers);
     }
 
     public MergePropertyManager getPropertyManager() {

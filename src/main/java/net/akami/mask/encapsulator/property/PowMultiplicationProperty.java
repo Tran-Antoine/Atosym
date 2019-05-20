@@ -2,9 +2,8 @@ package net.akami.mask.encapsulator.property;
 
 import net.akami.mask.encapsulator.ExponentEncapsulator;
 import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.expression.ComposedVariable;
+import net.akami.mask.expression.IrreducibleVarPart;
 import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
 import net.akami.mask.handler.Adder;
 import net.akami.mask.core.MaskContext;
 
@@ -20,7 +19,11 @@ public class PowMultiplicationProperty implements EncapsulatorMergeProperty {
     }
 
     @Override
-    public boolean isApplicableFor(List<ExpressionEncapsulator> l1, List<ExpressionEncapsulator> l2) {
+    public boolean isApplicableFor(IrreducibleVarPart v1, IrreducibleVarPart v2) {
+
+        List<ExpressionEncapsulator> l1 = v1.getLayers();
+        List<ExpressionEncapsulator> l2 = v2.getLayers();
+
         if(l1.size() == 0 || l2.size() == 0) return false;
 
         List<ExpressionEncapsulator> copy1 = new ArrayList<>(l1);
@@ -34,7 +37,10 @@ public class PowMultiplicationProperty implements EncapsulatorMergeProperty {
     }
 
     @Override
-    public ComposedVariable result(List<ExpressionEncapsulator> l1, List<ExpressionEncapsulator> l2, List<ExpressionElement> insights) {
+    public Expression merge(Expression a, Expression b) {
+
+        List<ExpressionEncapsulator> l1 = v1.getLayers();
+        List<ExpressionEncapsulator> l2 = v2.getLayers();
 
         List<ExpressionEncapsulator> copy = new ArrayList<>(l1);
         copy.remove(copy.size()-1);
@@ -44,6 +50,6 @@ public class PowMultiplicationProperty implements EncapsulatorMergeProperty {
 
         Adder operator = context.getBinaryOperation(Adder.class);
         copy.add(ExponentEncapsulator.fromExpression(operator.operate(last1, last2)));
-        return new ComposedVariable(insights, copy);
+        return new IrreducibleVarPart(v1.getElements(), copy);
     }
 }

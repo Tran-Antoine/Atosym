@@ -10,12 +10,10 @@ public class MergeManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MergeManager.class);
 
-    private MergeManager() {
-    }
+    private MergeManager() { }
 
     private static final List<MergeBehavior> behaviors = new ArrayList<>(Arrays.asList(
             new ElementAdditionMerge(),
-            new FractionAdditionMerge(),
             new MonomialAdditionMerge(),
             new VariableCombination(),
             new PairNullifying()

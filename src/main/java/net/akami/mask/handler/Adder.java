@@ -29,16 +29,16 @@ public class Adder extends BinaryOperationHandler<Expression> {
 
     public Expression simpleSum(Expression a, Expression b) {
 
-        Monomial firstA = (Monomial) a.getElements().get(0);
-        Monomial firstB = (Monomial) b.getElements().get(0);
+        ExpressionElement firstA = a.getElements().get(0);
+        ExpressionElement firstB = b.getElements().get(0);
 
         if(firstA.hasSameVariablePartAs(firstB)) {
             BigDecimal numA = new BigDecimal(firstA.getNumericValue());
             BigDecimal numB = new BigDecimal(firstB.getNumericValue());
             float floatResult = numA.add(numB).floatValue();
-            return new Expression(new Monomial(floatResult, firstA.getVariables()));
+            return new Expression(new ExpressionElement(floatResult, firstA.getVariables()));
         }
-        return new Expression(firstA, firstB);
+        return new Expression(Arrays.asList(firstA, firstB));
     }
 
     // TODO : Maybe remove

@@ -1,6 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.encapsulator.property.MergePropertyManager;
+import net.akami.mask.merge.MergeBehavior;
 import net.akami.mask.merge.MergeManager;
 import net.akami.mask.merge.VariableCombination;
 import net.akami.mask.core.MaskContext;
@@ -12,13 +13,14 @@ import java.util.List;
 
 public interface Variable<T extends Variable<T>> extends Comparable<T>{
 
-    static Variable[] combine(List<Variable> a1, List<Variable> a2, MergePropertyManager manager) {
+    static List<Variable> combine(List<Variable> a1, List<Variable> a2, MergePropertyManager manager) {
         if(a1.isEmpty()) a1 = Collections.emptyList();
         if(a2.isEmpty()) a2 = Collections.emptyList();
         MergeManager.getByType(VariableCombination.class).setPropertyManager(manager);
-        List<Variable> finalVars = MergeManager.secureMerge(a1, a2, Variable.class);
+        MergeBehavior<Variable> behavior = MergeManager.getByType(VariableCombination.class);
+        List<Variable> finalVars = MergeManager.secureMerge(a1, a2, behavior, false);
         Collections.sort(finalVars);
-        return finalVars.toArray(new Variable[0]);
+        return finalVars;
     }
 
     static List<Variable> dissociate(List<Variable> a) {
@@ -34,7 +36,7 @@ public interface Variable<T extends Variable<T>> extends Comparable<T>{
             MaskContext context = current.getContext();
 
             if(exponent != null && ExpressionUtils.isANumber(exponent)) {
-                float expValue = ((Monomial) exponent.get(0)).getNumericValue();
+                float expValue = exponent.get(0).getNumericValue();
 
                 while (expValue > 1) {
                     finalVars.add(new SimpleVariable(varChar, context));

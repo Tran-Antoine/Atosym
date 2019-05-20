@@ -11,7 +11,7 @@ import java.util.Set;
  * the list itself, under certain conditions.
  * Basically, you have two lists, both containing the same kind of elements. Theses elements must
  * implement the MergeBehavior interface. You can then merge these two lists into one single list. if two elements from
- * different lists are mergeables (defined by the {@link #isMergeable(T, T)} method), a result defined by the
+ * different lists are mergeables (defined by the {@link #isMergeable(T, T)} method), a merge defined by the
  * {@link #mergeElement(T, T)} method will be added into a new list. In the end, all elements which could not be
  * merged will be added into the new list.
  *
@@ -45,16 +45,16 @@ import java.util.Set;
  * List<SuperNumber> l1 = Arrays.asList(new SuperNumber(1), new SuperNumber(3), new SuperNumber(10));
  * List<SuperNumber> l2 = Arrays.asList(new SuperNumber(0), new SuperNumber(2), new SuperNumber(10));
  *
- * List<SuperNumber> result = MergeBehavior.merge(l1, l2);
+ * List<SuperNumber> merge = MergeBehavior.merge(l1, l2);
  * }</pre>
- * The {@code result} list contains the super numbers {@code 0, 1, 2, 3, and 20}.
+ * The {@code merge} list contains the super numbers {@code 0, 1, 2, 3, and 20}.
  * @param <T>
  */
 public interface MergeBehavior<T> {
 
     /**
      * Defines whether an element can be effectively merged with another.
-     * If yes, then {@link #mergeElement(MergeBehavior)} will be called, computing a new result from
+     * If yes, then {@link #mergeElement(MergeBehavior)} will be called, computing a new merge from
      * the two elements.
      * <pre></pre>
      * Note that the interface automatically refuses any merge including two elements from different types.
@@ -66,11 +66,11 @@ public interface MergeBehavior<T> {
     boolean isMergeable(T a, T b);
 
     /**
-     * Computes a defined result from two elements, which will be added instead of them in the new list.
+     * Computes a defined merge from two elements, which will be added instead of them in the new list.
      * The {@code mergeElement} method will only be called if the two elements are compatible, and can
-     * successfully create a new result.
+     * successfully create a new merge.
      * @param other
-     * @return a result computed from the object itself and the parameter
+     * @return a merge computed from the object itself and the parameter
      */
     T mergeElement(T a, T b);
 

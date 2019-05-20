@@ -1,12 +1,13 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.core.MaskContext;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class VariableTest {
 
@@ -36,8 +37,8 @@ public class VariableTest {
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        Variable[] variables = Variable.combine(get(v1), get(v2), null);
-        List<String> converted = Arrays.asList(variables)
+        List<Variable> variables = Variable.combine(get(v1), get(v2), null);
+        List<String> converted = variables
                 .stream()
                 .map(Variable::getExpression)
                 .collect(Collectors.toList());

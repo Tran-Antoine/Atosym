@@ -1,14 +1,8 @@
 package net.akami.mask.merge;
 
-import net.akami.mask.expression.ExpressionElement;
-import net.akami.mask.expression.SimpleFraction;
+public class FractionAdditionMerge /*implements MergeBehavior<SimpleFraction>*/ {
 
-import java.util.Collections;
-import java.util.Set;
-
-public class FractionAdditionMerge implements MergeBehavior<SimpleFraction> {
-
-    @Override
+    /*@Override
     public boolean isMergeable(SimpleFraction a, SimpleFraction b) {
         if(!b.getNumerator().isCompatibleWith(a.getNumerator()))
             return false;
@@ -27,5 +21,5 @@ public class FractionAdditionMerge implements MergeBehavior<SimpleFraction> {
     @Override
     public Set<Class<? extends SimpleFraction>> getHandledTypes() {
         return Collections.singleton(SimpleFraction.class);
-    }
+    }*/
 }

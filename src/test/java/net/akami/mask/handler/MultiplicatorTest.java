@@ -45,6 +45,6 @@ public class MultiplicatorTest {
     }
 
     private void assertOperation(String i1, String i2, String result) {
-        //assertThat(MULT.rawOperate(i1, i2)).isEqualTo(result);
+        //assertThat(MULT.rawOperate(i1, i2)).isEqualTo(merge);
     }
 }

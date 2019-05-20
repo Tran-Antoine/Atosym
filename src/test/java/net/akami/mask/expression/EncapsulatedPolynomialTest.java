@@ -17,15 +17,15 @@ public class EncapsulatedPolynomialTest {
     @Test
     public void getExpressionTest() {
 
-        List<ExpressionElement> monomials = Arrays.asList(new Monomial(5, new SimpleVariable('x', DEFAULT)),
-                new Monomial(3));
+        List<ExpressionElement> monomials = Arrays.asList(new ExpressionElement(5, new SimpleVariable('x', DEFAULT)),
+                new NumberElement(3));
 
         List<ExpressionEncapsulator> layers = Arrays.asList(
                 new ExponentEncapsulator(monomials),
                 new CosineFunction(DEFAULT),
                 new SinusFunction(DEFAULT)
         );
-        ComposedVariable polynomial = new ComposedVariable(monomials, layers);
+        IrreducibleVarPart polynomial = new IrreducibleVarPart(monomials, layers);
 
         assertThat(polynomial.getExpression()).isEqualTo("sin(cos((5.0x+3.0)^(5.0x+3.0)))");
     }

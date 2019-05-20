@@ -238,9 +238,9 @@ public class ExpressionUtils {
     }
 
     public static boolean isANumber(ExpressionElement element) {
-        if(!(element instanceof Monomial)) return false;
+        if(!(element instanceof ExpressionElement)) return false;
 
-        List<Variable> vars = ((Monomial) element).getVariables();
+        List<Variable> vars = ((ExpressionElement) element).getVariables();
         return vars.size() == 0;
     }
 
@@ -250,10 +250,10 @@ public class ExpressionUtils {
     }
 
     public static boolean isAnInteger(ExpressionElement element) {
-        if(!(element instanceof Monomial)) return false;
+        if(!(element instanceof ExpressionElement)) return false;
 
-        List<Variable> vars = ((Monomial) element).getVariables();
-        return vars.size() == 0 && ((Monomial) element).getNumericValue() % 1 == 0;
+        List<Variable> vars = ((ExpressionElement) element).getVariables();
+        return vars.size() == 0 && ((ExpressionElement) element).getNumericValue() % 1 == 0;
     }
 
     public static String encapsulate(List<ExpressionElement> elements, List<ExpressionEncapsulator> layers) {
@@ -262,7 +262,7 @@ public class ExpressionUtils {
             builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
         }
 
-        builder.append(chainElements(elements, ExpressionElement::getRawExpression));
+        builder.append(chainElements(elements, ExpressionElement::getExpression));
 
         int i = 0;
         for(ExpressionEncapsulator encapsulator : layers) {

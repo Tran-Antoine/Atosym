@@ -93,7 +93,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
     }
 
     /**
-     * Defines what is the result of the calculation (corresponding to the char given) between left and right. <br/>
+     * Defines what is the merge of the calculation (corresponding to the char given) between left and right. <br/>
      *
      * The {@code evalValue} method might be redefined in a sub class of {@code CalculationTree}.
      * @param left the 'a' value of the calculation

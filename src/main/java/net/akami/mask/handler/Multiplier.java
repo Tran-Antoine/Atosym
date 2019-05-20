@@ -1,9 +1,12 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.encapsulator.property.PowMultiplicationProperty;
-import net.akami.mask.expression.*;
-import net.akami.mask.merge.MergeManager;
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.encapsulator.property.PowMultiplicationProperty;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.FunctionSign;
+import net.akami.mask.expression.Variable;
+import net.akami.mask.merge.MergeManager;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -38,15 +41,15 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         }
 
         List<ExpressionElement> mergedElements = MergeManager.merge(elements, ExpressionElement.class);
-        return new Expression(mergedElements.toArray(new ExpressionElement[0]));
+        return new Expression(mergedElements);
     }
 
     public ExpressionElement simpleMult(ExpressionElement a, ExpressionElement b) {
 
-        ExpressionElement numA, numB;
+        ExpressionElement numA = null, numB = null;
         Expression denA = null, denB = null;
 
-        if(a instanceof SimpleFraction) {
+        /*if(a instanceof SimpleFraction) {
             numA = ((SimpleFraction) a).getNumerator();
             denA = ((SimpleFraction) a).getDenominator();
         } else {
@@ -58,12 +61,12 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
             denB = ((SimpleFraction) b).getDenominator();
         } else {
             numB = b;
-        }
+        }*/
 
         ExpressionElement newNumerator;
 
-        if(numA instanceof Monomial && numB instanceof Monomial) {
-            newNumerator = simpleMonomialMult((Monomial) numA, (Monomial) numB);
+        if(numA != null && numB != null) {
+            newNumerator = simpleMonomialMult(numA, numB);
         } else {
             LOGGER.info("Recursive call");
             newNumerator = simpleMult(numA, numB);
@@ -78,15 +81,15 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         // TODO maybe change for a more generic way ?
         if(newDenominator.length() == 1)
             return context.getBinaryOperation(Divider.class).simpleDivision(newNumerator, newDenominator.get(0)).get(0);
-        return new SimpleFraction(newNumerator, newDenominator);
+        return null; // TODO new SimpleFraction(newNumerator, newDenominator);
     }
 
-    private Monomial simpleMonomialMult(Monomial a, Monomial b) {
+    private ExpressionElement simpleMonomialMult(ExpressionElement a, ExpressionElement b) {
          BigDecimal bigA = new BigDecimal(a.getNumericValue());
          BigDecimal bigB = new BigDecimal(b.getNumericValue());
          float numResult = bigA.multiply(bigB).floatValue();
-         Variable[] numVariables = Variable.combine(a.getVariables(), b.getVariables(), propertyManager);
-         return new Monomial(numResult, numVariables);
+         List<Variable> numVariables = Variable.combine(a.getVariables(), b.getVariables(), propertyManager);
+         return new ExpressionElement(numResult, numVariables);
     }
 
     @Override

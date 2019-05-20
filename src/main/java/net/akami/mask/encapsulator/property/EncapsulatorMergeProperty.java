@@ -1,14 +1,11 @@
 package net.akami.mask.encapsulator.property;
 
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.expression.ComposedVariable;
-import net.akami.mask.expression.ExpressionElement;
-
-import java.util.List;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.IrreducibleVarPart;
 
 public interface EncapsulatorMergeProperty {
 
-    boolean isApplicableFor(List<ExpressionEncapsulator> l1, List<ExpressionEncapsulator> l2);
+    boolean isApplicableFor(IrreducibleVarPart v1, IrreducibleVarPart v2);
 
-    ComposedVariable result(List<ExpressionEncapsulator> l1, List<ExpressionEncapsulator> l2, List<ExpressionElement> insights);
+    Expression merge(Expression a, Expression b);
 }

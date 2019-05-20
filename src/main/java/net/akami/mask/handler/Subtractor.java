@@ -1,5 +1,6 @@
 package net.akami.mask.handler;
 
+import net.akami.mask.expression.ExpressionElement;
 import net.akami.mask.expression.*;
 import net.akami.mask.core.MaskContext;
 

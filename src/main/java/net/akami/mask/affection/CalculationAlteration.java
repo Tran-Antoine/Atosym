@@ -5,7 +5,7 @@ import net.akami.mask.handler.IOModificationHandler;
 
 /**
  * The CalculationAlteration interface defines the behavior of an expression modifier, in the context of
- * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
+ * mathematical calculations. Modifiers can change the input string given, change the merge calculated or even
  * cancel the calculation.
  * Since the different alterations might have completely different behaviors, no other
  * methods than {@code appliesTo} and {@code priorityLevel} can be directly implemented from subclasses.
@@ -38,7 +38,7 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
      * <p></p>
      * The {@code appliesTo} method should be called by the handlers in order to determine if the current
      * affection can be applied to the given input. It avoids unexpected results if the "change nothing" behavior
-     * is not implemented by the affection, and it can check whether a different result must be returned, in case the affect is
+     * is not implemented by the affection, and it can check whether a different merge must be returned, in case the affect is
      * a canceller.
      * @param input the given input string that will be checked
      * @return whether the given input can be modified or if the calculation can be cancelled
@@ -50,8 +50,8 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
      * method helps the handler deciding which affect will modify the input / cancel the calculation first.
      * <p></p>
      * For instance, the "let fraction or divide" cancelling affect will have a greater priority level than the
-     * cache canceller, because even if the result of the operation has already been calculated, it is up to the
-     * "let fraction or divide" cancelling effect to determine whether this result is wanted or not.
+     * cache canceller, because even if the merge of the operation has already been calculated, it is up to the
+     * "let fraction or divide" cancelling effect to determine whether this merge is wanted or not.
      * <p></p>
      * A float instead of an integer is used, so that the user is guaranteed to be able to fit as many affections as
      * he wants between others already existing affections. If an integer was being used, only 3 affections could fit

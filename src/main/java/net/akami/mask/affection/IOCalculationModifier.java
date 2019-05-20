@@ -9,7 +9,7 @@ import net.akami.mask.handler.IODefaultFormatter;
  * <p></p>
  * For instance, the angle unit modifier will check before performing a trigonometric operation whether it must convert
  * the input to radians before proceeding.
- * On the other hand, the fraction modifier will check after performing any operation whether the result must be
+ * On the other hand, the fraction modifier will check after performing any operation whether the merge must be
  * transformed to a fraction or not.
  * <p></p>
  * Note that IOCalculationModifiers are different than the {@link IODefaultFormatter}s.

@@ -24,7 +24,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
     public Expression operate(Expression a, Expression b) {
         LOGGER.info("Divider process of {} |/| {}: \n", a, b);
 
-        if(b.length() == 1 && b.get(0) instanceof Monomial && ((Monomial) b.get(0)).getNumericValue() == 0)
+        if(b.length() == 1 && b.get(0) != null && b.get(0).getNumericValue() == 0)
             throw new IllegalArgumentException("Could not compute a division by zero");
 
         // Avoids division by zero error after simplifying all the elements.
@@ -33,7 +33,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
         if (ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             // We are guaranteed that both expression have only one element, which is a monomial
-            return Expression.of(numericalDivision((Monomial) a.get(0), (Monomial) b.get(0)));
+            return Expression.of(numericalDivision(a.get(0), b.get(0)));
         }
 
         if(b.length() > 1) {
@@ -47,10 +47,10 @@ public class Divider extends BinaryOperationHandler<Expression> {
             finalElements.addAll(simpleDivision(numPart, b.get(0)));
         }
 
-        return new Expression(finalElements.toArray(new ExpressionElement[0]));
+        return new Expression(finalElements);
     }
 
-    public NumberElement numericalDivision(Monomial a, Monomial b) {
+    public NumberElement numericalDivision(ExpressionElement a, ExpressionElement b) {
         float result = floatDivision(a.getNumericValue(), b.getNumericValue());
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
         return new NumberElement(result);
@@ -63,24 +63,24 @@ public class Divider extends BinaryOperationHandler<Expression> {
     }
 
     private Expression uncompletedDivision(Expression a, Expression b) {
-        SimpleFraction[] fractions = new SimpleFraction[a.length()];
+        /*SimpleFraction[] fractions = new SimpleFraction[a.length()];
         int i = 0;
 
         for(ExpressionElement element : a.getElements()) {
             fractions[i++] = new SimpleFraction(element, b);
         }
 
-        return new Expression(fractions);
+        return new Expression(fractions);*/return null;
     }
 
     public List<ExpressionElement> simpleDivision(ExpressionElement a, ExpressionElement b) {
         if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
-            return Collections.singletonList(numericalDivision((Monomial) a, (Monomial) b));
+            return Collections.singletonList(numericalDivision(a, b));
         }
 
         Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
 
-        if(a instanceof SimpleFraction) {
+        /*if(a instanceof SimpleFraction) {
             SimpleFraction aFrac = (SimpleFraction) a;
             Expression newDen = multiplier.operate(aFrac.getDenominator(), Expression.of(b));
             return Collections.singletonList(new SimpleFraction(aFrac.getNumerator(), newDen));
@@ -94,14 +94,12 @@ public class Divider extends BinaryOperationHandler<Expression> {
                 finalElements.addAll(simpleDivision(temporaryElement, ((SimpleFraction) b).getNumerator()));
             }
             return finalElements;
-        }
+        }*/
 
-        Monomial monA = (Monomial) a;
-        Monomial monB = (Monomial) b;
-        return Collections.singletonList(monomialDivision(monA, monB));
+        return Collections.singletonList(monomialDivision(a, b));
     }
 
-    public ExpressionElement monomialDivision(Monomial a, Monomial b) {
+    public ExpressionElement monomialDivision(ExpressionElement a, ExpressionElement b) {
 
         if(a.equals(b)) return new NumberElement(1);
 
@@ -127,14 +125,14 @@ public class Divider extends BinaryOperationHandler<Expression> {
         for(float f : denValues) finalDenValue *= f;
 
         if(finalDenValue == 1 && denVars.isEmpty())
-            return new Monomial(finalNumValue, numVars);
+            return new ExpressionElement(finalNumValue, numVars);
 
-        if(finalNumValue == 1 && numVars.isEmpty())
-            return new SimpleFraction(new NumberElement(1), Expression.of(new Monomial(finalDenValue, denVars)));
+        /*if(finalNumValue == 1 && numVars.isEmpty())
+            return new SimpleFraction(new NumberElement(1), Expression.of(new ExpressionElement(finalDenValue, denVars)));*/
 
-        Monomial finalNumerator = new Monomial(finalNumValue, numVars);
-        Expression finalDenominator = Expression.of(new Monomial(finalDenValue, denVars));
-        return new SimpleFraction(finalNumerator, finalDenominator);
+        ExpressionElement finalNumerator = new ExpressionElement(finalNumValue, numVars);
+        Expression finalDenominator = Expression.of(new ExpressionElement(finalDenValue, denVars));
+        return null;//new SimpleFraction(finalNumerator, finalDenominator);
     }
 
     private void filter(List... targets) {

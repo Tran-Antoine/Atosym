@@ -40,7 +40,7 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
 
     @Override
     public void postCalculation(T result, T... input) {
-        //getAffection(CalculationCache.class).get().push(input[0].toString()+'|'+input[1].toString(), result.toString());
+        //getAffection(CalculationCache.class).get().push(input[0].toString()+'|'+input[1].toString(), merge.toString());
     }
 
     @Override

@@ -23,7 +23,7 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
         }
 
         if(ExpressionUtils.isAnInteger(b)) {
-            Monomial first = (Monomial) b.get(0);
+            ExpressionElement first = b.get(0);
             return extensiblePow(a, (int) first.getNumericValue());
         }
 
@@ -31,8 +31,8 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
     }
 
     private Expression fullNumericPow(Expression a, Expression b) {
-        float aFloat = ((Monomial) a.get(0)).getNumericValue();
-        float bFloat = ((Monomial) b.get(0)).getNumericValue();
+        float aFloat = a.get(0).getNumericValue();
+        float bFloat = b.get(0).getNumericValue();
         return Expression.of((float) Math.pow(aFloat, bFloat));
     }
 
@@ -52,16 +52,17 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
 
     private Expression negativeExtensiblePow(Expression a, int b) {
 
-        Monomial numerator = new Monomial(1);
+        ExpressionElement numerator = new NumberElement(1);
         Expression denominator = extensiblePow(a, -b);
 
-        return Expression.of(new SimpleFraction(numerator, denominator));
+        // TODO return Expression.of(new SimpleFraction(numerator, denominator));
+        return null;
     }
 
     private Expression layerPow(Expression a, Expression b) {
         List<ExpressionElement> insights = a.getElements();
-        ComposedVariable variable = new ComposedVariable(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
-        Expression newExpression = Expression.of(new Monomial(1, variable));
+        IrreducibleVarPart variable = new IrreducibleVarPart(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
+        Expression newExpression = Expression.of(new ExpressionElement(1, variable));
         return newExpression;
     }
 
