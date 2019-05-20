@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+/**
+ * Manager for the {@link MaskOperator} instances. Allows the user to call the {@code compute()} methods with
+ * the {@link MaskOperator#getClass()} type the want.
+ */
 public class MaskOperatorHandler {
 
     public static final MaskOperatorHandler DEFAULT = new MaskOperatorHandler();
 
-    private MaskExpression current;
+    private Mask current;
     private MaskContext context;
     private List<MaskOperator> operators;
     private boolean setToOut = true;
@@ -18,7 +22,7 @@ public class MaskOperatorHandler {
         this.operators = MaskOperator.defaultOperators();
     }
 
-    public void begin(MaskExpression current) {
+    public void begin(Mask current) {
         this.current = current;
     }
 
@@ -26,25 +30,25 @@ public class MaskOperatorHandler {
         this.setToOut = setToOut;
     }
 
-    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, MaskExpression out, E extraData) {
+    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask out, E extraData) {
         return compute(op, current, out, extraData, null);
     }
 
-    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, MaskExpression in, MaskExpression out, E extraData) {
+    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask in, Mask out, E extraData) {
         return compute(op, in, out, extraData,null);
     }
 
-    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, MaskExpression out,
-                                                                      E extraData, Consumer<MaskExpression> outAction) {
+    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask out,
+                                                                      E extraData, Consumer<Mask> outAction) {
         return compute(op, current, out, extraData, outAction);
     }
 
-    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, MaskExpression in, MaskExpression out,
-                                                                      E extraData, Consumer<MaskExpression> outAction) {
+    public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask in, Mask out,
+                                                                      E extraData, Consumer<Mask> outAction) {
         Objects.requireNonNull(in);
 
         if(out == null)
-            out = MaskExpression.TEMP;
+            out = Mask.TEMP;
 
         MaskOperator operator = findByType(op);
         operator.compute(in, out, extraData, this.context);

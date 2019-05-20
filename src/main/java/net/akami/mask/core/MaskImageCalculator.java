@@ -5,10 +5,14 @@ import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Map;
 
+/**
+ * Given an expression, replaces all variables from a map by their value. <p>
+ * The MaskImageCalculator allows the user to compute images from a function given.
+ */
 public class MaskImageCalculator implements MaskOperator<Map<Character, String>> {
 
     @Override
-    public void compute(MaskExpression in, MaskExpression out, Map<Character, String> extraData, MaskContext context) {
+    public void compute(Mask in, Mask out, Map<Character, String> extraData, MaskContext context) {
         String input = in.getExpression();
         for(Character c : extraData.keySet()) {
             input = replace(c, extraData.get(c), input);

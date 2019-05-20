@@ -34,7 +34,7 @@ public class MaskHandlerTest {
     }
 
     private void prepare(String in) {
-        handler.begin(new MaskExpression(in));
+        handler.begin(new Mask(in));
     }
 
     private <E, T extends MaskOperator<E>> void assertOperator(Class<T> type, E extraData, String result) {

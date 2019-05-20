@@ -5,6 +5,7 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.function.MathFunction;
 import net.akami.mask.handler.AlterationHandler;
 import net.akami.mask.handler.BinaryOperationHandler;
+import net.akami.mask.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,19 +56,52 @@ public class MaskContext {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
+    /**
+     * Constructs a context with the default parameters. The set of {@link BinaryOperationHandler}s will be generated
+     * from {@link BinaryOperationHandler#generateDefaultHandlers(MaskContext)}, the set of mathematical functions
+     * will be generated from {@link MathFunction#generateDefaultFunctions(MaskContext)}, and the MathContext will
+     * use a 100 digits precision.
+     */
     public MaskContext() {
-        this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
-        this.supportedFunctions = MathFunction.generateDefaultFunctions(this);
-        this.bigDecimalContext = new MathContext(150);
+        this(100);
     }
 
+    /**
+     * Constructs a context with the given precision. <p>
+     * See {@link MaskContext#MaskContext()} for further information concerning the other handled data.
+     * @param precision the amount of significant digits handled by the context
+     */
+    public MaskContext(int precision) {
+        this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
+        this.supportedFunctions = MathFunction.generateDefaultFunctions(this);
+        this.bigDecimalContext = new MathContext(precision);
+    }
+
+    /**
+     * Performs a calculation from the two elements given and the selected operator. <p>
+     * By default (recommended), the 5 operations (+-{@literal *}/^) are available. This method is generally called
+     * from the {@link MathUtils} class
+     * @param a the first element to compute with the second one
+     * @param b the second element to compute with the first one
+     * @param clazz the type of the binary operator in charge of the calculation
+     * @param <T> the binary operator's handled type. All default operators use the {@link Expression} type
+     * @return a result computed by the operator from the two elements given
+     */
     public <T> T binaryCompute(T a, T b, Class<? extends BinaryOperationHandler<T>> clazz) {
         BinaryOperationHandler<T> handler = getBinaryOperation(clazz);
         return handler.rawOperate(a, b);
     }
 
+    /**
+     * Returns the instance of a required operator, allowing the user to call other methods than
+     * the default {@link BinaryOperationHandler#operate(Object, Object)} from it. <p>
+     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(Object, Object, Class)}
+     * instead.
+     * @param clazz the type of the operator
+     * @param <T> the generic type to avoid casting
+     * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
+     */
     public <T extends BinaryOperationHandler> T getBinaryOperation(Class<T> clazz) {
-
         for(BinaryOperationHandler current : binaryHandlers) {
             if(current.getClass().equals(clazz))
                 return (T) current;
@@ -75,6 +109,13 @@ public class MaskContext {
         return null;
     }
 
+    /**
+     * Returns the mathematical function matching the given binding. Since two functions are equals as long as their
+     * binding is similar, there can be only one function matching it, because the functions are grouped in a set.
+     * @param binding the given binding, supposed to match a single function present in the set
+     * @return an {@link Optional#empty()} if the binding does not match anything, otherwise {@link Optional#of(Object)},
+     * the parameter being the matched function.
+     */
     public Optional<MathFunction> getFunctionByBinding(char binding) {
         for(MathFunction function : supportedFunctions) {
             if(function.getBinding() == binding)
@@ -83,6 +124,12 @@ public class MaskContext {
         return Optional.empty();
     }
 
+    /**
+     * Goes through the given input, and tries to match every char with a mathematical function. The first matched function
+     * found is returned.
+     * @param self the given input
+     * @return the first function that matches a char from the input
+     */
     public Optional<MathFunction> getFunctionByExpression(String self) {
         for(char c : self.toCharArray()) {
             Optional<MathFunction> function = getFunctionByBinding(c);
@@ -92,10 +139,19 @@ public class MaskContext {
         return Optional.empty();
     }
 
+    /**
+     * Adds a new handler to the set. Only {@link BinaryOperationHandler}s with {@link Expression} as generic type
+     * are supported.
+     * @param handler a new handler to add
+     */
     public void addHandler(BinaryOperationHandler<Expression> handler) {
         binaryHandlers.add(handler);
     }
 
+    /**
+     * Removes the handler from the set whose {@link #getClass()} method equals the clazz parameter
+     * @param clazz the class type to remove
+     */
     public void removeHandler(Class<? extends BinaryOperationHandler<Expression>> clazz) {
         for(BinaryOperationHandler<Expression> handler : binaryHandlers) {
             if(handler.getClass().equals(clazz)) {
@@ -106,10 +162,19 @@ public class MaskContext {
         LOGGER.warn("Unable to remove handler from the given class name : {}", clazz.getName());
     }
 
+    /**
+     * Adds a new function to the set. <p>
+     * Note that the new function will replace any existing function whose binding would match with the new function's.
+     * @param target a new function to add
+     */
     public void addFunction(MathFunction target) {
         supportedFunctions.add(target);
     }
 
+    /**
+     * Removes the function from the set whose {@link #getClass()} method equals the clazz parameter
+     * @param clazz the class type to remove
+     */
     public void removeFunction(Class<? extends MathFunction> clazz) {
         for(MathFunction func : supportedFunctions) {
             if(func.getClass().equals(clazz)) {
@@ -120,6 +185,9 @@ public class MaskContext {
         LOGGER.warn("Unable to remove function from the given class name : {}", clazz.getName());
     }
 
+    /**
+     * @return the {@link MathContext} instance, used to define the calculation precision.
+     */
     public MathContext getMathContext() {
         return bigDecimalContext;
     }

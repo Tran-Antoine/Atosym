@@ -15,6 +15,6 @@ public class FractionAdditionMergeProperty implements FractionMergeProperty {
     public Expression merge(Expression a, Expression b) {
         // The denominator remains the same after an addition implying fractions.
         // Transforming denominators so they are similar to others is not supported yet.
-        return v1;
+        return null;//v1;
     }
 }

@@ -1,22 +1,22 @@
 package net.akami.mask.exception;
 
-import net.akami.mask.core.MaskExpression;
+import net.akami.mask.core.Mask;
 
 /**
- * MaskException is the common runtime exception handled by the library. It is thrown when a MaskExpression is
+ * MaskException is the common runtime exception handled by the library. It is thrown when a Mask is
  * mathematically invalid, such as "3+" or "--4**^4" or "?4+4"
  *
  * @author Antoine Tran
  */
 public class MaskException extends RuntimeException {
 
-    private final MaskExpression origin;
+    private final Mask origin;
 
     /**
      * @param message the message printed
      * @param origin the mask that threw the exception
      */
-    public MaskException(String message, MaskExpression origin) {
+    public MaskException(String message, Mask origin) {
         super(message);
         this.origin = origin;
     }

@@ -22,9 +22,10 @@ public class MergePropertyManager {
         this.properties.addAll(Arrays.asList(property));
     }
 
+    // TODO Change so that it returns an expression
     public Optional<IrreducibleVarPart> getComposedResult(IrreducibleVarPart v1, IrreducibleVarPart v2) {
         for(EncapsulatorMergeProperty property : properties) {
-            if(property.isApplicableFor(v1, v2)) return Optional.of(property.merge(, v1, , v2));
+            //if(property.isApplicableFor(v1, v2)) return Optional.of(property.merge(v1 , v2));
         }
         return Optional.empty();
     }

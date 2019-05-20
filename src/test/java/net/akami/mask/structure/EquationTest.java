@@ -1,6 +1,6 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.core.MaskExpression;
+import net.akami.mask.core.Mask;
 import net.akami.mask.utils.ExpressionUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
@@ -14,17 +14,17 @@ public class EquationTest {
 
     @Test
     public void oneUnknownOneDegreeTest() {
-        MaskExpression e1 = new MaskExpression("5x+1+2x+6");
-        MaskExpression e2 = new MaskExpression("3x+3+4+x");
+        Mask e1 = new Mask("5x+1+2x+6");
+        Mask e2 = new Mask("3x+3+4+x");
 
-        MaskExpression e3 = new MaskExpression("5x+1");
-        MaskExpression e4 = new MaskExpression("3x+3");
+        Mask e3 = new Mask("5x+1");
+        Mask e4 = new Mask("3x+3");
 
-        MaskExpression e5 = new MaskExpression("4x + 9");
-        MaskExpression e6 = new MaskExpression("3x + 7");
+        Mask e5 = new Mask("4x + 9");
+        Mask e6 = new Mask("3x + 7");
 
-        MaskExpression e7 = new MaskExpression("5x + 5");
-        MaskExpression e8 = new MaskExpression("3x + 4");
+        Mask e7 = new Mask("5x + 5");
+        Mask e8 = new Mask("3x + 4");
 
         Assertions.assertThat(EquationSolver.solve(Arrays.asList(new BiMask(e1, e2))).get('x')).isEqualTo("0");
         Assertions.assertThat(EquationSolver.solve(Arrays.asList(new BiMask(e3, e4))).get('x')).isEqualTo("1");
@@ -59,24 +59,24 @@ public class EquationTest {
         Assertions.assertThat(testSolved.get('y')).isEqualTo("1");
 
 
-        BiMask b5 = new BiMask(new MaskExpression("5x+2y+7z"), new MaskExpression("2"));
-        BiMask b6 = new BiMask(new MaskExpression("2x+y-3z"), new MaskExpression("7"));
-        BiMask b7 = new BiMask(new MaskExpression("x+2y+z"), new MaskExpression("4"));
+        BiMask b5 = new BiMask(new Mask("5x+2y+7z"), new Mask("2"));
+        BiMask b6 = new BiMask(new Mask("2x+y-3z"), new Mask("7"));
+        BiMask b7 = new BiMask(new Mask("x+2y+z"), new Mask("4"));
 
         Map<Character, String> result2 = EquationSolver.solve(Arrays.asList(b5, b6, b7));
         Assertions.assertThat(result2.get('x')).isEqualTo("1");
         Assertions.assertThat(result2.get('y')).isEqualTo("2");
         Assertions.assertThat(result2.get('z')).isEqualTo("-1");
 
-        BiMask b1 = new BiMask(new MaskExpression("3x+2y"), new MaskExpression("7x"));
-        BiMask b2 = new BiMask(new MaskExpression("6x"), new MaskExpression("3y"));
+        BiMask b1 = new BiMask(new Mask("3x+2y"), new Mask("7x"));
+        BiMask b2 = new BiMask(new Mask("6x"), new Mask("3y"));
 
         Map<Character, String> result0 = EquationSolver.solve(Arrays.asList(b1, b2));
         //Assertions.assertThat(result0[0]).isEqualTo("y/2");
         //Assertions.assertThat(result0[1]).isEqualTo("2x");
 
-        BiMask b3 = new BiMask(new MaskExpression("3x+5"), new MaskExpression("2y"));
-        BiMask b4 = new BiMask(new MaskExpression("x+1"), new MaskExpression("y-2"));
+        BiMask b3 = new BiMask(new Mask("3x+5"), new Mask("2y"));
+        BiMask b4 = new BiMask(new Mask("x+1"), new Mask("y-2"));
 
         Map<Character, String> result1 = EquationSolver.solve(Arrays.asList(b3, b4));
         Assertions.assertThat(result1.get('x')).isEqualTo("1");
@@ -90,8 +90,8 @@ public class EquationTest {
     }
 
     public Map<Character, String> solveSimple(String a, String b) {
-        MaskExpression t1 = new MaskExpression(a);
-        MaskExpression t2 = new MaskExpression(b);
+        Mask t1 = new Mask(a);
+        Mask t2 = new Mask(b);
 
         Map<Character, String> result = EquationSolver.solve(Arrays.asList(new BiMask(t1, t2)));
         return result;

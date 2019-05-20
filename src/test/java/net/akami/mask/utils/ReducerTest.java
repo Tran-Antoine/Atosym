@@ -1,6 +1,5 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.core.MaskExpression;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -57,12 +56,6 @@ public class ReducerTest {
         assertReduction(s13, "4.0x+6.0xy");
     }
 
-
-    @Test
-    public void initExpressionVariablesCorrectly() {
-        MaskExpression expression = new MaskExpression("xxxy");
-        assertThat(expression.getVariablesAmount()).isEqualTo(2);
-    }
 
     @Test
     public void complexSimplificationTest() {

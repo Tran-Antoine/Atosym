@@ -1,6 +1,6 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.core.MaskExpression;
+import net.akami.mask.core.Mask;
 import net.akami.mask.core.MaskOperatorHandler;
 import net.akami.mask.core.MaskImageCalculator;
 import net.akami.mask.core.MaskReducer;
@@ -20,7 +20,7 @@ public class EquationSolver {
         for(String line : lines) {
             String[] sides = line.split("=");
             if(sides.length != 2) throw new IllegalArgumentException("Invalid line given (0 or more than 1 '=' found");
-            biMasks.add(new BiMask(new MaskExpression(sides[0]), new MaskExpression(sides[1])));
+            biMasks.add(new BiMask(new Mask(sides[0]), new Mask(sides[1])));
         }
         return biMasks;
     }
@@ -99,7 +99,7 @@ public class EquationSolver {
                 Map<Character, String> image = new HashMap<>();
                 image.put(var, varSolution);
 
-                MaskExpression temp = MaskExpression.TEMP;
+                Mask temp = Mask.TEMP;
                 temp.reload(keySolution);
                 String newKeySolution = handler.compute(MaskImageCalculator.class, temp, null, image).asExpression();
                 solutions.put(key, newKeySolution);
@@ -121,8 +121,8 @@ public class EquationSolver {
     }
 
     public static String solveLine(BiMask line, char var, Map<Character, String> solutions) {
-        MaskExpression leftMask = line.left;
-        MaskExpression rightMask = line.right;
+        Mask leftMask = line.left;
+        Mask rightMask = line.right;
         String leftExp = leftMask.getExpression();
         String rightExp = rightMask.getExpression();
 
@@ -150,8 +150,8 @@ public class EquationSolver {
             String localVars = ExpressionUtils.toVariablesType(monomial);
 
             LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, solutions);
-            MaskExpression.TEMP.reload(monomial);
-            handler.begin(MaskExpression.TEMP);
+            Mask.TEMP.reload(monomial);
+            handler.begin(Mask.TEMP);
 
             Map<Character, String> copy = new HashMap<>(solutions);
             copy.remove(var);
@@ -190,20 +190,20 @@ public class EquationSolver {
 
     public static class BiMask {
 
-        private MaskExpression left;
-        private MaskExpression right;
+        private Mask left;
+        private Mask right;
         private boolean used = false;
 
-        public BiMask(MaskExpression e1, MaskExpression e2) {
+        public BiMask(Mask e1, Mask e2) {
             this.left = e1;
             this.right = e2;
         }
 
-        public MaskExpression getLeft() {
+        public Mask getLeft() {
             return left;
         }
 
-        public MaskExpression getRight() {
+        public Mask getRight() {
             return right;
         }
 
