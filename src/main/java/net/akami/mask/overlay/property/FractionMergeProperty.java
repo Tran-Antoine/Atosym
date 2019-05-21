@@ -1,15 +1,15 @@
-package net.akami.mask.encapsulator.property;
+package net.akami.mask.overlay.property;
 
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.encapsulator.FractionEncapsulator;
-import net.akami.mask.expression.IrreducibleVarPart;
+import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.overlay.FractionEncapsulator;
+import net.akami.mask.expression.ComplexVariable;
 
 public interface FractionMergeProperty extends EncapsulatorMergeProperty {
 
     @Override
-    default boolean isApplicableFor(IrreducibleVarPart v1, IrreducibleVarPart v2) {
-        ExpressionEncapsulator layer1 = v1.getLayer(-1);
-        ExpressionEncapsulator layer2 = v2.getLayer(-1);
+    default boolean isApplicableFor(ComplexVariable v1, ComplexVariable v2) {
+        ExpressionOverlay layer1 = v1.getLayer(-1);
+        ExpressionOverlay layer2 = v2.getLayer(-1);
 
         if(!(layer1 instanceof FractionEncapsulator && layer2 instanceof FractionEncapsulator))
             return false;

@@ -32,7 +32,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
     /**
      * The overall splitting's behavior of a {@code CalculationTree} is to look for the lowest math signs in terms of
-     * priority (+ and -), and to get on this way as long as a valid "splitter" is found.
+     * priority (+ and -), and to getElement on this way as long as a valid "splitter" is found.
      * @param self the branch itself
      */
     @Override
@@ -51,8 +51,8 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
         String expression = self.getExpression();
         /*
             We must go from the end to the beginning. Otherwise, operations' priority is not respected.
-            For instance, 2/2*2 = 1. If we go from 0 to exp.length() -1, the expression will be divided like this :
-            2 |/| 2*2. 2*2 will be calculated first, the final findResult will be 1/2. If we go from exp.length() -1
+            For instance, 2/2*2 = 1. If we go from 0 to exp.elementsLength() -1, the expression will be divided like this :
+            2 |/| 2*2. 2*2 will be calculated first, the final findResult will be 1/2. If we go from exp.elementsLength() -1
             to 0, the expression will be divided like this :
             2 / 2 |*| 2. 2/2 will be calculated first, the final findResult will be 2.
         */

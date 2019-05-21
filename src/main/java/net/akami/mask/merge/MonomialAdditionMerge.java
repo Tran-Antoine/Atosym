@@ -1,6 +1,7 @@
 package net.akami.mask.merge;
 
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.NumberElement;
 
 import java.math.BigDecimal;
@@ -8,25 +9,30 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MonomialAdditionMerge implements MergeBehavior<ExpressionElement> {
+public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
-    private final HashSet handledType = new HashSet(Arrays.asList(ExpressionElement.class, NumberElement.class));
+    private final HashSet handledType = new HashSet(Arrays.asList(Monomial.class, NumberElement.class));
+    private MaskContext context;
+
+    public MonomialAdditionMerge(MaskContext context) {
+        this.context = context;
+    }
 
     @Override
-    public boolean isMergeable(ExpressionElement a, ExpressionElement b) {
+    public boolean isMergeable(Monomial a, Monomial b) {
         return a.hasSameVariablePartAs(b);
     }
 
     @Override
-    public ExpressionElement mergeElement(ExpressionElement a, ExpressionElement b) {
+    public Monomial mergeElement(Monomial a, Monomial b) {
 
         // TODO : what if a and b are encapsulated
         float floatResult = new BigDecimal(a.getNumericValue()).add(new BigDecimal(b.getNumericValue())).floatValue();
-        return new ExpressionElement(floatResult, a.getVariables());
+        return new Monomial(floatResult, a.getVarPart());
     }
 
     @Override
-    public Set<Class<? extends ExpressionElement>> getHandledTypes() {
+    public Set<Class<? extends Monomial>> getHandledTypes() {
         return handledType;
     }
 }

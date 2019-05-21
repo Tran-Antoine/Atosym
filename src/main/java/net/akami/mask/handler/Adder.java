@@ -17,11 +17,12 @@ public class Adder extends BinaryOperationHandler<Expression> {
     @Override
     public Expression operate(Expression a, Expression b) {
         LOGGER.info("Adder process of {} |+| {}: \n", a, b);
-        List<ExpressionElement> aElements = a.getElements();
-        List<ExpressionElement> bElements = b.getElements();
+        List<Monomial> aElements = a.getElements();
+        List<Monomial> bElements = b.getElements();
         LOGGER.info("Monomials : {} and {}", aElements, bElements);
 
-        List<ExpressionElement> elements = MergeManager.secureMerge(aElements, bElements, ExpressionElement.class);
+        MergeManager mergeManager = context.getMergeManager();
+        List<Monomial> elements = mergeManager.secureMerge(aElements, bElements, Monomial.class);
         Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;
@@ -29,14 +30,14 @@ public class Adder extends BinaryOperationHandler<Expression> {
 
     public Expression simpleSum(Expression a, Expression b) {
 
-        ExpressionElement firstA = a.getElements().get(0);
-        ExpressionElement firstB = b.getElements().get(0);
+        Monomial firstA = a.getElements().get(0);
+        Monomial firstB = b.getElements().get(0);
 
         if(firstA.hasSameVariablePartAs(firstB)) {
             BigDecimal numA = new BigDecimal(firstA.getNumericValue());
             BigDecimal numB = new BigDecimal(firstB.getNumericValue());
             float floatResult = numA.add(numB).floatValue();
-            return new Expression(new ExpressionElement(floatResult, firstA.getVariables()));
+            return new Expression(new Monomial(floatResult, firstA.getVarPart()));
         }
         return new Expression(Arrays.asList(firstA, firstB));
     }

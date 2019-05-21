@@ -7,6 +7,7 @@ import net.akami.mask.merge.PairNullifying;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
+import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -41,16 +42,16 @@ public class Divider extends BinaryOperationHandler<Expression> {
             return uncompletedDivision(a, b);
         }
 
-        List<ExpressionElement> finalElements = new ArrayList<>(a.length());
+        List<Monomial> finalElements = new ArrayList<>(a.length());
 
-        for(ExpressionElement numPart : a.getElements()) {
+        for(Monomial numPart : a.getElements()) {
             finalElements.addAll(simpleDivision(numPart, b.get(0)));
         }
 
         return new Expression(finalElements);
     }
 
-    public NumberElement numericalDivision(ExpressionElement a, ExpressionElement b) {
+    public NumberElement numericalDivision(Monomial a, Monomial b) {
         float result = floatDivision(a.getNumericValue(), b.getNumericValue());
         LOGGER.info("Numeric division. Result of {} / {} : {}", a, b, result);
         return new NumberElement(result);
@@ -63,17 +64,17 @@ public class Divider extends BinaryOperationHandler<Expression> {
     }
 
     private Expression uncompletedDivision(Expression a, Expression b) {
-        /*SimpleFraction[] fractions = new SimpleFraction[a.length()];
+        /*SimpleFraction[] fractions = new SimpleFraction[a.elementsLength()];
         int i = 0;
 
-        for(ExpressionElement element : a.getElements()) {
+        for(Monomial element : a.getElements()) {
             fractions[i++] = new SimpleFraction(element, b);
         }
 
         return new Expression(fractions);*/return null;
     }
 
-    public List<ExpressionElement> simpleDivision(ExpressionElement a, ExpressionElement b) {
+    public List<Monomial> simpleDivision(Monomial a, Monomial b) {
         if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             return Collections.singletonList(numericalDivision(a, b));
         }
@@ -89,8 +90,8 @@ public class Divider extends BinaryOperationHandler<Expression> {
         if(b instanceof SimpleFraction) {
             SimpleFraction bFrac = (SimpleFraction) b;
             Expression temporaryNum = multiplier.operate(Expression.of(a), bFrac.getDenominator());
-            List<ExpressionElement> finalElements = new ArrayList<>(temporaryNum.length());
-            for(ExpressionElement temporaryElement : temporaryNum.getElements()) {
+            List<Monomial> finalElements = new ArrayList<>(temporaryNum.elementsLength());
+            for(Monomial temporaryElement : temporaryNum.getElements()) {
                 finalElements.addAll(simpleDivision(temporaryElement, ((SimpleFraction) b).getNumerator()));
             }
             return finalElements;
@@ -99,7 +100,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
         return Collections.singletonList(monomialDivision(a, b));
     }
 
-    public ExpressionElement monomialDivision(ExpressionElement a, ExpressionElement b) {
+    public Monomial monomialDivision(Monomial a, Monomial b) {
 
         if(a.equals(b)) return new NumberElement(1);
 
@@ -107,10 +108,10 @@ public class Divider extends BinaryOperationHandler<Expression> {
         float bNumeric = b.getNumericValue();
 
         List<Float> numValues = MathUtils.decomposeNumber(aNumeric, bNumeric);
-        List<Variable> numVars = Variable.dissociate(a.getVariables());
+        List<Variable> numVars = VariableUtils.dissociate(a.getVarPart());
 
         List<Float> denValues = MathUtils.decomposeNumber(bNumeric, aNumeric);
-        List<Variable> denVars = Variable.dissociate(b.getVariables());
+        List<Variable> denVars = VariableUtils.dissociate(b.getVarPart());
 
         MergeBehavior<Object> nullifying = MergeManager.getByType(PairNullifying.class);
         MergeManager.nonSortedMerge(numValues, denValues, nullifying, false);
@@ -125,13 +126,13 @@ public class Divider extends BinaryOperationHandler<Expression> {
         for(float f : denValues) finalDenValue *= f;
 
         if(finalDenValue == 1 && denVars.isEmpty())
-            return new ExpressionElement(finalNumValue, numVars);
+            return new Monomial(finalNumValue, numVars);
 
         /*if(finalNumValue == 1 && numVars.isEmpty())
-            return new SimpleFraction(new NumberElement(1), Expression.of(new ExpressionElement(finalDenValue, denVars)));*/
+            return new SimpleFraction(new NumberElement(1), Expression.of(new Monomial(finalDenValue, denVars)));*/
 
-        ExpressionElement finalNumerator = new ExpressionElement(finalNumValue, numVars);
-        Expression finalDenominator = Expression.of(new ExpressionElement(finalDenValue, denVars));
+        Monomial finalNumerator = new Monomial(finalNumValue, numVars);
+        Expression finalDenominator = Expression.of(new Monomial(finalDenValue, denVars));
         return null;//new SimpleFraction(finalNumerator, finalDenominator);
     }
 

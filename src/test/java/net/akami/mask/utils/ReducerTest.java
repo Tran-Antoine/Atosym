@@ -107,7 +107,7 @@ public class ReducerTest {
 
         StringBuilder builder = new StringBuilder();
         MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));
-        builder.deleteCharAt(builder.length()-1);
+        builder.deleteCharAt(builder.elementsLength()-1);
         Assertions.assertThat(builder.toString()).isEqualTo("2*3*3");
     }*/
 

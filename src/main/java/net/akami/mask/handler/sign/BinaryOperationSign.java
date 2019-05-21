@@ -86,8 +86,8 @@ public enum BinaryOperationSign {
      *
      * <ul>
      * <li> Numeric a and b </li>
-     * <li> ExpressionElement / Numeric a and b </li>
-     * <li> Polynomial a and ExpressionElement / Numeric b </li>
+     * <li> Monomial / Numeric a and b </li>
+     * <li> Polynomial a and Monomial / Numeric b </li>
      * </ul>
      * In other words, b can not be a polynomial, even if simplifications could technically be performed.
      * <p></p>

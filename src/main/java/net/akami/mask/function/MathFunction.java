@@ -2,9 +2,9 @@ package net.akami.mask.function;
 
 import net.akami.mask.affection.CalculationCanceller;
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.encapsulator.CompleteCoverEncapsulator;
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.overlay.CompleteCoverEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.CancellableHandler;
 import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
     public void postCalculation(Object result, Object... input) {
         // TODO complete
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        //getAffection(CalculationCache.class).get().push(calculation, merge);
+        //getAffection(CalculationCache.class).getElement().push(calculation, merge);
     }
 
     @Override
@@ -70,7 +70,7 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
     }
 
     @Override
-    public String[] getEncapsulationString(List<ExpressionElement> elements, int index, List<ExpressionEncapsulator> others) {
+    public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
         String[] parts = new String[2];
         parts[0] = name + '(';
         parts[1] = ")";

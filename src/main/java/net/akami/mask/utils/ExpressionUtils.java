@@ -1,6 +1,6 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.expression.*;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
@@ -72,7 +72,7 @@ public class ExpressionUtils {
         for (String var : vars) {
             String[] varExp = var.split("\\^", 2);
             if (reducedVars.containsKey(varExp[0])) {
-                reducedVars.put(varExp[0], null/*MathUtils.sum(reducedVars.get(varExp[0]), varExp[1])*/);
+                reducedVars.put(varExp[0], null/*MathUtils.sum(reducedVars.getElement(varExp[0]), varExp[1])*/);
             } else {
                 reducedVars.put(varExp[0], varExp[1]);
             }
@@ -237,10 +237,10 @@ public class ExpressionUtils {
         return isANumber(exp.get(0));
     }
 
-    public static boolean isANumber(ExpressionElement element) {
-        if(!(element instanceof ExpressionElement)) return false;
+    public static boolean isANumber(Monomial element) {
+        if(!(element instanceof Monomial)) return false;
 
-        List<Variable> vars = ((ExpressionElement) element).getVariables();
+        List<Variable> vars = ((Monomial) element).getVarPart();
         return vars.size() == 0;
     }
 
@@ -249,32 +249,32 @@ public class ExpressionUtils {
         return isAnInteger(exp.get(0));
     }
 
-    public static boolean isAnInteger(ExpressionElement element) {
-        if(!(element instanceof ExpressionElement)) return false;
+    public static boolean isAnInteger(Monomial element) {
+        if(!(element instanceof Monomial)) return false;
 
-        List<Variable> vars = ((ExpressionElement) element).getVariables();
-        return vars.size() == 0 && ((ExpressionElement) element).getNumericValue() % 1 == 0;
+        List<Variable> vars = ((Monomial) element).getVarPart();
+        return vars.size() == 0 && ((Monomial) element).getNumericValue() % 1 == 0;
     }
 
-    public static String encapsulate(List<ExpressionElement> elements, List<ExpressionEncapsulator> layers) {
+    public static String encapsulate(List<Monomial> elements, List<ExpressionOverlay> layers) {
         StringBuilder builder = new StringBuilder();
         for(int i = layers.size()-1; i >= 0; i--) {
             builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
         }
 
-        builder.append(chainElements(elements, ExpressionElement::getExpression));
+        builder.append(chainElements(elements, Monomial::getExpression));
 
         int i = 0;
-        for(ExpressionEncapsulator encapsulator : layers) {
+        for(ExpressionOverlay encapsulator : layers) {
             builder.append(encapsulator.getEncapsulationString(elements, i++, layers)[1]);
         }
 
         return builder.toString();
     }
 
-    public static String chainElements(List<ExpressionElement> elements, Function<ExpressionElement, String> expFunction) {
+    public static String chainElements(List<Monomial> elements, Function<Monomial, String> expFunction) {
         StringBuilder builder = new StringBuilder();
-        for(ExpressionElement element : elements) {
+        for(Monomial element : elements) {
             String expression = expFunction.apply(element);
             if(expression.isEmpty()) continue;
 

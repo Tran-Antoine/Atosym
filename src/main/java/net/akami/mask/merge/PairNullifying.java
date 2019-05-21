@@ -1,5 +1,7 @@
 package net.akami.mask.merge;
 
+import net.akami.mask.core.MaskContext;
+
 import java.util.Collections;
 import java.util.Set;
 
@@ -14,6 +16,12 @@ import java.util.Set;
  * wont be compared. Thus merging {1,2,3,3,2,1} with itself will return an empty list, whereas {1,2,3} won't.
  */
 public class PairNullifying implements MergeBehavior<Object> {
+
+    private MaskContext context;
+
+    public PairNullifying(MaskContext context) {
+        this.context = context;
+    }
 
     @Override
     public boolean isMergeable(Object a, Object b) {

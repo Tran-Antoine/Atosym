@@ -1,7 +1,7 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.encapsulator.ExponentEncapsulator;
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.overlay.ExponentEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import org.junit.Test;
@@ -17,15 +17,15 @@ public class EncapsulatedPolynomialTest {
     @Test
     public void getExpressionTest() {
 
-        List<ExpressionElement> monomials = Arrays.asList(new ExpressionElement(5, new SimpleVariable('x', DEFAULT)),
+        List<Monomial> monomials = Arrays.asList(new Monomial(5, new SingleCharVariable('x', DEFAULT)),
                 new NumberElement(3));
 
-        List<ExpressionEncapsulator> layers = Arrays.asList(
+        List<ExpressionOverlay> layers = Arrays.asList(
                 new ExponentEncapsulator(monomials),
                 new CosineFunction(DEFAULT),
                 new SinusFunction(DEFAULT)
         );
-        IrreducibleVarPart polynomial = new IrreducibleVarPart(monomials, layers);
+        ComplexVariable polynomial = new ComplexVariable(monomials, layers);
 
         assertThat(polynomial.getExpression()).isEqualTo("sin(cos((5.0x+3.0)^(5.0x+3.0)))");
     }

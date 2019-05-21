@@ -1,10 +1,12 @@
 package net.akami.mask.core;
 
 import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.function.MathFunction;
 import net.akami.mask.handler.AlterationHandler;
 import net.akami.mask.handler.BinaryOperationHandler;
+import net.akami.mask.merge.MergeManager;
 import net.akami.mask.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,8 @@ public class MaskContext {
 
     private Set<BinaryOperationHandler<Expression>> binaryHandlers;
     private Set<MathFunction> supportedFunctions;
+    private MergePropertyManager propertyManager;
+    private MergeManager mergeManager;
     private MathContext bigDecimalContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
@@ -75,6 +79,8 @@ public class MaskContext {
         this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
         this.supportedFunctions = MathFunction.generateDefaultFunctions(this);
         this.bigDecimalContext = new MathContext(precision);
+        this.propertyManager = new MergePropertyManager(this);
+        this.mergeManager = new MergeManager(this);
     }
 
     /**
@@ -186,9 +192,16 @@ public class MaskContext {
     }
 
     /**
-     * @return the {@link MathContext} instance, used to define the calculation precision.
+     * @return the {@link MathContext} instance, used to define the calculation precision
      */
     public MathContext getMathContext() {
         return bigDecimalContext;
+    }
+
+    /**
+     * @return the merge manager handled
+     */
+    public MergeManager getMergeManager() {
+        return mergeManager;
     }
 }

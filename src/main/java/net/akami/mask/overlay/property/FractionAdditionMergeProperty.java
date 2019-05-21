@@ -1,6 +1,6 @@
-package net.akami.mask.encapsulator.property;
+package net.akami.mask.overlay.property;
 
-import net.akami.mask.encapsulator.FractionEncapsulator;
+import net.akami.mask.overlay.FractionEncapsulator;
 import net.akami.mask.expression.Expression;
 
 public class FractionAdditionMergeProperty implements FractionMergeProperty {

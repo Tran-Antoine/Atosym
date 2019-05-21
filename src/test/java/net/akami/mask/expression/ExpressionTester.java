@@ -83,10 +83,10 @@ public class ExpressionTester {
 
     @Test
     public void simpleMonomialDivisionTest() {
-        ExpressionElement m1 = create(3, 'x');
-        ExpressionElement m2 = create(3, 'y');
-        ExpressionElement m3 = create(6, 'x');
-        ExpressionElement m4 = new ExpressionElement(12, new SimpleVariable('x', Expression.of(2), DEFAULT));
+        Monomial m1 = create(3, 'x');
+        Monomial m2 = create(3, 'y');
+        Monomial m3 = create(6, 'x');
+        Monomial m4 = new Monomial(12, new SingleCharVariable('x', Expression.of(2), DEFAULT));
 
         assertThat(divider.monomialDivision(m1, m2).getExpression()).isEqualTo("x/y");
         assertThat(divider.monomialDivision(m1, m3).getExpression()).isEqualTo("1.0/2.0");
@@ -100,18 +100,18 @@ public class ExpressionTester {
 
         /*SimpleFraction f1 = new SimpleFraction(3, Expression.of('x'));
         SimpleFraction f2 = new SimpleFraction(4, Expression.of('x'));
-        ExpressionElement m1 = new ExpressionElement('x', DEFAULT);
-        ExpressionElement m2 = new ExpressionElement('y', DEFAULT);
+        Monomial m1 = new Monomial('x', DEFAULT);
+        Monomial m2 = new Monomial('y', DEFAULT);
 
-        assertThat(divider.simpleDivision(f1, m1).get(0).getExpression()).isEqualTo("3.0/x^2.0");
-        assertThat(divider.simpleDivision(f1, m2).get(0).getExpression()).isEqualTo("3.0/(xy)");
-        assertThat(divider.simpleDivision(f1, f2).get(0).getExpression()).isEqualTo("3.0/4.0");*/
+        assertThat(divider.simpleDivision(f1, m1).getElement(0).getExpression()).isEqualTo("3.0/x^2.0");
+        assertThat(divider.simpleDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
+        assertThat(divider.simpleDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");*/
     }
 
     @Test
     public void powTest() {
 
-        Expression e1 = Expression.of(new ExpressionElement(3, new SimpleVariable('x', DEFAULT)));
+        Expression e1 = Expression.of(new Monomial(3, new SingleCharVariable('x', DEFAULT)));
         Expression e2 = Expression.of(3);
         Expression e3 = Expression.of('y');
         Expression e4 = Expression.of(2.5f);
@@ -120,8 +120,8 @@ public class ExpressionTester {
         assertThat(pow.operate(e1, e3).toString()).isEqualTo("(3.0x)^y");
     }
 
-    private ExpressionElement create(float a, char v) {
-        return new ExpressionElement(a, new SimpleVariable(v, null, null));
+    private Monomial create(float a, char v) {
+        return new Monomial(a, new SingleCharVariable(v, null, null));
     }
 
     private void assertSimpleSum(String a, String b, String result) {

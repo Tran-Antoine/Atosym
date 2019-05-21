@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.encapsulator.ExponentEncapsulator;
+import net.akami.mask.overlay.ExponentEncapsulator;
 import net.akami.mask.expression.*;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
@@ -23,7 +23,7 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
         }
 
         if(ExpressionUtils.isAnInteger(b)) {
-            ExpressionElement first = b.get(0);
+            Monomial first = b.get(0);
             return extensiblePow(a, (int) first.getNumericValue());
         }
 
@@ -52,7 +52,7 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
 
     private Expression negativeExtensiblePow(Expression a, int b) {
 
-        ExpressionElement numerator = new NumberElement(1);
+        Monomial numerator = new NumberElement(1);
         Expression denominator = extensiblePow(a, -b);
 
         // TODO return Expression.of(new SimpleFraction(numerator, denominator));
@@ -60,9 +60,9 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
     }
 
     private Expression layerPow(Expression a, Expression b) {
-        List<ExpressionElement> insights = a.getElements();
-        IrreducibleVarPart variable = new IrreducibleVarPart(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
-        Expression newExpression = Expression.of(new ExpressionElement(1, variable));
+        List<Monomial> insights = a.getElements();
+        ComplexVariable variable = new ComplexVariable(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
+        Expression newExpression = Expression.of(new Monomial(1, variable));
         return newExpression;
     }
 

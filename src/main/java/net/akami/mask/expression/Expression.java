@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Expression implements Cloneable {
 
     protected final String expression;
-    protected final List<ExpressionElement> elements;
+    protected final List<Monomial> elements;
     protected final MaskContext context;
 
     protected Expression(float value) {
@@ -24,21 +24,21 @@ public class Expression implements Cloneable {
         this.expression = join(elements);
     }
 
-    public Expression(List<ExpressionElement> elements) {
+    public Expression(List<Monomial> elements) {
         this(elements, MaskContext.DEFAULT);
     }
 
-    public Expression(List<ExpressionElement> elements, MaskContext context) {
+    public Expression(List<Monomial> elements, MaskContext context) {
         this.context = context;
         this.elements = Collections.unmodifiableList(elements);
         this.expression = join(this.elements);
     }
 
-    public Expression(ExpressionElement... elements) {
+    public Expression(Monomial... elements) {
         this(MaskContext.DEFAULT, elements);
     }
 
-    public Expression(MaskContext context, ExpressionElement... elements) {
+    public Expression(MaskContext context, Monomial... elements) {
         this.context = context;
         this.elements = Arrays.asList(elements);
         this.expression = join(this.elements);
@@ -54,11 +54,11 @@ public class Expression implements Cloneable {
         this.elements = Collections.singletonList(simpleAnalyze());
     }
 
-    public Expression(ExpressionElement singleElement) {
+    public Expression(Monomial singleElement) {
         this(singleElement, MaskContext.DEFAULT);
     }
 
-    public Expression(ExpressionElement singleElement, MaskContext context) {
+    public Expression(Monomial singleElement, MaskContext context) {
         this.context = context;
         this.elements = Collections.unmodifiableList(Collections.singletonList(singleElement));
         this.expression = elements.size() == 1 ? elements.get(0).getExpression() : join(this.elements);
@@ -72,11 +72,11 @@ public class Expression implements Cloneable {
         return new Expression(value, context);
     }
 
-    public static Expression of(ExpressionElement singleElement) {
+    public static Expression of(Monomial singleElement) {
         return of(singleElement, MaskContext.DEFAULT);
     }
 
-    public static Expression of(ExpressionElement singleElement, MaskContext context) {
+    public static Expression of(Monomial singleElement, MaskContext context) {
         return new Expression(singleElement, context);
     }
 
@@ -85,10 +85,10 @@ public class Expression implements Cloneable {
     }
 
     public static Expression of(char var, MaskContext context) {
-        return Expression.of(new ExpressionElement(1, new SimpleVariable(var, null, null)));
+        return Expression.of(new Monomial(1, new SingleCharVariable(var, context)));
     }
 
-    private ExpressionElement simpleAnalyze() {
+    private Monomial simpleAnalyze() {
 
         if(ExpressionUtils.isANumber(expression))
             return new NumberElement(Float.parseFloat(expression));
@@ -100,14 +100,14 @@ public class Expression implements Cloneable {
             return new FunctionSign(expression.charAt(0), context);
 
         if(expression.matches("[a-zA-DF-Z]")) {
-            return new ExpressionElement(1, new SimpleVariable(expression.charAt(0), null, null));
+            return new Monomial(1, new SingleCharVariable(expression.charAt(0), context));
         }
 
         throw new RuntimeException("Unreachable statement : couldn't identify the simple expression given : "+expression);
     }
 
-    private String join(List<ExpressionElement> elements) {
-        return ExpressionUtils.chainElements(elements, ExpressionElement::getExpression);
+    private String join(List<Monomial> elements) {
+        return ExpressionUtils.chainElements(elements, Monomial::getExpression);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class Expression implements Cloneable {
         return expression;
     }
 
-    public List<ExpressionElement> getElements() {
+    public List<Monomial> getElements() {
         return elements;
     }
 
@@ -135,7 +135,7 @@ public class Expression implements Cloneable {
         return elements.size();
     }
 
-    public ExpressionElement get(int index) {
+    public Monomial get(int index) {
         return elements.get(index);
     }
 

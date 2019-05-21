@@ -1,7 +1,7 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.encapsulator.property.MergePropertyManager;
+import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
@@ -40,7 +40,7 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
 
     @Override
     public void postCalculation(T result, T... input) {
-        //getAffection(CalculationCache.class).get().push(input[0].toString()+'|'+input[1].toString(), merge.toString());
+        //getAffection(CalculationCache.class).getElement().push(input[0].toString()+'|'+input[1].toString(), merge.toString());
     }
 
     @Override

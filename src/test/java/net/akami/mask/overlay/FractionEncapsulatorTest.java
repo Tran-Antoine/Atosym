@@ -1,6 +1,6 @@
-package net.akami.mask.encapsulator;
+package net.akami.mask.overlay;
 
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.NumberElement;
 import org.junit.Test;
 
@@ -13,10 +13,10 @@ public class FractionEncapsulatorTest {
 
     @Test
     public void formatTest() {
-        List<ExpressionElement> list = Arrays.asList(
+        List<Monomial> list = Arrays.asList(
                 new NumberElement(4)
         );
-        List<ExpressionElement> list2 = Arrays.asList(
+        List<Monomial> list2 = Arrays.asList(
                 new NumberElement(4),
                 new NumberElement(5)
         );
@@ -29,7 +29,7 @@ public class FractionEncapsulatorTest {
         assertFormat(encapsulator2, list2, "()/(4.0+5.0)");
     }
 
-    private void assertFormat(FractionEncapsulator frac, List<ExpressionElement> list, String r) {
+    private void assertFormat(FractionEncapsulator frac, List<Monomial> list, String r) {
         assertThat(String.join("", frac.getEncapsulationString(list, 0, null))).isEqualTo(r);
     }
 }

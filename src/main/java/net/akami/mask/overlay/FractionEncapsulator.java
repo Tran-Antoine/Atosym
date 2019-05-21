@@ -1,17 +1,17 @@
-package net.akami.mask.encapsulator;
+package net.akami.mask.overlay;
 
 import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 
 import java.util.List;
 
-public class FractionEncapsulator extends Expression implements ExpressionEncapsulator {
+public class FractionEncapsulator extends Expression implements ExpressionOverlay {
 
     public FractionEncapsulator(float numericValue) {
         super(numericValue);
     }
 
-    public FractionEncapsulator(List<ExpressionElement> elements) {
+    public FractionEncapsulator(List<Monomial> elements) {
         super(elements);
     }
 
@@ -20,7 +20,7 @@ public class FractionEncapsulator extends Expression implements ExpressionEncaps
     }
 
     @Override
-    public String[] getEncapsulationString(List<ExpressionElement> elements, int index, List<ExpressionEncapsulator> others) {
+    public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
         String[] result = new String[2];
 
         boolean insightsNeedsBrackets = elements.size() > 1 || elements.get(0).requiresBrackets();

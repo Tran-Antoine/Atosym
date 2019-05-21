@@ -1,12 +1,10 @@
 package net.akami.mask.merge;
 
-import net.akami.mask.encapsulator.ExponentEncapsulator;
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
-import net.akami.mask.encapsulator.property.MergePropertyManager;
-import net.akami.mask.expression.IrreducibleVarPart;
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.SimpleVariable;
-import net.akami.mask.expression.Variable;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.*;
+import net.akami.mask.overlay.ExponentEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.handler.Adder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,73 +17,58 @@ import java.util.Set;
 public class VariableCombination implements MergeBehavior<Variable> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(VariableCombination.class);
+    private MaskContext context;
 
-    private MergePropertyManager propertyManager;
+    public VariableCombination(MaskContext context) {
+        this.context = context;
+    }
 
     @Override
     public boolean isMergeable(Variable a, Variable b) {
 
-        if(!a.getClass().equals(b.getClass())) return false;
-
-        if(a instanceof IrreducibleVarPart || b instanceof IrreducibleVarPart) {
-            IrreducibleVarPart compA = (IrreducibleVarPart) a;
-            IrreducibleVarPart compB = (IrreducibleVarPart) b;
-            return a.equals(b) || propertyManager.getComposedResult(compA, compB).isPresent();
+        if (a instanceof SingleCharVariable && b instanceof SingleCharVariable) {
+            return ((SingleCharVariable) a).getVar() == ((SingleCharVariable) b).getVar();
         }
 
-        SimpleVariable simpleA = (SimpleVariable) a;
-        SimpleVariable simpleB = (SimpleVariable) b;
-        boolean equalVars = simpleA.getVar() == simpleB.getVar();
-        boolean noFunction = simpleA.getFunction() == simpleB.getFunction();
+        if(a instanceof SingleCharVariable) {
+            return simpleCompatibleWithComplex((SingleCharVariable) a, (ComplexVariable) b);
+        }
 
-        if(!equalVars) return false;
-        if(noFunction) return true;
+        if(b instanceof SingleCharVariable) {
+            return simpleCompatibleWithComplex((SingleCharVariable) b, (ComplexVariable) a);
+        }
 
-        if(simpleA.getFunction() == null || simpleB.getFunction() == null)
+        ComplexVariable complexA = (ComplexVariable) a;
+        ComplexVariable complexB = (ComplexVariable) b;
+        List<ExpressionOverlay> aOverlays = complexA.getOverlaysFraction(-1);
+        List<ExpressionOverlay> bOverlays = complexB.getOverlaysFraction(-1);
+
+        return complexA.elementsEqual(complexB) && aOverlays.equals(bOverlays);
+    }
+
+    private boolean simpleCompatibleWithComplex(SingleCharVariable a, ComplexVariable b) {
+        if (b.elementsLength() != 1 || !(b.getLayer(-1) instanceof ExponentEncapsulator))
             return false;
 
-        return simpleA.getFunction().equals(simpleB.getFunction());
+        Monomial first = b.getElement(0);
+        if (b.elementsLength() != 1 || first.getVarPart().isSimple())
+            return false;
+
+        SingleCharVariable firstSingle = (SingleCharVariable) first.getVarPart().get(0);
+        return a.getVar() == firstSingle.getVar();
     }
 
     @Override
     public Variable mergeElement(Variable a, Variable b) {
 
-        if(a instanceof IrreducibleVarPart || b instanceof IrreducibleVarPart) {
-            if(propertyManager == null) {
-               LOGGER.error("UNDEFINED PROPERTY MANAGER");
-               throw new IllegalStateException();
-            }
-
-            if(a.equals(b)) {
-                return identicalVariables((IrreducibleVarPart) a);
-            }
-
-            return propertyManager.getComposedResult((IrreducibleVarPart) a, (IrreducibleVarPart) b).get();
-        }
-
-        SimpleVariable simpleA = (SimpleVariable) a;
-        SimpleVariable simpleB = (SimpleVariable) b;
-
-        Adder operator = simpleA.getContext().getBinaryOperation(Adder.class);
-
-        Expression newExponent = operator.simpleSum(simpleA.getExponent(), simpleB.getExponent());
-        return new SimpleVariable(simpleA.getVar(), newExponent, simpleA.getFunction(), simpleA.getContext());
     }
 
-    private IrreducibleVarPart identicalVariables(IrreducibleVarPart a) {
-        List<ExpressionEncapsulator> layers = new ArrayList<>(a.getLayers());
+    private ComplexVariable identicalVariables(ComplexVariable a) {
+        List<ExpressionOverlay> layers = new ArrayList<>(a.getOverlays());
         layers.add(new ExponentEncapsulator(2));
-        return new IrreducibleVarPart(a.getElements(), layers);
+        return new ComplexVariable(a.getElements(), layers);
     }
-
-    public MergePropertyManager getPropertyManager() {
-        return propertyManager;
-    }
-
-    public void setPropertyManager(MergePropertyManager propertyManager) {
-        this.propertyManager = propertyManager;
-    }
-
+    
     @Override
     public Set<Class<? extends Variable>> getHandledTypes() {
         return Collections.singleton(Variable.class);

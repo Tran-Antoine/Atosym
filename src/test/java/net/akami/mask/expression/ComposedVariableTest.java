@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.encapsulator.ExpressionEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
@@ -20,24 +20,24 @@ public class ComposedVariableTest {
     @Test
     public void getExpressionTest() {
 
-        List<ExpressionElement> elements = Arrays.asList(
-                new NumberElement(3), new ExpressionElement(3, new SimpleVariable('x', DEFAULT)));
+        List<Monomial> elements = Arrays.asList(
+                new NumberElement(3), new Monomial(3, new SingleCharVariable('x', DEFAULT)));
 
-        List<ExpressionEncapsulator> layers = Arrays.asList(
+        List<ExpressionOverlay> layers = Arrays.asList(
                 new CosineFunction(DEFAULT),
                 new SinusFunction(DEFAULT),
                 new TangentFunction(DEFAULT)
         );
 
-        List<ExpressionEncapsulator> layers2 = Arrays.asList(
+        List<ExpressionOverlay> layers2 = Arrays.asList(
                 new CosineFunction(DEFAULT),
                 new TangentFunction(DEFAULT),
                 new SinusFunction(DEFAULT)
         );
 
-        IrreducibleVarPart cVar1 = new IrreducibleVarPart(elements, layers);
-        IrreducibleVarPart cVar2 = new IrreducibleVarPart(elements, layers);
-        IrreducibleVarPart cVar3 = new IrreducibleVarPart(elements, layers2);
+        ComplexVariable cVar1 = new ComplexVariable(elements, layers);
+        ComplexVariable cVar2 = new ComplexVariable(elements, layers);
+        ComplexVariable cVar3 = new ComplexVariable(elements, layers2);
         assertThat(cVar1).isEqualTo(cVar2);
         assertThat(cVar1).isNotEqualTo(cVar3);
     }
@@ -45,10 +45,10 @@ public class ComposedVariableTest {
     @Test
     public void composedMultTest() {
 
-        List<ExpressionEncapsulator> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
+        List<ExpressionOverlay> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
         Expression insights = multiplier.operate(Expression.of('x'), Expression.of('y'));
-        ExpressionElement m1 = new ExpressionElement(2, new IrreducibleVarPart(insights.getElements(), layers));
-        ExpressionElement m2 = new ExpressionElement(5, new IrreducibleVarPart(insights.getElements(), layers));
+        Monomial m1 = new Monomial(2, new ComplexVariable(insights.getElements(), layers));
+        Monomial m2 = new Monomial(5, new ComplexVariable(insights.getElements(), layers));
 
         Expression result = multiplier.operate(Expression.of(m1), Expression.of(m2));
         assertThat(result.toString()).isEqualTo("10.0sin(cos(xy))^2.0");

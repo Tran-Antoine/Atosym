@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.*;
 import net.akami.mask.core.MaskContext;
 
@@ -17,9 +17,9 @@ public class Subtractor extends BinaryOperationHandler<Expression> {
     protected Expression operate(Expression a, Expression b) {
         LOGGER.info("Subtractor process of {} |-| {}: \n", a, b);
 
-        List<ExpressionElement> opposite = new ArrayList<>(b.length());
+        List<Monomial> opposite = new ArrayList<>(b.length());
 
-        for(ExpressionElement bElement : b.getElements()) {
+        for(Monomial bElement : b.getElements()) {
             Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
             opposite.add(multiplier.simpleMult(new NumberElement(-1.0f), bElement));
         }

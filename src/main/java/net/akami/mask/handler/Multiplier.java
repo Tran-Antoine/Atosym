@@ -1,12 +1,13 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.encapsulator.property.PowMultiplicationProperty;
+import net.akami.mask.overlay.property.PowMultiplicationProperty;
 import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.ExpressionElement;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.FunctionSign;
 import net.akami.mask.expression.Variable;
 import net.akami.mask.merge.MergeManager;
+import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -32,21 +33,21 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         if(a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
         if(b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
 
-        List<ExpressionElement> elements = new ArrayList<>(a.length()*b.length());
+        List<Monomial> elements = new ArrayList<>(a.length()*b.length());
 
-        for(ExpressionElement elemA : a.getElements()) {
-            for(ExpressionElement elemB : b.getElements()) {
+        for(Monomial elemA : a.getElements()) {
+            for(Monomial elemB : b.getElements()) {
                 elements.add(simpleMult(elemA, elemB));
             }
         }
 
-        List<ExpressionElement> mergedElements = MergeManager.merge(elements, ExpressionElement.class);
+        List<Monomial> mergedElements = MergeManager.merge(elements, Monomial.class);
         return new Expression(mergedElements);
     }
 
-    public ExpressionElement simpleMult(ExpressionElement a, ExpressionElement b) {
+    public Monomial simpleMult(Monomial a, Monomial b) {
 
-        ExpressionElement numA = null, numB = null;
+        Monomial numA = null, numB = null;
         Expression denA = null, denB = null;
 
         /*if(a instanceof SimpleFraction) {
@@ -63,7 +64,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
             numB = b;
         }*/
 
-        ExpressionElement newNumerator;
+        Monomial newNumerator;
 
         if(numA != null && numB != null) {
             newNumerator = simpleMonomialMult(numA, numB);
@@ -84,12 +85,12 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         return null; // TODO new SimpleFraction(newNumerator, newDenominator);
     }
 
-    private ExpressionElement simpleMonomialMult(ExpressionElement a, ExpressionElement b) {
+    private Monomial simpleMonomialMult(Monomial a, Monomial b) {
          BigDecimal bigA = new BigDecimal(a.getNumericValue());
          BigDecimal bigB = new BigDecimal(b.getNumericValue());
          float numResult = bigA.multiply(bigB).floatValue();
-         List<Variable> numVariables = Variable.combine(a.getVariables(), b.getVariables(), propertyManager);
-         return new ExpressionElement(numResult, numVariables);
+         List<Variable> numVariables = VariableUtils.combine(a.getVarPart(), b.getVarPart(), propertyManager);
+         return new Monomial(numResult, numVariables);
     }
 
     @Override

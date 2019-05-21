@@ -1,5 +1,6 @@
 package net.akami.mask.merge;
 
+import net.akami.mask.core.MaskContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,17 +10,21 @@ import java.util.stream.Collectors;
 public class MergeManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MergeManager.class);
+    private final List<MergeBehavior> behaviors;
 
-    private MergeManager() { }
+    public MergeManager(MaskContext context) {
+        this.behaviors = loadBehaviors(context);
+    }
 
-    private static final List<MergeBehavior> behaviors = new ArrayList<>(Arrays.asList(
-            new ElementAdditionMerge(),
-            new MonomialAdditionMerge(),
-            new VariableCombination(),
-            new PairNullifying()
-    ));
+    private List<MergeBehavior> loadBehaviors(MaskContext context) {
+        return new ArrayList<>(Arrays.asList(
+                new MonomialAdditionMerge(context),
+                new VariableCombination(context),
+                new PairNullifying(context)
+        ));
+    }
 
-    public static <T extends MergeBehavior> T getByType(Class<T> clazz) {
+    public <T extends MergeBehavior> T getByType(Class<T> clazz) {
         for (MergeBehavior mergeBehavior : behaviors) {
             if (mergeBehavior.getClass().equals(clazz))
                 return (T) mergeBehavior;
@@ -28,7 +33,7 @@ public class MergeManager {
         return null;
     }
 
-    public static <T> MergeBehavior<T> getByHandledType(Class<T> clazz) {
+    public <T> MergeBehavior<T> getByHandledType(Class<T> clazz) {
         for (MergeBehavior mergeBehavior : behaviors) {
             if (mergeBehavior.getHandledTypes().contains(clazz))
                 return mergeBehavior;
@@ -36,37 +41,37 @@ public class MergeManager {
         return null;
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, Class<T> clazz) {
+    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, Class<T> clazz) {
         return merge(self, self, getByHandledType(clazz), true);
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, Class<T> clazz) {
+    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, Class<T> clazz) {
         return merge(l1, l2, getByHandledType(clazz), false);
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, MergeBehavior<T> behavior) {
+    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, MergeBehavior<T> behavior) {
         return merge(self, self, behavior, true);
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior) {
+    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior) {
         return merge(l1, l2, behavior, false);
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    public <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
     }
 
-    public static <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, Class<T> clazz) {
+    public <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, Class<T> clazz) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByHandledType(clazz), false);
     }
 
-    private static <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    private <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
         List<S> finalResult = nonSortedMerge(l1, l2, behavior, singleList);
         Collections.sort(finalResult);
         return finalResult;
     }
 
-    public static <T, S extends T> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    public <T, S extends T> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         List<S> finalResult = new ArrayList<>();
@@ -101,7 +106,7 @@ public class MergeManager {
         return finalResult;
     }
 
-    public static void add(MergeBehavior self) {
+    public void add(MergeBehavior self) {
         behaviors.add(self);
     }
 }

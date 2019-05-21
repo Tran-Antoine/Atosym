@@ -21,7 +21,7 @@ public class Mask {
      * <br/>
      * Be aware that once you did a calculation with it by setting it as the out parameter, if you
      * want the int value of TEMP for instance, you need to call {@link MaskOperatorHandler#asExpression(Mask)}
-     * and not {@link MaskOperatorHandler#asExpression()}, otherwise you'll get the non-temporary expression
+     * and not {@link MaskOperatorHandler#asExpression()}, otherwise you'll getElement the non-temporary expression
      * you based yourself on for the calculation.
      * <br/>
      * Here is an example :

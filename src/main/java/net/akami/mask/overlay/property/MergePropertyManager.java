@@ -1,7 +1,7 @@
-package net.akami.mask.encapsulator.property;
+package net.akami.mask.overlay.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.IrreducibleVarPart;
+import net.akami.mask.expression.ComplexVariable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class MergePropertyManager {
     }
 
     // TODO Change so that it returns an expression
-    public Optional<IrreducibleVarPart> getComposedResult(IrreducibleVarPart v1, IrreducibleVarPart v2) {
+    public Optional<ComplexVariable> getComposedResult(ComplexVariable v1, ComplexVariable v2) {
         for(EncapsulatorMergeProperty property : properties) {
             //if(property.isApplicableFor(v1, v2)) return Optional.of(property.merge(v1 , v2));
         }
