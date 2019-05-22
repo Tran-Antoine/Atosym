@@ -2,16 +2,11 @@ package net.akami.mask.merge;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.NumberElement;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
-    private final HashSet handledType = new HashSet(Arrays.asList(Monomial.class, NumberElement.class));
     private MaskContext context;
 
     public MonomialAdditionMerge(MaskContext context) {
@@ -25,14 +20,13 @@ public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
     @Override
     public Monomial mergeElement(Monomial a, Monomial b) {
-
         // TODO : what if a and b are encapsulated
         float floatResult = new BigDecimal(a.getNumericValue()).add(new BigDecimal(b.getNumericValue())).floatValue();
         return new Monomial(floatResult, a.getVarPart());
     }
 
     @Override
-    public Set<Class<? extends Monomial>> getHandledTypes() {
-        return handledType;
+    public Class<? extends Monomial> getHandledType() {
+        return Monomial.class;
     }
 }

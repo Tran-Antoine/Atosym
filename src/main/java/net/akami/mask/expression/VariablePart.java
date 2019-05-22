@@ -54,4 +54,8 @@ public class VariablePart implements Iterable<Variable> {
     public Iterator<Variable> iterator() {
         return variables.iterator();
     }
+
+    public List<Variable> getVariables() {
+        return variables;
+    }
 }

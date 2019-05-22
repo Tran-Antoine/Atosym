@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.overlay.ExponentEncapsulator;
+import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.expression.*;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
@@ -55,13 +55,13 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
         Monomial numerator = new NumberElement(1);
         Expression denominator = extensiblePow(a, -b);
 
-        // TODO return Expression.of(new SimpleFraction(numerator, denominator));
-        return null;
+        throw new RuntimeException("Unsupported yet");
     }
 
+    // The entire expression becomes a monomial with 1 as numeric value, encapsulated in a new overlay
     private Expression layerPow(Expression a, Expression b) {
         List<Monomial> insights = a.getElements();
-        ComplexVariable variable = new ComplexVariable(insights, Collections.singletonList(ExponentEncapsulator.fromExpression(b)));
+        ComplexVariable variable = new ComplexVariable(insights, Collections.singletonList(ExponentOverlay.fromExpression(b)));
         Expression newExpression = Expression.of(new Monomial(1, variable));
         return newExpression;
     }

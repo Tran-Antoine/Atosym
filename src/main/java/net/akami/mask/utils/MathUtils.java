@@ -1,15 +1,15 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.expression.Expression;
-
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.*;
-import static net.akami.mask.core.MaskContext.DEFAULT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.akami.mask.core.MaskContext.DEFAULT;
 
 
 public class MathUtils {
@@ -150,6 +150,7 @@ public class MathUtils {
         LOGGER.error("Result : {}", results);
         return results;
     }
+
     public static List<Float> decomposeNumber(float self) {
         return decomposeNumber(self, 0);
     }

@@ -1,49 +1,41 @@
 package net.akami.mask.expression;
 
+import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.utils.ExpressionUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
-public class ComplexVariable implements Variable<ComplexVariable>, Cloneable {
+public class ComplexVariable implements Variable, Cloneable {
 
     private final List<ExpressionOverlay> overlays;
     private final List<Monomial> elements;
     private String finalExpression;
 
+    public ComplexVariable(Monomial singlePart) {
+        this(Collections.singletonList(singlePart));
+    }
+
     public ComplexVariable(List<Monomial> parts) {
         this(parts, Collections.emptyList());
+    }
+
+    public ComplexVariable(List<Monomial> parts, ExpressionOverlay singleOverlay) {
+        this(parts, Collections.singletonList(singleOverlay));
+    }
+
+    public ComplexVariable(Monomial singlePart, ExpressionOverlay singleOverlay) {
+        this(Collections.singletonList(singlePart), Collections.singletonList(singleOverlay));
     }
 
     public ComplexVariable(List<Monomial> parts, List<ExpressionOverlay> layers) {
         this.elements = Collections.unmodifiableList(Objects.requireNonNull(parts));
         this.overlays = Collections.unmodifiableList(Objects.requireNonNull(layers));
-
-        if(layers.size() == 0)
-            throw new IllegalArgumentException
-                    ("Cannot create a composed variable with no layer. Use multiple SimpleVariables instead");
     }
-
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof ComplexVariable)) return false;
-
-        ComplexVariable other = (ComplexVariable) obj;
-
-        if(this.elementsLength() != other.elementsLength()) return false;
-        if(!overlays.equals(other.overlays)) return false;
-        return elements.equals(other.elements);
-        /*for(int i = 0; i < this.elementsLength(); i++) {
-            Monomial v1 = getElement(i);
-            Monomial v2 = other.getElement(i);
-
-            if(!v1.equals(v2)) return false;
-        }
-
-        return true;*/
+        if(!(obj instanceof Variable)) return false;
+        return getExpression().equals(((Variable) obj).getExpression());
     }
 
     public boolean elementsEqual(ComplexVariable other) {
@@ -73,30 +65,58 @@ public class ComplexVariable implements Variable<ComplexVariable>, Cloneable {
         return ExpressionUtils.encapsulate(elements, overlays);
     }
 
-    public List<ExpressionOverlay> getOverlaysFraction(int index) {
-        int realIndex = index < 0 ? overlaysLength() - index : index;
+    public List<ExpressionOverlay> getOverlaysFraction(int start, int end) {
+        int realStart = start < 0 ? overlaysLength() + start : start;
+        int realEnd = end < 0 ? overlaysLength() + end : end;
 
-        List<ExpressionOverlay> finalElements = new ArrayList<>(realIndex);
-        for(int i = 0; i < realIndex; i++)
+        List<ExpressionOverlay> finalElements = new ArrayList<>(realEnd);
+        for(int i = realStart; i < realEnd; i++)
             finalElements.add(overlays.get(i));
         return finalElements;
     }
 
     @Override
-    public int compareTo(ComplexVariable o) {
-        return 0;
+    public int compareTo(Variable o) {
+        if(overlaysLength() == 0) return 0;
+        Optional<Float> currentValue = getFinalExponent();
+
+        if(o instanceof SingleCharVariable) {
+            if(currentValue.orElse(-1f) == 1) return 0;
+            else return -1;
+        }
+
+        Optional<Float> oValue = ((ComplexVariable) o).getFinalExponent();
+        if(!oValue.isPresent()) return -1;
+        if(!currentValue.isPresent()) return 1;
+
+        return Float.compare(currentValue.get(), oValue.get());
+    }
+
+    /**
+     * @return empty if the last overlay is not a float exponent, otherwise the exponent
+     */
+    public Optional<Float> getFinalExponent() {
+        if(overlaysLength() == 0) return Optional.empty();
+        if(!(getOverlay(-1) instanceof ExponentOverlay)) return Optional.empty();
+
+        ExponentOverlay last = (ExponentOverlay) getOverlay(-1);
+        if(ExpressionUtils.isANumber(last)) {
+            return Optional.of(last.getElements().get(0).getNumericValue());
+        }
+        return Optional.empty();
     }
 
     public List<ExpressionOverlay> getOverlays() {
         return overlays;
     }
 
+    @Override
     public List<Monomial> getElements() {
         return elements;
     }
 
-    public ExpressionOverlay getLayer(int i) {
-        if(i < 0) return overlays.get(overlays.size()-i);
+    public ExpressionOverlay getOverlay(int i) {
+        if(i < 0) return overlays.get(overlays.size()+i);
         else return overlays.get(i);
     }
 

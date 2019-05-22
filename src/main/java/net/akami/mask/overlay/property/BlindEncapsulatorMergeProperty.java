@@ -7,8 +7,8 @@ public interface BlindEncapsulatorMergeProperty<T extends ExpressionOverlay> ext
 
     @Override
     default boolean isApplicableFor(ComplexVariable v1, ComplexVariable v2) {
-        ExpressionOverlay last1 = v1.getLayer(-1);
-        ExpressionOverlay last2 = v2.getLayer(-1);
+        ExpressionOverlay last1 = v1.getOverlay(-1);
+        ExpressionOverlay last2 = v2.getOverlay(-1);
         if(!(last1.getClass().equals(getSupportedClass()) && last2.getClass().equals(getSupportedClass())))
             return false;
         // Casts are secure

@@ -1,6 +1,8 @@
 package net.akami.mask.expression;
 
 
+import net.akami.mask.core.MaskContext;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +13,9 @@ public class Monomial implements Comparable<Monomial> {
     private final float numericValue;
     private final VariablePart varPart;
 
+    public Monomial(char uniqueVar, MaskContext context) {
+        this(1, new SingleCharVariable(uniqueVar, context));
+    }
     public Monomial(float numericValue, Variable variable) {
         this(numericValue, Collections.singletonList(variable));
     }

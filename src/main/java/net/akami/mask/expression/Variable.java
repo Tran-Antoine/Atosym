@@ -1,6 +1,11 @@
 package net.akami.mask.expression;
 
-public interface Variable<T extends Variable<T>> extends Comparable<T>{
+import java.util.List;
+
+public interface Variable extends Comparable<Variable>{
 
     String getExpression();
+
+    List<Monomial> getElements();
+
 }

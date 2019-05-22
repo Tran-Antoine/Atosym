@@ -74,6 +74,6 @@ public interface MergeBehavior<T> {
      */
     T mergeElement(T a, T b);
 
-    Set<Class<? extends T>> getHandledTypes();
+    Class<? extends T> getHandledType();
 
 }

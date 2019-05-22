@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.core.MaskContext;
+import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.utils.VariableUtils;
 import org.junit.Test;
 
@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VariableTest {
@@ -21,11 +22,16 @@ public class VariableTest {
 
     @Test
     public void dissociateVars() {
-        SingleCharVariable[] simple = {new SingleCharVariable('x', Expression.of(5), MaskContext.DEFAULT)};
-        SingleCharVariable[] fraction = {new SingleCharVariable('x', Expression.of(2.5f), MaskContext.DEFAULT)};
-        SingleCharVariable[] irreducible = {new SingleCharVariable('x', Expression.of('y'), MaskContext.DEFAULT)};
-        assertDissociateVars(Arrays.asList(simple), "xxxxx");
-        assertDissociateVars(Arrays.asList(fraction), "xxx^0.5");
+        ExponentOverlay exp1 = ExponentOverlay.fromExpression(Expression.of(5));
+        ExponentOverlay exp2 = ExponentOverlay.fromExpression(Expression.of(2.5f));
+        ExponentOverlay exp3 = ExponentOverlay.fromExpression(Expression.of('y'));
+        Monomial simpleX = new Monomial('x', DEFAULT);
+
+        ComplexVariable[] simple = {new ComplexVariable(simpleX, exp1)};
+        ComplexVariable[] fraction = {new ComplexVariable(simpleX, exp2)};
+        ComplexVariable[] irreducible = {new ComplexVariable(simpleX, exp3)};
+        assertDissociateVars(Arrays.asList(simple), "x^1.0x^1.0x^1.0x^1.0x^1.0");
+        assertDissociateVars(Arrays.asList(fraction), "x^1.0x^1.0x^0.5");
         assertDissociateVars(Arrays.asList(irreducible), "x^y");
     }
 
@@ -38,7 +44,7 @@ public class VariableTest {
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        List<Variable> variables = VariableUtils.combine(get(v1), get(v2), null);
+        List<Variable> variables = VariableUtils.combine(get(v1), get(v2), DEFAULT);
         List<String> converted = variables
                 .stream()
                 .map(Variable::getExpression)
@@ -52,7 +58,7 @@ public class VariableTest {
 
         int i = 0;
         for(char s : input) {
-            vars[i++] = new SingleCharVariable(s, null, null);
+            vars[i++] = new SingleCharVariable(s, DEFAULT);
         }
         return Arrays.asList(vars);
     }

@@ -240,7 +240,7 @@ public class ExpressionUtils {
     public static boolean isANumber(Monomial element) {
         if(!(element instanceof Monomial)) return false;
 
-        List<Variable> vars = ((Monomial) element).getVarPart();
+        List<Variable> vars = element.getVarPart().getVariables();
         return vars.size() == 0;
     }
 
@@ -252,8 +252,8 @@ public class ExpressionUtils {
     public static boolean isAnInteger(Monomial element) {
         if(!(element instanceof Monomial)) return false;
 
-        List<Variable> vars = ((Monomial) element).getVarPart();
-        return vars.size() == 0 && ((Monomial) element).getNumericValue() % 1 == 0;
+        List<Variable> vars = element.getVarPart().getVariables();
+        return vars.size() == 0 && element.getNumericValue() % 1 == 0;
     }
 
     public static String encapsulate(List<Monomial> elements, List<ExpressionOverlay> layers) {

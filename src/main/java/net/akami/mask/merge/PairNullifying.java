@@ -2,9 +2,6 @@ package net.akami.mask.merge;
 
 import net.akami.mask.core.MaskContext;
 
-import java.util.Collections;
-import java.util.Set;
-
 /**
  * Deletes the elements that are found in both lists. To define whether an element from the first list
  * is also present in the second one, the {@link #equals(Object)} method is called.
@@ -34,7 +31,7 @@ public class PairNullifying implements MergeBehavior<Object> {
     }
 
     @Override
-    public Set<Class<?>> getHandledTypes() {
-        return Collections.singleton(Object.class);
+    public Class<?> getHandledType() {
+        return Object.class;
     }
 }

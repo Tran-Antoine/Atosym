@@ -47,7 +47,7 @@ public class PowMultiplicationProperty implements EncapsulatorMergeProperty {
         Expression last2 = (Expression) l2.getElement(l2.size()-1);
 
         Adder operator = context.getBinaryOperation(Adder.class);
-        copy.add(ExponentEncapsulator.fromExpression(operator.operate(last1, last2)));
+        copy.add(ExponentOverlay.fromExpression(operator.operate(last1, last2)));
         return new ComplexVariable(v1.getElements(), copy);*/
         return null;
     }

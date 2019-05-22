@@ -19,7 +19,7 @@ public class MergeManager {
     private List<MergeBehavior> loadBehaviors(MaskContext context) {
         return new ArrayList<>(Arrays.asList(
                 new MonomialAdditionMerge(context),
-                new VariableCombination(context),
+                new VariableCombinationBehavior(context),
                 new PairNullifying(context)
         ));
     }
@@ -35,43 +35,44 @@ public class MergeManager {
 
     public <T> MergeBehavior<T> getByHandledType(Class<T> clazz) {
         for (MergeBehavior mergeBehavior : behaviors) {
-            if (mergeBehavior.getHandledTypes().contains(clazz))
+            if (mergeBehavior.getHandledType().equals(clazz))
                 return mergeBehavior;
         }
         return null;
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, Class<T> clazz) {
+    public <S extends Comparable<S>> List<S> merge(List<S> self, Class<? super S> clazz) {
         return merge(self, self, getByHandledType(clazz), true);
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, Class<T> clazz) {
+    public <S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, Class<? super S> clazz) {
         return merge(l1, l2, getByHandledType(clazz), false);
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> self, MergeBehavior<T> behavior) {
+    public <S extends Comparable<S>> List<S> merge(List<S> self, MergeBehavior<? super S> behavior) {
         return merge(self, self, behavior, true);
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior) {
+    public<S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior) {
         return merge(l1, l2, behavior, false);
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
     }
 
-    public <T extends Comparable<T>, S extends T> List<S> secureMerge(List<S> l1, List<S> l2, Class<T> clazz) {
+    public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, Class<? super S> clazz) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByHandledType(clazz), false);
     }
 
-    private <T extends Comparable<T>, S extends T> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    private <S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         List<S> finalResult = nonSortedMerge(l1, l2, behavior, singleList);
+        finalResult.removeAll(Collections.singleton(null));
         Collections.sort(finalResult);
         return finalResult;
     }
 
-    public <T, S extends T> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<T> behavior, boolean singleList) {
+    public <S extends Comparable<S>> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         List<S> finalResult = new ArrayList<>();
@@ -88,11 +89,11 @@ public class MergeManager {
                 if (element2 == null) { j++; continue; }
 
                 if (behavior.isMergeable(element, element2)) {
-                    T localResult = behavior.mergeElement(element, element2);
+                    S localResult = (S) behavior.mergeElement(element, element2);
                     l1.set(i, null);
                     l2.set(j, null);
 
-                    finalResult.add((S) localResult);
+                    finalResult.add(localResult);
                     break;
                 }
                 j++;

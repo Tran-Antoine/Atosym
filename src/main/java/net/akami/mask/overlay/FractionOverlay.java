@@ -5,18 +5,18 @@ import net.akami.mask.expression.Monomial;
 
 import java.util.List;
 
-public class FractionEncapsulator extends Expression implements ExpressionOverlay {
+public class FractionOverlay extends Expression implements ExpressionOverlay {
 
-    public FractionEncapsulator(float numericValue) {
+    public FractionOverlay(float numericValue) {
         super(numericValue);
     }
 
-    public FractionEncapsulator(List<Monomial> elements) {
+    public FractionOverlay(List<Monomial> elements) {
         super(elements);
     }
 
-    public static ExponentEncapsulator fromExpression(Expression self) {
-        return new ExponentEncapsulator(self.getElements());
+    public static FractionOverlay fromExpression(Expression self) {
+        return new FractionOverlay(self.getElements());
     }
 
     @Override

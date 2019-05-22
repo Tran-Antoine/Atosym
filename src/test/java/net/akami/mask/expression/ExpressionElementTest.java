@@ -1,12 +1,10 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
-import net.akami.mask.handler.Adder;
-import net.akami.mask.merge.MergeManager;
-import net.akami.mask.merge.VariableCombination;
+import net.akami.mask.merge.VariableCombinationBehavior;
+import net.akami.mask.overlay.ExpressionOverlay;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -54,8 +52,7 @@ public class ExpressionElementTest {
         ComplexVariable m1 = new ComplexVariable(single, layers1);
         ComplexVariable m2 = new ComplexVariable(single, layers2);
 
-        VariableCombination behavior = MergeManager.getByType(VariableCombination.class);
-        behavior.setPropertyManager(DEFAULT.getBinaryOperation(Adder.class).getPropertyManager());
+        VariableCombinationBehavior behavior = DEFAULT.getMergeManager().getByType(VariableCombinationBehavior.class);
         assertThat(m1.equals(m2)).isEqualTo(false);
         assertThat(behavior.isMergeable(m1, m2)).isEqualTo(false);
     }

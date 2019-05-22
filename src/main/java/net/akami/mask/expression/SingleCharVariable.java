@@ -2,7 +2,10 @@ package net.akami.mask.expression;
 
 import net.akami.mask.core.MaskContext;
 
-public class SingleCharVariable implements Variable<SingleCharVariable> {
+import java.util.Collections;
+import java.util.List;
+
+public class SingleCharVariable implements Variable {
 
     private final char var;
     private final MaskContext context;
@@ -14,8 +17,8 @@ public class SingleCharVariable implements Variable<SingleCharVariable> {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof SingleCharVariable)) return false;
-        return var == ((SingleCharVariable) obj).var;
+        if(!(obj instanceof Variable)) return false;
+        return getExpression().equals(((Variable) obj).getExpression());
     }
 
     @Override
@@ -29,8 +32,9 @@ public class SingleCharVariable implements Variable<SingleCharVariable> {
     }
 
     @Override
-    public int compareTo(SingleCharVariable o) {
-        return this.var - o.var;
+    public int compareTo(Variable o) {
+        if(o instanceof ComplexVariable) return 1;
+        return this.var - ((SingleCharVariable) o).var;
     }
 
     public char getVar() {
@@ -39,5 +43,10 @@ public class SingleCharVariable implements Variable<SingleCharVariable> {
 
     public MaskContext getContext() {
         return context;
+    }
+
+    @Override
+    public List<Monomial> getElements() {
+        return Collections.singletonList(new Monomial(var, context));
     }
 }

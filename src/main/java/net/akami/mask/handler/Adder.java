@@ -42,6 +42,12 @@ public class Adder extends BinaryOperationHandler<Expression> {
         return new Expression(Arrays.asList(firstA, firstB));
     }
 
+    public Expression monomialSum(List<Monomial> monomials) {
+        MergeManager mergeManager = context.getMergeManager();
+        List<Monomial> result = mergeManager.merge(monomials, Monomial.class);
+        return new Expression(result);
+    }
+
     // TODO : Maybe remove
     @Override
     public Expression inFormat(Expression origin) {

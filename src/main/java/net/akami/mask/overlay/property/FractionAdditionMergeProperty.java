@@ -1,12 +1,12 @@
 package net.akami.mask.overlay.property;
 
-import net.akami.mask.overlay.FractionEncapsulator;
+import net.akami.mask.overlay.FractionOverlay;
 import net.akami.mask.expression.Expression;
 
 public class FractionAdditionMergeProperty implements FractionMergeProperty {
 
     @Override
-    public boolean isApplicableFor(FractionEncapsulator f1, FractionEncapsulator f2) {
+    public boolean isApplicableFor(FractionOverlay f1, FractionOverlay f2) {
         // equals is overridden in the expression class
         return f1.equals(f2);
     }

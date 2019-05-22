@@ -5,30 +5,32 @@ import net.akami.mask.expression.Monomial;
 
 import java.util.List;
 
-public class ExponentEncapsulator extends Expression implements ExpressionOverlay {
+public class ExponentOverlay extends Expression implements ExpressionOverlay {
 
-    public ExponentEncapsulator(float numericValue) {
+    public ExponentOverlay(float numericValue) {
         super(numericValue);
     }
 
-    public ExponentEncapsulator(List<Monomial> elements) {
+    public ExponentOverlay(List<Monomial> elements) {
         super(elements);
     }
 
-    public static ExponentEncapsulator fromExpression(Expression self) {
-        return new ExponentEncapsulator(self.getElements());
+    public static ExponentOverlay fromExpression(Expression self) {
+        return new ExponentOverlay(self.getElements());
     }
 
     @Override
     public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
+        if(this.equals(Expression.of(1))) return new String[]{"", ""};
+
         Monomial first;
-        boolean endNoBrackets = length() == 1 && (first = this.elements.get(0)) instanceof Monomial
-                && !((Monomial) first).requiresBrackets();
+        boolean endNoBrackets = length() == 1 && (first = this.elements.get(0)) != null
+                && !first.requiresBrackets();
 
         boolean beginNoBrackets = false;
 
-        if (elements.size() == 1 && elements.get(0) instanceof Monomial) {
-            Monomial exponent = (Monomial) elements.get(0);
+        if (elements.size() == 1 && elements.get(0) != null) {
+            Monomial exponent = elements.get(0);
             if(!exponent.requiresBrackets()) beginNoBrackets = true;
 
             if(!beginNoBrackets && index != 0) {

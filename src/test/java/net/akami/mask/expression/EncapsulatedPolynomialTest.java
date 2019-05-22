@@ -1,6 +1,6 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.overlay.ExponentEncapsulator;
+import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
@@ -21,7 +21,7 @@ public class EncapsulatedPolynomialTest {
                 new NumberElement(3));
 
         List<ExpressionOverlay> layers = Arrays.asList(
-                new ExponentEncapsulator(monomials),
+                new ExponentOverlay(monomials),
                 new CosineFunction(DEFAULT),
                 new SinusFunction(DEFAULT)
         );

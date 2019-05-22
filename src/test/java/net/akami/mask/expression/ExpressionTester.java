@@ -4,6 +4,8 @@ import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 import net.akami.mask.handler.PowerCalculator;
+import net.akami.mask.overlay.ExponentOverlay;
+import net.akami.mask.overlay.FractionOverlay;
 import org.junit.Test;
 
 import static net.akami.mask.core.MaskContext.DEFAULT;
@@ -40,7 +42,7 @@ public class ExpressionTester {
     public void multiElementsMult() {
         Expression e1 = new Expression(new NumberElement(3), create(1, 'x'));
         Expression e2 = new Expression(new NumberElement(2), create(1, 'x'));
-        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("x^2.0+5.0x+6.0");
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("5.0x+x^2.0+6.0");
 
         /*Expression f1 = Expression.of(new SimpleFraction(6, Expression.of('x')));
         Expression f2 = Expression.of(3);
@@ -86,26 +88,32 @@ public class ExpressionTester {
         Monomial m1 = create(3, 'x');
         Monomial m2 = create(3, 'y');
         Monomial m3 = create(6, 'x');
-        Monomial m4 = new Monomial(12, new SingleCharVariable('x', Expression.of(2), DEFAULT));
+        Monomial simpleX = new Monomial('x', DEFAULT);
+        Monomial m4 = new Monomial(12, new ComplexVariable(simpleX, ExponentOverlay.fromExpression(Expression.of(2))));
 
-        assertThat(divider.monomialDivision(m1, m2).getExpression()).isEqualTo("x/y");
-        assertThat(divider.monomialDivision(m1, m3).getExpression()).isEqualTo("1.0/2.0");
-        assertThat(divider.monomialDivision(m2, m3).getExpression()).isEqualTo("y/(2.0x)");
-        assertThat(divider.monomialDivision(m4, m3).getExpression()).isEqualTo("2.0x");
-        assertThat(divider.monomialDivision(m3, m4).getExpression()).isEqualTo("1.0/(2.0x)");
+        assertThat(divider.simpleDivision(m1, m2).getExpression()).isEqualTo("x/y");
+        assertThat(divider.simpleDivision(m1, m3).getExpression()).isEqualTo("1.0/2.0");
+        assertThat(divider.simpleDivision(m2, m3).getExpression()).isEqualTo("y/(2.0x)");
+        assertThat(divider.simpleDivision(m4, m3).getExpression()).isEqualTo("2.0x");
+        assertThat(divider.simpleDivision(m3, m4).getExpression()).isEqualTo("1.0/(2.0x)");
     }
 
     @Test
     public void simpleDivisionTest() {
 
-        /*SimpleFraction f1 = new SimpleFraction(3, Expression.of('x'));
-        SimpleFraction f2 = new SimpleFraction(4, Expression.of('x'));
-        Monomial m1 = new Monomial('x', DEFAULT);
-        Monomial m2 = new Monomial('y', DEFAULT);
+        FractionOverlay f1 = FractionOverlay.fromExpression(Expression.of('x'));
+        Monomial m1 = new NumberElement(4);
+        Monomial m2 = new NumberElement(3);
 
-        assertThat(divider.simpleDivision(f1, m1).getElement(0).getExpression()).isEqualTo("3.0/x^2.0");
-        assertThat(divider.simpleDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
-        assertThat(divider.simpleDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");*/
+        ComplexVariable c1 = new ComplexVariable(m1, f1);
+        ComplexVariable c2 = new ComplexVariable(m2, f1);
+
+        Monomial m3 = new Monomial(1, c1);
+        Monomial m4 = new Monomial(1, c2);
+
+        assertThat(divider.simpleDivision(m3, m4).getExpression()).isEqualTo("4.0/3.0");
+        //assertThat(divider.simpleDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
+        //assertThat(divider.simpleDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");
     }
 
     @Test
@@ -121,7 +129,7 @@ public class ExpressionTester {
     }
 
     private Monomial create(float a, char v) {
-        return new Monomial(a, new SingleCharVariable(v, null, null));
+        return new Monomial(a, new SingleCharVariable(v, DEFAULT));
     }
 
     private void assertSimpleSum(String a, String b, String result) {
