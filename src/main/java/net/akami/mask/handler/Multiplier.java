@@ -5,7 +5,6 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.FunctionSign;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
-import net.akami.mask.overlay.property.PowMultiplicationProperty;
 import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
@@ -16,19 +15,17 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
     public Multiplier(MaskContext context) {
         super(context);
-
         addDefaultProperties();
     }
 
     private void addDefaultProperties() {
-        super.getPropertyManager().addProperty(new PowMultiplicationProperty(context));
+        //super.getPropertyManager().addProperty(new PowMultiplicationProperty(context));
     }
 
     @Override
     public Expression operate(Expression a, Expression b) {
 
         LOGGER.error("Operating mult {} * {}", a, b);
-        // TODO : add support for functions
         if(a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
         if(b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
 
@@ -42,6 +39,12 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
         List<Monomial> mergedElements = context.getMergeManager().merge(elements, Monomial.class);
         return new Expression(mergedElements);
+    }
+
+    public float fullNumericMult(float a, float b) {
+        BigDecimal bigA = new BigDecimal(a);
+        BigDecimal bigB = new BigDecimal(b);
+        return bigA.multiply(bigB).floatValue();
     }
 
     public Monomial simpleMult(Monomial a, Monomial b) {

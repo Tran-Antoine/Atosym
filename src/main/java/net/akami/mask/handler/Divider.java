@@ -10,6 +10,7 @@ import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.overlay.FractionOverlay;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
+import net.akami.mask.utils.VariableComparator;
 import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
@@ -92,14 +93,14 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
         MergeManager manager = context.getMergeManager();
         MergeBehavior<Object> nullifying = manager.getByType(PairNullifying.class);
-        manager.merge(numVariables, denVariables, nullifying);
+        manager.merge(numVariables, denVariables, nullifying, false, VariableComparator.COMPARATOR);
         manager.merge(aFloatList, bFloatList, nullifying);
 
         filterNull(numVariables, denVariables, aFloatList, bFloatList);
 
         MergeBehavior<Variable> joinBehavior = manager.getByType(VariableCombinationBehavior.class);
-        numVariables = manager.merge(numVariables, joinBehavior);
-        denVariables = manager.merge(denVariables, joinBehavior);
+        numVariables = manager.merge(numVariables, joinBehavior, VariableComparator.COMPARATOR);
+        denVariables = manager.merge(denVariables, joinBehavior, VariableComparator.COMPARATOR);
 
         aFloat = multJoin(aFloatList);
         bFloat = multJoin(bFloatList);
@@ -141,7 +142,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
             }
         }
     }
-    
+
     private void filterNull(List... targets) {
         for(List list : targets) {
             list.removeAll(Collections.singleton(null));

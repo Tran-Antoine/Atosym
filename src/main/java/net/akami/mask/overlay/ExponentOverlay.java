@@ -44,4 +44,10 @@ public class ExponentOverlay extends Expression implements ExpressionOverlay {
         String formattedEnd = endNoBrackets ? this.expression : '('+ this.expression +')';
         return new String[]{begin, half+'^'+formattedEnd};
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ExponentOverlay)) return false;
+        return super.equals(obj);
+    }
 }

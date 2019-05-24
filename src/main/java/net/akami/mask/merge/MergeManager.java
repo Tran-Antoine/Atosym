@@ -52,6 +52,9 @@ public class MergeManager {
     public <S extends Comparable<S>> List<S> merge(List<S> self, MergeBehavior<? super S> behavior) {
         return merge(self, self, behavior, true);
     }
+    public <S> List<S> merge(List<S> self, MergeBehavior<? super S> behavior, Comparator<S> comparator) {
+        return merge(self, self, behavior, true, comparator);
+    }
 
     public<S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior) {
         return merge(l1, l2, behavior, false);
@@ -60,21 +63,39 @@ public class MergeManager {
     public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
     }
+    public <S> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList, Comparator<S> comparator) {
+        return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList, comparator);
+    }
+
+    public <S> List<S> secureMerge(List<S> l1, List<S> l2, Class<? super S> clazz, Comparator<S> comparator) {
+        return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByHandledType(clazz), false, comparator);
+    }
 
     public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, Class<? super S> clazz) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByHandledType(clazz), false);
     }
+    public <S> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList, Comparator<S> comparator) {
+        List<S> finalResult = nonSortedMerge(l1, l2, behavior, singleList);
+        finalResult.removeAll(Collections.singleton(null));
+        finalResult.sort(comparator);
+        return finalResult;
+    }
 
-    private <S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
+    public <S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         List<S> finalResult = nonSortedMerge(l1, l2, behavior, singleList);
         finalResult.removeAll(Collections.singleton(null));
         Collections.sort(finalResult);
         return finalResult;
     }
 
-    public <S extends Comparable<S>> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
+    public <S> List<S> nonSortedSecuredMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
+        return nonSortedMerge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
+    }
+    @SuppressWarnings("unchecked")
+    public <S> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
+        boolean requestsStartingOver = false;
         List<S> finalResult = new ArrayList<>();
         int i = 0;
         for (S element : l1) {
@@ -89,11 +110,15 @@ public class MergeManager {
                 if (element2 == null) { j++; continue; }
 
                 if (behavior.isMergeable(element, element2)) {
-                    S localResult = (S) behavior.mergeElement(element, element2);
+                    MergeResult<S> rawResult = (MergeResult<S>) behavior.mergeElement(element, element2);
+                    List<S> localResult = rawResult.result;
                     l1.set(i, null);
                     l2.set(j, null);
 
-                    finalResult.add(localResult);
+                    finalResult.addAll(localResult);
+                    if(rawResult.requestsStartingOver) {
+                        requestsStartingOver = true;
+                    }
                     break;
                 }
                 j++;
@@ -104,6 +129,9 @@ public class MergeManager {
         if (!singleList)
             finalResult.addAll(l2.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 
+        if(requestsStartingOver) {
+            finalResult = nonSortedMerge(finalResult, finalResult, behavior, true);
+        }
         return finalResult;
     }
 

@@ -4,6 +4,7 @@ import net.akami.mask.core.MaskContext;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class SingleCharVariable implements Variable {
 
@@ -31,12 +32,6 @@ public class SingleCharVariable implements Variable {
         return getExpression();
     }
 
-    @Override
-    public int compareTo(Variable o) {
-        if(o instanceof ComplexVariable) return 1;
-        return this.var - ((SingleCharVariable) o).var;
-    }
-
     public char getVar() {
         return var;
     }
@@ -48,5 +43,10 @@ public class SingleCharVariable implements Variable {
     @Override
     public List<Monomial> getElements() {
         return Collections.singletonList(new Monomial(var, context));
+    }
+
+    @Override
+    public Optional<Float> getFinalExponent() {
+        return Optional.of(1f);
     }
 }

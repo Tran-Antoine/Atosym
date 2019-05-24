@@ -26,8 +26,8 @@ public class PairNullifying implements MergeBehavior<Object> {
     }
 
     @Override
-    public Object mergeElement(Object a, Object b) {
-        return null;
+    public MergeResult<Object> mergeElement(Object a, Object b) {
+        return new MergeResult<>((Object)null, false);
     }
 
     @Override

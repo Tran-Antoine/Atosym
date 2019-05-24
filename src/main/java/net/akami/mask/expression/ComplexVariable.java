@@ -75,26 +75,10 @@ public class ComplexVariable implements Variable, Cloneable {
         return finalElements;
     }
 
-    @Override
-    public int compareTo(Variable o) {
-        if(overlaysLength() == 0) return 0;
-        Optional<Float> currentValue = getFinalExponent();
-
-        if(o instanceof SingleCharVariable) {
-            if(currentValue.orElse(-1f) == 1) return 0;
-            else return -1;
-        }
-
-        Optional<Float> oValue = ((ComplexVariable) o).getFinalExponent();
-        if(!oValue.isPresent()) return -1;
-        if(!currentValue.isPresent()) return 1;
-
-        return Float.compare(currentValue.get(), oValue.get());
-    }
-
     /**
      * @return empty if the last overlay is not a float exponent, otherwise the exponent
      */
+    @Override
     public Optional<Float> getFinalExponent() {
         if(overlaysLength() == 0) return Optional.empty();
         if(!(getOverlay(-1) instanceof ExponentOverlay)) return Optional.empty();
@@ -123,5 +107,10 @@ public class ComplexVariable implements Variable, Cloneable {
     @Override
     public Object clone() {
         return new ComplexVariable(getElements());
+    }
+
+    @Override
+    public String toString() {
+        return getExpression();
     }
 }

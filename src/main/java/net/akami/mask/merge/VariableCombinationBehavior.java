@@ -8,7 +8,6 @@ import net.akami.mask.overlay.ExpressionOverlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -59,11 +58,11 @@ public class VariableCombinationBehavior implements MergeBehavior<Variable> {
     }
 
     @Override
-    public Variable mergeElement(Variable a, Variable b) {
+    public MergeResult<Variable> mergeElement(Variable a, Variable b) {
         if(a instanceof SingleCharVariable && b instanceof SingleCharVariable) {
             ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
             Monomial single = new Monomial(((SingleCharVariable) a).getVar(), context);
-            return new ComplexVariable(Collections.singletonList(single), Collections.singletonList(exponent));
+            return new MergeResult<>(new ComplexVariable(single, exponent), false);
         }
 
         Adder operator = context.getBinaryOperation(Adder.class);
@@ -83,14 +82,14 @@ public class VariableCombinationBehavior implements MergeBehavior<Variable> {
         ExponentOverlay finalExp = ExponentOverlay.fromExpression(operator.operate(exponentA, exponentB));
         List<ExpressionOverlay> newOverlays = compA.getOverlaysFraction(0, -1);
         newOverlays.add(finalExp);
-        return new ComplexVariable(compA.getElements(), newOverlays);
+        return new MergeResult<>(new ComplexVariable(compA.getElements(), newOverlays), false);
     }
 
-    private ComplexVariable mergeSingleWithComplex(SingleCharVariable a, ComplexVariable b, Adder operator) {
+    private MergeResult<Variable> mergeSingleWithComplex(SingleCharVariable a, ComplexVariable b, Adder operator) {
         Monomial single = new Monomial(a.getVar(), context);
         ExponentOverlay newExponent = ExponentOverlay.fromExpression(
                 operator.operate((Expression) b.getOverlay(-1), Expression.of(1)));
-        return new ComplexVariable(Collections.singletonList(single), Collections.singletonList(newExponent));
+        return new MergeResult<>(new ComplexVariable(single, newExponent), false);
     }
     
     @Override

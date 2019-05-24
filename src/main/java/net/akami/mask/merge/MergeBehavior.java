@@ -1,7 +1,5 @@
 package net.akami.mask.merge;
 
-import java.util.Set;
-
 /**
  *
  * WARNING : The javadoc of this interface is not up to date thus is not valid. It will be rewritten soon.
@@ -12,7 +10,7 @@ import java.util.Set;
  * Basically, you have two lists, both containing the same kind of elements. Theses elements must
  * implement the MergeBehavior interface. You can then merge these two lists into one single list. if two elements from
  * different lists are mergeables (defined by the {@link #isMergeable(T, T)} method), a merge defined by the
- * {@link #mergeElement(T, T)} method will be added into a new list. In the end, all elements which could not be
+ * {@link #mergeElement(Object, Object)} method will be added into a new list. In the end, all elements which could not be
  * merged will be added into the new list.
  *
  * Example :
@@ -72,7 +70,7 @@ public interface MergeBehavior<T> {
      * @param other
      * @return a merge computed from the object itself and the parameter
      */
-    T mergeElement(T a, T b);
+    MergeResult<T> mergeElement(T a, T b);
 
     Class<? extends T> getHandledType();
 

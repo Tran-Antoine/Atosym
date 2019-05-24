@@ -44,6 +44,16 @@ public class VariablePart implements Iterable<Variable> {
         return variables.size() == 1 && variables.get(0) instanceof SingleCharVariable;
     }
 
+    public boolean hasOverlays() {
+        for(Variable variable : variables) {
+            if(variable instanceof SingleCharVariable) continue;
+
+            ComplexVariable complex = (ComplexVariable) variable;
+            if(complex.overlaysLength() != 0) return true;
+        }
+        return false;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof VariablePart)) return false;
@@ -57,5 +67,9 @@ public class VariablePart implements Iterable<Variable> {
 
     public List<Variable> getVariables() {
         return variables;
+    }
+
+    public int length() {
+        return variables.size();
     }
 }

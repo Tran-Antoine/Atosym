@@ -1,6 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.overlay.ExponentOverlay;
+import net.akami.mask.utils.VariableComparator;
 import net.akami.mask.utils.VariableUtils;
 import org.junit.Test;
 
@@ -33,6 +34,16 @@ public class VariableTest {
         assertDissociateVars(Arrays.asList(simple), "x^1.0x^1.0x^1.0x^1.0x^1.0");
         assertDissociateVars(Arrays.asList(fraction), "x^1.0x^1.0x^0.5");
         assertDissociateVars(Arrays.asList(irreducible), "x^y");
+    }
+
+    @Test
+    public void sortingVars() {
+        SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);
+        ExponentOverlay squared = ExponentOverlay.fromExpression(Expression.of(2));
+        ComplexVariable complex = new ComplexVariable(new Monomial('x',DEFAULT), squared);
+        List<Variable> list = Arrays.asList(simple, complex);
+        list.sort(VariableComparator.COMPARATOR);
+        System.out.println(list);
     }
 
     private void assertDissociateVars(List<Variable> input, String result) {

@@ -1,12 +1,12 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.expression.Expression;
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
 import net.akami.mask.utils.MathUtils;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.akami.mask.utils.ReducerFactory;
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DividerTest {
 
@@ -25,8 +25,8 @@ public class DividerTest {
         assertDivision("4", "2","2.0");
         assertDivision("6.4+6.4z", "3.2","2.0z+2.0");
         assertDivision("-2x", "4","x/-2.0");
-        assertDivision("5+6", "3","5.0/3.0+2.0");
-        assertDivision("6+x", "2","3.0+x/2.0");
+        assertDivision("5+6", "3","3.6666667");
+        assertDivision("6+x", "2","x/2.0+3.0");
         assertDivision("2x", "x","2.0");
         assertDivision("2x+3", "x","2.0+3.0/x");
     }

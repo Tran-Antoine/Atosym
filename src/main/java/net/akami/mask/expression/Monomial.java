@@ -2,6 +2,7 @@ package net.akami.mask.expression;
 
 
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.utils.VariableComparator;
 
 import java.util.Collections;
 import java.util.List;
@@ -106,16 +107,11 @@ public class Monomial implements Comparable<Monomial> {
     public int compareTo(Monomial o) {
         if(varPart.isEmpty()) return 1;
         if(o.varPart.isEmpty()) return -1;
-        if(!areVariablesExclusivelySimples() || !o.areVariablesExclusivelySimples()) return 0;
 
-        float selfDegree = getMaxDegree();
-        float oDegree = o.getMaxDegree();
+        Variable self = getSignificantSortingVariable();
+        Variable other = o.getSignificantSortingVariable();
 
-        return Float.compare(oDegree, selfDegree);
-    }
-
-    public float getMaxDegree() {
-        return 0;
+        return VariableComparator.COMPARATOR.compare(self, other);
     }
 
     public boolean areVariablesExclusivelySimples() {
@@ -123,5 +119,19 @@ public class Monomial implements Comparable<Monomial> {
             if (variable instanceof ComplexVariable) return false;
         }
         return true;
+    }
+
+    public Variable getSignificantSortingVariable() {
+        Variable current = null;
+        float max = 0;
+
+        for(Variable variable : varPart) {
+            float value = variable.getFinalExponent().orElse(1f);
+            if(value > max) {
+                max = value;
+                current = variable;
+            }
+        }
+        return current;
     }
 }

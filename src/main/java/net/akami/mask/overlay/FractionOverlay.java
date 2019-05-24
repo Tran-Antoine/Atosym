@@ -35,4 +35,10 @@ public class FractionOverlay extends Expression implements ExpressionOverlay {
         result[1] = insightsEnd + selfExpression;
         return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof FractionOverlay)) return false;
+        return super.equals(obj);
+    }
 }

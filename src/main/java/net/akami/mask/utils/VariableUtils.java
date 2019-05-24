@@ -12,7 +12,6 @@ import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -29,8 +28,7 @@ public class VariableUtils {
         List<Variable> a2Copy = new ArrayList<>();
         a1.forEach(a1Copy::add);
         a2.forEach(a2Copy::add);
-        List<Variable> finalVars = manager.merge(a1Copy, a2Copy, behavior);
-        Collections.sort(finalVars);
+        List<Variable> finalVars = manager.merge(a1Copy, a2Copy, behavior, false, VariableComparator.COMPARATOR);
         return finalVars;
     }
 
