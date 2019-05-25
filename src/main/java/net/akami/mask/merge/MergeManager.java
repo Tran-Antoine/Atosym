@@ -92,7 +92,7 @@ public class MergeManager {
         return nonSortedMerge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
     }
     @SuppressWarnings("unchecked")
-    public <S> List<S> nonSortedMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
+    public <S> List<S> nonSortedMerge(List<S> l1, List<S> l2, final MergeBehavior<? super S> behavior, boolean singleList) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
         boolean requestsStartingOver = false;

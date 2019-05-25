@@ -5,6 +5,9 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.FunctionSign;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
+import net.akami.mask.merge.OverlayMultiplicationMerge;
+import net.akami.mask.overlay.property.BaseEquivalenceMultProperty;
+import net.akami.mask.overlay.property.FractionMultProperty;
 import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
@@ -19,7 +22,10 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     }
 
     private void addDefaultProperties() {
-        //super.getPropertyManager().addProperty(new PowMultiplicationProperty(context));
+        super.getPropertyManager().addProperty(
+                new BaseEquivalenceMultProperty(context),
+                new FractionMultProperty(context)
+        );
     }
 
     @Override
@@ -41,18 +47,31 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         return new Expression(mergedElements);
     }
 
-    public float fullNumericMult(float a, float b) {
-        BigDecimal bigA = new BigDecimal(a);
-        BigDecimal bigB = new BigDecimal(b);
-        return bigA.multiply(bigB).floatValue();
+    public Monomial simpleMult(Monomial a, Monomial b) {
+        if(a.getVarPart().isSimple() && b.getVarPart().isSimple())
+            return noLayersMult(a, b);
+
+        return complexMult(a, b);
     }
 
-    public Monomial simpleMult(Monomial a, Monomial b) {
+    public Monomial noLayersMult(Monomial a, Monomial b) {
         BigDecimal bigA = new BigDecimal(a.getNumericValue());
         BigDecimal bigB = new BigDecimal(b.getNumericValue());
         float numResult = bigA.multiply(bigB).floatValue();
         List<Variable> numVariables = VariableUtils.combine(a.getVarPart(), b.getVarPart(), context);
         return new Monomial(numResult, numVariables);
+    }
+
+    private Monomial complexMult(Monomial a, Monomial b) {
+        OverlayMultiplicationMerge merge = new OverlayMultiplicationMerge(a, b, propertyManager.getProperties());
+        float floatMult = numericMult(a.getNumericValue(), b.getNumericValue());
+        return new Monomial(floatMult, merge.merge());
+    }
+
+    public float numericMult(float a, float b) {
+        BigDecimal bigA = new BigDecimal(a);
+        BigDecimal bigB = new BigDecimal(b);
+        return bigA.multiply(bigB).floatValue();
     }
 
     @Override

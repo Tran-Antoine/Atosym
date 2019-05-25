@@ -40,7 +40,7 @@ public class VariableUtils {
             if(var instanceof SingleCharVariable) {finalVars.add(var); continue; }
 
             ComplexVariable complexVar = (ComplexVariable) var;
-            if(complexVar.overlaysLength() == 0) {finalVars.add((complexVar)); continue; }
+            if(complexVar.getOverlaysSize() == 0) {finalVars.add((complexVar)); continue; }
 
             ExpressionOverlay last = complexVar.getOverlay(-1);
 
@@ -50,8 +50,8 @@ public class VariableUtils {
 
             if(ExpressionUtils.isANumber(exponent)) {
                 float expValue = exponent.get(0).getNumericValue();
-                List<ExpressionOverlay> finalOverlays = complexVar.getOverlaysFraction(0, -1);
-                finalOverlays.add(ExponentOverlay.fromExpression(Expression.of(1)));
+                List<ExpressionOverlay> finalOverlays = complexVar.getOverlaysSection(0, -1);
+                finalOverlays.add(ExponentOverlay.EXPONENT_NULL_FACTOR);
 
                 while (expValue > 1) {
                     finalVars.add(new ComplexVariable(complexVar.getElements(), finalOverlays));
@@ -59,7 +59,7 @@ public class VariableUtils {
                 }
 
                 if (expValue != 0) {
-                    List<ExpressionOverlay> otherFinalOverlays = complexVar.getOverlaysFraction(0, -1);
+                    List<ExpressionOverlay> otherFinalOverlays = complexVar.getOverlaysSection(0, -1);
                     otherFinalOverlays.add(ExponentOverlay.fromExpression(Expression.of(expValue)));
                     finalVars.add(new ComplexVariable(complexVar.getElements(), otherFinalOverlays));
                 }

@@ -4,17 +4,16 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.ComplexVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.NumberElement;
+import net.akami.mask.expression.VariablePart;
 import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
-import net.akami.mask.overlay.ExpressionOverlay;
-import net.akami.mask.overlay.FractionOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class CommonDenominatorAdditionProperty implements OverallMergeProperty {
+public class CommonDenominatorAdditionProperty implements OverallMergeProperty<Monomial, List<Monomial>, NullPacket> {
 
     private MaskContext context;
 
@@ -23,23 +22,18 @@ public class CommonDenominatorAdditionProperty implements OverallMergeProperty {
     }
 
     @Override
-    public boolean isApplicable(Monomial m1, Monomial m2) {
-        if(m1.getVarPart().length() != 1 || m2.getVarPart().length() != 1) return false;
-        if(!(m1.getVarPart().get(0) instanceof ComplexVariable && m2.getVarPart().get(0) instanceof ComplexVariable))
-            return false;
+    public Optional<NullPacket> isApplicable(Monomial m1, Monomial m2) {
+        VariablePart part1 = m1.getVarPart();
+        VariablePart part2 = m2.getVarPart();
 
-        ComplexVariable complex1 = (ComplexVariable) m1.getVarPart().get(0);
-        ComplexVariable complex2 = (ComplexVariable) m2.getVarPart().get(0);
-        if(complex1.overlaysLength() == 0) return false;
-        if(complex2.overlaysLength() == 0) return false;
+        if(part1.size() != 1 || part2.size() != 1) return Optional.empty();
+        if(!(part1.get(0).isFraction() && part2.get(0).isFraction())) return Optional.empty();
 
-        if(!(complex1.getOverlay(-1) instanceof FractionOverlay)) return false;
-        // if the other one is not a fraction, equals will return false anyway
-        return complex1.equals(complex2);
+        return part1.get(0).equals(part2.get(0)) ? Optional.of(new NullPacket()) : Optional.empty();
     }
 
     @Override
-    public List<Monomial> result(Monomial m1, Monomial m2) {
+    public List<Monomial> result(Monomial m1, Monomial m2, NullPacket packet) {
         ComplexVariable uniqueVar1 = (ComplexVariable) m1.getVarPart().get(0);
         ComplexVariable uniqueVar2 = (ComplexVariable) m2.getVarPart().get(0);
 
@@ -55,20 +49,14 @@ public class CommonDenominatorAdditionProperty implements OverallMergeProperty {
 
     private Expression getNumerator(ComplexVariable var, float numericValue) {
 
-        NumberElement number = new NumberElement(numericValue);
-        /* If there are several layers, that means that getElements() will skip the other layers.
-         * Therefore, we need to check it*/
-        if(var.overlaysLength() > 1) {
-            List<ExpressionOverlay> newOverlays = var.getOverlaysFraction(0, -1);
-            Monomial singleMonomial = new Monomial(1, new ComplexVariable(var.getElements(), newOverlays));
-            return new Expression(singleMonomial, number);
-        }
-
+        // Read-only list
+        List<Monomial> initialElements = var.uncover(1);
         List<Monomial> finalMonomials = new ArrayList<>();
+
         Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
 
-        for(Monomial current : var.getElements()) {
-            float replacementFloat = multiplier.fullNumericMult(current.getNumericValue(), numericValue);
+        for(Monomial current : initialElements) {
+            float replacementFloat = multiplier.numericMult(current.getNumericValue(), numericValue);
             Monomial replacement = new Monomial(replacementFloat, current.getVarPart());
             finalMonomials.add(replacement);
         }

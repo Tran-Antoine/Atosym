@@ -5,9 +5,6 @@ import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.Adder;
 import net.akami.mask.overlay.property.MergePropertyManager;
 
-import java.util.List;
-import java.util.Optional;
-
 public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
 
     private MaskContext context;
@@ -22,21 +19,17 @@ public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
             return a.hasSameVariablePartAs(b);
         }
         MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
+        // TODO : avoid looping twice, one here and the second one in the mergeElement() method
         return propertyManager.hasOverallAppliance(a, b);
     }
 
     @Override
     public MergeResult<Monomial> mergeElement(Monomial a, Monomial b) {
+        Adder adder = context.getBinaryOperation(Adder.class);
         if(a.getVarPart().isSimple() && b.getVarPart().isSimple()) {
-            return new MergeResult<>(context.getBinaryOperation(Adder.class).simpleSum(a, b), false);
+            return new MergeResult<>(adder.simpleSum(a, b), false);
         }
-        MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
-
-        OverlayAdditionMerge additionMerge = new OverlayAdditionMerge(a, b, propertyManager.getProperties());
-        Optional<List<Monomial>> result = additionMerge.merge();
-        if(!result.isPresent()) throw new RuntimeException("isMergeable returned true but couldn't find a result");
-
-        return new MergeResult<>(result.get(), additionMerge.startingOverRequested());
+        return adder.complexSum(a, b);
     }
 
     @Override

@@ -21,7 +21,7 @@ public class Subtractor extends BinaryOperationHandler<Expression> {
 
         for(Monomial bElement : b.getElements()) {
             Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
-            opposite.add(multiplier.simpleMult(new NumberElement(-1.0f), bElement));
+            opposite.add(multiplier.noLayersMult(new NumberElement(-1.0f), bElement));
         }
 
         return context.getBinaryOperation(Adder.class).operate(a, new Expression(opposite));

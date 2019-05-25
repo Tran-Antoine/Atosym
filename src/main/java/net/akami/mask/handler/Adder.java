@@ -4,12 +4,13 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.merge.MergeManager;
-import net.akami.mask.overlay.property.CommonDenominatorAdditionProperty;
-import net.akami.mask.overlay.property.CosineSinusSquaredProperty;
-import net.akami.mask.overlay.property.IdenticalVariablesAdditionProperty;
+import net.akami.mask.merge.MergeResult;
+import net.akami.mask.merge.OverlayAdditionMerge;
+import net.akami.mask.overlay.property.*;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Adder extends BinaryOperationHandler<Expression> {
@@ -56,6 +57,20 @@ public class Adder extends BinaryOperationHandler<Expression> {
         } else {
             throw new RuntimeException("isMergeable returned true but couldn't find a result");
         }
+    }
+
+    public MergeResult<Monomial> complexSum(Monomial a, Monomial b) {
+        MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
+
+        List<OverallMergeProperty> overallProperties = propertyManager.getProperties()
+                .stream()
+                .map(overlay -> (OverallMergeProperty) overlay)
+                .collect(Collectors.toList());
+        OverlayAdditionMerge additionMerge = new OverlayAdditionMerge(a, b, overallProperties);
+        Optional<List<Monomial>> result = additionMerge.merge();
+        if(!result.isPresent()) throw new RuntimeException("isMergeable returned true but couldn't find a result");
+
+        return new MergeResult<>(result.get(), additionMerge.startingOverRequested());
     }
 
     public Expression monomialSum(List<Monomial> monomials) {

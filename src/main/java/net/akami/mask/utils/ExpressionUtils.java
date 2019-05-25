@@ -238,8 +238,6 @@ public class ExpressionUtils {
     }
 
     public static boolean isANumber(Monomial element) {
-        if(!(element instanceof Monomial)) return false;
-
         List<Variable> vars = element.getVarPart().getVariables();
         return vars.size() == 0;
     }
@@ -250,8 +248,6 @@ public class ExpressionUtils {
     }
 
     public static boolean isAnInteger(Monomial element) {
-        if(!(element instanceof Monomial)) return false;
-
         List<Variable> vars = element.getVarPart().getVariables();
         return vars.size() == 0 && element.getNumericValue() % 1 == 0;
     }

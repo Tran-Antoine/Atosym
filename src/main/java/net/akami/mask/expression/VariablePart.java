@@ -49,7 +49,7 @@ public class VariablePart implements Iterable<Variable> {
             if(variable instanceof SingleCharVariable) continue;
 
             ComplexVariable complex = (ComplexVariable) variable;
-            if(complex.overlaysLength() != 0) return true;
+            if(complex.getOverlaysSize() != 0) return true;
         }
         return false;
     }
@@ -67,9 +67,5 @@ public class VariablePart implements Iterable<Variable> {
 
     public List<Variable> getVariables() {
         return variables;
-    }
-
-    public int length() {
-        return variables.size();
     }
 }

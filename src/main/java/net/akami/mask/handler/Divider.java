@@ -128,7 +128,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
             if(var instanceof  SingleCharVariable) continue;
 
             ComplexVariable complexVar = (ComplexVariable) var;
-            if(complexVar.overlaysLength() == 0) continue;
+            if(complexVar.getOverlaysSize() == 0) continue;
 
             ExpressionOverlay last = complexVar.getOverlay(-1);
             if(last instanceof FractionOverlay) {

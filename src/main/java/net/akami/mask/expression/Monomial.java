@@ -114,7 +114,7 @@ public class Monomial implements Comparable<Monomial> {
         return VariableComparator.COMPARATOR.compare(self, other);
     }
 
-    public boolean areVariablesExclusivelySimples() {
+    public boolean isSimple() {
         for (Variable variable : varPart) {
             if (variable instanceof ComplexVariable) return false;
         }

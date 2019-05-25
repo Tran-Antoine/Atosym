@@ -9,26 +9,26 @@ import net.akami.mask.merge.MergeManager;
 import net.akami.mask.merge.PairNullifying;
 import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.overlay.property.CosineSinusSquaredProperty.CosineSinusSquaredPacket;
 import net.akami.mask.utils.VariableComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-public class CosineSinusSquaredProperty implements OverallMergeProperty {
+public class CosineSinusSquaredProperty implements OverallMergeProperty<Monomial, List<Monomial>, CosineSinusSquaredPacket> {
 
     private MaskContext context;
-    private ComplexVariable complex1;
-    private ComplexVariable complex2;
 
     public CosineSinusSquaredProperty(MaskContext context) {
         this.context = context;
     }
 
     @Override
-    public boolean isApplicable(Monomial m1, Monomial m2) {
+    public Optional<CosineSinusSquaredPacket> isApplicable(Monomial m1, Monomial m2) {
 
-        if(m1.getNumericValue() != m2.getNumericValue()) return false;
+        if(m1.getNumericValue() != m2.getNumericValue()) return Optional.empty();
 
         List<Variable> l1 = m1.getVarPart().getVariables();
         List<Variable> l2 = m2.getVarPart().getVariables();
@@ -36,45 +36,46 @@ public class CosineSinusSquaredProperty implements OverallMergeProperty {
         MergeManager mergeManager = context.getMergeManager();
         MergeBehavior<Object> nullification = mergeManager.getByType(PairNullifying.class);
         List<Variable> differences = mergeManager.secureMerge(l1, l2, nullification, false, VariableComparator.COMPARATOR);
-        if(differences.size() != 2) return false;
+        if(differences.size() != 2) return Optional.empty();
 
         Variable v1 = differences.get(0);
         Variable v2 = differences.get(1);
-        if(!(v1 instanceof ComplexVariable)) return false;
-        if(!(v2 instanceof ComplexVariable)) return false;
 
-        this.complex1 = (ComplexVariable) v1;
-        this.complex2 = (ComplexVariable) v2;
-        if(!complex1.getElements().equals(complex2.getElements())) return false;
-        if(complex1.overlaysLength() < 2 || complex2.overlaysLength() < 2) return false;
-        if(!complex1.getOverlaysFraction(0, -2).equals(complex2.getOverlaysFraction(0, -2))) return false;
-        if(!complex1.getOverlay(-1).equals(complex2.getOverlay(-1))) return false;
+        if(!v1.getElements().equals(v2.getElements())) return Optional.empty();
+        if(v1.getOverlaysSize() < 2 || v2.getOverlaysSize() < 2) return Optional.empty();
+        if(!v1.getOverlaysSection(0, -2).equals(v2.getOverlaysSection(0, -2))) return Optional.empty();
+        if(!v1.getOverlay(-1).equals(v2.getOverlay(-1))) return Optional.empty();
 
-        ExpressionOverlay last = complex1.getOverlay(-1);
-        if(!(last instanceof ExponentOverlay) || !last.equals(ExponentOverlay.fromExpression(Expression.of(2)))) return false;
+        ExpressionOverlay last = v1.getOverlay(-1);
+        if(!(last instanceof ExponentOverlay) || !last.equals(ExponentOverlay.SQUARED)) return Optional.empty();
 
         int cosLeft = 1;
         int sinLeft = 1;
 
-        if(complex1.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
-        if(complex1.getOverlay(-2) instanceof CosineFunction) cosLeft--;
-        if(complex2.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
-        if(complex2.getOverlay(-2) instanceof CosineFunction) cosLeft--;
+        if(v1.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
+        if(v1.getOverlay(-2) instanceof CosineFunction) cosLeft--;
+        if(v2.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
+        if(v2.getOverlay(-2) instanceof CosineFunction) cosLeft--;
 
-        return cosLeft == 0 && sinLeft == 0;
-
+        if(cosLeft == 0 && sinLeft == 0){
+            CosineSinusSquaredPacket packet = new CosineSinusSquaredPacket();
+            packet.v1 = v1;
+            packet.v2 = v2;
+            return Optional.of(packet);
+        }
+        return Optional.empty();
     }
 
     @Override
-    public List<Monomial> result(Monomial m1, Monomial m2) {
+    public List<Monomial> result(Monomial m1, Monomial m2, CosineSinusSquaredPacket packet) {
         // The property makes that we don't sum the two values
         float sumResult = m1.getNumericValue();
 
         List<Variable> copy = new ArrayList<>(m1.getVarPart().getVariables());
 
-        ComplexVariable toRemove;
-        if(copy.contains(complex1)) toRemove = complex1;
-        else toRemove = complex2;
+        Variable toRemove;
+        if(copy.contains(packet.v1)) toRemove = packet.v1;
+        else toRemove = packet.v2;
 
         copy.remove(toRemove);
         copy.sort(VariableComparator.COMPARATOR);
@@ -84,5 +85,12 @@ public class CosineSinusSquaredProperty implements OverallMergeProperty {
     @Override
     public boolean requiresStartingOver() {
         return true;
+    }
+
+    protected static class CosineSinusSquaredPacket implements MergePacket {
+
+        private Variable v1;
+        private Variable v2;
+
     }
 }

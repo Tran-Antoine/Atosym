@@ -2,7 +2,6 @@ package net.akami.mask.overlay.property;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.Variable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,12 +21,6 @@ public class MergePropertyManager {
         this.properties.addAll(Arrays.asList(property));
     }
 
-    // TODO Change so that it returns an expression
-    public List<Variable> getComposedResult(List<Variable> allVars) {
-
-        return null;
-    }
-
     public MaskContext getContext() {
         return context;
     }
@@ -35,7 +28,7 @@ public class MergePropertyManager {
     public boolean hasOverallAppliance(Monomial a, Monomial b) {
         for(OverlayMergeProperty property : properties) {
             if(property instanceof OverallMergeProperty) {
-                if(((OverallMergeProperty) property).isApplicable(a,b))
+                if(((OverallMergeProperty) property).isApplicable(a, b).isPresent())
                     return true;
             }
         }

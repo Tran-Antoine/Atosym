@@ -11,7 +11,6 @@ import java.util.List;
 
 import static net.akami.mask.core.MaskContext.DEFAULT;
 
-
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
@@ -20,7 +19,7 @@ public class MathUtils {
     public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
     public static Expression mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
     public static Expression divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
-    public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);   }
+    public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);      }
 
     public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
     public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }

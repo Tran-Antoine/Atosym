@@ -1,6 +1,8 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.overlay.ExponentOverlay;
+import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.ReducerFactory;
 import net.akami.mask.utils.VariableComparator;
 import net.akami.mask.utils.VariableUtils;
 import org.junit.Test;
@@ -62,6 +64,21 @@ public class VariableTest {
                 .collect(Collectors.toList());
 
         assertThat(String.join("", converted)).isEqualTo(result);
+    }
+
+    @Test
+    public void getComplexExpressionTest() {
+
+        Monomial m = new Monomial('x', DEFAULT);
+        ComplexVariable c1 = new ComplexVariable(m);
+        assertThat(c1.getExpression()).isEqualTo("x");
+    }
+
+    @Test
+    public void recursiveComplexTest() {
+        Expression result = ReducerFactory.reduce("y^4.0+5.0x");
+        ComplexVariable complex = new ComplexVariable(new Monomial(1, new ComplexVariable(result.getElements())));
+        assertThat(ExpressionUtils.chainElements(complex.getElements(), Monomial::getExpression)).isEqualTo("y^4.0+5.0x");
     }
 
     private List<Variable> get(char... input) {

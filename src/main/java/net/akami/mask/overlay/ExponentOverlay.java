@@ -7,6 +7,9 @@ import java.util.List;
 
 public class ExponentOverlay extends Expression implements ExpressionOverlay {
 
+    public static final ExponentOverlay EXPONENT_NULL_FACTOR = new ExponentOverlay(1);
+    public static final ExponentOverlay SQUARED = new ExponentOverlay(2);
+
     public ExponentOverlay(float numericValue) {
         super(numericValue);
     }

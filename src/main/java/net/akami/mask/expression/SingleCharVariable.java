@@ -1,6 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.overlay.ExpressionOverlay;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,5 +49,45 @@ public class SingleCharVariable implements Variable {
     @Override
     public Optional<Float> getFinalExponent() {
         return Optional.of(1f);
+    }
+
+    @Override
+    public boolean isFraction() {
+        return false;
+    }
+
+    @Override
+    public List<Monomial> uncover(int amount) {
+        throw new UnsupportedOperationException("Cannot uncover a single char variable");
+    }
+
+    @Override
+    public ExpressionOverlay getOverlay(int i) {
+        throw new UnsupportedOperationException("Simple variables don't have overlays");
+    }
+
+    @Override
+    public List<Monomial> getNumerator() {
+        return getElements();
+    }
+
+    @Override
+    public List<Monomial> getDenominator() {
+        return Collections.singletonList(NumberElement.MULT_DIV_NULL_FACTOR);
+    }
+
+    @Override
+    public int getOverlaysSize() {
+        return 0;
+    }
+
+    @Override
+    public int getElementsSize() {
+        return 1;
+    }
+
+    @Override
+    public List<ExpressionOverlay> getOverlaysSection(int start, int end) {
+        return Collections.emptyList();
     }
 }

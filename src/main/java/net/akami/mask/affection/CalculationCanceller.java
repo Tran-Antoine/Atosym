@@ -15,7 +15,7 @@ public interface CalculationCanceller<T> extends CalculationAlteration<T> {
      * <p></p>
      * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(T...)}
      * method should already take care of that.
-     * @param input the given input. Depending on the calculation, the elementsLength of the array might change.
+     * @param input the given input. Depending on the calculation, the getElementsSize of the array might change.
      * @return a merge that might be different or not than the merge that would have been computed without the
      * intervention of the canceller.
      */

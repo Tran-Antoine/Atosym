@@ -128,6 +128,11 @@ public class Expression implements Cloneable {
     }
 
     public List<Monomial> getElements() {
+        if(size() == 1 && get(0).getVarPart().size() == 1 && get(0).getNumericValue() == 1) {
+            VariablePart uniquePart = get(0).getVarPart();
+            if(uniquePart.get(0).getOverlaysSize() == 0)
+                return uniquePart.get(0).getElements();
+        }
         return elements;
     }
 
@@ -142,5 +147,9 @@ public class Expression implements Cloneable {
     @Override
     public Object clone() {
         return new Expression(getElements());
+    }
+
+    public int size() {
+        return elements.size();
     }
 }

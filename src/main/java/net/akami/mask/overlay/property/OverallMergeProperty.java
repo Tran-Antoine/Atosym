@@ -2,10 +2,10 @@ package net.akami.mask.overlay.property;
 
 import net.akami.mask.expression.Monomial;
 
-import java.util.List;
+import java.util.Optional;
 
-public interface OverallMergeProperty extends OverlayMergeProperty {
+public interface OverallMergeProperty<T, R, D extends MergePacket> extends OverlayMergeProperty {
 
-    boolean isApplicable(Monomial m1, Monomial m2);
-    List<Monomial> result(Monomial m1, Monomial m2);
+    Optional<D> isApplicable(T m1, T m2);
+    R result(Monomial m1, Monomial m2, D packet);
 }

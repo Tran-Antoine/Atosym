@@ -7,6 +7,8 @@ import java.util.List;
 
 public class FractionOverlay extends Expression implements ExpressionOverlay {
 
+    public static final FractionOverlay FRACTION_NULL_FACTOR = new FractionOverlay(1);
+
     public FractionOverlay(float numericValue) {
         super(numericValue);
     }

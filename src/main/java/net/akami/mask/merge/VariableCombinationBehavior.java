@@ -39,18 +39,18 @@ public class VariableCombinationBehavior implements MergeBehavior<Variable> {
 
         ComplexVariable complexA = (ComplexVariable) a;
         ComplexVariable complexB = (ComplexVariable) b;
-        List<ExpressionOverlay> aOverlays = complexA.getOverlaysFraction(0, -1);
-        List<ExpressionOverlay> bOverlays = complexB.getOverlaysFraction(0, -1);
+        List<ExpressionOverlay> aOverlays = complexA.getOverlaysSection(0, -1);
+        List<ExpressionOverlay> bOverlays = complexB.getOverlaysSection(0, -1);
 
         return complexA.elementsEqual(complexB) && aOverlays.equals(bOverlays);
     }
 
     private boolean simpleCompatibleWithComplex(SingleCharVariable a, ComplexVariable b) {
-        if (b.elementsLength() != 1 || !(b.getOverlay(-1) instanceof ExponentOverlay))
+        if (b.getElementsSize() != 1 || !(b.getOverlay(-1) instanceof ExponentOverlay))
             return false;
 
         Monomial first = b.getElement(0);
-        if (b.elementsLength() != 1 || !first.getVarPart().isSimple())
+        if (b.getElementsSize() != 1 || !first.getVarPart().isSimple())
             return false;
 
         SingleCharVariable firstSingle = (SingleCharVariable) first.getVarPart().get(0);
@@ -60,7 +60,7 @@ public class VariableCombinationBehavior implements MergeBehavior<Variable> {
     @Override
     public MergeResult<Variable> mergeElement(Variable a, Variable b) {
         if(a instanceof SingleCharVariable && b instanceof SingleCharVariable) {
-            ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
+            ExpressionOverlay exponent = ExponentOverlay.SQUARED;
             Monomial single = new Monomial(((SingleCharVariable) a).getVar(), context);
             return new MergeResult<>(new ComplexVariable(single, exponent), false);
         }
@@ -80,7 +80,7 @@ public class VariableCombinationBehavior implements MergeBehavior<Variable> {
         Expression exponentA = (Expression) compA.getOverlay(-1);
         Expression exponentB = (Expression) compB.getOverlay(-1);
         ExponentOverlay finalExp = ExponentOverlay.fromExpression(operator.operate(exponentA, exponentB));
-        List<ExpressionOverlay> newOverlays = compA.getOverlaysFraction(0, -1);
+        List<ExpressionOverlay> newOverlays = compA.getOverlaysSection(0, -1);
         newOverlays.add(finalExp);
         return new MergeResult<>(new ComplexVariable(compA.getElements(), newOverlays), false);
     }
