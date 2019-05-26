@@ -19,16 +19,22 @@ public class VariableUtils {
 
     private static final String NULL_MESSAGE = "Cannot combine variables from null values";
 
-    public static List<Variable> combine(Iterable<Variable> a1, Iterable<Variable> a2, MaskContext context) {
+    public static List<Variable> combine(Iterable<Variable> a1, Iterable<Variable> a2, MaskContext context, boolean singleList) {
         Objects.requireNonNull(a1, NULL_MESSAGE);
         Objects.requireNonNull(a2, NULL_MESSAGE);
         MergeManager manager = context.getMergeManager();
         MergeBehavior<Variable> behavior = manager.getByType(VariableCombinationBehavior.class);
         List<Variable> a1Copy = new ArrayList<>();
-        List<Variable> a2Copy = new ArrayList<>();
+        List<Variable> a2Copy;
         a1.forEach(a1Copy::add);
-        a2.forEach(a2Copy::add);
-        List<Variable> finalVars = manager.merge(a1Copy, a2Copy, behavior, false, VariableComparator.COMPARATOR);
+
+        if(!singleList) {
+            a2Copy = new ArrayList<>();
+            a2.forEach(a2Copy::add);
+        } else {
+            a2Copy = a1Copy;
+        }
+        List<Variable> finalVars = manager.merge(a1Copy, a2Copy, behavior, singleList, VariableComparator.COMPARATOR);
         return finalVars;
     }
 
@@ -50,7 +56,7 @@ public class VariableUtils {
 
             if(ExpressionUtils.isANumber(exponent)) {
                 float expValue = exponent.get(0).getNumericValue();
-                List<ExpressionOverlay> finalOverlays = complexVar.getOverlaysSection(0, -1);
+                List<ExpressionOverlay> finalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
                 finalOverlays.add(ExponentOverlay.EXPONENT_NULL_FACTOR);
 
                 while (expValue > 1) {
@@ -59,7 +65,7 @@ public class VariableUtils {
                 }
 
                 if (expValue != 0) {
-                    List<ExpressionOverlay> otherFinalOverlays = complexVar.getOverlaysSection(0, -1);
+                    List<ExpressionOverlay> otherFinalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
                     otherFinalOverlays.add(ExponentOverlay.fromExpression(Expression.of(expValue)));
                     finalVars.add(new ComplexVariable(complexVar.getElements(), otherFinalOverlays));
                 }

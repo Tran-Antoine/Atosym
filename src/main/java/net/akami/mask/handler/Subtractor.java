@@ -26,14 +26,4 @@ public class Subtractor extends BinaryOperationHandler<Expression> {
 
         return context.getBinaryOperation(Adder.class).operate(a, new Expression(opposite));
     }
-
-    @Override
-    public Expression inFormat(Expression origin) {
-        return origin;
-    }
-
-    @Override
-    public Expression outFormat(Expression origin) {
-        return origin;
-    }
 }

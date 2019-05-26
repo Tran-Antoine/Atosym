@@ -7,6 +7,8 @@ import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.FractionOverlay;
 import org.junit.Test;
 
+import java.util.Optional;
+
 import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,11 +26,11 @@ public class BaseEquivalenceMultPropertyTest {
         ComplexVariable c3 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.EXPONENT_NULL_FACTOR);
         ComplexVariable c4 = new ComplexVariable(new Monomial('y', DEFAULT), FractionOverlay.FRACTION_NULL_FACTOR);
 
-        assertThat(property.isApplicableFor(s1, s2)).isNotEqualTo(null);
-        assertThat(property.isApplicableFor(s1, c1)).isNotEqualTo(null);
-        assertThat(property.isApplicableFor(s1, c2)).isEqualTo(null);
-        assertThat(property.isApplicableFor(c2, c3)).isNotEqualTo(null);
-        assertThat(property.isApplicableFor(c2, c4)).isEqualTo(null);
-        assertThat(property.isApplicableFor(c3, c4)).isEqualTo(null);
+        assertThat(property.isApplicableFor(s1, s2)).isNotEqualTo(Optional.empty());
+        assertThat(property.isApplicableFor(s1, c1)).isNotEqualTo(Optional.empty());
+        assertThat(property.isApplicableFor(s1, c2)).isEqualTo(Optional.empty());
+        assertThat(property.isApplicableFor(c2, c3)).isNotEqualTo(Optional.empty());
+        assertThat(property.isApplicableFor(c2, c4)).isEqualTo(Optional.empty());
+        assertThat(property.isApplicableFor(c3, c4)).isEqualTo(Optional.empty());
     }
 }

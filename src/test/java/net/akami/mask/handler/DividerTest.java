@@ -2,6 +2,7 @@ package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.ReducerFactory;
 import org.junit.Test;
@@ -36,6 +37,15 @@ public class DividerTest {
         assertDivision("5", "2","2.5");
         assertDivision("6", "4","1.5");
         assertDivision("18", "16","1.125");
+    }
+
+    @Test
+    public void simpleMonomialDivisionTest() {
+
+        Monomial m1 = ReducerFactory.reduce("4xy").get(0);
+        Monomial m2 = ReducerFactory.reduce("6x").get(0);
+
+        assertThat(divider.monomialDivision(m1, m2).get(0).getExpression()).isEqualTo("(2.0y)/3.0");
     }
 
     private void assertDivision(String a, String b, String result) {

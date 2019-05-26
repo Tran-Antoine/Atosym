@@ -19,7 +19,7 @@ public class OverlayAdditionMerge {
         this.m2 = m2;
         this.properties = properties;
     }
-    
+
     public <D extends MergePacket> Optional<List<Monomial>> merge() {
         for(OverallMergeProperty<Monomial, List<Monomial>, D> overallProperty : properties) {
             Optional<D> packet = overallProperty.isApplicable(m1, m2);

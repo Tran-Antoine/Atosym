@@ -33,15 +33,19 @@ public class ComplexVariable implements Variable, Cloneable {
     public ComplexVariable(List<Monomial> parts, List<ExpressionOverlay> layers) {
         this.elements = Collections.unmodifiableList(Objects.requireNonNull(parts));
         this.overlays = Collections.unmodifiableList(Objects.requireNonNull(layers));
+        if(parts.size() > 1 && layers.size() == 0)
+            throw new IllegalArgumentException("Attempting to group multi variables into one complex");
     }
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Variable)) return false;
-        return getExpression().equals(((Variable) obj).getExpression());
+        Variable other = (Variable) obj;
+        return getElements().equals(other.getElements()) && getAbsoluteOverlays().equals(other.getAbsoluteOverlays());
     }
 
-    public boolean elementsEqual(ComplexVariable other) {
-        return this.elements.equals(other.elements);
+    @Override
+    public boolean elementsEqual(Variable other) {
+        return getElements().equals(other.getElements());
     }
 
     @Override
@@ -172,5 +176,19 @@ public class ComplexVariable implements Variable, Cloneable {
     @Override
     public String toString() {
         return getExpression();
+    }
+
+    @Override
+    public char getVar() {
+        Monomial single = getElement(0);
+        if(single.getExpression().length() == 1)
+            return single.getExpression().charAt(0);
+        if(single.getVarPart().size() == 0) return ' ';
+        return single.getVarPart().get(0).getVar();
+    }
+
+    @Override
+    public List<ExpressionOverlay> getAbsoluteOverlays() {
+        return getOverlays();
     }
 }

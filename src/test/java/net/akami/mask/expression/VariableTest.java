@@ -1,8 +1,7 @@
 package net.akami.mask.expression;
 
+import net.akami.mask.handler.Multiplier;
 import net.akami.mask.overlay.ExponentOverlay;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.ReducerFactory;
 import net.akami.mask.utils.VariableComparator;
 import net.akami.mask.utils.VariableUtils;
 import org.junit.Test;
@@ -15,6 +14,8 @@ import static net.akami.mask.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VariableTest {
+
+    private final Multiplier multiplier = new Multiplier(DEFAULT);
 
     @Test
     public void combineVars() {
@@ -33,8 +34,8 @@ public class VariableTest {
         ComplexVariable[] simple = {new ComplexVariable(simpleX, exp1)};
         ComplexVariable[] fraction = {new ComplexVariable(simpleX, exp2)};
         ComplexVariable[] irreducible = {new ComplexVariable(simpleX, exp3)};
-        assertDissociateVars(Arrays.asList(simple), "x^1.0x^1.0x^1.0x^1.0x^1.0");
-        assertDissociateVars(Arrays.asList(fraction), "x^1.0x^1.0x^0.5");
+        assertDissociateVars(Arrays.asList(simple), "xxxxx");
+        assertDissociateVars(Arrays.asList(fraction), "xxx^0.5");
         assertDissociateVars(Arrays.asList(irreducible), "x^y");
     }
 
@@ -57,7 +58,7 @@ public class VariableTest {
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        List<Variable> variables = VariableUtils.combine(get(v1), get(v2), DEFAULT);
+        List<Variable> variables = VariableUtils.combine(get(v1), get(v2), DEFAULT, false);
         List<String> converted = variables
                 .stream()
                 .map(Variable::getExpression)
@@ -74,12 +75,14 @@ public class VariableTest {
         assertThat(c1.getExpression()).isEqualTo("x");
     }
 
-    @Test
+    /*@Test
     public void recursiveComplexTest() {
         Expression result = ReducerFactory.reduce("y^4.0+5.0x");
         ComplexVariable complex = new ComplexVariable(new Monomial(1, new ComplexVariable(result.getElements())));
-        assertThat(ExpressionUtils.chainElements(complex.getElements(), Monomial::getExpression)).isEqualTo("y^4.0+5.0x");
-    }
+        Monomial m1 = new NumberElement(4);
+        Monomial m2 = new Monomial(1, complex);
+        assertThat(multiplier.simpleMult(m1, m2)).isEqualTo("4.0y^4.0+20.0x");
+    }*/
 
     private List<Variable> get(char... input) {
         SingleCharVariable[] vars = new SingleCharVariable[input.length];

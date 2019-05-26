@@ -110,6 +110,8 @@ public class MergeManager {
                 if (element2 == null) { j++; continue; }
 
                 if (behavior.isMergeable(element, element2)) {
+                    if(singleList) requestsStartingOver = true;
+
                     MergeResult<S> rawResult = (MergeResult<S>) behavior.mergeElement(element, element2);
                     List<S> localResult = rawResult.result;
                     l1.set(i, null);

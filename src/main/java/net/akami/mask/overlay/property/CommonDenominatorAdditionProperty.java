@@ -29,7 +29,7 @@ public class CommonDenominatorAdditionProperty implements OverallMergeProperty<M
         if(part1.size() != 1 || part2.size() != 1) return Optional.empty();
         if(!(part1.get(0).isFraction() && part2.get(0).isFraction())) return Optional.empty();
 
-        return part1.get(0).equals(part2.get(0)) ? Optional.of(new NullPacket()) : Optional.empty();
+        return part1.get(0).getOverlay(-1).equals(part2.get(0).getOverlay(-1)) ? Optional.of(NullPacket.PACKET) : Optional.empty();
     }
 
     @Override

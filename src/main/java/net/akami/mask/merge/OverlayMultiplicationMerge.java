@@ -6,6 +6,7 @@ import net.akami.mask.overlay.property.DetailedMergeProperty;
 import net.akami.mask.overlay.property.MergePacket;
 import net.akami.mask.overlay.property.OverallMergeProperty;
 import net.akami.mask.overlay.property.OverlayMergeProperty;
+import net.akami.mask.utils.VariableComparator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,10 +82,10 @@ public class OverlayMultiplicationMerge {
         if (!singleList)
             finalVars.addAll(l2.stream().filter(Objects::nonNull).collect(Collectors.toList()));
 
+        finalVars.sort(VariableComparator.COMPARATOR);
         if(restart) {
             finalVars = merge(finalVars, finalVars, true);
         }
-
         return finalVars;
     }
 

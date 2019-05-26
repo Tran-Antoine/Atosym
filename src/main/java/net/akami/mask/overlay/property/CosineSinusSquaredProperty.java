@@ -43,7 +43,7 @@ public class CosineSinusSquaredProperty implements OverallMergeProperty<Monomial
 
         if(!v1.getElements().equals(v2.getElements())) return Optional.empty();
         if(v1.getOverlaysSize() < 2 || v2.getOverlaysSize() < 2) return Optional.empty();
-        if(!v1.getOverlaysSection(0, -2).equals(v2.getOverlaysSection(0, -2))) return Optional.empty();
+        if(!v1.getOverlaysSection(0, -3).equals(v2.getOverlaysSection(0, -3))) return Optional.empty();
         if(!v1.getOverlay(-1).equals(v2.getOverlay(-1))) return Optional.empty();
 
         ExpressionOverlay last = v1.getOverlay(-1);

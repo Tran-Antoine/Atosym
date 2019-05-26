@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface Variable {
 
     String getExpression();
+    List<ExpressionOverlay> getAbsoluteOverlays();
     ExpressionOverlay getOverlay(int i);
     List<ExpressionOverlay> getOverlaysSection(int start, int end);
     int getOverlaysSize();
@@ -18,4 +19,6 @@ public interface Variable {
     List<Monomial> uncover(int amount);
     Optional<Float> getFinalExponent();
     boolean isFraction();
+    boolean elementsEqual(Variable other);
+    char getVar();
 }

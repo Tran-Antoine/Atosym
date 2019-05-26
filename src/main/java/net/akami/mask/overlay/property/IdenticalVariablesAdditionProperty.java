@@ -10,7 +10,7 @@ import java.util.Optional;
 public class IdenticalVariablesAdditionProperty implements OverallMergeProperty<Monomial, List<Monomial>, NullPacket> {
     @Override
     public Optional<NullPacket> isApplicable(Monomial m1, Monomial m2) {
-        return m1.getVarPart().equals(m2.getVarPart()) ? Optional.of(new NullPacket()) : Optional.empty();
+        return m1.getVarPart().equals(m2.getVarPart()) ? Optional.of(NullPacket.PACKET) : Optional.empty();
     }
 
     @Override

@@ -45,7 +45,7 @@ public class MathUtilsTest {
         Assertions.assertThat(MathUtils.divide("6.4+6.4z", "3.2")).isEqualTo("2+2z");
         MaskContext defaultContext = MaskContext.DEFAULT;
 
-        Assertions.assertThat(defaultContext.getBinaryOperation(Divider.class).simpleDivision("-2x", "4")).isEqualTo("x/-2");
+        Assertions.assertThat(defaultContext.getBinaryOperation(Divider.class).monomialDivision("-2x", "4")).isEqualTo("x/-2");
     }*/
 
     @Test

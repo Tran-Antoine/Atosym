@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>, CancellableHandler<T>, PostCalculationActionable<T> {
+public abstract class BinaryOperationHandler<T> implements CancellableHandler<T>, PostCalculationActionable<T> {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
-    protected final StringBuilder BUILDER = new StringBuilder();
     protected MergePropertyManager propertyManager;
     protected MaskContext context;
     private List<CalculationCanceller<T>> cancellers;
@@ -29,13 +28,9 @@ public abstract class BinaryOperationHandler<T> implements IODefaultFormatter<T>
         if(isCancellable(a, b)) {
             return findResult(a, b);
         }
-        T result = outFormat(operate(inFormat(a), inFormat(b)));
+        T result = operate(a, b);
         postCalculation(result, a, b);
         return result;
-    }
-
-    public void clearBuilder() {
-        BUILDER.delete(0, BUILDER.length());
     }
 
     @Override

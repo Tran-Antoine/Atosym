@@ -1,19 +1,19 @@
 package net.akami.mask.expression;
 
-import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
 import net.akami.mask.handler.Multiplier;
+import net.akami.mask.overlay.ExpressionOverlay;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static net.akami.mask.core.MaskContext.DEFAULT;
+import static org.assertj.core.api.Assertions.assertThat;
 
-public class ComposedVariableTest {
+public class ComplexVariableTest {
 
     private final Multiplier multiplier = new Multiplier(DEFAULT);
 

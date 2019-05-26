@@ -258,7 +258,12 @@ public class ExpressionUtils {
             builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
         }
 
-        builder.append(chainElements(elements, Monomial::getExpression));
+        // TODO : find a better way of doing it
+        List<Monomial> copy = elements
+                .stream()
+                .filter(e -> !(e.getExpression().equals("1.0")))
+                .collect(Collectors.toList());
+        builder.append(chainElements(copy, Monomial::getExpression));
 
         int i = 0;
         for(ExpressionOverlay encapsulator : layers) {

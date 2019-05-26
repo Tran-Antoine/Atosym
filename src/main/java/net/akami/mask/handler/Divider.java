@@ -4,10 +4,11 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.*;
 import net.akami.mask.merge.MergeBehavior;
 import net.akami.mask.merge.MergeManager;
+import net.akami.mask.merge.OverlayDivisionMerge;
 import net.akami.mask.merge.PairNullifying;
-import net.akami.mask.merge.VariableCombinationBehavior;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.overlay.FractionOverlay;
+import net.akami.mask.overlay.property.DivisionOfFractionsProperty;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.VariableComparator;
@@ -22,6 +23,11 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
     public Divider(MaskContext context) {
         super(context);
+        addDefaultProperties();
+    }
+
+    private void addDefaultProperties() {
+        propertyManager.addProperty(new DivisionOfFractionsProperty(context));
     }
 
     @Override
@@ -29,7 +35,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
         LOGGER.info("Divider process of {} |/| {}: \n", a, b);
 
         if(b.length() == 1 && b.get(0) != null && b.get(0).getNumericValue() == 0)
-            throw new IllegalArgumentException("Could not compute a division by zero");
+            throw new IllegalArgumentException("Cannot compute a division by zero");
 
         // Avoids division by zero error after simplifying all the elements.
         // Also avoids useless calculations
@@ -53,11 +59,11 @@ public class Divider extends BinaryOperationHandler<Expression> {
         List<Monomial> finalElements = new ArrayList<>(a.length());
 
         for(Monomial numPart : a.getElements()) {
-            finalElements.add(simpleDivision(numPart, b.get(0)));
+            finalElements.addAll(monomialDivision(numPart, b.get(0)));
         }
 
-        Adder adder = context.getBinaryOperation(Adder.class);
-        return adder.monomialSum(finalElements);
+        // TODO : Chain common denominator monomials
+        return new Expression(finalElements);
     }
 
     public NumberElement numericalDivision(Monomial a, Monomial b) {
@@ -78,41 +84,49 @@ public class Divider extends BinaryOperationHandler<Expression> {
         return Expression.of(new Monomial(1, result));
     }
 
-    public Monomial simpleDivision(Monomial a, Monomial b) {
-        List<Variable> numVariables = new ArrayList<>(a.getVarPart().getVariables()); // creates copies
-        List<Variable> denVariables = new ArrayList<>(b.getVarPart().getVariables());
-        float aFloat = a.getNumericValue();
-        float bFloat = b.getNumericValue();
-        List<Float> aFloatList = MathUtils.decomposeNumber(aFloat, bFloat);
-        List<Float> bFloatList = MathUtils.decomposeNumber(bFloat, aFloat);
+    public List<Monomial> monomialDivision(Monomial a, Monomial b) {
+        if(a.isSimple() && b.isSimple()) {
+            return Collections.singletonList(simpleMonomialDivision(a, b));
+        }
+        return complexDivision(a, b);
+    }
 
-        switchFractionsLocation(numVariables, denVariables);
-        switchFractionsLocation(denVariables, numVariables);
-        numVariables = VariableUtils.dissociate(numVariables);
-        denVariables = VariableUtils.dissociate(denVariables);
+    private Monomial simpleMonomialDivision(Monomial a, Monomial b) {
+        return simpleDivision(a.getNumericValue(), b.getNumericValue(), a.getVarPart().getVariables(), b.getVarPart().getVariables());
+    }
 
-        MergeManager manager = context.getMergeManager();
-        MergeBehavior<Object> nullifying = manager.getByType(PairNullifying.class);
-        manager.merge(numVariables, denVariables, nullifying, false, VariableComparator.COMPARATOR);
-        manager.merge(aFloatList, bFloatList, nullifying);
+    private List<Monomial> complexDivision(Monomial a, Monomial b) {
+        OverlayDivisionMerge merge = new OverlayDivisionMerge(a, b, context, propertyManager.getProperties());
+        return merge.merge();
+    }
 
-        filterNull(numVariables, denVariables, aFloatList, bFloatList);
+    public Monomial simpleDivision(float a, float b, List<Variable> decomposedA, List<Variable> decomposedB) {
+        List<Float> numeratorFloats = MathUtils.decomposeNumber(a, b);
+        List<Float> denominatorFloats = MathUtils.decomposeNumber(b, a);
+        List<Variable> numeratorVars = new ArrayList<>(decomposedA);
+        List<Variable> denominatorVars = new ArrayList<>(decomposedB);
 
-        MergeBehavior<Variable> joinBehavior = manager.getByType(VariableCombinationBehavior.class);
-        numVariables = manager.merge(numVariables, joinBehavior, VariableComparator.COMPARATOR);
-        denVariables = manager.merge(denVariables, joinBehavior, VariableComparator.COMPARATOR);
+        MergeManager mergeManager = context.getMergeManager();
+        MergeBehavior<Object> nullify = mergeManager.getByType(PairNullifying.class);
 
-        aFloat = multJoin(aFloatList);
-        bFloat = multJoin(bFloatList);
-        Monomial finalNum = new Monomial(aFloat, numVariables);
-        Monomial finalDen = new Monomial(bFloat, denVariables);
-        List<ExpressionOverlay> finalOverlays = new ArrayList<>();
-        if(!denVariables.isEmpty() || Math.abs(bFloat) != 1) {
-            finalOverlays.add(FractionOverlay.fromExpression(Expression.of(finalDen)));
+        mergeManager.merge(numeratorFloats, denominatorFloats, nullify);
+        mergeManager.merge(numeratorVars, denominatorVars, nullify,false, VariableComparator.COMPARATOR);
+
+        filterNull(numeratorFloats, denominatorFloats, numeratorVars, denominatorVars);
+        numeratorVars = VariableUtils.combine(numeratorVars, numeratorVars, context,true);
+        denominatorVars = VariableUtils.combine(denominatorVars, denominatorVars, context, true);
+
+        float finalNumFloat = multJoin(numeratorFloats);
+        Monomial monomialNum = new Monomial(finalNumFloat, numeratorVars);
+        if(denominatorFloats.isEmpty() & denominatorVars.isEmpty()) {
+            return monomialNum;
         }
 
-        ComplexVariable finalComplex = new ComplexVariable(Collections.singletonList(finalNum), finalOverlays);
-        return new Monomial(1, finalComplex);
+        float finalDenFloat = multJoin(denominatorFloats);
+
+        FractionOverlay overlay = FractionOverlay.fromExpression(Expression.of(new Monomial(finalDenFloat, denominatorVars)));
+        Monomial insights = new Monomial(finalNumFloat, monomialNum.getVarPart());
+        return new Monomial(1, new ComplexVariable(insights, overlay));
     }
 
     private float multJoin(List<Float> list) {
@@ -149,13 +163,4 @@ public class Divider extends BinaryOperationHandler<Expression> {
         }
     }
 
-    @Override
-    public Expression inFormat(Expression origin) {
-        return origin;
-    }
-
-    @Override
-    public Expression outFormat(Expression origin) {
-        return origin;
-    }
 }

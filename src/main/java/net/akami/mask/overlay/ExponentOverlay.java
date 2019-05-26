@@ -24,7 +24,7 @@ public class ExponentOverlay extends Expression implements ExpressionOverlay {
 
     @Override
     public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
-        if(this.equals(Expression.of(1))) return new String[]{"", ""};
+        if(this.equals(EXPONENT_NULL_FACTOR)) return new String[]{"", ""};
 
         Monomial first;
         boolean endNoBrackets = length() == 1 && (first = this.elements.get(0)) != null

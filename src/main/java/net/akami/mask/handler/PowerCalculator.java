@@ -37,7 +37,7 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
     }
 
     private Expression extensiblePow(Expression a, int val) {
-        // Both casts are secured here.
+
         if(val == 0) return Expression.of(1);
         if(val < 0) return negativeExtensiblePow(a, val);
 
@@ -53,6 +53,7 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
     private Expression negativeExtensiblePow(Expression a, int b) {
 
         Monomial numerator = new NumberElement(1);
+        // b is negative, we must convert it to a positive number
         Expression denominator = extensiblePow(a, -b);
 
         throw new RuntimeException("Unsupported yet");
@@ -64,15 +65,5 @@ public class PowerCalculator extends BinaryOperationHandler<Expression> {
         ComplexVariable variable = new ComplexVariable(insights, Collections.singletonList(ExponentOverlay.fromExpression(b)));
         Expression newExpression = Expression.of(new Monomial(1, variable));
         return newExpression;
-    }
-
-    @Override
-    public Expression inFormat(Expression origin) {
-        return origin;
-    }
-
-    @Override
-    public Expression outFormat(Expression origin) {
-        return origin;
     }
 }

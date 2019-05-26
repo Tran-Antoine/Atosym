@@ -35,7 +35,7 @@ public class Monomial implements Comparable<Monomial> {
 
         if(numericValue == 0)  return "";
         if(varPart.isEmpty())  return String.valueOf(numericValue);
-        if(numericValue == 1)  return variablesToString();
+        if(numericValue == 1 && !variablesToString().startsWith("/"))  return variablesToString();
         if(numericValue == -1) return '-' + variablesToString();
 
         return numericValue + variablesToString();

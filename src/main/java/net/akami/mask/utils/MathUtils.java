@@ -154,7 +154,6 @@ public class MathUtils {
         return decomposeNumber(self, 0);
     }
 
-    // TODO use BigDecimal ?
     public static List<Float> decomposeNumber(float self, float other) {
         LOGGER.info("Now decomposing float {}", self);
 

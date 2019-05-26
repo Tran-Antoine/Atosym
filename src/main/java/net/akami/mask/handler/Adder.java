@@ -5,6 +5,7 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.merge.MergeManager;
 import net.akami.mask.merge.MergeResult;
+import net.akami.mask.merge.MonomialAdditionMerge;
 import net.akami.mask.merge.OverlayAdditionMerge;
 import net.akami.mask.overlay.property.*;
 
@@ -13,6 +14,17 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+/**
+ * Computes the sum between two expressions. The default Adder class handled the following properties : <p>
+ *
+ * <li> CosineSinusSquaredProperty, converting {@code sin^2(x) + cos^2(x)} to 1.
+ * <li> CommonDenominatorAdditionProperty, allowing sums of fractions having the same denominator
+ * <li> IdenticalVariablesAdditionProperty, for complex expressions having the exact same variable part
+ * <p></p>
+ * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
+ * monomials by pairs, and computing a result if possible.
+ * @author Antoine Tran
+ */
 public class Adder extends BinaryOperationHandler<Expression> {
 
     public Adder(MaskContext context) {
@@ -77,16 +89,5 @@ public class Adder extends BinaryOperationHandler<Expression> {
         MergeManager mergeManager = context.getMergeManager();
         List<Monomial> result = mergeManager.merge(monomials, Monomial.class);
         return new Expression(result);
-    }
-
-    // TODO : Maybe remove
-    @Override
-    public Expression inFormat(Expression origin) {
-        return origin;
-    }
-
-    @Override
-    public Expression outFormat(Expression origin) {
-        return origin;
     }
 }

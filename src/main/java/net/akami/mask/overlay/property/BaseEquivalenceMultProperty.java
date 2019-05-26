@@ -46,7 +46,7 @@ public class BaseEquivalenceMultProperty implements DetailedMergeProperty<BaseEq
             packet.exponent2 = end2 == -1 ? oneExponent : (ExponentOverlay) v2.getOverlay(-1);
             return Optional.of(packet);
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override

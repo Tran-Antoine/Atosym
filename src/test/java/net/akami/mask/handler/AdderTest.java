@@ -52,7 +52,7 @@ public class AdderTest {
 
         SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);
         List<Variable> vars1 = Arrays.asList(new ComplexVariable(singleInsight, Arrays.asList(cos, exponent)), simple);
-        List<Variable> vars2 = Arrays.asList(simple, new ComplexVariable(singleInsight, Arrays.asList(sin, exponent)));
+        List<Variable> vars2 = Arrays.asList(new ComplexVariable(singleInsight, Arrays.asList(sin, exponent)), simple);
 
         Monomial m1 = new Monomial(4,vars1);
         Monomial m2 = new Monomial(4, vars2);

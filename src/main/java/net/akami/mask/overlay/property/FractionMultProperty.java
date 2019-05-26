@@ -35,14 +35,11 @@ public class FractionMultProperty implements OverallMergeProperty<List<Variable>
 
         FractionPresencePacket packet = new FractionPresencePacket();
 
-        if(firstFraction) {
-            packet.numerator1 = first.getNumerator();
-            packet.numerator2 = second.getNumerator();
-            packet.denominator1 = first.getDenominator();
-            packet.denominator2 = second.getDenominator();
-            return Optional.of(packet);
-        }
-        return null;
+        packet.numerator1 = first.getNumerator();
+        packet.numerator2 = second.getNumerator();
+        packet.denominator1 = first.getDenominator();
+        packet.denominator2 = second.getDenominator();
+        return Optional.of(packet);
     }
 
     @Override

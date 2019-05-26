@@ -42,7 +42,7 @@ public class ExpressionTester {
     public void multiElementsMult() {
         Expression e1 = new Expression(new NumberElement(3), create(1, 'x'));
         Expression e2 = new Expression(new NumberElement(2), create(1, 'x'));
-        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("5.0x+x^2.0+6.0");
+        assertThat(multiplier.operate(e1, e2).toString()).isEqualTo("x^2.0+5.0x+6.0");
 
         /*Expression f1 = Expression.of(new SimpleFraction(6, Expression.of('x')));
         Expression f2 = Expression.of(3);
@@ -91,11 +91,11 @@ public class ExpressionTester {
         Monomial simpleX = new Monomial('x', DEFAULT);
         Monomial m4 = new Monomial(12, new ComplexVariable(simpleX, ExponentOverlay.fromExpression(Expression.of(2))));
 
-        assertThat(divider.simpleDivision(m1, m2).getExpression()).isEqualTo("x/y");
-        assertThat(divider.simpleDivision(m1, m3).getExpression()).isEqualTo("1.0/2.0");
-        assertThat(divider.simpleDivision(m2, m3).getExpression()).isEqualTo("y/(2.0x)");
-        assertThat(divider.simpleDivision(m4, m3).getExpression()).isEqualTo("2.0x");
-        assertThat(divider.simpleDivision(m3, m4).getExpression()).isEqualTo("1.0/(2.0x)");
+        assertThat(divider.monomialDivision(m1, m2).get(0).getExpression()).isEqualTo("x/y");
+        assertThat(divider.monomialDivision(m1, m3).get(0).getExpression()).isEqualTo("1.0/2.0");
+        assertThat(divider.monomialDivision(m2, m3).get(0).getExpression()).isEqualTo("y/(2.0x)");
+        assertThat(divider.monomialDivision(m4, m3).get(0).getExpression()).isEqualTo("2.0x");
+        assertThat(divider.monomialDivision(m3, m4).get(0).getExpression()).isEqualTo("1.0/(2.0x)");
     }
 
     @Test
@@ -111,9 +111,9 @@ public class ExpressionTester {
         Monomial m3 = new Monomial(1, c1);
         Monomial m4 = new Monomial(1, c2);
 
-        assertThat(divider.simpleDivision(m3, m4).getExpression()).isEqualTo("4.0/3.0");
-        //assertThat(divider.simpleDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
-        //assertThat(divider.simpleDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");
+        assertThat(divider.monomialDivision(m3, m4).get(0).getExpression()).isEqualTo("4.0/3.0");
+        //assertThat(divider.monomialDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
+        //assertThat(divider.monomialDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");
     }
 
     @Test

@@ -1,6 +1,8 @@
 package net.akami.mask.core;
 
 import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.check.*;
+import net.akami.mask.exception.MaskException;
 import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.function.MathFunction;
@@ -54,6 +56,7 @@ public class MaskContext {
 
     private Set<BinaryOperationHandler<Expression>> binaryHandlers;
     private Set<MathFunction> supportedFunctions;
+    private List<ValidityCheck> validityChecks;
     private MergePropertyManager propertyManager;
     private MergeManager mergeManager;
     private MathContext bigDecimalContext;
@@ -81,6 +84,7 @@ public class MaskContext {
         this.bigDecimalContext = new MathContext(precision);
         this.propertyManager = new MergePropertyManager(this);
         this.mergeManager = new MergeManager(this);
+        this.validityChecks = defaultValidityChecks();
     }
 
     /**
@@ -203,5 +207,22 @@ public class MaskContext {
      */
     public MergeManager getMergeManager() {
         return mergeManager;
+    }
+
+    private List<ValidityCheck> defaultValidityChecks() {
+        return Arrays.asList(
+                new EmptyStringGiven(),
+                new IllegalStartingCharacter(),
+                new UnknownCharacter(),
+                new BracketsCounterCheck(),
+                new IllegalEndingCharacter()
+        );
+    }
+
+    public void assertExpressionValidity(Mask self) {
+        for(ValidityCheck check : validityChecks) {
+            if(!check.isValid(self.getExpression()))
+                throw new MaskException(check.errorMessage(self.getExpression()), self);
+        }
     }
 }

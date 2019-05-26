@@ -92,11 +92,10 @@ public class ReducerFactoryTest {
     public void poweredBracketsTest() {
         assertReduction("(3+x)^2", "x^2.0+6.0x+9.0");
         assertReduction("(x+y+z)^2", "x^2.0+y^2.0+z^2.0+2.0xy+2.0xz+2.0yz");
-        assertReduction("(x+y)^7", "x^7.0+y^7.0+7.0x^6.0y+7.0xy^6.0+21.0x^5.0y^2.0+21.0x^2.0y^5.0+35.0x^4.0y^3.0+35.0x^3.0y^4.0");
-        assertReduction("(a+b+c)^5", "a^5.0+b^5.0+c^5.0+5.0a^4.0b+5.0a^4.0c+5.0ab^4.0+5.0b^4.0c+5.0ac^4.0+5.0bc^4.0+10.0a^3.0b^2.0" +
-                "+8.0a^3.0bc+10.0a^3.0c^2.0+10.0a^2.0b^3.0+8.0ab^3.0c+10.0b^3.0c^2.0+10.0a^2.0c^3.0+8.0abc^3.0" +
-                "+10.0b^2.0c^3.0+12.0a^3.0bc+12.0ab^3.0c+12.0abc^3.0+12.0a^2.0b^2.0c+12.0a^2.0bc^2.0+12.0a^2.0b^2.0c" +
-                "+12.0ab^2.0c^2.0+12.0a^2.0bc^2.0+12.0ab^2.0c^2.0+6.0a^2.0b^2.0c+6.0a^2.0bc^2.0+6.0ab^2.0c^2.0");
+        assertReduction("(x+y)^7", "x^7.0+y^7.0+7.0x^6.0y+7.0y^6.0x+21.0x^5.0y^2.0+21.0y^5.0x^2.0+35.0x^4.0y^3.0+35.0y^4.0x^3.0");
+        assertReduction("(a+b+c)^5", "a^5.0+b^5.0+c^5.0+5.0a^4.0b+5.0a^4.0c+5.0b^4.0a+5.0b^4.0c+5.0c^4.0a" +
+                "+5.0c^4.0b+20.0a^3.0bc+10.0a^3.0b^2.0+10.0a^3.0c^2.0+20.0b^3.0ac+10.0b^3.0a^2.0+10.0b^3.0c^2.0" +
+                "+20.0c^3.0ab+10.0c^3.0a^2.0+10.0c^3.0b^2.0+30.0a^2.0b^2.0c+30.0a^2.0c^2.0b+30.0b^2.0c^2.0a");
     }
 
 
@@ -104,6 +103,6 @@ public class ReducerFactoryTest {
     // Like 3x + 5x would give x(3+5) = 8x
 
     private void assertReduction(String initial, String result) {
-       Assertions.assertThat(ReducerFactory.reduce(initial)).isEqualTo(result);
+       Assertions.assertThat(ReducerFactory.reduce(initial).toString()).isEqualTo(result);
     }
 }

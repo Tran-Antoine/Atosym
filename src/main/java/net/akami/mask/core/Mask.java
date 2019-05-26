@@ -78,12 +78,7 @@ public class Mask {
     }
 
     private void checkExpressionValidity() {
-        if(expression.length() == 0)
-            return;
-        if(".*/^".contains(String.valueOf(expression.charAt(0)))
-                || ".+-*/^".contains(String.valueOf(expression.charAt(expression.length()-1)))
-                || !expression.matches("[a-zA-Z0-9.+\\-*/^()]+"))
-            throw new MaskException("Expression not valid", this);
+        MaskContext.DEFAULT.assertExpressionValidity(this);
     }
 
     /**

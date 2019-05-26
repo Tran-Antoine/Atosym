@@ -1,6 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 
 import java.util.Collections;
@@ -20,7 +21,8 @@ public class SingleCharVariable implements Variable {
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Variable)) return false;
-        return getExpression().equals(((Variable) obj).getExpression());
+        Variable other = (Variable) obj;
+        return getElements().equals(other.getElements()) && getAbsoluteOverlays().equals(other.getAbsoluteOverlays());
     }
 
     @Override
@@ -33,6 +35,7 @@ public class SingleCharVariable implements Variable {
         return getExpression();
     }
 
+    @Override
     public char getVar() {
         return var;
     }
@@ -63,7 +66,9 @@ public class SingleCharVariable implements Variable {
 
     @Override
     public ExpressionOverlay getOverlay(int i) {
-        throw new UnsupportedOperationException("Simple variables don't have overlays");
+        if(i == -1) return ExponentOverlay.EXPONENT_NULL_FACTOR;
+        throw new UnsupportedOperationException(
+                "Simple variables don't have overlays. Only valid argument is -1, being the implicit ^1 exponent");
     }
 
     @Override
@@ -89,5 +94,15 @@ public class SingleCharVariable implements Variable {
     @Override
     public List<ExpressionOverlay> getOverlaysSection(int start, int end) {
         return Collections.emptyList();
+    }
+
+    @Override
+    public boolean elementsEqual(Variable other) {
+        return getElements().equals(other.getElements());
+    }
+
+    @Override
+    public List<ExpressionOverlay> getAbsoluteOverlays() {
+        return Collections.singletonList(ExponentOverlay.EXPONENT_NULL_FACTOR);
     }
 }

@@ -100,10 +100,10 @@ public class ReducerTest {
     /*@Test
     public void decomposeExpressionTest() {
         Divider div = MaskContext.DEFAULT.getBinaryOperation(Divider.class);
-        Assertions.assertThat(div.simpleDivision("4", "2")).isEqualTo("2");
-        Assertions.assertThat(div.simpleDivision("5", "2")).isEqualTo("5/2");
-        Assertions.assertThat(div.simpleDivision("6", "4")).isEqualTo("3/2");
-        Assertions.assertThat(div.simpleDivision("18", "16")).isEqualTo("9/8");
+        Assertions.assertThat(div.monomialDivision("4", "2")).isEqualTo("2");
+        Assertions.assertThat(div.monomialDivision("5", "2")).isEqualTo("5/2");
+        Assertions.assertThat(div.monomialDivision("6", "4")).isEqualTo("3/2");
+        Assertions.assertThat(div.monomialDivision("18", "16")).isEqualTo("9/8");
 
         StringBuilder builder = new StringBuilder();
         MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));

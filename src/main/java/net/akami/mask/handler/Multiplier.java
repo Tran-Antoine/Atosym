@@ -1,10 +1,7 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.FunctionSign;
-import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.Variable;
+import net.akami.mask.expression.*;
 import net.akami.mask.merge.OverlayMultiplicationMerge;
 import net.akami.mask.overlay.property.BaseEquivalenceMultProperty;
 import net.akami.mask.overlay.property.FractionMultProperty;
@@ -58,7 +55,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
         BigDecimal bigA = new BigDecimal(a.getNumericValue());
         BigDecimal bigB = new BigDecimal(b.getNumericValue());
         float numResult = bigA.multiply(bigB).floatValue();
-        List<Variable> numVariables = VariableUtils.combine(a.getVarPart(), b.getVarPart(), context);
+        List<Variable> numVariables = VariableUtils.combine(a.getVarPart(), b.getVarPart(), context, false);
         return new Monomial(numResult, numVariables);
     }
 
@@ -69,19 +66,8 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     }
 
     public float numericMult(float a, float b) {
-        BigDecimal bigA = new BigDecimal(a);
-        BigDecimal bigB = new BigDecimal(b);
+        BigDecimal bigA = new BigDecimal(a, context.getMathContext());
+        BigDecimal bigB = new BigDecimal(b, context.getMathContext());
         return bigA.multiply(bigB).floatValue();
     }
-
-    @Override
-    public Expression inFormat(Expression origin) {
-        return origin;
-    }
-
-    @Override
-    public Expression outFormat(Expression origin) {
-        return origin;
-    }
-
 }
