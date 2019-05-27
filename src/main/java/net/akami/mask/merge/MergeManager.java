@@ -44,6 +44,9 @@ public class MergeManager {
     public <S extends Comparable<S>> List<S> merge(List<S> self, Class<? super S> clazz) {
         return merge(self, self, getByHandledType(clazz), true);
     }
+    public <T extends MergeBehavior, S extends Comparable<S>> List<S> mergeByType(List<S> self, Class<T> clazz) {
+        return merge(self, self, getByType(clazz), true);
+    }
 
     public <S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, Class<? super S> clazz) {
         return merge(l1, l2, getByHandledType(clazz), false);
@@ -59,10 +62,15 @@ public class MergeManager {
     public<S extends Comparable<S>> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior) {
         return merge(l1, l2, behavior, false);
     }
-
-    public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList) {
-        return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList);
+    public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, MergeBehavior<? super S> behavior) {
+        List<S> selfList = new ArrayList<>(l1);
+        return merge(selfList, selfList, behavior, true);
     }
+
+    public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior) {
+        return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, false);
+    }
+
     public <S> List<S> secureMerge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList, Comparator<S> comparator) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), behavior, singleList, comparator);
     }
@@ -73,6 +81,9 @@ public class MergeManager {
 
     public <S extends Comparable<S>> List<S> secureMerge(List<S> l1, List<S> l2, Class<? super S> clazz) {
         return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByHandledType(clazz), false);
+    }
+    public <S extends Comparable<S>> List<S> secureMergeByType(List<S> l1, List<S> l2, Class<? extends MergeBehavior> clazz) {
+        return merge(new ArrayList<>(l1), new ArrayList<>(l2), getByType(clazz), false);
     }
     public <S> List<S> merge(List<S> l1, List<S> l2, MergeBehavior<? super S> behavior, boolean singleList, Comparator<S> comparator) {
         List<S> finalResult = nonSortedMerge(l1, l2, behavior, singleList);

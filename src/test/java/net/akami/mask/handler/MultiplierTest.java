@@ -30,7 +30,7 @@ public class MultiplierTest {
 
     // IMPORTANT : A trigonometric expression must always be under the form ((something)@or#or§).
     // The edge brackets cannot be omitted, otherwise some unexpected results might occur.
-    @Test
+    /*@Test
     public void trigoTest() {
         assertOperation("x", "@", "((x)@)");
         assertOperation("x+y", "#", "((x+y)#)");
@@ -40,7 +40,7 @@ public class MultiplierTest {
         assertOperation("((x)@)", "((x)@)", "((x)@)^2");
         assertOperation("((x)@)^2", "((x)@)", "((x)@)^3");
         assertOperation("((y)@)^2", "((x)@)^3", "((y)@)^2((x)@)^3");
-    }
+    }*/
 
     @Test
     public void inFormatTest() {

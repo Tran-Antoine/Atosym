@@ -7,6 +7,8 @@ import net.akami.mask.tree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Objects;
+
 /**
  * Class which will be merged with the {@link net.akami.mask.core.MaskReducer} class soon.
  */
@@ -28,6 +30,7 @@ public class ReducerFactory {
     }
 
     public static Expression reduce(String exp, MaskContext context) {
+        Objects.requireNonNull(exp, "Cannot reduce a null expression");
         long time = System.nanoTime();
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry

@@ -2,12 +2,10 @@ package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.*;
-import net.akami.mask.merge.MergeBehavior;
-import net.akami.mask.merge.MergeManager;
-import net.akami.mask.merge.OverlayDivisionMerge;
-import net.akami.mask.merge.PairNullifying;
+import net.akami.mask.merge.*;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.overlay.FractionOverlay;
+import net.akami.mask.overlay.property.CommonDenominatorAdditionProperty;
 import net.akami.mask.overlay.property.DivisionOfFractionsProperty;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
@@ -62,8 +60,16 @@ public class Divider extends BinaryOperationHandler<Expression> {
             finalElements.addAll(monomialDivision(numPart, b.get(0)));
         }
 
-        // TODO : Chain common denominator monomials
-        return new Expression(finalElements);
+        return chainFinalElements(finalElements);
+    }
+
+    private Expression chainFinalElements(List<Monomial> finalElements) {
+        CommonDenominatorAdditionProperty property = new CommonDenominatorAdditionProperty(context);
+        MergeBehavior<Monomial> behavior = new SimpleDenominatorAdditionMerge(context, property);
+        MergeManager mergeManager = context.getMergeManager();
+
+        List<Monomial> newFinalElements = mergeManager.secureMerge(finalElements, behavior);
+        return new Expression(newFinalElements);
     }
 
     public NumberElement numericalDivision(Monomial a, Monomial b) {
@@ -73,8 +79,8 @@ public class Divider extends BinaryOperationHandler<Expression> {
     }
 
     public float floatDivision(float a, float b) {
-        BigDecimal bigA = new BigDecimal(a);
-        BigDecimal bigB = new BigDecimal(b);
+        BigDecimal bigA = new BigDecimal(a, context.getMathContext());
+        BigDecimal bigB = new BigDecimal(b, context.getMathContext());
         return bigA.divide(bigB, context.getMathContext()).floatValue();
     }
 

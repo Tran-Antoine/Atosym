@@ -97,7 +97,7 @@ public class Expression implements Cloneable {
             throw new RuntimeException("Unsolvable statement reached : trying to simpleAnalyze a non-simple expression : "+expression);
 
         if(MaskContext.DEFAULT.getFunctionByExpression(expression).isPresent())
-            return new FunctionSign(expression.charAt(0), context);
+            throw new RuntimeException("Unsupported yet");//return new FunctionSign(expression.charAt(0), context);
 
         if(expression.matches("[a-zA-DF-Z]")) {
             return new Monomial(1, new SingleCharVariable(expression.charAt(0), context));

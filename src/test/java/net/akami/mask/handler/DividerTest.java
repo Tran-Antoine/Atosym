@@ -29,7 +29,7 @@ public class DividerTest {
         assertDivision("5+6", "3","3.6666667");
         assertDivision("6+x", "2","x/2.0+3.0");
         assertDivision("2x", "x","2.0");
-        assertDivision("2x+3", "x","2.0+3.0/x");
+        assertDivision("2x+3", "x","3.0/x+2.0");
     }
 
     @Test

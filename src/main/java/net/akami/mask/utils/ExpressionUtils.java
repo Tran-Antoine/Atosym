@@ -354,6 +354,7 @@ public class ExpressionUtils {
         return false;
     }
 
+    @Deprecated
     public static String toNumericValue(String exp) {
         if (exp.isEmpty())
             return "0";
@@ -374,7 +375,7 @@ public class ExpressionUtils {
 
         if(exp.contains("/")) {
             String[] parts = exp.split("/", 2);
-            return null;// MathUtils.divide(parts[0], parts[1]);
+            return MathUtils.divide(parts[0], parts[1]);
         }
 
         return exp;

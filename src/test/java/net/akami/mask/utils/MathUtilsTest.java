@@ -51,36 +51,36 @@ public class MathUtilsTest {
     @Test
     public void diffSumTest() {
         QuaternaryMathOperation sum = MathUtils::diffSum;
-        assertComputation(sum,"5x", "5", "x^2", "2x","5+2x");
-        assertComputation(sum,"-5x", "-5", "3x^2", "6x","-5+6x");
+        assertComputation(sum,"5x", "5", "x^2", "2x","2.0x+5.0");
+        assertComputation(sum,"-5x", "-5", "3x^2", "6x","6.0x-5.0");
     }
 
     @Test
     public void diffSubtractTest() {
         QuaternaryMathOperation sub = MathUtils::diffSubtract;
-        assertComputation(sub,"5x", "5", "x^2", "2x","5-2x");
-        assertComputation(sub,"-5x", "-5", "3x^2", "6x","-5-6x");
+        assertComputation(sub,"5x", "5", "x^2", "2x","-2.0x+5.0");
+        assertComputation(sub,"-5x", "-5", "3x^2", "6x","-6.0x-5.0");
     }
 
     @Test
     public void diffMultTest() {
         QuaternaryMathOperation mult = MathUtils::diffMult;
-        assertComputation(mult,"5x", "5", "x^2", "2x","15x^2");
-        assertComputation(mult,"-5x", "-5", "3x^2", "6x","-45x^2");
+        assertComputation(mult,"5x", "5", "x^2", "2x","15.0x^2.0");
+        assertComputation(mult,"-5x", "-5", "3x^2", "6x","-45.0x^2.0");
     }
 
     @Test
     public void diffDivideTest() {
         QuaternaryMathOperation div = MathUtils::diffDivide;
-        assertComputation(div,"5x", "5", "x^2", "2x","(-5x^2)/(x^2)^2");
-        assertComputation(div,"-5x", "-5", "3x^2", "6x","(15x^2)/(3x^2)^2");
+        assertComputation(div,"5x", "5", "x^2", "2x","-5.0/x^2.0");
+        assertComputation(div,"-5x", "-5", "3x^2", "6x","5.0/(3.0x^2.0)");
     }
 
     @Test
     public void diffPowTest() {
         QuaternaryMathOperation pow = MathUtils::diffPow;
-        assertComputation(pow,"3x", "3", "3", "0","3*3x^2*3");
-        assertComputation(pow,"-5x", "-5", "x+1", "1","(x+1)*(-5x)^x(-5)");
+        assertComputation(pow,"3x", "3", "3", "0","81.0x^2.0");
+        assertComputation(pow,"-5x", "-5", "x+1", "1","-5.0x^(x+1.0)-5.0(-5.0x)^x");
     }
 
     private void assertComputation(QuaternaryMathOperation op, String a, String aAlt, String b, String bAlt, String r) {
@@ -88,6 +88,6 @@ public class MathUtilsTest {
         Expression expAAlt = ReducerFactory.reduce(aAlt);
         Expression expB = ReducerFactory.reduce(b);
         Expression expBAlt = ReducerFactory.reduce(bAlt);
-        assertThat(op.compute(expA, expAAlt, expB, expBAlt)).isEqualTo(r);
+        assertThat(op.compute(expA, expAAlt, expB, expBAlt).toString()).isEqualTo(r);
     }
 }

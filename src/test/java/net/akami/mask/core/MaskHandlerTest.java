@@ -20,7 +20,7 @@ public class MaskHandlerTest {
     @Test
     public void derivativeTest() {
         prepare("4x^2+xy");
-        assertOperator(MaskDerivativeCalculator.class, 'x', "8x+y");
+        assertOperator(MaskDerivativeCalculator.class, 'x', "8.0x+y");
         end();
     }
 

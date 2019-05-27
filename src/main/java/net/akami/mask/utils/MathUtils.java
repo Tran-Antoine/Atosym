@@ -2,6 +2,7 @@ package net.akami.mask.utils;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +44,40 @@ public class MathUtils {
         return mult(mult(b, pow(a, subtract(b, Expression.of(1)))), altA);
     }
 
+    @Deprecated
+    /**
+     * This method does not go along with the new expression system, thus will be replaced soon.
+     */
+    public static String monomialSum(List<String> monomials) {
+        List<Monomial> finalMonomials = new ArrayList<>();
+        for(String monomial : monomials) {
+            finalMonomials.add(ReducerFactory.reduce(monomial).get(0));
+        }
+        return new Expression(finalMonomials).toString();
+    }
+
+    @Deprecated
+    public static String divide(String a, String b) {
+        Expression bExp = ReducerFactory.reduce(b);
+        List<String> monomials = ExpressionUtils.toMonomials(a);
+        List<String> finalResult = new ArrayList<>();
+
+        for(String monomial : monomials) {
+            Expression divResult = divide(ReducerFactory.reduce(monomial), bExp);
+            finalResult.add(divResult.toString());
+        }
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+        for(String result : finalResult) {
+            if(ExpressionUtils.isSigned(result) || i == 0) {
+                builder.append(result);
+            } else {
+                builder.append('+').append(result);
+            }
+            i++;
+        }
+        return builder.toString();
+    }
     public static String breakNumericalFraction(String self) {
         for(int i = 0; i < self.length(); i++) {
             if(self.charAt(i) == '/') {

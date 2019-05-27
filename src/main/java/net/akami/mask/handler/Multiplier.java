@@ -20,8 +20,8 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
     private void addDefaultProperties() {
         super.getPropertyManager().addProperty(
-                new BaseEquivalenceMultProperty(context),
-                new FractionMultProperty(context)
+                new FractionMultProperty(context),
+                new BaseEquivalenceMultProperty(context)
         );
     }
 
@@ -52,8 +52,8 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     }
 
     public Monomial noLayersMult(Monomial a, Monomial b) {
-        BigDecimal bigA = new BigDecimal(a.getNumericValue());
-        BigDecimal bigB = new BigDecimal(b.getNumericValue());
+        BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
+        BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
         float numResult = bigA.multiply(bigB).floatValue();
         List<Variable> numVariables = VariableUtils.combine(a.getVarPart(), b.getVarPart(), context, false);
         return new Monomial(numResult, numVariables);

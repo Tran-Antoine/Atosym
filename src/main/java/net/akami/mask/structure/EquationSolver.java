@@ -1,9 +1,10 @@
 package net.akami.mask.structure;
 
-import net.akami.mask.core.*;
+import net.akami.mask.core.Mask;
+import net.akami.mask.core.MaskImageCalculator;
+import net.akami.mask.core.MaskOperatorHandler;
+import net.akami.mask.core.MaskReducer;
 import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.Monomial;
-import net.akami.mask.handler.Adder;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.MathUtils;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EquationSolver {
 
@@ -30,61 +32,48 @@ public class EquationSolver {
 
     public static Map<Character, String> solve(List<BiMask> biMasks) {
 
-        List<BiExpression> biExpressions = new ArrayList<>(biMasks.size());
-
         for(BiMask biMask : biMasks) {
-            Expression left = ReducerFactory.reduce(biMask.left.getExpression());
-            Expression right = ReducerFactory.reduce(biMask.right.getExpression());
-            biExpressions.add(new BiExpression(left, right));
+            if(ExpressionUtils.getMaximalNumericPower(biMask.left.getExpression()+'='+biMask.right.getExpression()) > 1)
+                throw new IllegalStateException("Cannot solve squared or more equations");
+
+            handler.compute(MaskReducer.class, biMask.left, biMask.left, null)
+                    .compute(MaskReducer.class, biMask.right, biMask.right, null);
         }
 
-        return solve(biExpressions, biMasks);
-
-    }
-
-    public static Map<Character, String> solve(List<BiExpression> biExpressions, List<BiMask> biMasks) {
-
-        for(BiExpression biExpression : biExpressions) {
-            if(biExpression.left.getMaximalPower() > 1 || biExpression.right.getMaximalPower() > 1)
-                throw new IllegalArgumentException("Cannot solve 2nd degree (or more) equations yet.");
-        }
         LOGGER.info("\nNow solving the equations\n");
-        Map<Character, String> solutions = defaultSolutions(biMasks);
+        Map<Character, String> solutions = new HashMap<>();
 
+        char[] variables = ExpressionUtils.toVariablesType(biMasks).toCharArray();
 
-            for (char var : solutions.keySet()) {
-                LOGGER.info("Searching for the solution of the variable {}. ", var);
-                // In case x = y
-                for (char key : solutions.keySet()) {
-                    if (key != var && solutions.get(key).equals(String.valueOf(var))) {
-                        solutions.put(var, String.valueOf(key));
-                    }
+        for(char v : variables) {
+            solutions.put(v, String.valueOf(v));
+        }
+
+        for(char var : variables) {
+            LOGGER.info("---> Searching for the solution of the variable {}. ", var);
+            // In case x = y
+            for(char key : solutions.keySet()) {
+                if(key != var && solutions.get(key).equals(String.valueOf(var))) {
+                    solutions.put(var, String.valueOf(key));
                 }
-
-                if (!solveVariable(biExpressions, biMasks, var, solutions, 0)) {
-                    LOGGER.info("Couldn't find a line that does not contain an uncalculated variable");
-
-                    if (!solveVariable(biExpressions, biMasks, var, solutions, 1)) {
-                        LOGGER.info("Couldn't find a line that has not already been used");
-                        solveVariable(biExpressions, biMasks, var, solutions, 2);
-                    }
-
-
-                }
-
-
             }
-
+            if(!solveVariable(biMasks, var, solutions, 0)) {
+                LOGGER.info("Couldn't find a line that does not contain an uncalculated variable");
+                if(!solveVariable(biMasks, var, solutions, 1)) {
+                    LOGGER.info("Couldn't find a line that has not already been used");
+                    solveVariable(biMasks, var, solutions, 2);
+                }
+            }
+        }
         return solutions;
     }
+
     /**
      * @return whether the variable has been calculated or not
      */
-    private static boolean solveVariable(List<BiExpression> expressions, List<BiMask> lines, char var, Map<Character, String> solutions, int mode) {
+    private static boolean solveVariable(List<BiMask> lines, char var, Map<Character, String> solutions, int mode) {
 
-        for(int i = 0; i < lines.size(); i++) {
-            BiMask line = lines.get(i);
-            BiExpression expression = expressions.get(i);
+        for(BiMask line : lines) {
             if(line.containsVar(var)) {
                 if(mode == 0 && (containsUncalculatedVar(line, var, solutions) || line.hasBeenUsed())) {
                     continue;
@@ -92,10 +81,9 @@ public class EquationSolver {
                 if(mode == 1 && line.hasBeenUsed()) {
                     continue;
                 }
-
                 line.setUsed(true);
-                LOGGER.info("Found a line that contains {} : {}", var, line.left + "=" + line.right);
-                String solution = solveLine(expression, var, solutions);
+                LOGGER.info("Found a line that contains {} : {}", var, line.left+"="+line.right);
+                String solution = solveLine(line, var, solutions);
                 solutions.put(var, solution);
                 replaceSolutionInOthers(var, solution, solutions);
                 LOGGER.info("-------> Found solution for {} : {}", var, solutions);
@@ -136,87 +124,87 @@ public class EquationSolver {
         return false;
     }
 
-    public static String solveLine(BiExpression line, char var, Map<Character, String> solutions) {
-        Expression left = line.left;
-        Expression right = line.right;
+    public static String solveLine(BiMask line, char var, Map<Character, String> solutions) {
+        Mask leftMask = line.left;
+        Mask rightMask = line.right;
+        String leftExp = leftMask.getExpression();
+        String rightExp = rightMask.getExpression();
+        LOGGER.error("EXPS : {} and {} ({})", leftExp, rightExp, var);
 
-        List<Monomial> leftMonomials = new ArrayList<>(left.getElements());
-        List<Monomial> rightMonomials = new ArrayList<>(right.getElements());
+        List<String> leftMonomials = ExpressionUtils.toMonomials(leftExp);
+        List<String> rightMonomials = ExpressionUtils.toMonomials(rightExp);
 
-
-        replaceExistingSolutions(leftMonomials, var, solutions);
+        LOGGER.error("MONOMIALS : {} and {}", leftMonomials, rightMonomials);
+        replaceExistingSolutions(leftMonomials,var, solutions);
         replaceExistingSolutions(rightMonomials, var, solutions);
-
         rearrange(leftMonomials, rightMonomials, var, true);
         rearrange(rightMonomials, leftMonomials, var, false);
 
-        Adder adder = MaskContext.DEFAULT.getBinaryOperation(Adder.class);
-        float numericLeftValue = adder.monomialSum(leftMonomials).get(0).getNumericValue();
-        Expression rightValue = adder.monomialSum(rightMonomials);
-        LOGGER.info("Final step : dividing {} by {}", rightValue, numericLeftValue);
-        return FormatterFactory.removeMultiplicationSigns(
-                MathUtils.divide(rightValue, Expression.of(numericLeftValue)).toString());
+        filterNonNull(leftMonomials, rightMonomials);
+        LOGGER.error("MONOMIALS : {} and {}", leftMonomials, rightMonomials);
+
+        LOGGER.error("MONOMIALS : "+leftMonomials);
+        String sumResult = MathUtils.monomialSum(leftMonomials);
+        LOGGER.error("SUM RESULT : "+sumResult);
+        String numericLeftValue = ExpressionUtils.toNumericValue(sumResult);
+        String rightValue = MathUtils.monomialSum(rightMonomials);
+        LOGGER.error("Final step : dividing {} by {}", rightValue, numericLeftValue);
+        String divisionResult = MathUtils.divide(rightValue, numericLeftValue);
+        LOGGER.error("DIVISION RESULT : {} / {} = {}", rightValue, numericLeftValue, divisionResult);
+        return FormatterFactory.removeMultiplicationSigns(divisionResult);
     }
 
-    private static void replaceExistingSolutions(List<Monomial> target, char var, Map<Character, String> solutions) {
+    private static void replaceExistingSolutions(List<String> target, char var, Map<Character, String> solutions) {
         LOGGER.info("Before replacing existing solutions : {}", target);
-        List<Monomial> additionalSolutions = new ArrayList<>();
+        List<String> additionalSolutions = new ArrayList<>();
 
         for(int i = 0; i < target.size(); i++) {
-            Monomial monomial = target.get(i);
-            if(monomial == null) continue;
+            String monomial = target.get(i);
             LOGGER.info("Analyzing monomial {}.", monomial);
-            LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, solutions);
-            Mask.TEMP.reload(monomial.getExpression());
-            handler.begin(Mask.TEMP);
+            String localVars = ExpressionUtils.toVariablesType(monomial);
 
+            LOGGER.info("Calculating the image of {}, with solutions : {}",monomial, solutions);
+            Mask.TEMP.reload(monomial);
+            handler.begin(Mask.TEMP);
+            handler.setCurrentToOut(true);
 
             Map<Character, String> copy = new HashMap<>(solutions);
             copy.remove(var);
 
             String transformed = handler.compute(MaskImageCalculator.class, null, copy).asExpression();
-
             target.set(i, null);
             // If the solution if x+1, we can't add "x+1", we must add "+x" and "+1"
-            additionalSolutions.addAll(ReducerFactory.reduce(transformed).getElements());
+            Expression transformedExpression = ReducerFactory.reduce(transformed);
+            additionalSolutions.addAll(transformedExpression
+                    .getElements()
+                    .stream()
+                    .map(e -> e.getExpression())
+                    .collect(Collectors.toList()));
             LOGGER.info("Successfully replaced {} by {}", monomial, transformed);
-
         }
         target.addAll(additionalSolutions);
         LOGGER.info("--> After replacing existing solutions : {}", target);
     }
 
-    private static void rearrange(List<Monomial> toRead, List<Monomial> affected, char var, boolean mustContainVar) {
+    private static void rearrange(List<String> toRead, List<String> affected, char var, boolean mustContainVar) {
 
         LOGGER.info("Before rearranging : {} and {}", toRead, affected);
-        for (Monomial monomial : toRead) {
+        for (String monomial : toRead) {
             if(monomial == null) continue;
 
-            String monomialExp = monomial.getExpression();
-            if (monomialExp.contains(String.valueOf(var)) != mustContainVar) {
+            if (monomial.contains(String.valueOf(var)) != mustContainVar) {
                 int index = toRead.indexOf(monomial);
-                if (monomialExp.startsWith("+"))
-                    monomialExp = "-" + monomialExp.substring(1);
-                else if (monomialExp.startsWith("-"))
-                    monomialExp = "+" + monomialExp.substring(1);
+                if (monomial.startsWith("+"))
+                    monomial = "-" + monomial.substring(1);
+                else if (monomial.startsWith("-"))
+                    monomial = "+" + monomial.substring(1);
                 else
-                    monomialExp = "-" + monomialExp;
+                    monomial = "-" + monomial;
                 toRead.set(index, null);
-                affected.add(ReducerFactory.reduce(monomialExp).get(0));
+                affected.add(monomial);
             }
         }
         LOGGER.info("After rearranging : {} and {}", toRead, affected);
-    }
-
-    private static Map<Character, String> defaultSolutions(List<BiMask> biMasks) {
-        Map<Character, String> solutions = new HashMap<>();
-
-        char[] variables = ExpressionUtils.toVariablesType(biMasks).toCharArray();
-
-        for(char v : variables) {
-            solutions.put(v, String.valueOf(v));
-        }
-        return solutions;
     }
 
     public static class BiMask {
@@ -252,14 +240,9 @@ public class EquationSolver {
         }
     }
 
-    public static class BiExpression {
-
-        private Expression left;
-        private Expression right;
-
-        public BiExpression(Expression left, Expression right) {
-            this.left = left;
-            this.right = right;
+    private static void filterNonNull(List... lists) {
+        for(List list : lists) {
+            list.removeAll(Collections.singleton(null));
         }
     }
 }

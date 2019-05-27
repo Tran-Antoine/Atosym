@@ -58,9 +58,9 @@ public class OverlayMultiplicationMerge {
                             l2.set(j, null);
                             finalVars.addAll(overallProperty.result(m1, m2, packet.get()));
                             if(overallProperty.requiresStartingOver()) restart = true;
+                            break;
                         }
 
-                        break;
                     }
 
                     if(property instanceof DetailedMergeProperty) {

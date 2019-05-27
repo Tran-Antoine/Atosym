@@ -36,7 +36,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
         propertyManager.addProperty(
                 new CosineSinusSquaredProperty(context),
                 new CommonDenominatorAdditionProperty(context),
-                new IdenticalVariablesAdditionProperty()
+                new IdenticalVariablesAdditionProperty(context)
         );
     }
 
@@ -51,7 +51,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
         LOGGER.info("Monomials : {} and {}", aElements, bElements);
 
         MergeManager mergeManager = context.getMergeManager();
-        List<Monomial> elements = mergeManager.secureMerge(aElements, bElements, Monomial.class);
+        List<Monomial> elements = mergeManager.secureMergeByType(aElements, bElements, MonomialAdditionMerge.class);
         elements = elements.stream().filter(e -> e.getNumericValue() != 0).collect(Collectors.toList());
         Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
@@ -62,8 +62,8 @@ public class Adder extends BinaryOperationHandler<Expression> {
     public Monomial simpleSum(Monomial a, Monomial b) {
 
         if(a.getVarPart().equals(b.getVarPart())) {
-            BigDecimal bigA = new BigDecimal(a.getNumericValue());
-            BigDecimal bigB = new BigDecimal(b.getNumericValue());
+            BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
+            BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
             float sumResult = bigA.add(bigB).floatValue();
             return new Monomial(sumResult, a.getVarPart());
         } else {
@@ -87,7 +87,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
 
     public Expression monomialSum(List<Monomial> monomials) {
         MergeManager mergeManager = context.getMergeManager();
-        List<Monomial> result = mergeManager.merge(monomials, Monomial.class);
+        List<Monomial> result = mergeManager.mergeByType(monomials, MonomialAdditionMerge.class);
         return new Expression(result);
     }
 }

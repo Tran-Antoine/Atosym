@@ -1,10 +1,7 @@
 package net.akami.mask.overlay.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.Monomial;
-import net.akami.mask.expression.VariablePart;
+import net.akami.mask.expression.*;
 import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
@@ -34,20 +31,31 @@ public class CommonDenominatorAdditionProperty implements OverallMergeProperty<M
 
     @Override
     public List<Monomial> result(Monomial m1, Monomial m2, NullPacket packet) {
-        ComplexVariable uniqueVar1 = (ComplexVariable) m1.getVarPart().get(0);
-        ComplexVariable uniqueVar2 = (ComplexVariable) m2.getVarPart().get(0);
-
-        Expression dividendA = getNumerator(uniqueVar1, m1.getNumericValue());
-        Expression dividendB = getNumerator(uniqueVar2, m2.getNumericValue());
-        Expression finalDividend = context.getBinaryOperation(Adder.class).operate(dividendA, dividendB);
-
-        Expression divisor = (Expression) uniqueVar1.getOverlay(-1);
+        Expression finalDividend = getDividend(m1, m2);
+        Expression divisor = getDivisor(m1);
 
         Expression divisionResult = context.getBinaryOperation(Divider.class).operate(finalDividend, divisor);
         return divisionResult.getElements();
     }
 
-    private Expression getNumerator(ComplexVariable var, float numericValue) {
+    public Expression getDividend(Monomial m1, Monomial m2) {
+        Variable uniqueVar1 = m1.getVarPart().get(0);
+        Variable uniqueVar2 = m2.getVarPart().get(0);
+
+        Expression dividendA = getNumerator(uniqueVar1, m1.getNumericValue());
+        Expression dividendB = getNumerator(uniqueVar2, m2.getNumericValue());
+        Expression finalDividend = context.getBinaryOperation(Adder.class).operate(dividendA, dividendB);
+
+        return finalDividend;
+    }
+
+    public Expression getDivisor(Monomial m1) {
+        Variable uniqueVar1 = m1.getVarPart().get(0);
+        Expression divisor = (Expression) uniqueVar1.getOverlay(-1);
+        return divisor;
+    }
+
+    private Expression getNumerator(Variable var, float numericValue) {
 
         // Read-only list
         List<Monomial> initialElements = var.uncover(1);
