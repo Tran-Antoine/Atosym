@@ -2,6 +2,8 @@ package net.akami.mask.tree;
 
 import net.akami.mask.expression.Expression;
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.handler.sign.BinaryOperationSign;
+import net.akami.mask.handler.sign.QuaternaryOperationSign;
 import net.akami.mask.utils.FormatterFactory;
 
 import java.util.Optional;
@@ -40,22 +42,22 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     @Override
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
-            //self.setReducedValue(self.getExpression());
-            //self.setDerivativeValue(differentiateElement(self.getExpression_()));
+            self.setReducedValue(new Expression(self.getExpression()));
+            self.setDerivativeValue(new Expression(differentiateElement(self.getExpression())));
             return;
         }
 
-        String left = null;self.getLeftValue(); // either a reduced or the original expression
-        String right = null;self.getRightValue(); // either a reduced or the original expression
-        //String derLeft = self.getLeft().getDerivativeValue(); // we know it has one
-        //String derRight = self.getRight().getDerivativeValue(); // we know it has one
+        Expression left = self.getLeftValue(); // either a reduced or the original expression
+        Expression right = self.getRightValue(); // either a reduced or the original expression
+        Expression derLeft = self.getLeft().getDerivativeValue(); // we know it has one
+        Expression derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
         if(getBranches().indexOf(self) != 0) {
-            //self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
+            self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
         }
-        // TODO self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
+        self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 
     public String differentiateElement(String element) {

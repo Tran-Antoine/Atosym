@@ -4,7 +4,7 @@ import net.akami.mask.affection.CalculationCanceller;
 
 import java.util.*;
 
-public interface CancellableHandler<T> extends AlterationHandler<CalculationCanceller<T>, T> {
+public interface CancellableHandler<T> extends AlterationHandler<CalculationCanceller<T>, T, T[]> {
 
     @Override
     default T findResult(T... input) {

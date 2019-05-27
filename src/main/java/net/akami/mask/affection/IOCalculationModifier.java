@@ -16,7 +16,7 @@ import net.akami.mask.handler.IODefaultFormatter;
  * Basically, the default formatters cannot be enabled / disabled, nor configured. They exist for handlers requiring
  * expressions under a certain format to work. They thus aren't part of the alteration system.
  */
-public interface IOCalculationModifier extends CalculationAlteration {
+public interface IOCalculationModifier<T> extends CalculationAlteration<T> {
 
     /**
      * Defines how a given input must be formatted.
@@ -26,5 +26,5 @@ public interface IOCalculationModifier extends CalculationAlteration {
      * @param input the given input
      * @return the formatted version of the input
      */
-    String[] modify(String... input);
+    T[] modify(T... input);
 }

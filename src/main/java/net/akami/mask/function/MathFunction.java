@@ -19,11 +19,11 @@ import java.util.*;
  * parameters, such as {@code log} or {@code root} will be added in the future.
  * @author Antoine Tran
  */
-public abstract class MathFunction implements CancellableHandler<String>, PostCalculationActionable, CompleteCoverEncapsulator {
+public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalculationActionable<T>, CompleteCoverEncapsulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
 
-    protected final List<CalculationCanceller<String>> cancellers = new ArrayList<>();
+    protected final List<CalculationCanceller<T>> cancellers = new ArrayList<>();
     protected final char binding;
     protected final String name;
     private final MaskContext context;
@@ -34,12 +34,11 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
         this.context = context;
     }
 
-    protected abstract String operate(String... input);
+    protected abstract T operate(T... input);
 
-    public String rawOperate(String... input) {
+    public T rawOperate(T... input) {
         if(isCancellable(input)) {
-            return null;
-            // TODO return findResult(input);
+            return findResult(input);
         }
         return operate(input);
     }
@@ -48,16 +47,14 @@ public abstract class MathFunction implements CancellableHandler<String>, PostCa
         return context.getFunctionByBinding(this.binding).isPresent();
     }
 
-    // TODO do something working for all functions.
     @Override
     public void postCalculation(Object result, Object... input) {
-        // TODO complete
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
         //getAffection(CalculationCache.class).getElement().push(calculation, merge);
     }
 
     @Override
-    public List<CalculationCanceller<String>> getAffections() {
+    public List<CalculationCanceller<T>> getAffections() {
         return cancellers;
     }
 

@@ -171,7 +171,7 @@ public enum BinaryOperationSign {
     }
 
     @FunctionalInterface
-    private interface BinaryMathCalculation {
+    public interface BinaryMathCalculation {
         Expression compute(Expression a, Expression b, MaskContext context);
     }
 }

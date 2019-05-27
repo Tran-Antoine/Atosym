@@ -1,5 +1,6 @@
 package net.akami.mask.handler.sign;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.tree.DerivativeTree;
 import net.akami.mask.utils.MathUtils;
 
@@ -40,7 +41,7 @@ public enum QuaternaryOperationSign {
         return sign;
     }
 
-    public String compute(String a, String a2, String b, String b2) {
+    public Expression compute(Expression a, Expression a2, Expression b, Expression b2) {
         Objects.requireNonNull(quaternaryFunction);
         return quaternaryFunction.compute(a, a2, b, b2);
     }
@@ -56,6 +57,6 @@ public enum QuaternaryOperationSign {
 
     @FunctionalInterface
     public interface QuaternaryMathOperation {
-        String compute(String a, String altA, String b, String altB);
+        Expression compute(Expression a, Expression altA, Expression b, Expression altB);
     }
 }

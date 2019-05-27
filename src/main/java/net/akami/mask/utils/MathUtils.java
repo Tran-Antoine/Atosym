@@ -27,43 +27,20 @@ public class MathUtils {
     public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
     public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerCalculator.class); }
 
-    public static String diffSum(String a, String altA, String b, String altB) {
-        return null; // TODO return sum(altA, altB);
+    public static Expression diffSum(Expression a, Expression altA, Expression b, Expression altB) {
+        return sum(altA, altB);
     }
-    public static String diffSubtract(String a, String altA, String b, String altB) {
-        return null; // TODO return subtract(altA, altB);
+    public static Expression diffSubtract(Expression a, Expression altA, Expression b, Expression altB) {
+        return subtract(altA, altB);
     }
-    public static String diffMult(String a, String altA, String b, String altB) {
-        return null; // TODO return sum(mult(altA, b), mult(altB, a));
+    public static Expression diffMult(Expression a, Expression altA, Expression b, Expression altB) {
+        return sum(mult(altA, b), mult(altB, a));
     }
-    public static String diffDivide(String a, String altA, String b, String altB) {
-        return null; // TODO return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
+    public static Expression diffDivide(Expression a, Expression altA, Expression b, Expression altB) {
+        return divide(subtract(mult(altA,b), mult(altB, a)), mult(b, b));
     }
-    public static String diffPow(String a, String altA, String b, String altB) {
-        return null;
-        /*String subtractResult = subtract(b, "1");
-        if(subtractResult.equals("1"))
-            subtractResult = "";
-        else if(!ExpressionUtils.isReduced(subtractResult))
-            subtractResult = "^("+subtractResult+')';
-        else
-            subtractResult = '^'+subtractResult;
-
-        if(!ExpressionUtils.isReduced(a) && !ExpressionUtils.areEdgesBracketsConnected(a, false))
-            a = '(' + a + ')';
-        if(!ExpressionUtils.isReduced(b) && !ExpressionUtils.areEdgesBracketsConnected(b, false))
-            b = '(' + b + ")*";
-        else
-            b += '*';
-
-        if(altA.equals("1"))
-            altA = "";
-        else if(!ExpressionUtils.isReduced(altA))
-            altA = '(' + altA + ')';
-        else
-            altA = '*' + altA;
-
-        return b+a+subtractResult+altA;*/
+    public static Expression diffPow(Expression a, Expression altA, Expression b, Expression altB) {
+        return mult(mult(b, pow(a, subtract(b, Expression.of(1)))), altA);
     }
 
     public static String breakNumericalFraction(String self) {

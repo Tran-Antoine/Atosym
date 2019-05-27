@@ -50,7 +50,7 @@ public class Expression implements Cloneable {
 
     public Expression(String expression, MaskContext context) {
         this.context = context;
-        this.expression = Objects.requireNonNull(expression);
+        this.expression = zeroIfEmpty(Objects.requireNonNull(expression));
         this.elements = Collections.singletonList(simpleAnalyze());
     }
 
@@ -61,7 +61,7 @@ public class Expression implements Cloneable {
     public Expression(Monomial singleElement, MaskContext context) {
         this.context = context;
         this.elements = Collections.unmodifiableList(Collections.singletonList(singleElement));
-        this.expression = elements.size() == 1 ? elements.get(0).getExpression() : join(this.elements);
+        this.expression = zeroIfEmpty(elements.size() == 1 ? elements.get(0).getExpression() : join(this.elements));
     }
 
     public static Expression of(float value) {
@@ -107,7 +107,7 @@ public class Expression implements Cloneable {
     }
 
     private String join(List<Monomial> elements) {
-        return ExpressionUtils.chainElements(elements, Monomial::getExpression);
+        return zeroIfEmpty(ExpressionUtils.chainElements(elements, Monomial::getExpression));
     }
 
     @Override
@@ -151,5 +151,21 @@ public class Expression implements Cloneable {
 
     public int size() {
         return elements.size();
+    }
+
+    private String zeroIfEmpty(String input) {
+        return input.isEmpty() ? "0" : input;
+    }
+
+    public float getMaximalPower() {
+        float max = 0;
+
+        for(Monomial m : elements) {
+            for(Variable var : m.getVarPart()) {
+                float exponent = var.getFinalExponent().orElse(1f);
+                if(exponent > max) max = exponent;
+            }
+        }
+        return max;
     }
 }

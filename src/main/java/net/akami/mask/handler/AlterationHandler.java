@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public interface AlterationHandler<T extends CalculationAlteration, R> {
+public interface AlterationHandler<T extends CalculationAlteration, R, I> {
 
     List<T> getAffections();
 
@@ -29,5 +29,5 @@ public interface AlterationHandler<T extends CalculationAlteration, R> {
         return compatibles;
     }
 
-    R findResult(R... input);
+    R findResult(I input);
 }

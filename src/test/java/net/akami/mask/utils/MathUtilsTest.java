@@ -1,10 +1,10 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
+import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
-import org.junit.Test;
 
 public class MathUtilsTest {
 
@@ -84,6 +84,10 @@ public class MathUtilsTest {
     }
 
     private void assertComputation(QuaternaryMathOperation op, String a, String aAlt, String b, String bAlt, String r) {
-        assertThat(op.compute(a, aAlt, b, bAlt)).isEqualTo(r);
+        Expression expA = ReducerFactory.reduce(a);
+        Expression expAAlt = ReducerFactory.reduce(aAlt);
+        Expression expB = ReducerFactory.reduce(b);
+        Expression expBAlt = ReducerFactory.reduce(bAlt);
+        assertThat(op.compute(expA, expAAlt, expB, expBAlt)).isEqualTo(r);
     }
 }
