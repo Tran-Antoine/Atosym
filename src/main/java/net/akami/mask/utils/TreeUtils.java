@@ -9,7 +9,7 @@ public class TreeUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TreeUtils.class.getName());
 
-    public static void createNewBranch(BinaryTree tree, Branch actual, int index, char sign, boolean edgesBracketsConnected) {
+    public static <T extends Branch<T>> void createNewBranch(BinaryTree<T> tree, T actual, int index, char sign, boolean edgesBracketsConnected) {
 
         String exp = actual.getExpression();
 

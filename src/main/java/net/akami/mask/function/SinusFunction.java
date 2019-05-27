@@ -1,14 +1,20 @@
 package net.akami.mask.function;
 
-public class SinusFunction extends MathFunction implements TrigonometryOperation {
+import net.akami.mask.core.MaskContext;
 
-    public SinusFunction() {
-        super('@');
+/**
+ * The Sinus trigonometric function, taking a single argument, computing a result between -1 and 1 if the input
+ * is a number, otherwise computes nothing.
+ */
+public class SinusFunction extends MathFunction<String> implements TrigonometryOperation {
+
+    public SinusFunction(MaskContext context) {
+        super('@', "sin", context);
     }
 
     @Override
     protected String operate(String... input) {
-        return trigonometryOperation(input[0], super.binding);
+        return trigonometricOperation(input[0], super.binding);
     }
 
     @Override

@@ -1,14 +1,20 @@
 package net.akami.mask.function;
 
-public class TangentFunction extends MathFunction implements TrigonometryOperation {
+import net.akami.mask.core.MaskContext;
 
-    public TangentFunction() {
-        super('§');
+/**
+ * The Tangent trigonometric function, taking a single argument, computing a result between -1 and 1 if the input
+ * is a number, otherwise computes nothing.
+ */
+public class TangentFunction extends MathFunction<String> implements TrigonometryOperation {
+
+    public TangentFunction(MaskContext context) {
+        super('§', "tan", context);
     }
 
     @Override
     protected String operate(String... input) {
-        return trigonometryOperation(input[0], this.binding);
+        return trigonometricOperation(input[0], this.binding);
     }
 
     @Override

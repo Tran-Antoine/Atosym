@@ -1,11 +1,12 @@
 package net.akami.mask.function;
 
+import net.akami.mask.core.MaskContext;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class TangentTest {
 
-    private final TangentFunction function = new TangentFunction();
+    private final TangentFunction function = new TangentFunction(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

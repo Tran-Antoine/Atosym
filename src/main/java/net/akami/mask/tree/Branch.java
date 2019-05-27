@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.utils.ExpressionUtils;
 
 /**
@@ -23,7 +24,7 @@ public class Branch<T extends Branch> {
     private char operation;
     private String expression;
     private boolean reduced;
-    private String reducedValue;
+    private Expression reducedValue;
 
     /**
      * Available constructor for the Branch class. Formats the initial expression given according to the
@@ -87,18 +88,14 @@ public class Branch<T extends Branch> {
     /**
      * @return the left expression if it does not have a reduced value, otherwise its reduced value
      */
-    public String getLeftValue() {
-        if(left.hasReducedValue())
-            return left.getReducedValue();
-        return left.getExpression();
+    public Expression getLeftValue() {
+        return left.getReducedValue();
     }
     /**
      * @return the right expression if it does not have a reduced value, otherwise its reduced value.
      */
-    public String getRightValue() {
-        if(right.hasReducedValue())
-            return right.getReducedValue();
-        return right.getExpression();
+    public Expression getRightValue() {
+        return right.getReducedValue();
     }
 
     /**
@@ -118,7 +115,7 @@ public class Branch<T extends Branch> {
     /**
      * @return the reduced value of the branch, null if not calculated / calculable
      */
-    public String getReducedValue()  { return reducedValue; }
+    public Expression getReducedValue()  { return reducedValue; }
 
     /**
      * @return the char corresponding to a defined calculation behavior. Empty if the branch is not split
@@ -151,5 +148,5 @@ public class Branch<T extends Branch> {
      * @param value the reduced value of the branch. Once the method is called, {@link Branch#hasReducedValue()}
      *              will always return true.
      */
-    public void setReducedValue(String value) { this.reducedValue = value; reduced = true; }
+    public void setReducedValue(Expression value) { this.reducedValue = value; reduced = true; }
 }

@@ -1,8 +1,9 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.handler.sign.QuaternaryOperationSign;
-import net.akami.mask.operation.MaskContext;
 import net.akami.mask.utils.FormatterFactory;
 
 import java.util.Optional;
@@ -41,19 +42,21 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     @Override
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
-            self.setDerivativeValue(differentiateElement(self.getExpression()));
+            self.setReducedValue(new Expression(self.getExpression()));
+            self.setDerivativeValue(new Expression(differentiateElement(self.getExpression())));
             return;
         }
 
-        String left = self.getLeftValue(); // either a reduced or the original expression
-        String right = self.getRightValue(); // either a reduced or the original expression
-        String derLeft = self.getLeft().getDerivativeValue(); // we know it has one
-        String derRight = self.getRight().getDerivativeValue(); // we know it has one
+        Expression left = self.getLeftValue(); // either a reduced or the original expression
+        Expression right = self.getRightValue(); // either a reduced or the original expression
+        Expression derLeft = self.getLeft().getDerivativeValue(); // we know it has one
+        Expression derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
-        if(getBranches().indexOf(self) != 0)
+        if(getBranches().indexOf(self) != 0) {
             self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
+        }
         self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
     }
 
@@ -66,7 +69,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     }
 
     @Override
-    public Optional<String> finalResult() {
+    public Optional<Expression> finalResult() {
         DerivativeBranch first = getBranches().get(0);
         if(first.getDerivativeValue() != null) {
             return Optional.of(first.getDerivativeValue());

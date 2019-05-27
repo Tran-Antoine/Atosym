@@ -1,151 +1,93 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
+import net.akami.mask.merge.MergeManager;
+import net.akami.mask.merge.MergeResult;
+import net.akami.mask.merge.MonomialAdditionMerge;
+import net.akami.mask.merge.OverlayAdditionMerge;
+import net.akami.mask.overlay.property.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-public class Adder extends BinaryOperationHandler {
+/**
+ * Computes the sum between two expressions. The default Adder class handled the following properties : <p>
+ *
+ * <li> CosineSinusSquaredProperty, converting {@code sin^2(x) + cos^2(x)} to 1.
+ * <li> CommonDenominatorAdditionProperty, allowing sums of fractions having the same denominator
+ * <li> IdenticalVariablesAdditionProperty, for complex expressions having the exact same variable part
+ * <p></p>
+ * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
+ * monomials by pairs, and computing a result if possible.
+ * @author Antoine Tran
+ */
+public class Adder extends BinaryOperationHandler<Expression> {
 
     public Adder(MaskContext context) {
         super(context);
+        addDefaultProperties();
+    }
+
+    private void addDefaultProperties() {
+        propertyManager.addProperty(
+                new CosineSinusSquaredProperty(context),
+                new CommonDenominatorAdditionProperty(context),
+                new IdenticalVariablesAdditionProperty(context)
+        );
     }
 
     @Override
-    public String operate(String a, String b) {
+    public Expression operate(Expression a, Expression b) {
         LOGGER.info("Adder process of {} |+| {}: \n", a, b);
-        List<String> monomials = ExpressionUtils.toMonomials(a);
-        monomials.addAll(ExpressionUtils.toMonomials(b));
-        LOGGER.info("Monomials : {}", monomials);
-        String result = monomialSum(monomials, false);
+        List<Monomial> aElements = a.getElements();
+        List<Monomial> bElements = b.getElements();
+        //List<Monomial> allMonomials = new ArrayList<>(aElements);
+        //allMonomials.addAll(bElements);
+
+        LOGGER.info("Monomials : {} and {}", aElements, bElements);
+
+        MergeManager mergeManager = context.getMergeManager();
+        List<Monomial> elements = mergeManager.secureMergeByType(aElements, bElements, MonomialAdditionMerge.class);
+        elements = elements.stream().filter(e -> e.getNumericValue() != 0).collect(Collectors.toList());
+        Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;
     }
 
-    public String monomialSum(List<String> monomials, boolean needsFormatting) {
+    // No layers sum
+    public Monomial simpleSum(Monomial a, Monomial b) {
 
-        List<String> finalMonomials = new ArrayList<>();
-
-        for (int i = 0; i < monomials.size(); i++) {
-            String part = monomials.get(i);
-            LOGGER.info("Analyzing {}", part);
-            if (part == null || part.isEmpty())
-                continue;
-            fillMonomialList(part, i, monomials, finalMonomials);
+        if(a.getVarPart().equals(b.getVarPart())) {
+            BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
+            BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
+            float sumResult = bigA.add(bigB).floatValue();
+            return new Monomial(sumResult, a.getVarPart());
+        } else {
+            throw new RuntimeException("isMergeable returned true but couldn't find a result");
         }
-
-        LOGGER.info("Inter step : {} and {}", monomials, finalMonomials);
-
-        // All the monomials that couldn't be calculated because their unknown part was unique are eventually added
-        finalMonomials.addAll(monomials);
-        clearBuilder();
-        for (String rest : finalMonomials) {
-            if (rest == null)
-                continue;
-
-            if (rest.startsWith("+") || rest.startsWith("-")) {
-                BUILDER.append(rest);
-            } else {
-                BUILDER.append('+').append(rest);
-            }
-        }
-        String result = BUILDER.toString();
-        result = result.startsWith("+") ? result.substring(1) : result;
-        LOGGER.debug("- Result of monomialSum / subtraction : {}", result);
-        return needsFormatting ? outFormat(result) : result;
     }
 
-    private void fillMonomialList(String monomial, int i, List<String> initialMonomials, List<String> finalMonomials) {
-        String vars = ExpressionUtils.toVariables(monomial);
-        LOGGER.debug("Analyzing monomial {} : {}, found \"{}\" as variables", i, monomial, vars);
-        // Adding all the "additionable" parts to the map, with their value and their index
-        Map<BigDecimal, Integer> compatibleParts = new HashMap<>();
+    public MergeResult<Monomial> complexSum(Monomial a, Monomial b) {
+        MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
 
-        for (int j = 0; j < initialMonomials.size(); j++) {
-            // We don't want to add the part itself
-            if (i == j)
-                continue;
+        List<OverallMergeProperty> overallProperties = propertyManager.getProperties()
+                .stream()
+                .map(overlay -> (OverallMergeProperty) overlay)
+                .collect(Collectors.toList());
+        OverlayAdditionMerge additionMerge = new OverlayAdditionMerge(a, b, overallProperties);
+        Optional<List<Monomial>> result = additionMerge.merge();
+        if(!result.isPresent()) throw new RuntimeException("isMergeable returned true but couldn't find a result");
 
-            String part2 = initialMonomials.get(j);
-            if (part2 == null)
-                continue;
-
-            // If the unknown part is similar, we can add them
-            if (ExpressionUtils.toVariables(part2).equals(vars)) {
-                LOGGER.error("Numeric value of {} : {}", part2, ExpressionUtils.toNumericValue(part2));
-                BigDecimal toAdd = new BigDecimal(ExpressionUtils.toNumericValue(part2));
-                if (compatibleParts.containsKey(toAdd)) {
-                    LOGGER.debug("Found copy in the map. Doubling the original.");
-                    int index = compatibleParts.get(toAdd);
-                    compatibleParts.remove(toAdd, index);
-                    compatibleParts.put(toAdd.multiply(new BigDecimal("2")), index);
-                    initialMonomials.set(j, null);
-                    LOGGER.info("After copy : {}", compatibleParts);
-                } else {
-                    compatibleParts.put(toAdd, j);
-                }
-            }
-        }
-        replaceMonomialsByResult(monomial, vars, i, compatibleParts, initialMonomials, finalMonomials);
+        return new MergeResult<>(result.get(), additionMerge.startingOverRequested());
     }
 
-
-    /**
-     * Calculates the monomialSum of all numeric values of the monomials having vars as their unknown part, then
-     * removes the calculated values from the initial list, and adds the findResult into the final list.
-     *
-     * Example :
-     *
-     * 2x + 2x + 3x
-     * -> Compatible unknown part : x. Hence, initialMonomial is 2x, others contains 2x and 3x, it removes
-     * the three monomials to the initial list, and adds 7x to the final list
-     */
-    private void replaceMonomialsByResult(String initialMonomial, String vars, int index, Map<BigDecimal, Integer> others,
-                                          List<String> initialMonomials, List<String> finalMonomials) {
-        LOGGER.debug("Init : {}, Final : {}. Vars : {}", initialMonomial, finalMonomials, vars);
-        while(ExpressionUtils.areEdgesBracketsConnected(initialMonomial, true))
-            initialMonomial = initialMonomial.substring(1, initialMonomial.length()-1);
-        LOGGER.info("Numeric value of {} : {}", initialMonomial, ExpressionUtils.toNumericValue(initialMonomial));
-        BigDecimal finalTotal = new BigDecimal(ExpressionUtils.toNumericValue(initialMonomial));
-        for (BigDecimal value : others.keySet()) {
-            LOGGER.debug("Value : " + value);
-            finalTotal = finalTotal.add(value);
-            // The compatible part is set to null in the list
-            initialMonomials.set(others.get(value), null);
-        }
-        // The part itself is also set to null in the list
-        initialMonomials.set(index, null);
-
-        String numericTotal = finalTotal.toString();
-        if (numericTotal.equals("1") && !vars.isEmpty()) {
-            finalMonomials.add(vars);
-        } else if (numericTotal.equals("-1") && !vars.isEmpty()) {
-            finalMonomials.add("-" + vars);
-        } else if(!numericTotal.matches("0\\.0+") && !numericTotal.equals("0")){
-            finalMonomials.add(MathUtils.cutSignificantZero(numericTotal + vars));
-        }
-        LOGGER.info("Init : {}, Final : {}", initialMonomial, finalMonomials);
-    }
-
-    @Override
-    public String inFormat(String origin) {
-        String result = FormatterFactory.removeFractions(origin);
-        LOGGER.info("{} became {}", origin, result);
-        return result;
-    }
-
-    @Override
-    public String outFormat(String origin) {
-        if(origin.isEmpty()) {
-            LOGGER.debug("RETURNED 0");
-            return "0";
-        }
-        return FormatterFactory.removeMultiplicationSigns(origin);
+    public Expression monomialSum(List<Monomial> monomials) {
+        MergeManager mergeManager = context.getMergeManager();
+        List<Monomial> result = mergeManager.mergeByType(monomials, MonomialAdditionMerge.class);
+        return new Expression(result);
     }
 }

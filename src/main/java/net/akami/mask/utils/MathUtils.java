@@ -1,77 +1,87 @@
 package net.akami.mask.utils;
 
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.*;
-import static net.akami.mask.operation.MaskContext.DEFAULT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static net.akami.mask.core.MaskContext.DEFAULT;
 
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
 
-    public static String sum(String a, String b)      { return sum(a, b, DEFAULT);      }
-    public static String sum(List<String> monomials)  { return sum(monomials, DEFAULT); }
-    public static String subtract(String a, String b) { return subtract(a, b, DEFAULT); }
-    public static String mult(String a, String b)     { return mult(a, b, DEFAULT);     }
-    public static String divide(String a, String b)   { return divide(a, b, DEFAULT);   }
-    public static String pow(String a, String b)      { return pow(a, b, DEFAULT);   }
+    public static Expression sum(Expression a, Expression b)      { return sum(a, b, DEFAULT);      }
+    public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
+    public static Expression mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
+    public static Expression divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
+    public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);      }
 
-    public static String sum(String a, String b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
-    public static String subtract(String a, String b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
-    public static String mult(String a, String b, MaskContext context)     { return context.binaryCompute(a, b, Multiplicator.class); }
-    public static String divide(String a, String b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
-    public static String pow(String a, String b, MaskContext context)      { return context.binaryCompute(a, b, PowCalculator.class); }
-    public static String sum(List<String> monomials, MaskContext context)  {
-        return context.getBinaryOperation(Adder.class).monomialSum(monomials, true);
-    }
+    public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
+    public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
+    public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
+    public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
+    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerCalculator.class); }
 
-    public static String diffSum(String a, String altA, String b, String altB) {
+    public static Expression diffSum(Expression a, Expression altA, Expression b, Expression altB) {
         return sum(altA, altB);
     }
-    public static String diffSubtract(String a, String altA, String b, String altB) {
+    public static Expression diffSubtract(Expression a, Expression altA, Expression b, Expression altB) {
         return subtract(altA, altB);
     }
-    public static String diffMult(String a, String altA, String b, String altB) {
+    public static Expression diffMult(Expression a, Expression altA, Expression b, Expression altB) {
         return sum(mult(altA, b), mult(altB, a));
     }
-    public static String diffDivide(String a, String altA, String b, String altB) {
-        return "("+subtract(mult(altA, b), mult(altB, a))+")/("+b+")^2";
+    public static Expression diffDivide(Expression a, Expression altA, Expression b, Expression altB) {
+        return divide(subtract(mult(altA,b), mult(altB, a)), mult(b, b));
     }
-    public static String diffPow(String a, String altA, String b, String altB) {
-        String subtractResult = subtract(b, "1");
-        if(subtractResult.equals("1"))
-            subtractResult = "";
-        else if(!ExpressionUtils.isReduced(subtractResult))
-            subtractResult = "^("+subtractResult+')';
-        else
-            subtractResult = '^'+subtractResult;
-
-        if(!ExpressionUtils.isReduced(a) && !ExpressionUtils.areEdgesBracketsConnected(a, false))
-            a = '(' + a + ')';
-        if(!ExpressionUtils.isReduced(b) && !ExpressionUtils.areEdgesBracketsConnected(b, false))
-            b = '(' + b + ")*";
-        else
-            b += '*';
-
-        if(altA.equals("1"))
-            altA = "";
-        else if(!ExpressionUtils.isReduced(altA))
-            altA = '(' + altA + ')';
-        else
-            altA = '*' + altA;
-
-        return b+a+subtractResult+altA;
+    public static Expression diffPow(Expression a, Expression altA, Expression b, Expression altB) {
+        return mult(mult(b, pow(a, subtract(b, Expression.of(1)))), altA);
     }
 
+    @Deprecated
+    /**
+     * This method does not go along with the new expression system, thus will be replaced soon.
+     */
+    public static String monomialSum(List<String> monomials) {
+        List<Monomial> finalMonomials = new ArrayList<>();
+        for(String monomial : monomials) {
+            finalMonomials.add(ReducerFactory.reduce(monomial).get(0));
+        }
+        return new Expression(finalMonomials).toString();
+    }
+
+    @Deprecated
+    public static String divide(String a, String b) {
+        Expression bExp = ReducerFactory.reduce(b);
+        List<String> monomials = ExpressionUtils.toMonomials(a);
+        List<String> finalResult = new ArrayList<>();
+
+        for(String monomial : monomials) {
+            Expression divResult = divide(ReducerFactory.reduce(monomial), bExp);
+            finalResult.add(divResult.toString());
+        }
+        StringBuilder builder = new StringBuilder();
+        int i = 0;
+        for(String result : finalResult) {
+            if(ExpressionUtils.isSigned(result) || i == 0) {
+                builder.append(result);
+            } else {
+                builder.append('+').append(result);
+            }
+            i++;
+        }
+        return builder.toString();
+    }
     public static String breakNumericalFraction(String self) {
         for(int i = 0; i < self.length(); i++) {
             if(self.charAt(i) == '/') {
-                return divide(self.substring(0, i), self.substring(i+1));
+                // TODO return divide(self.substring(0, i), self.substring(i+1));
             }
         }
         return self;
@@ -120,7 +130,7 @@ public class MathUtils {
      * @param self the number to decompose
      * @return a list of strings being the divided version of the given parameter
      */
-    public static List<String> decomposeNumber(float self) {
+    public static List<String> decomposeNumberToString(float self) {
         LOGGER.info("Now decomposing float {}", self);
 
         List<String> results = new ArrayList<>();
@@ -152,6 +162,48 @@ public class MathUtils {
         return results;
     }
 
+    public static List<Float> decomposeNumber(float self) {
+        return decomposeNumber(self, 0);
+    }
+
+    public static List<Float> decomposeNumber(float self, float other) {
+        LOGGER.info("Now decomposing float {}", self);
+
+        List<Float> results = new ArrayList<>();
+        if(other != 0 && self % other == 0) {
+            float divResult = self / other;
+            self /= divResult;
+            results.add(divResult);
+        }
+
+        if (self % 1 != 0) {
+            LOGGER.info("Non-integer given, returns it");
+            results.add(self);
+            return results;
+        }
+        if (self < 0) {
+            results.add(-1.0f);
+            self *= -1;
+        }
+
+        List<Integer> dividers = getDividers(self);
+
+        int index = 0;
+        while (index < dividers.size()) {
+            int divider = dividers.get(index);
+            if (self % divider == 0) {
+                LOGGER.debug("{} is a divider of {}", divider, self);
+                results.add((float) divider);
+                self /= divider;
+            } else {
+                LOGGER.debug("{} is not a divider of {}", divider, self);
+                index++;
+            }
+        }
+        LOGGER.info("Result : {} (decomposition of {})", results, self);
+        return results;
+    }
+
     public static List<Integer> getDividers(float self) {
         List<Integer> dividers = new ArrayList<>();
         // Builds the dividers array
@@ -165,7 +217,6 @@ public class MathUtils {
             }
             if (unique) {
                 dividers.add(i);
-                continue;
             }
         }
         return dividers;

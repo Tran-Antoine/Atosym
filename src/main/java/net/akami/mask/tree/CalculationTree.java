@@ -1,7 +1,8 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.sign.BinaryOperationSign;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.TreeUtils;
@@ -20,7 +21,6 @@ import net.akami.mask.utils.TreeUtils;
  *
  * @author Antoine Tran
  */
-// TODO : add context
 public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
     protected final MaskContext context;
@@ -32,7 +32,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
     /**
      * The overall splitting's behavior of a {@code CalculationTree} is to look for the lowest math signs in terms of
-     * priority (+ and -), and to get on this way as long as a valid "splitter" is found.
+     * priority (+ and -), and to getElement on this way as long as a valid "splitter" is found.
      * @param self the branch itself
      */
     @Override
@@ -51,8 +51,8 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
         String expression = self.getExpression();
         /*
             We must go from the end to the beginning. Otherwise, operations' priority is not respected.
-            For instance, 2/2*2 = 1. If we go from 0 to exp.length() -1, the expression will be divided like this :
-            2 |/| 2*2. 2*2 will be calculated first, the final findResult will be 1/2. If we go from exp.length() -1
+            For instance, 2/2*2 = 1. If we go from 0 to exp.getElementsSize() -1, the expression will be divided like this :
+            2 |/| 2*2. 2*2 will be calculated first, the final findResult will be 1/2. If we go from exp.getElementsSize() -1
             to 0, the expression will be divided like this :
             2 / 2 |*| 2. 2/2 will be calculated first, the final findResult will be 2.
         */
@@ -81,11 +81,11 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
         LOGGER.info("Actual branch : {}", self.getExpression());
 
         // We are sure that the branch has a left and a right part, because the branch can be calculated
-        String left = self.getLeftValue();
-        String right = self.getRightValue();
+        Expression left = self.getLeftValue();
+        Expression right = self.getRightValue();
 
         LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, self.getOperation());
-        String value = evalValue(left, right, self.getOperation());
+        Expression value = evalValue(left, right, self.getOperation());
         // The findResult is defined as the reduced value of the expression
         LOGGER.info("Successfully calculated the value of " + self.getExpression() + " : " + value);
 
@@ -93,7 +93,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
     }
 
     /**
-     * Defines what is the result of the calculation (corresponding to the char given) between left and right. <br/>
+     * Defines what is the merge of the calculation (corresponding to the char given) between left and right. <br/>
      *
      * The {@code evalValue} method might be redefined in a sub class of {@code CalculationTree}.
      * @param left the 'a' value of the calculation
@@ -101,7 +101,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
      * @param sign the operation sign corresponding to a calculation
      * @return
      */
-    protected String evalValue(String left, String right, char sign) {
+    protected Expression evalValue(Expression left, Expression right, char sign) {
         return BinaryOperationSign.getBySign(sign).compute(left, right, context);
     }
 }

@@ -1,48 +1,29 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.operation.MaskContext;
-import net.akami.mask.utils.ExpressionUtils;
-import net.akami.mask.utils.FormatterFactory;
-import net.akami.mask.utils.MathUtils;
+import net.akami.mask.expression.Monomial;
+import net.akami.mask.expression.*;
+import net.akami.mask.core.MaskContext;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Subtractor extends BinaryOperationHandler {
+public class Subtractor extends BinaryOperationHandler<Expression> {
 
     public Subtractor(MaskContext context) {
         super(context);
     }
 
     @Override
-    protected String operate(String a, String b) {
+    protected Expression operate(Expression a, Expression b) {
         LOGGER.info("Subtractor process of {} |-| {}: \n", a, b);
 
-        List<String> monomials = ExpressionUtils.toMonomials(a);
-        List<String> bMonomials = ExpressionUtils.toMonomials(b);
+        List<Monomial> opposite = new ArrayList<>(b.length());
 
-        // Changes the sign of the monomials that need to be subtracted
-        for (int i = 0; i < bMonomials.size(); i++) {
-            String m = bMonomials.get(i);
-
-            if (m.startsWith("+")) {
-                bMonomials.set(i, "-" + m.substring(1));
-            } else if (m.startsWith("-")) {
-                bMonomials.set(i, "+" + m.substring(1));
-            } else {
-                bMonomials.set(i, "-" + m);
-            }
+        for(Monomial bElement : b.getElements()) {
+            Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+            opposite.add(multiplier.noLayersMult(new NumberElement(-1.0f), bElement));
         }
-        monomials.addAll(bMonomials);
-        return MathUtils.sum(monomials, context);
-    }
 
-    @Override
-    public String inFormat(String origin) {
-        return origin;
-    }
-
-    @Override
-    public String outFormat(String origin) {
-        return FormatterFactory.removeMultiplicationSigns(origin);
+        return context.getBinaryOperation(Adder.class).operate(a, new Expression(opposite));
     }
 }

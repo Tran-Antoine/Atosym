@@ -1,5 +1,6 @@
 package net.akami.mask.tree;
 
+import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,16 +95,15 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Note that the merge method can be redefined if the behavior does not suits the tree.
      * @return the reduced value of the first branch, while finalResult() is not redefined
      */
-    public String merge() {
+    public Expression merge() {
         /*
         If we give a very simple expression such as '50' to the reducer, it will detect that no operation
         needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
         */
         if (getBranches().size() == 1 && !branches.get(0).canBeEvaluated()) {
             LOGGER.debug("Only one branch found. Returns it.");
-            return getBranches().get(0).getExpression();
+            return new Expression(getBranches().get(0).getExpression());
         }
-
 
         //Merging the branches from the last one to the first one (this initial expression)
         for (int i = getBranches().size() - 1; i >= 0; i--) {
@@ -112,6 +112,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
             if (!self.canBeEvaluated()) {
                 LOGGER.info("Not calculable : ");
+                self.setReducedValue(new Expression(self.getExpression()));
                 continue;
             }
 
@@ -130,10 +131,10 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Defines whether the final findResult has been calculated or not.
      * @return the final findResult if calculated, otherwise an empty optional.
      */
-    public Optional<String> finalResult() {
+    public Optional<Expression> finalResult() {
         T first = getBranches().get(0);
         if (first.hasReducedValue()) {
-            return Optional.of(String.valueOf(first.getReducedValue()));
+            return Optional.of(first.getReducedValue());
         }
         return Optional.empty();
     }

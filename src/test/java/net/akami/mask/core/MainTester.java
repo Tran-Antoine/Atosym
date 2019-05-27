@@ -2,7 +2,9 @@ package net.akami.mask.core;
 
 import net.akami.mask.utils.ReducerFactory;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class MainTester {
 

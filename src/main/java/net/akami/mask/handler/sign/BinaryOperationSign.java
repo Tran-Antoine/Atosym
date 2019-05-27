@@ -1,7 +1,8 @@
 package net.akami.mask.handler.sign;
 
 import net.akami.mask.affection.CalculationCache;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.MathUtils;
 
 import java.util.Objects;
@@ -25,7 +26,7 @@ import java.util.Objects;
 public enum BinaryOperationSign {
 
     /**
-     * Sum operator, computes a + b using the {@link MathUtils#sum(String, String)} method.
+     * Sum operator, computes a + b using the {@link MathUtils#sum(Expression, Expression)} method.
      * <p></p>
      * This operator can deal with a chain of additions / subtractions. Therefore, there will not be any problem
      * if the a or b value happens to be a polynomial.
@@ -43,7 +44,7 @@ public enum BinaryOperationSign {
     SUM('+', MathUtils::sum, 0),
 
     /**
-     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(String, String)} method.
+     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(Expression, Expression)} method.
      * <p></p>
      * This operator works the same way as the {@code SUM} operator, except that it multiply all the monomials
      * found in the {@code b} input by -1.
@@ -61,7 +62,7 @@ public enum BinaryOperationSign {
     SUBTRACT('-', MathUtils::subtract, 0),
 
     /**
-     * Mult operator, computes a * b using the {@link MathUtils#mult(String, String)} method.
+     * Mult operator, computes a * b using the {@link MathUtils#mult(Expression, Expression)} method.
      * <p></p>
      * It also supports polynomial multiplication (not only the monomial ones) thus distributivity.
      * <p></p>
@@ -79,7 +80,7 @@ public enum BinaryOperationSign {
     MULT('*', MathUtils::mult, 1),
 
     /**
-     * Division operator, computes a / b using the {@link MathUtils#divide(String, String)} method.
+     * Division operator, computes a / b using the {@link MathUtils#divide(Expression, Expression)} method.
      *
      * Note that only the following division types are supported by now :
      *
@@ -102,12 +103,12 @@ public enum BinaryOperationSign {
     DIVIDE('/', MathUtils::divide, 1),
 
     /**
-     * Pow operator, computes a ^ b using the {@link MathUtils#pow(String, String)} method.
+     * Pow operator, computes a ^ b using the {@link MathUtils#pow(Expression, Expression)} method.
      * <p></p>
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
      * to the power of a non integer number, as well as any algebraic exponent won't be calculated, thus the returned
-     * result will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
+     * merge will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
      * <p></p>
      *
      * The {@link MaskContext} also influences whether the calculation will be performed or not,
@@ -155,7 +156,7 @@ public enum BinaryOperationSign {
         return priorityLevel;
     }
 
-    public String compute(String a, String b, MaskContext context) {
+    public Expression compute(Expression a, Expression b, MaskContext context) {
         Objects.requireNonNull(binaryFunction);
         return binaryFunction.compute(a, b, context);
     }
@@ -170,7 +171,7 @@ public enum BinaryOperationSign {
     }
 
     @FunctionalInterface
-    private interface BinaryMathCalculation {
-        String compute(String a, String b, MaskContext context);
+    public interface BinaryMathCalculation {
+        Expression compute(Expression a, Expression b, MaskContext context);
     }
 }

@@ -1,75 +1,88 @@
 package net.akami.mask.function;
 
-import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.overlay.CompleteCoverEncapsulator;
+import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.CancellableHandler;
 import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-public abstract class MathFunction implements CancellableHandler, PostCalculationActionable {
+/**
+ * Represents a mathematical function matching the following syntax : {@code name(p1, p2, ...)}.
+ * <pre></pre>
+ * The currently available functions are the trigonometry functions exclusively. More functions with multiple
+ * parameters, such as {@code log} or {@code root} will be added in the future.
+ * @author Antoine Tran
+ */
+public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalculationActionable<T>, CompleteCoverEncapsulator {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
-    private static final List<MathFunction> functions = new ArrayList<>();
 
-    static {
-        functions.addAll(Arrays.asList(
-                new SinusFunction(),
-                new CosineFunction(),
-                new TangentFunction()));
-    }
-
-    private final CalculationCanceller[] cancellers = {new CalculationCache()};
+    protected final List<CalculationCanceller<T>> cancellers = new ArrayList<>();
     protected final char binding;
+    protected final String name;
+    private final MaskContext context;
 
-    public MathFunction(char binding) {
+    public MathFunction(char binding, String name, MaskContext context) {
         this.binding = binding;
-        addToFunctions();
+        this.name = name;
+        this.context = context;
     }
 
-    protected abstract String operate(String... input);
+    protected abstract T operate(T... input);
 
-    public String rawOperate(String... input) {
+    public T rawOperate(T... input) {
         if(isCancellable(input)) {
             return findResult(input);
         }
         return operate(input);
     }
 
-    private void addToFunctions() {
-        getByBinding(this.binding).ifPresent(e -> {
-            functions.remove(e);
-            LOGGER.warn("New function added, although another existing function with the same binding has been found.");
-        });
-        functions.add(this);
-    }
-
     public boolean exists() {
-        return getByBinding(this.binding).isPresent();
-    }
-
-    public static Optional<MathFunction> getByBinding(char binding) {
-        for(MathFunction function : functions) {
-            if(function.binding == binding)
-                return Optional.of(function);
-        }
-        return Optional.empty();
-    }
-
-    // TODO do something working for all functions.
-    @Override
-    public void postCalculation(String result, String... input) {
-        String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        getAffection(CalculationCache.class).get().push(calculation, result);
+        return context.getFunctionByBinding(this.binding).isPresent();
     }
 
     @Override
-    public CalculationCanceller[] getAffections() {
+    public void postCalculation(Object result, Object... input) {
+        //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
+        //getAffection(CalculationCache.class).getElement().push(calculation, merge);
+    }
+
+    @Override
+    public List<CalculationCanceller<T>> getAffections() {
         return cancellers;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof MathFunction))
+            return false;
+
+        return this.binding == ((MathFunction) obj).binding;
+    }
+
+    @Override
+    public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
+        String[] parts = new String[2];
+        parts[0] = name + '(';
+        parts[1] = ")";
+        return parts;
+    }
+
+    public char getBinding() {
+        return binding;
+    }
+
+    public static Set<MathFunction> generateDefaultFunctions(MaskContext context) {
+        return new HashSet<>(Arrays.asList(
+                new SinusFunction(context),
+                new CosineFunction(context),
+                new TangentFunction(context)
+        ));
     }
 }

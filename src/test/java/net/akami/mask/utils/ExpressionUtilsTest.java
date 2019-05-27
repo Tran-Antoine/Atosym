@@ -36,6 +36,7 @@ public class ExpressionUtilsTest {
 
     @Test
     public void toMonomialsTest() {
+        System.out.println(toMonomials("(x+1)@"));
         assertThat(toMonomials("0.66y-1.66").toString()).isEqualTo("[0.66y, -1.66]");
     }
 

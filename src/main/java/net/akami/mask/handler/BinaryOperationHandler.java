@@ -1,56 +1,59 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.CalculationCache;
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.operation.MaskContext;
+import net.akami.mask.overlay.property.MergePropertyManager;
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public abstract class BinaryOperationHandler implements IODefaultFormatter, CancellableHandler, PostCalculationActionable {
+import java.util.*;
+
+public abstract class BinaryOperationHandler<T> implements CancellableHandler<T>, PostCalculationActionable<T> {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
-    protected final StringBuilder BUILDER = new StringBuilder();
+    protected MergePropertyManager propertyManager;
     protected MaskContext context;
-    private CalculationCanceller[] cancellers;
+    private List<CalculationCanceller<T>> cancellers;
 
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
-        this.cancellers = new CalculationCanceller[]{new CalculationCache()};
+        this.propertyManager = new MergePropertyManager(context);
+        this.cancellers = new ArrayList<>();
     }
 
-    protected abstract String operate(String a, String b);
+    protected abstract T operate(T a, T b);
 
-    public String rawOperate(String a, String b) {
+    public T rawOperate(T a, T b) {
         if(isCancellable(a, b)) {
             return findResult(a, b);
         }
-        String result = outFormat(operate(inFormat(a), inFormat(b)));
+        T result = operate(a, b);
         postCalculation(result, a, b);
         return result;
     }
 
-    public void clearBuilder() {
-        BUILDER.delete(0, BUILDER.length());
+    @Override
+    public void postCalculation(T result, T... input) {
+        //getAffection(CalculationCache.class).getElement().push(input[0].toString()+'|'+input[1].toString(), merge.toString());
     }
 
     @Override
-    public void postCalculation(String result, String... input) {
-        getAffection(CalculationCache.class).get().push(input[0]+'|'+input[1], result);
-    }
-
-    @Override
-    public CalculationCanceller[] getAffections() {
+    public List<CalculationCanceller<T>> getAffections() {
         return cancellers;
     }
 
-    public static BinaryOperationHandler[] generateDefaultHandlers(MaskContext context) {
-        return new BinaryOperationHandler[]{
-
+    public static Set<BinaryOperationHandler<Expression>> generateDefaultHandlers(MaskContext context) {
+        return new HashSet<>(Arrays.asList(
                 new Adder(context),
                 new Subtractor(context),
-                new Multiplicator(context),
+                new Multiplier(context),
                 new Divider(context),
-                new PowCalculator(context)
-        };
+                new PowerCalculator(context)
+        ));
+    }
+
+    public MergePropertyManager getPropertyManager() {
+        return propertyManager;
     }
 }

@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import static net.akami.mask.utils.ExpressionUtils.*;
 
+/**
+ * Formatting while performing calculation will soon be useless, since the new expression system is able to treat
+ * any expression regardless of its format. Final formatting might be useful though
+ */
 public class FormatterFactory {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FormatterFactory.class);
@@ -57,7 +61,7 @@ public class FormatterFactory {
 
     public static String formatForVisual(String origin) {
         BinaryTree tree = new FormatterTree(origin);
-        return tree.merge();
+        return tree.merge().toString();
     }
 
     public static String removeMultiplicationSigns(String self) {

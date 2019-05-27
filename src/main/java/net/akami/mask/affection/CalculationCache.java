@@ -15,7 +15,7 @@ import java.util.Map;
  *
  * @author Antoine Tran
  */
-public class CalculationCache implements CalculationCanceller {
+public class CalculationCache implements CalculationCanceller<String> {
 
     private Map<String, String> cache = new HashMap<>();
     private int capacity = 200;
@@ -32,7 +32,7 @@ public class CalculationCache implements CalculationCanceller {
     }
 
     /**
-     * Adds a new result into the HashMap. Data should always be pushed using the same format, otherwise the key for a given
+     * Adds a new merge into the HashMap. Data should always be pushed using the same format, otherwise the key for a given
      * input might not be detected, even though the calculation was already performed.
      * If the cache is full, its size being specified with the {@link #setCapacity(int)} method, the map will be cleared
      * before entering any new data.
@@ -42,7 +42,7 @@ public class CalculationCache implements CalculationCanceller {
      *
      * <pre>
      * Initial : a|b
-     * Result  : computed result of a "something" b
+     * Result  : computed merge of a "something" b
      *
      * -| Example |-
      * Initial : 3|2
@@ -50,8 +50,8 @@ public class CalculationCache implements CalculationCanceller {
      * </pre>
      * Because each handler has its own cache, there is no need to specify which operation sign a and b are linked by.
      *
-     * @param initial the input, computing a result with a given operation
-     * @param result the result of the computed version of the input
+     * @param initial the input, computing a merge with a given operation
+     * @param result the merge of the computed version of the input
      */
     public void push(String initial, String result) {
         if(capacity == 0) return;

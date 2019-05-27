@@ -1,15 +1,22 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.overlay.ExpressionOverlay;
+import net.akami.mask.expression.*;
 import net.akami.mask.handler.sign.BinaryOperationSign;
 import net.akami.mask.structure.EquationSolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+/**
+ * Probably 95% of this class will be (unfortunately) deleted soon, replaced by the new expression system, a much faster
+ * and more reliable approach.
+ */
 public class ExpressionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExpressionUtils.class);
@@ -25,9 +32,7 @@ public class ExpressionUtils {
 
     public static List<String> toMonomials(String self) {
 
-        while (ExpressionUtils.areEdgesBracketsConnected(self, true)) {
-            self = self.substring(1, self.length() - 1);
-        }
+        self = removeEdgeBrackets(self, true);
 
         List<String> monomials = new ArrayList<>();
         int lastIndex = 0;
@@ -67,7 +72,7 @@ public class ExpressionUtils {
         for (String var : vars) {
             String[] varExp = var.split("\\^", 2);
             if (reducedVars.containsKey(varExp[0])) {
-                reducedVars.put(varExp[0], MathUtils.sum(reducedVars.get(varExp[0]), varExp[1]));
+                reducedVars.put(varExp[0], null/*MathUtils.sum(reducedVars.getElement(varExp[0]), varExp[1])*/);
             } else {
                 reducedVars.put(varExp[0], varExp[1]);
             }
@@ -197,7 +202,7 @@ public class ExpressionUtils {
         for (int i = 0; i < elements.size(); i++) {
             String element = elements.get(i);
             if (isANumber(element)) {
-                List<String> decomposedLocal = MathUtils.decomposeNumber(Float.parseFloat(element));
+                List<String> decomposedLocal = MathUtils.decomposeNumberToString(Float.parseFloat(element));
                 LOGGER.info("Decomposed {}, findResult : {}", element, decomposedLocal);
                 elements.set(i, null);
                 decomposedElements.addAll(decomposedLocal);
@@ -225,6 +230,62 @@ public class ExpressionUtils {
                 out.add(String.valueOf(origin.charAt(0)));
             }
         }
+    }
+
+    public static boolean isANumber(Expression exp) {
+        if(exp.length() != 1) return false;
+        return isANumber(exp.get(0));
+    }
+
+    public static boolean isANumber(Monomial element) {
+        List<Variable> vars = element.getVarPart().getVariables();
+        return vars.size() == 0;
+    }
+
+    public static boolean isAnInteger(Expression exp) {
+        if(exp.length() != 1) return false;
+        return isAnInteger(exp.get(0));
+    }
+
+    public static boolean isAnInteger(Monomial element) {
+        List<Variable> vars = element.getVarPart().getVariables();
+        return vars.size() == 0 && element.getNumericValue() % 1 == 0;
+    }
+
+    public static String encapsulate(List<Monomial> elements, List<ExpressionOverlay> layers) {
+        StringBuilder builder = new StringBuilder();
+        for(int i = layers.size()-1; i >= 0; i--) {
+            builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
+        }
+
+        // TODO : find a better way of doing it
+        List<Monomial> copy = elements
+                .stream()
+                .filter(e -> !(e.getExpression().equals("1.0")))
+                .collect(Collectors.toList());
+        builder.append(chainElements(copy, Monomial::getExpression));
+
+        int i = 0;
+        for(ExpressionOverlay encapsulator : layers) {
+            builder.append(encapsulator.getEncapsulationString(elements, i++, layers)[1]);
+        }
+
+        return builder.toString();
+    }
+
+    public static String chainElements(List<Monomial> elements, Function<Monomial, String> expFunction) {
+        StringBuilder builder = new StringBuilder();
+        for(Monomial element : elements) {
+            String expression = expFunction.apply(element);
+            if(expression.isEmpty()) continue;
+
+            if(builder.length() == 0 || ExpressionUtils.isSigned(expression)) {
+                builder.append(expression);
+            } else {
+                builder.append('+').append(expression);
+            }
+        }
+        return builder.toString();
     }
 
     public static boolean isANumber(String exp) {
@@ -293,6 +354,7 @@ public class ExpressionUtils {
         return false;
     }
 
+    @Deprecated
     public static String toNumericValue(String exp) {
         if (exp.isEmpty())
             return "0";
