@@ -2,9 +2,7 @@ package net.akami.mask.core;
 
 import net.akami.mask.utils.ReducerFactory;
 
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 
 public class MainTester {
 
@@ -17,6 +15,16 @@ public class MainTester {
         while(!(expression = sc.nextLine()).isEmpty()) {
             long time = System.nanoTime();
             System.out.println("Result : "+ ReducerFactory.reduce(expression));
+            float deltaTime = (System.nanoTime() - time) / 1000000000f;
+            System.out.println("Calculations ended after "+deltaTime+" seconds");
+            System.out.println("Next expression to reduce : ");
+        }
+        MaskOperatorHandler handler = new MaskOperatorHandler();
+        while(!(expression = sc.nextLine()).isEmpty()) {
+            Mask.TEMP.reload(expression);
+            handler.begin(Mask.TEMP);
+            long time = System.nanoTime();
+            System.out.println("Result : "+ handler.compute(MaskDerivativeCalculator.class, null, 'x').asExpression());
             float deltaTime = (System.nanoTime() - time) / 1000000000f;
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");
