@@ -5,9 +5,9 @@ import net.akami.mask.expression.ComplexVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.SingleCharVariable;
 import net.akami.mask.expression.Variable;
-import net.akami.mask.merge.MergeBehavior;
+import net.akami.mask.merge.Merge;
 import net.akami.mask.merge.MergeManager;
-import net.akami.mask.merge.VariableCombinationBehavior;
+import net.akami.mask.merge.VariableCombination;
 import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 
@@ -23,7 +23,7 @@ public class VariableUtils {
         Objects.requireNonNull(a1, NULL_MESSAGE);
         Objects.requireNonNull(a2, NULL_MESSAGE);
         MergeManager manager = context.getMergeManager();
-        MergeBehavior<Variable> behavior = manager.getByType(VariableCombinationBehavior.class);
+        Merge<Variable> behavior = manager.getByType(VariableCombination.class);
         List<Variable> a1Copy = new ArrayList<>();
         List<Variable> a2Copy;
         a1.forEach(a1Copy::add);
@@ -57,7 +57,7 @@ public class VariableUtils {
             if(ExpressionUtils.isANumber(exponent)) {
                 float expValue = exponent.get(0).getNumericValue();
                 List<ExpressionOverlay> finalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
-                finalOverlays.add(ExponentOverlay.EXPONENT_NULL_FACTOR);
+                finalOverlays.add(ExponentOverlay.NULL_FACTOR);
 
                 while (expValue > 1) {
                     finalVars.add(new ComplexVariable(complexVar.getElements(), finalOverlays));

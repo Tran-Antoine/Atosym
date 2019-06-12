@@ -2,7 +2,7 @@ package net.akami.mask.function;
 
 import net.akami.mask.affection.CalculationCanceller;
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.overlay.CompleteCoverEncapsulator;
+import net.akami.mask.overlay.CompleteCoverOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.CancellableHandler;
@@ -19,7 +19,7 @@ import java.util.*;
  * parameters, such as {@code log} or {@code root} will be added in the future.
  * @author Antoine Tran
  */
-public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalculationActionable<T>, CompleteCoverEncapsulator {
+public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalculationActionable<T>, CompleteCoverOverlay {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
 

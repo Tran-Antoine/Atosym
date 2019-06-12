@@ -1,9 +1,9 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
+import net.akami.mask.merge.property.MergePropertyManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +18,7 @@ public abstract class BinaryOperationHandler<T> implements CancellableHandler<T>
 
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
-        this.propertyManager = new MergePropertyManager(context);
+        this.propertyManager = new MergePropertyManager();
         this.cancellers = new ArrayList<>();
     }
 

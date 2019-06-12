@@ -7,7 +7,7 @@ import net.akami.mask.merge.MergeManager;
 import net.akami.mask.merge.MergeResult;
 import net.akami.mask.merge.MonomialAdditionMerge;
 import net.akami.mask.merge.OverlayAdditionMerge;
-import net.akami.mask.overlay.property.*;
+import net.akami.mask.merge.property.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  *
  * <li> CosineSinusSquaredProperty, converting {@code sin^2(x) + cos^2(x)} to 1.
  * <li> CommonDenominatorAdditionProperty, allowing sums of fractions having the same denominator
- * <li> IdenticalVariablesAdditionProperty, for complex expressions having the exact same variable part
+ * <li> IdenticalVariablePartProperty, for complex expressions having the exact same variable part
  * <p></p>
  * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
  * monomials by pairs, and computing a result if possible.
@@ -29,16 +29,8 @@ public class Adder extends BinaryOperationHandler<Expression> {
 
     public Adder(MaskContext context) {
         super(context);
-        addDefaultProperties();
     }
 
-    private void addDefaultProperties() {
-        propertyManager.addProperty(
-                new CosineSinusSquaredProperty(context),
-                new CommonDenominatorAdditionProperty(context),
-                new IdenticalVariablesAdditionProperty(context)
-        );
-    }
 
     @Override
     public Expression operate(Expression a, Expression b) {
@@ -60,23 +52,19 @@ public class Adder extends BinaryOperationHandler<Expression> {
 
     // No layers sum
     public Monomial simpleSum(Monomial a, Monomial b) {
-
-        if(a.getVarPart().equals(b.getVarPart())) {
-            BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
-            BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
-            float sumResult = bigA.add(bigB).floatValue();
-            return new Monomial(sumResult, a.getVarPart());
-        } else {
-            throw new RuntimeException("isMergeable returned true but couldn't find a result");
-        }
+        // We are guaranteed that both variable part are identical
+         BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
+         BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
+         float sumResult = bigA.add(bigB).floatValue();
+         return new Monomial(sumResult, a.getVarPart());
     }
 
     public MergeResult<Monomial> complexSum(Monomial a, Monomial b) {
         MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
 
-        List<OverallMergeProperty> overallProperties = propertyManager.getProperties()
+        List<OverallMergePropertyUnused> overallProperties = propertyManager.getProperties()
                 .stream()
-                .map(overlay -> (OverallMergeProperty) overlay)
+                .map(overlay -> (OverallMergePropertyUnused) overlay)
                 .collect(Collectors.toList());
         OverlayAdditionMerge additionMerge = new OverlayAdditionMerge(a, b, overallProperties);
         Optional<List<Monomial>> result = additionMerge.merge();

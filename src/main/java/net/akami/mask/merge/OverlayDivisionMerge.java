@@ -4,9 +4,9 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
 import net.akami.mask.handler.Divider;
-import net.akami.mask.overlay.property.MergePacket;
-import net.akami.mask.overlay.property.OverallMergeProperty;
-import net.akami.mask.overlay.property.OverlayMergeProperty;
+import net.akami.mask.merge.property.MergeData;
+import net.akami.mask.merge.property.OverallMergePropertyUnused;
+import net.akami.mask.merge.property.OverlayMergeProperty;
 import net.akami.mask.utils.VariableUtils;
 
 import java.util.Collections;
@@ -28,12 +28,12 @@ public class OverlayDivisionMerge {
 
     private List<OverlayMergeProperty> properties;
 
-    public <D extends MergePacket> List<Monomial> merge() {
+    public <D extends MergeData> List<Monomial> merge() {
 
         for(OverlayMergeProperty property : properties) {
 
-            if(property instanceof OverallMergeProperty) {
-                OverallMergeProperty<Monomial, List<Monomial>, D> overallProperty = (OverallMergeProperty<Monomial, List<Monomial>, D>) property;
+            if(property instanceof OverallMergePropertyUnused) {
+                OverallMergePropertyUnused<Monomial, List<Monomial>, D> overallProperty = (OverallMergePropertyUnused<Monomial, List<Monomial>, D>) property;
                 Optional<D> packet = overallProperty.isApplicable(m1, null);
                 if(packet.isPresent()) {
                     return overallProperty.result(m1, m2, packet.get());

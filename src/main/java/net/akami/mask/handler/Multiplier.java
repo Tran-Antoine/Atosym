@@ -2,9 +2,8 @@ package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.*;
-import net.akami.mask.merge.OverlayMultiplicationMerge;
-import net.akami.mask.overlay.property.BaseEquivalenceMultProperty;
-import net.akami.mask.overlay.property.FractionMultProperty;
+import net.akami.mask.merge.MonomialAdditionMerge;
+import net.akami.mask.merge.MonomialMultiplicationMerge;
 import net.akami.mask.utils.VariableUtils;
 
 import java.math.BigDecimal;
@@ -15,14 +14,6 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
 
     public Multiplier(MaskContext context) {
         super(context);
-        addDefaultProperties();
-    }
-
-    private void addDefaultProperties() {
-        super.getPropertyManager().addProperty(
-                new FractionMultProperty(context),
-                new BaseEquivalenceMultProperty(context)
-        );
     }
 
     @Override
@@ -40,7 +31,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
             }
         }
 
-        List<Monomial> mergedElements = context.getMergeManager().merge(elements, Monomial.class);
+        List<Monomial> mergedElements = new MonomialAdditionMerge(context).merge(elements, elements, true);
         return new Expression(mergedElements);
     }
 
@@ -60,7 +51,7 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     }
 
     private Monomial complexMult(Monomial a, Monomial b) {
-        OverlayMultiplicationMerge merge = new OverlayMultiplicationMerge(a, b, propertyManager.getProperties());
+        MonomialMultiplicationMerge merge = new MonomialMultiplicationMerge(a, b, propertyManager.getProperties());
         float floatMult = numericMult(a.getNumericValue(), b.getNumericValue());
         return new Monomial(floatMult, merge.merge());
     }

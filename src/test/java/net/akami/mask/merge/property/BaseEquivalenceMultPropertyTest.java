@@ -1,4 +1,4 @@
-package net.akami.mask.overlay.property;
+package net.akami.mask.merge.property;
 
 import net.akami.mask.expression.ComplexVariable;
 import net.akami.mask.expression.Monomial;
@@ -23,7 +23,7 @@ public class BaseEquivalenceMultPropertyTest {
         SingleCharVariable s2 = new SingleCharVariable('x', DEFAULT);
         ComplexVariable c1 = new ComplexVariable(new Monomial('x', DEFAULT), ExponentOverlay.SQUARED);
         ComplexVariable c2 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.SQUARED);
-        ComplexVariable c3 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.EXPONENT_NULL_FACTOR);
+        ComplexVariable c3 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.NULL_FACTOR);
         ComplexVariable c4 = new ComplexVariable(new Monomial('y', DEFAULT), FractionOverlay.FRACTION_NULL_FACTOR);
 
         assertThat(property.isApplicableFor(s1, s2)).isNotEqualTo(Optional.empty());

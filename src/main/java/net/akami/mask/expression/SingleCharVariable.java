@@ -66,9 +66,9 @@ public class SingleCharVariable implements Variable {
 
     @Override
     public ExpressionOverlay getOverlay(int i) {
-        if(i == -1) return ExponentOverlay.EXPONENT_NULL_FACTOR;
-        throw new UnsupportedOperationException(
-                "Simple variables don't have overlays. Only valid argument is -1, being the implicit ^1 exponent");
+        if(i == -1) return ExponentOverlay.NULL_FACTOR;
+        else throw new UnsupportedOperationException(
+                "Simple variables don't have overlays. The only valid argument is -1, being the implicit ^1 exponent");
     }
 
     @Override
@@ -103,6 +103,6 @@ public class SingleCharVariable implements Variable {
 
     @Override
     public List<ExpressionOverlay> getAbsoluteOverlays() {
-        return Collections.singletonList(ExponentOverlay.EXPONENT_NULL_FACTOR);
+        return Collections.singletonList(ExponentOverlay.NULL_FACTOR);
     }
 }

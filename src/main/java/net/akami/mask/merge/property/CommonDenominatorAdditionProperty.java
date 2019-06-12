@@ -1,41 +1,44 @@
-package net.akami.mask.overlay.property;
+package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.*;
+import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
+import net.akami.mask.expression.Variable;
+import net.akami.mask.expression.VariablePart;
 import net.akami.mask.handler.Adder;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-public class CommonDenominatorAdditionProperty implements OverallMergeProperty<Monomial, List<Monomial>, NullPacket> {
+public class CommonDenominatorAdditionProperty extends ElementSequencedMergeProperty<Monomial> {
 
     private MaskContext context;
 
-    public CommonDenominatorAdditionProperty(MaskContext context) {
+    public CommonDenominatorAdditionProperty(Monomial m1, Monomial m2, MaskContext context) {
+        super(m1, m2, false);
         this.context = context;
     }
 
     @Override
-    public Optional<NullPacket> isApplicable(Monomial m1, Monomial m2) {
-        VariablePart part1 = m1.getVarPart();
-        VariablePart part2 = m2.getVarPart();
+    public boolean isSuitable() {
+        VariablePart part1 = p1.getVarPart();
+        VariablePart part2 = p2.getVarPart();
 
-        if(part1.size() != 1 || part2.size() != 1) return Optional.empty();
-        if(!(part1.get(0).isFraction() && part2.get(0).isFraction())) return Optional.empty();
+        if(part1.size() != 1 || part2.size() != 1) return false;
+        if(!(part1.get(0).isFraction() && part2.get(0).isFraction())) return false;
 
-        return part1.get(0).getOverlay(-1).equals(part2.get(0).getOverlay(-1)) ? Optional.of(NullPacket.PACKET) : Optional.empty();
+        return part1.get(0).getOverlay(-1).equals(part2.get(0).getOverlay(-1));
     }
 
     @Override
-    public List<Monomial> result(Monomial m1, Monomial m2, NullPacket packet) {
-        Expression finalDividend = getDividend(m1, m2);
-        Expression divisor = getDivisor(m1);
+    public void blendResult(List<Monomial> constructed) {
+        Expression finalDividend = getDividend(p1, p2);
+        Expression divisor = getDivisor(p1);
 
         Expression divisionResult = context.getBinaryOperation(Divider.class).operate(finalDividend, divisor);
-        return divisionResult.getElements();
+        constructed.addAll(divisionResult.getElements());
     }
 
     public Expression getDividend(Monomial m1, Monomial m2) {
@@ -69,10 +72,5 @@ public class CommonDenominatorAdditionProperty implements OverallMergeProperty<M
             finalMonomials.add(replacement);
         }
         return new Expression(finalMonomials);
-    }
-
-    @Override
-    public boolean requiresStartingOver() {
-        return false;
     }
 }

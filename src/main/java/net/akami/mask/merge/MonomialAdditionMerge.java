@@ -3,9 +3,12 @@ package net.akami.mask.merge;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.handler.Adder;
-import net.akami.mask.overlay.property.MergePropertyManager;
+import net.akami.mask.merge.property.*;
 
-public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
+import java.util.Arrays;
+import java.util.List;
+
+public class MonomialAdditionMerge implements SequencedMerge<Monomial> {
 
     private MaskContext context;
 
@@ -14,28 +17,33 @@ public class MonomialAdditionMerge implements MergeBehavior<Monomial> {
     }
 
     @Override
-    public boolean isMergeable(Monomial a, Monomial b) {
-        if(a.getVarPart().isSimple() && b.getVarPart().isSimple()) {
-            return a.hasSameVariablePartAs(b);
+    public List<ElementSequencedMergeProperty<Monomial>> generateElementProperties(Monomial p1, Monomial p2) {
+        return Arrays.asList(
+            new SimpleMonomialAdditionProperty(p1, p2, context),
+            new CosineSinusSquaredProperty(p1, p2),
+            new CommonDenominatorAdditionProperty(p1, p2, context),
+            new IdenticalVariablePartProperty(p1, p2, context)
+        );
+    }
+
+    public class SimpleMonomialAdditionProperty extends ElementSequencedMergeProperty<Monomial> {
+
+        private MaskContext context;
+
+        protected SimpleMonomialAdditionProperty(Monomial p1, Monomial p2, MaskContext context) {
+            super(p1, p2, false);
+            this.context = context;
         }
-        MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
-        // TODO : avoid looping twice, one here and the second one in the mergeElement() method
-        return propertyManager.hasOverallAppliance(a, b);
-    }
 
-    @Override
-    public MergeResult<Monomial> mergeElement(Monomial a, Monomial b) {
-        Adder adder = context.getBinaryOperation(Adder.class);
-        if(a.getVarPart().isSimple() && b.getVarPart().isSimple()) {
-            return new MergeResult<>(adder.simpleSum(a, b), false);
+        @Override
+        public boolean isSuitable() {
+            return p1.isSimple() && p2.isSimple() && p1.hasSameVariablePartAs(p2);
         }
-        return adder.complexSum(a, b);
+
+        @Override
+        public void blendResult(List<Monomial> constructed) {
+            Adder adder = context.getBinaryOperation(Adder.class);
+            constructed.add(adder.simpleSum(p1, p2));
+        }
     }
-
-    @Override
-    public Class<? extends Monomial> getHandledType() {
-        return Monomial.class;
-    }
-
-
 }

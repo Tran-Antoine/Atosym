@@ -3,7 +3,7 @@ package net.akami.mask.core;
 import net.akami.mask.affection.CalculationAlteration;
 import net.akami.mask.check.*;
 import net.akami.mask.exception.MaskException;
-import net.akami.mask.overlay.property.MergePropertyManager;
+import net.akami.mask.merge.property.MergePropertyManager;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.function.MathFunction;
 import net.akami.mask.handler.AlterationHandler;

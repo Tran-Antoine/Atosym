@@ -3,10 +3,11 @@ package net.akami.mask.handler;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.*;
 import net.akami.mask.merge.*;
+import net.akami.mask.merge.property.SimpleDenominatorAdditionProperty;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.overlay.FractionOverlay;
-import net.akami.mask.overlay.property.CommonDenominatorAdditionProperty;
-import net.akami.mask.overlay.property.DivisionOfFractionsProperty;
+import net.akami.mask.merge.property.CommonDenominatorAdditionProperty;
+import net.akami.mask.merge.property.DivisionOfFractionsProperty;
 import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.MathUtils;
 import net.akami.mask.utils.VariableComparator;
@@ -65,7 +66,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
     private Expression chainFinalElements(List<Monomial> finalElements) {
         CommonDenominatorAdditionProperty property = new CommonDenominatorAdditionProperty(context);
-        MergeBehavior<Monomial> behavior = new SimpleDenominatorAdditionMerge(context, property);
+        Merge<Monomial> behavior = new SimpleDenominatorAdditionProperty(context, property);
         MergeManager mergeManager = context.getMergeManager();
 
         List<Monomial> newFinalElements = mergeManager.secureMerge(finalElements, behavior);
@@ -113,7 +114,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
         List<Variable> denominatorVars = new ArrayList<>(decomposedB);
 
         MergeManager mergeManager = context.getMergeManager();
-        MergeBehavior<Object> nullify = mergeManager.getByType(PairNullifying.class);
+        Merge<Object> nullify = mergeManager.getByType(PairEraser.class);
 
         mergeManager.merge(numeratorFloats, denominatorFloats, nullify);
         mergeManager.merge(numeratorVars, denominatorVars, nullify,false, VariableComparator.COMPARATOR);
