@@ -2,10 +2,7 @@ package net.akami.mask.merge;
 
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Variable;
-import net.akami.mask.merge.property.BaseEquivalenceMultProperty;
-import net.akami.mask.merge.property.ElementSequencedMergeProperty;
-import net.akami.mask.merge.property.FractionCombinationProperty;
-import net.akami.mask.merge.property.OverallSequencedMergeProperty;
+import net.akami.mask.merge.property.*;
 
 import java.util.Collections;
 import java.util.List;

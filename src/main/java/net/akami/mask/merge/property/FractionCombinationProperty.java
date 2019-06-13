@@ -8,6 +8,7 @@ import net.akami.mask.expression.Variable;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 
+import java.util.Collections;
 import java.util.List;
 
 public class FractionCombinationProperty extends OverallSequencedMergeProperty<Variable> {
@@ -43,7 +44,7 @@ public class FractionCombinationProperty extends OverallSequencedMergeProperty<V
     }
 
     @Override
-    public void blendResult(List<Variable> constructed) {
+    public List<Variable> computeResult() {
         Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
 
         Expression numPart1 = new Expression(numerator1);
@@ -57,6 +58,6 @@ public class FractionCombinationProperty extends OverallSequencedMergeProperty<V
 
         Expression divisionResult = divider.operate(fullNumerator, fullDenominator);
 
-        constructed.add(new ComplexVariable(divisionResult.getElements()));
+        return Collections.singletonList(new ComplexVariable(divisionResult.getElements()));
     }
 }

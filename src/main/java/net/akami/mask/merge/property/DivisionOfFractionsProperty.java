@@ -11,7 +11,7 @@ import net.akami.mask.overlay.ExpressionOverlay;
 
 import java.util.List;
 
-public class DivisionOfFractionsProperty extends ElementSequencedMergeProperty<Monomial> {
+public class DivisionOfFractionsProperty extends OverallMergeProperty<Monomial, List<Monomial>> {
 
     private MaskContext context;
 
@@ -25,14 +25,14 @@ public class DivisionOfFractionsProperty extends ElementSequencedMergeProperty<M
         if(p1.getVarPart().size() != 1) return false;
 
         Variable unique = p1.getVarPart().get(0);
-        return !unique.isFraction();
+        return unique.isFraction();
     }
 
     @Override
-    public void blendResult(List<Monomial> constructed) {
+    public List<Monomial> computeResult() {
         Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
         Divider divider = context.getBinaryOperation(Divider.class);
-
+        // cast is secure here
         Expression denominator = (Expression) p1.getVarPart().get(0).getOverlay(-1);
         Expression secondDenominator = Expression.of(p2);
         Expression newDenominator = multiplier.operate(denominator, secondDenominator);
@@ -42,6 +42,6 @@ public class DivisionOfFractionsProperty extends ElementSequencedMergeProperty<M
         Variable newSingleM1 = new ComplexVariable(singleM1.getElements(), finalOverlays);
         Monomial newM1 = new Monomial(p1.getNumericValue(), newSingleM1);
 
-        constructed.addAll(divider.operate(Expression.of(newM1), newDenominator).getElements());
+        return divider.operate(Expression.of(newM1), newDenominator).getElements();
     }
 }

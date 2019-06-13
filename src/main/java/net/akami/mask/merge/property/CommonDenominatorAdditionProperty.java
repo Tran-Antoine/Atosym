@@ -67,7 +67,7 @@ public class CommonDenominatorAdditionProperty extends ElementSequencedMergeProp
         Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
 
         for(Monomial current : initialElements) {
-            float replacementFloat = multiplier.numericMult(current.getNumericValue(), numericValue);
+            float replacementFloat = multiplier.mult(current.getNumericValue(), numericValue);
             Monomial replacement = new Monomial(replacementFloat, current.getVarPart());
             finalMonomials.add(replacement);
         }

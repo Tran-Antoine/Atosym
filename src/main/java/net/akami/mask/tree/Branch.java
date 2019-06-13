@@ -1,7 +1,7 @@
 package net.akami.mask.tree;
 
 import net.akami.mask.expression.Expression;
-import net.akami.mask.utils.ExpressionUtils;
+import net.akami.mask.utils.FormatterFactory;
 
 /**
  * The Branch class is a data class that handles a left part and a right part, as well as an expression and a reduced value.
@@ -40,12 +40,12 @@ public class Branch<T extends Branch> {
      * Defines how a given expression must be formatted, before being stored as the expression field.
      * <br/>
      * The default behavior is to remove the edges brackets, except if the expression is trigonometric. See
-     * {@link ExpressionUtils#removeEdgeBrackets(String, boolean)} for further information.
+     * {@link net.akami.mask.utils.FormatterFactory#removeEdgeBrackets(String, boolean)} for further information.
      * @param initial the initial string to format
      * @return a formatted version of the initial string given
      */
     protected String branchFormat(String initial) {
-        return ExpressionUtils.removeEdgeBrackets(initial, true);
+        return FormatterFactory.removeEdgeBrackets(initial, true);
     }
 
     /**

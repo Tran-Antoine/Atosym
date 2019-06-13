@@ -11,6 +11,6 @@ public class BracketsCounterCheck implements ValidityCheck {
 
     @Override
     public String errorMessage(String input) {
-        return null;
+        return "Found non-closed or non-opened parenthesis";
     }
 }

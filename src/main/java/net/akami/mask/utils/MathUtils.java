@@ -1,9 +1,10 @@
 package net.akami.mask.utils;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.Expression;
-import net.akami.mask.expression.Monomial;
+import net.akami.mask.expression.*;
 import net.akami.mask.handler.*;
+import net.akami.mask.overlay.ExponentOverlay;
+import net.akami.mask.overlay.ExpressionOverlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,49 +43,6 @@ public class MathUtils {
     }
     public static Expression diffPow(Expression a, Expression altA, Expression b, Expression altB) {
         return mult(mult(b, pow(a, subtract(b, Expression.of(1)))), altA);
-    }
-
-    @Deprecated
-    /**
-     * This method does not go along with the new expression system, thus will be replaced soon.
-     */
-    public static String monomialSum(List<String> monomials) {
-        List<Monomial> finalMonomials = new ArrayList<>();
-        for(String monomial : monomials) {
-            finalMonomials.add(ReducerFactory.reduce(monomial).get(0));
-        }
-        return new Expression(finalMonomials).toString();
-    }
-
-    @Deprecated
-    public static String divide(String a, String b) {
-        Expression bExp = ReducerFactory.reduce(b);
-        List<String> monomials = ExpressionUtils.toMonomials(a);
-        List<String> finalResult = new ArrayList<>();
-
-        for(String monomial : monomials) {
-            Expression divResult = divide(ReducerFactory.reduce(monomial), bExp);
-            finalResult.add(divResult.toString());
-        }
-        StringBuilder builder = new StringBuilder();
-        int i = 0;
-        for(String result : finalResult) {
-            if(ExpressionUtils.isSigned(result) || i == 0) {
-                builder.append(result);
-            } else {
-                builder.append('+').append(result);
-            }
-            i++;
-        }
-        return builder.toString();
-    }
-    public static String breakNumericalFraction(String self) {
-        for(int i = 0; i < self.length(); i++) {
-            if(self.charAt(i) == '/') {
-                // TODO return divide(self.substring(0, i), self.substring(i+1));
-            }
-        }
-        return self;
     }
 
     public static String sin(String a) {
@@ -210,7 +168,7 @@ public class MathUtils {
         for (int i = 2; i <= self; i++) {
             boolean unique = true;
             for (int j = 2; j < i; j++) {
-                if (i % j == 0 && (j != i && i != 2)) {
+                if (i % j == 0) {
                     unique = false;
                     break;
                 }
@@ -220,6 +178,44 @@ public class MathUtils {
             }
         }
         return dividers;
+    }
+
+    public static List<Variable> decomposeVariables(Iterable<Variable> vars) {
+
+        List<Variable> finalVars = new ArrayList<>();
+
+        for(Variable var : vars) {
+            if(var instanceof SingleCharVariable) {finalVars.add(var); continue; }
+
+            ComplexVariable complexVar = (ComplexVariable) var;
+            if(complexVar.getOverlaysSize() == 0) {finalVars.add((complexVar)); continue; }
+
+            ExpressionOverlay last = complexVar.getOverlay(-1);
+
+            if(!(last instanceof ExponentOverlay)) {finalVars.add((complexVar)); continue; }
+
+            ExponentOverlay exponent = (ExponentOverlay) last;
+
+            if(ExpressionUtils.isANumber(exponent)) {
+                float expValue = exponent.get(0).getNumericValue();
+                List<ExpressionOverlay> finalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
+                finalOverlays.add(ExponentOverlay.NULL_FACTOR);
+
+                while (expValue > 1) {
+                    finalVars.add(new ComplexVariable(complexVar.getElements(), finalOverlays));
+                    expValue--;
+                }
+
+                if (expValue != 0) {
+                    List<ExpressionOverlay> otherFinalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
+                    otherFinalOverlays.add(ExponentOverlay.fromExpression(Expression.of(expValue)));
+                    finalVars.add(new ComplexVariable(complexVar.getElements(), otherFinalOverlays));
+                }
+            } else {
+                finalVars.add(complexVar);
+            }
+        }
+        return finalVars;
     }
 
     @FunctionalInterface

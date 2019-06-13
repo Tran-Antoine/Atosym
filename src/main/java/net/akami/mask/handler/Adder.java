@@ -3,15 +3,12 @@ package net.akami.mask.handler;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
-import net.akami.mask.merge.MergeManager;
-import net.akami.mask.merge.MergeResult;
 import net.akami.mask.merge.MonomialAdditionMerge;
-import net.akami.mask.merge.OverlayAdditionMerge;
-import net.akami.mask.merge.property.*;
+import net.akami.mask.merge.SequencedMerge;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -35,47 +32,17 @@ public class Adder extends BinaryOperationHandler<Expression> {
     @Override
     public Expression operate(Expression a, Expression b) {
         LOGGER.info("Adder process of {} |+| {}: \n", a, b);
-        List<Monomial> aElements = a.getElements();
-        List<Monomial> bElements = b.getElements();
-        //List<Monomial> allMonomials = new ArrayList<>(aElements);
-        //allMonomials.addAll(bElements);
+        List<Monomial> aElements = new ArrayList<>(a.getElements());
+        List<Monomial> bElements = new ArrayList<>(b.getElements());
 
         LOGGER.info("Monomials : {} and {}", aElements, bElements);
 
-        MergeManager mergeManager = context.getMergeManager();
-        List<Monomial> elements = mergeManager.secureMergeByType(aElements, bElements, MonomialAdditionMerge.class);
+        SequencedMerge<Monomial> additionBehavior = new MonomialAdditionMerge(context);
+        List<Monomial> elements = additionBehavior.merge(aElements, bElements, false);
         elements = elements.stream().filter(e -> e.getNumericValue() != 0).collect(Collectors.toList());
+        Collections.sort(elements);
         Expression result = new Expression(elements);
         LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
         return result;
-    }
-
-    // No layers sum
-    public Monomial simpleSum(Monomial a, Monomial b) {
-        // We are guaranteed that both variable part are identical
-         BigDecimal bigA = new BigDecimal(a.getNumericValue(), context.getMathContext());
-         BigDecimal bigB = new BigDecimal(b.getNumericValue(), context.getMathContext());
-         float sumResult = bigA.add(bigB).floatValue();
-         return new Monomial(sumResult, a.getVarPart());
-    }
-
-    public MergeResult<Monomial> complexSum(Monomial a, Monomial b) {
-        MergePropertyManager propertyManager = context.getBinaryOperation(Adder.class).getPropertyManager();
-
-        List<OverallMergePropertyUnused> overallProperties = propertyManager.getProperties()
-                .stream()
-                .map(overlay -> (OverallMergePropertyUnused) overlay)
-                .collect(Collectors.toList());
-        OverlayAdditionMerge additionMerge = new OverlayAdditionMerge(a, b, overallProperties);
-        Optional<List<Monomial>> result = additionMerge.merge();
-        if(!result.isPresent()) throw new RuntimeException("isMergeable returned true but couldn't find a result");
-
-        return new MergeResult<>(result.get(), additionMerge.startingOverRequested());
-    }
-
-    public Expression monomialSum(List<Monomial> monomials) {
-        MergeManager mergeManager = context.getMergeManager();
-        List<Monomial> result = mergeManager.mergeByType(monomials, MonomialAdditionMerge.class);
-        return new Expression(result);
     }
 }

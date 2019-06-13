@@ -1,7 +1,5 @@
 package net.akami.mask.affection;
 
-import net.akami.mask.handler.IODefaultFormatter;
-
 /**
  * The IOCalculationModifier class is one of the two core object of the alteration system, provided by the API.
  * An IOModifier checks whether a given expression needs to be formatted or not. If yes, it replaces the input by its
@@ -11,10 +9,6 @@ import net.akami.mask.handler.IODefaultFormatter;
  * the input to radians before proceeding.
  * On the other hand, the fraction modifier will check after performing any operation whether the merge must be
  * transformed to a fraction or not.
- * <p></p>
- * Note that IOCalculationModifiers are different than the {@link IODefaultFormatter}s.
- * Basically, the default formatters cannot be enabled / disabled, nor configured. They exist for handlers requiring
- * expressions under a certain format to work. They thus aren't part of the alteration system.
  */
 public interface IOCalculationModifier<T> extends CalculationAlteration<T> {
 

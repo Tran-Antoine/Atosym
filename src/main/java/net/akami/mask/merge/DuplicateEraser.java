@@ -9,7 +9,6 @@ public class DuplicateEraser<T> implements SinglePropertySequencedMerge<T> {
     @Override
     public ElementSequencedMergeProperty<T> getSingleProperty(T p1, T p2) {
         return new DuplicateEraserProperty(p1, p2);
-
     }
 
     public class DuplicateEraserProperty extends ElementSequencedMergeProperty<T> {

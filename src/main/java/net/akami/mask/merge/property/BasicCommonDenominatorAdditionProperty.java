@@ -14,9 +14,9 @@ import java.util.List;
  * It serves the divisor, which guarantees that the extra division is not required. By using it, infinite recursive
  * loop is prevented from happening.
  */
-public class SimpleDenominatorAdditionProperty extends CommonDenominatorAdditionProperty {
+public class BasicCommonDenominatorAdditionProperty extends CommonDenominatorAdditionProperty {
 
-    public SimpleDenominatorAdditionProperty(Monomial m1, Monomial m2, MaskContext context) {
+    public BasicCommonDenominatorAdditionProperty(Monomial m1, Monomial m2, MaskContext context) {
         super(m1, m2, context);
     }
 

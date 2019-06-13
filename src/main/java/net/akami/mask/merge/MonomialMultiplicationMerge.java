@@ -4,11 +4,14 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
 import net.akami.mask.handler.Multiplier;
-import net.akami.mask.merge.property.ElementSequencedMergeProperty;
+import net.akami.mask.merge.property.FairOverallMergeProperty;
+import net.akami.mask.utils.VariableComparator;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
-public class MonomialMultiplicationMerge implements SinglePropertySequencedMerge<Monomial>{
+public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOverallMergeProperty<Monomial>>{
 
     private MaskContext context;
 
@@ -17,8 +20,15 @@ public class MonomialMultiplicationMerge implements SinglePropertySequencedMerge
     }
 
     @Override
-    public ElementSequencedMergeProperty<Monomial> getSingleProperty(Monomial p1, Monomial p2) {
-        return new MultiplicationMergeProperty(p1, p2);
+    public Monomial merge(Monomial p1, Monomial p2, boolean selfMerge) {
+        return generateOverallProperties(p1, p2).get(0).computeResult();
+    }
+
+    @Override
+    public List<FairOverallMergeProperty<Monomial>> generateOverallProperties(Monomial p1, Monomial p2) {
+        return Collections.singletonList(
+                new MultiplicationMergeProperty(p1, p2)
+        );
     }
 
     /**
@@ -27,7 +37,7 @@ public class MonomialMultiplicationMerge implements SinglePropertySequencedMerge
      * monomials, then use another merge behavior to get the resulting variables from the two monomials.
      * A unique monomial is thus created, which will be added into the list.
      */
-    public class MultiplicationMergeProperty extends ElementSequencedMergeProperty<Monomial> {
+    public class MultiplicationMergeProperty extends FairOverallMergeProperty<Monomial> {
 
         protected MultiplicationMergeProperty(Monomial p1, Monomial p2) {
             super(p1, p2, false);
@@ -43,15 +53,18 @@ public class MonomialMultiplicationMerge implements SinglePropertySequencedMerge
         }
 
         @Override
-        public void blendResult(List<Monomial> constructed) {
+        public Monomial computeResult() {
             Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
-            float floatResult = multiplier.numericMult(p1.getNumericValue(), p2.getNumericValue());
+            float floatResult = multiplier.mult(p1.getNumericValue(), p2.getNumericValue());
 
-            VariableCombination merge = new VariableCombination(context);
-            List<Variable> vars1 = p1.getVarPart().getVariables();
-            List<Variable> vars2 = p2.getVarPart().getVariables();
+            SequencedMerge<Variable> merge = new VariableCombination(context);
+            List<Variable> vars1 = new ArrayList<>(p1.getVarPart().getVariables());
+            List<Variable> vars2 = new ArrayList<>(p2.getVarPart().getVariables());
 
-            constructed.add(new Monomial(floatResult, merge.merge(vars1, vars2, false)));
+            List<Variable> finalVars = merge.merge(vars1, vars2, false);
+            finalVars.sort(VariableComparator.COMPARATOR);
+
+            return new Monomial(floatResult, finalVars);
         }
     }
 }

@@ -80,7 +80,8 @@ public class ExpressionTester {
     public void bigDecimalTest() {
         Monomial e1 = new NumberElement(0.171f);
         Monomial e2 = new NumberElement(0.121f);
-        assertThat(adder.simpleSum(e1, e2).toString()).isEqualTo("0.292");
+
+        assertThat(adder.operate(Expression.of(e1), Expression.of(e2)).toString()).isEqualTo("0.292");
     }
 
     @Test

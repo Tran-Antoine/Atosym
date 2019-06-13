@@ -3,6 +3,7 @@ package net.akami.mask.expression;
 import net.akami.mask.function.CosineFunction;
 import net.akami.mask.function.SinusFunction;
 import net.akami.mask.function.TangentFunction;
+import net.akami.mask.merge.SequencedMerge;
 import net.akami.mask.merge.VariableCombination;
 import net.akami.mask.overlay.ExpressionOverlay;
 import org.junit.Test;
@@ -52,8 +53,8 @@ public class ExpressionElementTest {
         ComplexVariable m1 = new ComplexVariable(single, layers1);
         ComplexVariable m2 = new ComplexVariable(single, layers2);
 
-        VariableCombination behavior = DEFAULT.getMergeManager().getByType(VariableCombination.class);
+        SequencedMerge<Variable> behavior = new VariableCombination(DEFAULT);
         assertThat(m1.equals(m2)).isEqualTo(false);
-        assertThat(behavior.isMergeable(m1, m2)).isEqualTo(false);
+        assertThat(behavior.generateElementProperties(m1, m2).get(0).isSuitable()).isEqualTo(false);
     }
 }

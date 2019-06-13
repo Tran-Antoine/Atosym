@@ -63,7 +63,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
 
             if ((c == c1 || c == c2)) {
                 LOGGER.debug("Checking if sign {} at index {} is surrounded in {}", c, i, this);
-                boolean bracketsConnected = ExpressionUtils.areEdgesBracketsConnected(expression, false);
+                boolean bracketsConnected = FormatterFactory.areEdgesBracketsConnected(expression, false);
                 LOGGER.info("Brackets connected : {}", bracketsConnected);
                 if (!ExpressionUtils.isSurroundedByParentheses(i, expression)) {
                     LOGGER.debug("Found a place to split at index {}, character '{}'", i, c);
