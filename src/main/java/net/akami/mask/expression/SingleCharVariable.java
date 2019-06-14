@@ -97,11 +97,6 @@ public class SingleCharVariable implements Variable {
     }
 
     @Override
-    public boolean elementsEqual(Variable other) {
-        return getElements().equals(other.getElements());
-    }
-
-    @Override
     public List<ExpressionOverlay> getAbsoluteOverlays() {
         return Collections.singletonList(ExponentOverlay.NULL_FACTOR);
     }

@@ -9,10 +9,6 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * Probably 95% of this class will be (unfortunately) deleted soon, replaced by the new expression system, a much faster
- * and more reliable approach.
- */
 public final class ExpressionUtils {
 
     public static final String MATH_SIGNS = "+-*/^()";

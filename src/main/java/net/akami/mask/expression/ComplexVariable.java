@@ -43,11 +43,6 @@ public class ComplexVariable implements Variable, Cloneable {
     }
 
     @Override
-    public boolean elementsEqual(Variable other) {
-        return getElements().equals(other.getElements());
-    }
-
-    @Override
     public int getElementsSize() {
         return elements.size();
     }
