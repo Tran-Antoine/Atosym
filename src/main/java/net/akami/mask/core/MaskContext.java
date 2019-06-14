@@ -3,12 +3,10 @@ package net.akami.mask.core;
 import net.akami.mask.affection.CalculationAlteration;
 import net.akami.mask.check.*;
 import net.akami.mask.exception.MaskException;
-import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.function.MathFunction;
 import net.akami.mask.handler.AlterationHandler;
 import net.akami.mask.handler.BinaryOperationHandler;
-import net.akami.mask.merge.MergeManager;
 import net.akami.mask.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +42,8 @@ import java.util.*;
  *      <li> A set of {@link MathFunction}s. Only the mathematical functions present in the set wil be supported.
  *      Mathematical functions can require multiple arguments. See {@link MathFunction}'s documentation for further
  *      information <p>
+ *      <li> A list of {@link ValidityCheck}. They analyze the given input and throw an error if the input is invalid
+ *      mathematically speaking. <p>
  *      <li> A {@link MathContext}, used to define the amount of significant digits for calculations.
  *  </pre>
  *
@@ -57,8 +57,6 @@ public class MaskContext {
     private Set<BinaryOperationHandler<Expression>> binaryHandlers;
     private Set<MathFunction> supportedFunctions;
     private List<ValidityCheck> validityChecks;
-    private MergePropertyManager propertyManager;
-    private MergeManager mergeManager;
     private MathContext bigDecimalContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
@@ -82,8 +80,6 @@ public class MaskContext {
         this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
         this.supportedFunctions = MathFunction.generateDefaultFunctions(this);
         this.bigDecimalContext = new MathContext(precision);
-        this.propertyManager = new MergePropertyManager(this);
-        this.mergeManager = new MergeManager(this);
         this.validityChecks = defaultValidityChecks();
     }
 
@@ -200,13 +196,6 @@ public class MaskContext {
      */
     public MathContext getMathContext() {
         return bigDecimalContext;
-    }
-
-    /**
-     * @return the merge manager handled
-     */
-    public MergeManager getMergeManager() {
-        return mergeManager;
     }
 
     private List<ValidityCheck> defaultValidityChecks() {

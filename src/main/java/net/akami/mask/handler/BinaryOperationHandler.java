@@ -1,7 +1,6 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.affection.CalculationCanceller;
-import net.akami.mask.overlay.property.MergePropertyManager;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import org.slf4j.Logger;
@@ -12,13 +11,11 @@ import java.util.*;
 public abstract class BinaryOperationHandler<T> implements CancellableHandler<T>, PostCalculationActionable<T> {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperationHandler.class);
-    protected MergePropertyManager propertyManager;
     protected MaskContext context;
     private List<CalculationCanceller<T>> cancellers;
 
     public BinaryOperationHandler(MaskContext context) {
         this.context = context;
-        this.propertyManager = new MergePropertyManager(context);
         this.cancellers = new ArrayList<>();
     }
 
@@ -51,9 +48,5 @@ public abstract class BinaryOperationHandler<T> implements CancellableHandler<T>
                 new Divider(context),
                 new PowerCalculator(context)
         ));
-    }
-
-    public MergePropertyManager getPropertyManager() {
-        return propertyManager;
     }
 }

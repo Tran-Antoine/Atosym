@@ -7,7 +7,7 @@ import java.util.List;
 
 public class ExponentOverlay extends Expression implements ExpressionOverlay {
 
-    public static final ExponentOverlay EXPONENT_NULL_FACTOR = new ExponentOverlay(1);
+    public static final ExponentOverlay NULL_FACTOR = new ExponentOverlay(1);
     public static final ExponentOverlay SQUARED = new ExponentOverlay(2);
 
     public ExponentOverlay(float numericValue) {
@@ -24,7 +24,7 @@ public class ExponentOverlay extends Expression implements ExpressionOverlay {
 
     @Override
     public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
-        if(this.equals(EXPONENT_NULL_FACTOR)) return new String[]{"", ""};
+        if(this.equals(NULL_FACTOR)) return new String[]{"", ""};
 
         Monomial first;
         boolean endNoBrackets = length() == 1 && (first = this.elements.get(0)) != null
@@ -37,7 +37,7 @@ public class ExponentOverlay extends Expression implements ExpressionOverlay {
             if(!exponent.requiresBrackets()) beginNoBrackets = true;
 
             if(!beginNoBrackets && index != 0) {
-                if(others.get(index-1) instanceof CompleteCoverEncapsulator) beginNoBrackets = true;
+                if(others.get(index-1) instanceof CompleteCoverOverlay) beginNoBrackets = true;
             }
         }
 

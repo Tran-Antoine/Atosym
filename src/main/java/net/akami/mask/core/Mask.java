@@ -1,7 +1,5 @@
 package net.akami.mask.core;
 
-import net.akami.mask.exception.MaskException;
-import net.akami.mask.utils.ExpressionUtils;
 import net.akami.mask.utils.FormatterFactory;
 
 /**

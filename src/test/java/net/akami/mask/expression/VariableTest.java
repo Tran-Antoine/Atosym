@@ -1,9 +1,10 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.handler.Multiplier;
+import net.akami.mask.merge.SequencedMerge;
+import net.akami.mask.merge.VariableCombination;
 import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.utils.VariableComparator;
-import net.akami.mask.utils.VariableUtils;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -50,15 +51,16 @@ public class VariableTest {
     }
 
     private void assertDissociateVars(List<Variable> input, String result) {
-        List<String> converted = VariableUtils.dissociate(input)
+        /*List<String> converted = VariableUtils.decomposeVariables(input)
                 .stream()
                 .map(Variable::getExpression)
                 .collect(Collectors.toList());
-        assertThat(String.join("", converted)).isEqualTo(result);
+        assertThat(String.join("", converted)).isEqualTo(result);*/
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        List<Variable> variables = VariableUtils.combine(get(v1), get(v2), DEFAULT, false);
+        SequencedMerge<Variable> combination = new VariableCombination(DEFAULT);
+        List<Variable> variables = combination.merge(get(v1), get(v2),  false);
         List<String> converted = variables
                 .stream()
                 .map(Variable::getExpression)
