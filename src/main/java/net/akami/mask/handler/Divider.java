@@ -10,6 +10,7 @@ import net.akami.mask.merge.SequencedMerge;
 import net.akami.mask.overlay.FractionOverlay;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Divider extends BinaryOperationHandler<Expression> {
@@ -56,6 +57,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
     private Expression chainFinalElements(List<Monomial> finalElements) {
         SequencedMerge<Monomial> chainBehavior = new BasicMonomialAdditionMerge(context);
         List<Monomial> newFinalElements = chainBehavior.merge(finalElements, finalElements, true);
+        Collections.sort(newFinalElements);
         return new Expression(newFinalElements);
     }
 

@@ -10,7 +10,6 @@ import java.util.*;
 public class ComplexVariable implements Variable, Cloneable {
 
     private final List<ExpressionOverlay> overlays;
-    // TODO : handle an Expression
     private final List<Monomial> elements;
     private String finalExpression;
 
@@ -56,10 +55,6 @@ public class ComplexVariable implements Variable, Cloneable {
     @Override
     public int getOverlaysSize() {
         return overlays.size();
-    }
-
-    public Monomial getElement(int index) {
-        return elements.get(index);
     }
 
     @Override
@@ -159,7 +154,7 @@ public class ComplexVariable implements Variable, Cloneable {
     @Override
     public ExpressionOverlay getOverlay(int i) {
         if(getOverlaysSize() == 0 && getElementsSize() == 1) {
-            VariablePart unique = getElement(0).getVarPart();
+            VariablePart unique = elements.get(0).getVarPart();
             if(unique.size() == 1)
                 return unique.get(0).getOverlay(i);
         }
@@ -180,7 +175,7 @@ public class ComplexVariable implements Variable, Cloneable {
 
     @Override
     public char getVar() {
-        Monomial single = getElement(0);
+        Monomial single = elements.get(0);
         if(single.getExpression().length() == 1)
             return single.getExpression().charAt(0);
         if(single.getVarPart().size() == 0) return ' ';

@@ -25,11 +25,9 @@ public class BaseEquivalenceMultPropertyTest {
         ComplexVariable c4 = new ComplexVariable(new Monomial('y', DEFAULT), FractionOverlay.FRACTION_NULL_FACTOR);
 
         assertThat(genProperty(s1, s2).isSuitable()).isNotEqualTo(false);
-        assertThat(genProperty(s1, s2).isSuitable()).isNotEqualTo(false);
-        assertThat(genProperty(s1, s2).isSuitable()).isEqualTo(false);
-        assertThat(genProperty(s1, s2).isSuitable()).isNotEqualTo(false);
-        assertThat(genProperty(s1, s2).isSuitable()).isEqualTo(false);
-        assertThat(genProperty(s1, s2).isSuitable()).isEqualTo(false);
+        assertThat(genProperty(c1, s2).isSuitable()).isNotEqualTo(false);
+        assertThat(genProperty(c1, c2).isSuitable()).isEqualTo(false);
+        assertThat(genProperty(c3, c4).isSuitable()).isEqualTo(false);
     }
 
     private ElementSequencedMergeProperty<Variable> genProperty(Variable v1, Variable v2) {

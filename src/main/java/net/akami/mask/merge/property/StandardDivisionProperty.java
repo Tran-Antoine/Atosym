@@ -48,11 +48,13 @@ public class StandardDivisionProperty extends OverallMergeProperty<Monomial, Lis
     private Monomial blendResult(List<Float> numeratorFloats, List<Float> denominatorFloats,
                              List<Variable> numeratorVars, List<Variable> denominatorVars) {
 
-        SequencedMerge<Object> nullify = new PairEraser<>();
+        SequencedMerge<Variable> varNullify = new PairEraser<>();
+        SequencedMerge<Float> floatNullify = new PairEraser<>();
 
         // We don't care of the result. The utility of the merge is to delete all common elements in the formers lists.
-        nullify.subtypeMerge(numeratorFloats, denominatorFloats, false);
-        nullify.subtypeMerge(numeratorVars, denominatorVars, false);
+        // subtype merge cannot be used, since it does not modify the former list
+        floatNullify.merge(numeratorFloats, denominatorFloats, false);
+        varNullify.merge(numeratorVars, denominatorVars, false);
 
         filterNull(numeratorFloats, denominatorFloats, numeratorVars, denominatorVars);
         VariableCombination combinationBehavior = new VariableCombination(context);
