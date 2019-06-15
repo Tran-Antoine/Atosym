@@ -20,11 +20,6 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
     }
 
     @Override
-    public Monomial merge(Monomial p1, Monomial p2, boolean selfMerge) {
-        return generateOverallProperties(p1, p2).get(0).computeResult();
-    }
-
-    @Override
     public List<FairOverallMergeProperty<Monomial>> generateOverallProperties(Monomial p1, Monomial p2) {
         return Collections.singletonList(
                 new MultiplicationMergeProperty(p1, p2)
