@@ -100,7 +100,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>net.akami.mask.expression.IrreducibleVarPart</li>
+<li>net.akami.mask.expression.ComplexVariable</li>
 </ul>
 </li>
 </ul>
@@ -138,7 +138,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 </tr>
 <tr class="rowColor">
 <td class="colOne"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#IrreducibleVarPart-java.util.List-java.util.List-">IrreducibleVarPart</a></span>(java.util.List&lt;<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&gt;&nbsp;parts,
-                  java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;&nbsp;layers)</code>&nbsp;</td>
+                  java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;&nbsp;layers)</code>&nbsp;</td>
 </tr>
 </table>
 </li>
@@ -161,7 +161,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>int</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#compareTo-net.akami.mask.expression.IrreducibleVarPart-">compareTo</a></span>(<a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;o)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#compareTo-net.akami.mask.expression.ComplexVariable-">compareTo</a></span>(<a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;o)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>boolean</code></td>
@@ -180,11 +180,11 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#getExpression--">getExpression</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i6" class="altColor">
-<td class="colFirst"><code><a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a></code></td>
+<td class="colFirst"><code><a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a></code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#getLayer-int-">getLayer</a></span>(int&nbsp;i)</code>&nbsp;</td>
 </tr>
 <tr id="i7" class="rowColor">
-<td class="colFirst"><code>java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;</code></td>
+<td class="colFirst"><code>java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;</code></td>
 <td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/IrreducibleVarPart.html#getLayers--">getLayers</a></span>()</code>&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
@@ -204,7 +204,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 <!--   -->
 </a>
 <h3>Methods inherited from interface&nbsp;net.akami.mask.expression.<a href="../../../../net/akami/mask/expression/Variable.html" title="interface in net.akami.mask.expression">Variable</a></h3>
-<code><a href="../../../../net/akami/mask/expression/Variable.html#combine-java.util.List-java.util.List-net.akami.mask.encapsulator.property.MergePropertyManager-">combine</a>, <a href="../../../../net/akami/mask/expression/Variable.html#dissociate-java.util.List-">dissociate</a></code></li>
+<code><a href="../../../../net/akami/mask/expression/Variable.html#combine-java.util.List-java.util.List-net.akami.mask.merge.property.MergePropertyManager-">combine</a>, <a href="../../../../net/akami/mask/expression/Variable.html#dissociate-java.util.List-">dissociate</a></code></li>
 </ul>
 </li>
 </ul>
@@ -236,7 +236,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 <li class="blockList">
 <h4>IrreducibleVarPart</h4>
 <pre>public&nbsp;IrreducibleVarPart(java.util.List&lt;<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&gt;&nbsp;parts,
-                          java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;&nbsp;layers)</pre>
+                          java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;&nbsp;layers)</pre>
 </li>
 </ul>
 </li>
@@ -291,7 +291,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 </dl>
 </li>
 </ul>
-<a name="compareTo-net.akami.mask.expression.IrreducibleVarPart-">
+<a name="compareTo-net.akami.mask.expression.ComplexVariable-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -310,7 +310,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 <ul class="blockList">
 <li class="blockList">
 <h4>getLayers</h4>
-<pre>public&nbsp;java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;&nbsp;getLayers()</pre>
+<pre>public&nbsp;java.util.List&lt;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;&nbsp;getLayers()</pre>
 </li>
 </ul>
 <a name="getElements--">
@@ -328,7 +328,7 @@ implements <a href="../../../../net/akami/mask/expression/Variable.html" title="
 <ul class="blockList">
 <li class="blockList">
 <h4>getLayer</h4>
-<pre>public&nbsp;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&nbsp;getLayer(int&nbsp;i)</pre>
+<pre>public&nbsp;<a href="../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&nbsp;getLayer(int&nbsp;i)</pre>
 </li>
 </ul>
 <a name="clone--">

@@ -113,7 +113,7 @@ var activeTableTab = "activeTableTab";
 </dl>
 <dl>
 <dt>Direct Known Subclasses:</dt>
-<dd><a href="../../../../net/akami/mask/encapsulator/ExponentEncapsulator.html" title="class in net.akami.mask.encapsulator">ExponentEncapsulator</a>, <a href="../../../../net/akami/mask/encapsulator/FractionEncapsulator.html" title="class in net.akami.mask.encapsulator">FractionEncapsulator</a></dd>
+<dd><a href="../../../../net/akami/mask/encapsulator/ExponentEncapsulator.html" title="class in net.akami.mask.overlay">ExponentEncapsulator</a>, <a href="../../../../net/akami/mask/encapsulator/FractionEncapsulator.html" title="class in net.akami.mask.overlay">FractionEncapsulator</a></dd>
 </dl>
 <hr>
 <br>
@@ -167,15 +167,15 @@ implements java.lang.Cloneable</pre>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.ExpressionElement...-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>...&nbsp;elements)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.Monomial...-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>...&nbsp;elements)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.ExpressionElement-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.Monomial-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.ExpressionElement-net.akami.mask.core.MaskContext-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.expression.Monomial-net.akami.mask.core.MaskContext-">Expression</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement,
           <a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context)</code>&nbsp;</td>
 </tr>
 <tr class="rowColor">
@@ -198,7 +198,7 @@ implements java.lang.Cloneable</pre>
 </tr>
 <tr class="rowColor">
 <td class="colFirst"><code>&nbsp;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.core.MaskContext-net.akami.mask.expression.ExpressionElement...-">Expression</a></span>(<a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#Expression-net.akami.mask.core.MaskContext-net.akami.mask.expression.Monomial...-">Expression</a></span>(<a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context,
           <a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>...&nbsp;elements)</code>&nbsp;</td>
 </tr>
 <tr class="altColor">
@@ -256,11 +256,11 @@ implements java.lang.Cloneable</pre>
 </tr>
 <tr id="i7" class="rowColor">
 <td class="colFirst"><code>static <a href="../../../../net/akami/mask/expression/Expression.html" title="class in net.akami.mask.expression">Expression</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#of-net.akami.mask.expression.ExpressionElement-">of</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</code>&nbsp;</td>
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#of-net.akami.mask.expression.Monomial-">of</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</code>&nbsp;</td>
 </tr>
 <tr id="i8" class="altColor">
 <td class="colFirst"><code>static <a href="../../../../net/akami/mask/expression/Expression.html" title="class in net.akami.mask.expression">Expression</a></code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#of-net.akami.mask.expression.ExpressionElement-net.akami.mask.core.MaskContext-">of</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../net/akami/mask/expression/Expression.html#of-net.akami.mask.expression.Monomial-net.akami.mask.core.MaskContext-">of</a></span>(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement,
   <a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context)</code>&nbsp;</td>
 </tr>
 <tr id="i9" class="rowColor">
@@ -375,7 +375,7 @@ implements java.lang.Cloneable</pre>
                   <a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context)</pre>
 </li>
 </ul>
-<a name="Expression-net.akami.mask.expression.ExpressionElement...-">
+<a name="Expression-net.akami.mask.expression.Monomial...-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -384,7 +384,7 @@ implements java.lang.Cloneable</pre>
 <pre>public&nbsp;Expression(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>...&nbsp;elements)</pre>
 </li>
 </ul>
-<a name="Expression-net.akami.mask.core.MaskContext-net.akami.mask.expression.ExpressionElement...-">
+<a name="Expression-net.akami.mask.core.MaskContext-net.akami.mask.expression.Monomial...-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -413,7 +413,7 @@ implements java.lang.Cloneable</pre>
                   <a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context)</pre>
 </li>
 </ul>
-<a name="Expression-net.akami.mask.expression.ExpressionElement-">
+<a name="Expression-net.akami.mask.expression.Monomial-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -422,7 +422,7 @@ implements java.lang.Cloneable</pre>
 <pre>public&nbsp;Expression(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</pre>
 </li>
 </ul>
-<a name="Expression-net.akami.mask.expression.ExpressionElement-net.akami.mask.core.MaskContext-">
+<a name="Expression-net.akami.mask.expression.Monomial-net.akami.mask.core.MaskContext-">
 <!--   -->
 </a>
 <ul class="blockListLast">
@@ -459,7 +459,7 @@ implements java.lang.Cloneable</pre>
                             <a href="../../../../net/akami/mask/core/MaskContext.html" title="class in net.akami.mask.core">MaskContext</a>&nbsp;context)</pre>
 </li>
 </ul>
-<a name="of-net.akami.mask.expression.ExpressionElement-">
+<a name="of-net.akami.mask.expression.Monomial-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -468,7 +468,7 @@ implements java.lang.Cloneable</pre>
 <pre>public static&nbsp;<a href="../../../../net/akami/mask/expression/Expression.html" title="class in net.akami.mask.expression">Expression</a>&nbsp;of(<a href="../../../../net/akami/mask/expression/ExpressionElement.html" title="class in net.akami.mask.expression">ExpressionElement</a>&nbsp;singleElement)</pre>
 </li>
 </ul>
-<a name="of-net.akami.mask.expression.ExpressionElement-net.akami.mask.core.MaskContext-">
+<a name="of-net.akami.mask.expression.Monomial-net.akami.mask.core.MaskContext-">
 <!--   -->
 </a>
 <ul class="blockList">

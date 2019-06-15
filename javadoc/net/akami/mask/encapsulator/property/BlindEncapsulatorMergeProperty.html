@@ -50,7 +50,7 @@ var activeTableTab = "activeTableTab";
 <div class="subNav">
 <ul class="navList">
 <li>Prev&nbsp;Class</li>
-<li><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?net/akami/mask/encapsulator/property/BlindEncapsulatorMergeProperty.html" target="_top">Frames</a></li>
@@ -92,8 +92,8 @@ var activeTableTab = "activeTableTab";
 <!-- ========= END OF TOP NAVBAR ========= -->
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="subTitle">net.akami.mask.encapsulator.property</div>
-<h2 title="Interface BlindEncapsulatorMergeProperty" class="title">Interface BlindEncapsulatorMergeProperty&lt;T extends <a href="../../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;</h2>
+<div class="subTitle">net.akami.mask.merge.property</div>
+<h2 title="Interface BlindEncapsulatorMergeProperty" class="title">Interface BlindEncapsulatorMergeProperty&lt;T extends <a href="../../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;</h2>
 </div>
 <div class="contentContainer">
 <div class="description">
@@ -101,12 +101,12 @@ var activeTableTab = "activeTableTab";
 <li class="blockList">
 <dl>
 <dt>All Superinterfaces:</dt>
-<dd><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property">EncapsulatorMergeProperty</a></dd>
+<dd><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property">EncapsulatorMergeProperty</a></dd>
 </dl>
 <hr>
 <br>
-<pre>public interface <span class="typeNameLabel">BlindEncapsulatorMergeProperty&lt;T extends <a href="../../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.encapsulator">ExpressionEncapsulator</a>&gt;</span>
-extends <a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property">EncapsulatorMergeProperty</a></pre>
+<pre>public interface <span class="typeNameLabel">BlindEncapsulatorMergeProperty&lt;T extends <a href="../../../../../net/akami/mask/encapsulator/ExpressionEncapsulator.html" title="interface in net.akami.mask.overlay">ExpressionEncapsulator</a>&gt;</span>
+extends <a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property">EncapsulatorMergeProperty</a></pre>
 </li>
 </ul>
 </div>
@@ -131,7 +131,7 @@ extends <a href="../../../../../net/akami/mask/encapsulator/property/Encapsulato
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>default boolean</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../net/akami/mask/encapsulator/property/BlindEncapsulatorMergeProperty.html#isApplicableFor-net.akami.mask.expression.IrreducibleVarPart-net.akami.mask.expression.IrreducibleVarPart-">isApplicableFor</a></span>(<a href="../../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;v1,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../net/akami/mask/encapsulator/property/BlindEncapsulatorMergeProperty.html#isApplicableFor-net.akami.mask.expression.ComplexVariable-net.akami.mask.expression.ComplexVariable-">isApplicableFor</a></span>(<a href="../../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;v1,
                <a href="../../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;v2)</code>&nbsp;</td>
 </tr>
 <tr id="i2" class="altColor">
@@ -141,10 +141,10 @@ extends <a href="../../../../../net/akami/mask/encapsulator/property/Encapsulato
 </tr>
 </table>
 <ul class="blockList">
-<li class="blockList"><a name="methods.inherited.from.class.net.akami.mask.encapsulator.property.EncapsulatorMergeProperty">
+<li class="blockList"><a name="methods.inherited.from.class.net.akami.mask.merge.property.OverlayMergeProperty">
 <!--   -->
 </a>
-<h3>Methods inherited from interface&nbsp;net.akami.mask.encapsulator.property.<a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property">EncapsulatorMergeProperty</a></h3>
+<h3>Methods inherited from interface&nbsp;net.akami.mask.merge.property.<a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property">EncapsulatorMergeProperty</a></h3>
 <code><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html#merge-net.akami.mask.expression.Expression-net.akami.mask.expression.Expression-">merge</a></code></li>
 </ul>
 </li>
@@ -161,7 +161,7 @@ extends <a href="../../../../../net/akami/mask/encapsulator/property/Encapsulato
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="isApplicableFor-net.akami.mask.expression.IrreducibleVarPart-net.akami.mask.expression.IrreducibleVarPart-">
+<a name="isApplicableFor-net.akami.mask.expression.ComplexVariable-net.akami.mask.expression.ComplexVariable-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -171,11 +171,11 @@ extends <a href="../../../../../net/akami/mask/encapsulator/property/Encapsulato
                                 <a href="../../../../../net/akami/mask/expression/IrreducibleVarPart.html" title="class in net.akami.mask.expression">IrreducibleVarPart</a>&nbsp;v2)</pre>
 <dl>
 <dt><span class="overrideSpecifyLabel">Specified by:</span></dt>
-<dd><code><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html#isApplicableFor-net.akami.mask.expression.IrreducibleVarPart-net.akami.mask.expression.IrreducibleVarPart-">isApplicableFor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property">EncapsulatorMergeProperty</a></code></dd>
+<dd><code><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html#isApplicableFor-net.akami.mask.expression.ComplexVariable-net.akami.mask.expression.ComplexVariable-">isApplicableFor</a></code>&nbsp;in interface&nbsp;<code><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property">EncapsulatorMergeProperty</a></code></dd>
 </dl>
 </li>
 </ul>
-<a name="isApplicableFor-net.akami.mask.encapsulator.ExpressionEncapsulator-net.akami.mask.encapsulator.ExpressionEncapsulator-">
+<a name="isApplicableFor-net.akami.mask.overlay.ExpressionOverlay-net.akami.mask.overlay.ExpressionOverlay-">
 <!--   -->
 </a><a name="isApplicableFor-T-T-">
 <!--   -->
@@ -224,7 +224,7 @@ extends <a href="../../../../../net/akami/mask/encapsulator/property/Encapsulato
 <div class="subNav">
 <ul class="navList">
 <li>Prev&nbsp;Class</li>
-<li><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.encapsulator.property"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
+<li><a href="../../../../../net/akami/mask/encapsulator/property/EncapsulatorMergeProperty.html" title="interface in net.akami.mask.merge.property"><span class="typeNameLink">Next&nbsp;Class</span></a></li>
 </ul>
 <ul class="navList">
 <li><a href="../../../../../index.html?net/akami/mask/encapsulator/property/BlindEncapsulatorMergeProperty.html" target="_top">Frames</a></li>
