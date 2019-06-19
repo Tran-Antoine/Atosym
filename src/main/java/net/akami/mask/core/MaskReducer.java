@@ -5,7 +5,7 @@ import net.akami.mask.utils.ReducerFactory;
 
 /**
  * An overlay to the {@link ReducerTree} system. It currently uses the {@link ReducerFactory} class to compute results.
- * In the future, the {@link ReducerFactory} class will be removed and calculations will be performable from this operator
+ * In the future, the {@link ReducerFactory} class will be removed and calculations will be performable through this operator
  * only.
  */
 public class MaskReducer implements MaskOperator<Void> {

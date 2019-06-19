@@ -22,7 +22,7 @@ public interface MaskOperator<E> {
      * Computes a result from the given {@code in} parameter, writing the result into the mutable {@code out} parameter,
      * using the extra data required. Although some of the operators just need a single input being the {@code in} Mask,
      * most of them need extra information that cannot be taken out of the initial Mask, such as which char corresponds to
-     * the variable (non-constant) for the derivative calculator, or which variables should be replaced by which values
+     * the variable (non-constant) for the derivatives calculator, or which variables should be replaced by which values
      * for the images calculator.
      * @param in the Mask which will be used as the basis to compute the result
      * @param out the Mask which will be used as the container for the computed result
@@ -31,6 +31,14 @@ public interface MaskOperator<E> {
      */
     void compute(Mask in, Mask out, E extraData, MaskContext context);
 
+    /**
+     * Used to retrieve a list containing the default operators currently provided by the library. <p>
+     * Operators supported by now :
+     * <li> {@link MaskReducer}
+     * <li> {@link MaskDerivativeCalculator}
+     * <li> {@link MaskImageCalculator}
+     * @return a list of MaskOperators
+     */
     static List<MaskOperator> defaultOperators() {
         return Arrays.asList(
                 new MaskReducer(),

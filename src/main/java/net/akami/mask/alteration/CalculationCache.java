@@ -1,4 +1,4 @@
-package net.akami.mask.affection;
+package net.akami.mask.alteration;
 
 import java.util.HashMap;
 import java.util.Map;

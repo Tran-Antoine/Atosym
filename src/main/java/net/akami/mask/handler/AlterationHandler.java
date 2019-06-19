@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.alteration.CalculationAlteration;
 
 import java.util.ArrayList;
 import java.util.List;

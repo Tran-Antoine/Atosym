@@ -64,13 +64,16 @@ public class Mask {
 
     public String getExpression()  { return expression;       }
 
+    /**
+     * Reloads the mask with the given expression. If {@code null}, the new expression will be "undefined". <p>
+     * Validity checks are also performed through reload.
+     * @param newExp the new expression for the mask
+     */
     public void reload(String newExp) {
         if(newExp == null) {
             this.expression = "undefined";
         } else {
-            this.expression = FormatterFactory.formatTrigonometry(FormatterFactory.addMultiplicationSigns(newExp
-                    .replaceAll("\\s", ""), false));
-            this.expression = FormatterFactory.removeMultiplicationSigns(this.expression);
+            this.expression = newExp;
             checkExpressionValidity();
         }
     }

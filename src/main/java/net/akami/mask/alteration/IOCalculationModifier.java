@@ -1,4 +1,4 @@
-package net.akami.mask.affection;
+package net.akami.mask.alteration;
 
 /**
  * The IOCalculationModifier class is one of the two core object of the alteration system, provided by the API.

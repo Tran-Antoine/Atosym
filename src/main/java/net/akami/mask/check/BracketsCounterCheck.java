@@ -1,5 +1,8 @@
 package net.akami.mask.check;
 
+/**
+ * Verifies that the number of opening parentheses {@code '('} is the same as the number of closing parentheses {@code ')'}
+ */
 public class BracketsCounterCheck implements ValidityCheck {
 
     @Override

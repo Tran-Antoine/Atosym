@@ -1,11 +1,11 @@
-package net.akami.mask.affection;
+package net.akami.mask.alteration;
 
 import net.akami.mask.handler.AlterationHandler;
 import net.akami.mask.handler.IOModificationHandler;
 
 /**
- * The CalculationAlteration interface defines the behavior of an expression modifier, in the context of
- * mathematical calculations. Modifiers can change the input string given, change the merge calculated or even
+ * Definer of the behavior of an expression modifier, in the context of
+ * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
  * cancel the calculation.
  * Since the different alterations might have completely different behaviors, no other
  * methods than {@code appliesTo} and {@code priorityLevel} can be directly implemented from subclasses.
@@ -34,11 +34,11 @@ import net.akami.mask.handler.IOModificationHandler;
 public interface CalculationAlteration<T> extends Comparable<CalculationAlteration> {
 
     /**
-     * Checks a validity between the input given and the behavior of the current affection.
+     * Checks a validity between the input given and the behavior of the current alteration.
      * <p></p>
      * The {@code appliesTo} method should be called by the handlers in order to determine if the current
-     * affection can be applied to the given input. It avoids unexpected results if the "change nothing" behavior
-     * is not implemented by the affection, and it can check whether a different merge must be returned, in case the affect is
+     * alteration can be applied to the given input. It avoids unexpected results if the "change nothing" behavior
+     * is not implemented by the alteration, and it can check whether a different merge must be returned, in case the affect is
      * a canceller.
      * @param input the given input string that will be checked
      * @return whether the given input can be modified or if the calculation can be cancelled
@@ -55,19 +55,19 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
      * <p></p>
      * A float instead of an integer is used, so that the user is guaranteed to be able to fit as many affections as
      * he wants between others already existing affections. If an integer was being used, only 3 affections could fit
-     * between a level 1 priority affection and a level 5 priority affection.
+     * between a level 1 priority alteration and a level 5 priority alteration.
      * <p></p>
      * Note that all affections that are both cancellable and input modifiers should logically check for cancelling first.
-     * @return the priority of the affection. Between two different affections, the one with the greatest priority level
+     * @return the priority of the alteration. Between two different affections, the one with the greatest priority level
      *         will take effect first. If two affections of the same type have the same priority level (which should not happen),
      *         one will be randomly taking effect first.
      */
     float priorityLevel();
 
     /**
-     * Compares the affection itself with another {@link CalculationAlteration}. The {@code compareTo} method
-     * helps a handler sort its array of affections, so that he gets them from the most priority affection to the least.
-     * @param other another affection to compare to the affection itself
+     * Compares the alteration itself with another {@link CalculationAlteration}. The {@code compareTo} method
+     * helps a handler sort its array of affections, so that he gets them from the most priority alteration to the least.
+     * @param other another alteration to compare to the alteration itself
      * @return a negative number if the current priority is greater that the other's, 0 if both have the same priority,
      *         and a positive number if the current priority if less than the other's.
      */

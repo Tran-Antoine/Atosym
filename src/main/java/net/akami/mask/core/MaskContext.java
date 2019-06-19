@@ -1,6 +1,6 @@
 package net.akami.mask.core;
 
-import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.alteration.CalculationAlteration;
 import net.akami.mask.check.*;
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.expression.Expression;
@@ -15,13 +15,11 @@ import java.math.MathContext;
 import java.util.*;
 
 /**
- * One of the core objects of the Mask API. It defines a calculation environment, required to perform any
+ * Definer of a calculation environment, required to perform any
  * operation on expressions. <p>
- * A context (or environment) allows you to customize different calculations.
- * In fact, one might not have the same needs as one other. <p>
- * You are free to add some support for
- * mathematical patterns that are supported by the API, or, on the other hand, remove some undesired features provided
- * by default, which will make your calculations run faster. <p>
+ * A context (or environment) allows you to customize different calculations. <p>
+ * You are free to add some support for mathematical patterns that are not supported by the library, or, on the other hand,
+ * remove some undesired features provided by default, which will make your calculations run faster. <p>
  * Furthermore, the environment gives you a total control over inputs and outputs, which means that a single expression
  * can merge in different outcomes. You will for instance be able to decide whether {@code 5/2} will remain {@code 5/2} or
  * will be reduced as {@code 2.5}. <p>
@@ -37,7 +35,7 @@ import java.util.*;
  *      because your expression doesn't literally contain a given operation doesn't mean it is not required. For
  *      instance, the power calculator requires the multiplier to work, since it basically chains multiplications a given
  *      amount of times. <p>
- *      Note : binary operations take care of the affection system. You can directly modify the handlers, or add your owns
+ *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or add your owns
  *      with different affections. <p>
  *      <li> A set of {@link MathFunction}s. Only the mathematical functions present in the set wil be supported.
  *      Mathematical functions can require multiple arguments. See {@link MathFunction}'s documentation for further
@@ -208,6 +206,10 @@ public class MaskContext {
         );
     }
 
+    /**
+     * Throws an error if the given Mask is invalid, according to the {@link ValidityCheck}s handled.
+     * @param self the mask to analyze
+     */
     public void assertExpressionValidity(Mask self) {
         for(ValidityCheck check : validityChecks) {
             if(!check.isValid(self.getExpression()))
