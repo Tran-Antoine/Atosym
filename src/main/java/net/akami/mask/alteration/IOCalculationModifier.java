@@ -1,7 +1,7 @@
 package net.akami.mask.alteration;
 
 /**
- * The IOCalculationModifier class is one of the two core object of the alteration system, provided by the API.
+ * One of the two core objects of the alteration system, provided by the API.
  * An IOModifier checks whether a given expression needs to be formatted or not. If yes, it replaces the input by its
  * formatted version. The modifications can be applied before or after performing a calculation.
  * <p></p>

@@ -1,7 +1,7 @@
 package net.akami.mask.alteration;
 
 /**
- * The CalculationCanceller class is one of the two core object of the alteration system, provided by the API.
+ * One of the two core objects of the alteration system, provided by the library.
  * A Canceller checks, as every alteration, if it can have an impact on a certain expression. If yes, then it cancels
  * the scheduled calculation, and gives a merge that might be different or not than if the calculation was computed.
  * <p></p>

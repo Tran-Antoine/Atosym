@@ -5,6 +5,9 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.merge.MonomialAdditionMerge;
 import net.akami.mask.merge.SequencedMerge;
+import net.akami.mask.merge.property.CommonDenominatorAdditionProperty;
+import net.akami.mask.merge.property.CosineSinusSquaredProperty;
+import net.akami.mask.merge.property.IdenticalVariablePartProperty;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,12 +15,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Computes the sum between two expressions. The default Adder class handled the following properties : <p>
+ * Computes the sum between two expressions. The default Adder class handled the following properties :
  *
- * <li> CosineSinusSquaredProperty, converting {@code sin^2(x) + cos^2(x)} to 1.
- * <li> CommonDenominatorAdditionProperty, allowing sums of fractions having the same denominator
- * <li> IdenticalVariablePartProperty, for complex expressions having the exact same variable part
- * <p></p>
+ * <ul>
+ * <li> {@link CosineSinusSquaredProperty}, converting {@code sin^2(x) + cos^2(x)} to 1.
+ * <li> {@link CommonDenominatorAdditionProperty}, allowing sums of fractions having the same denominator
+ * <li> {@link IdenticalVariablePartProperty}, for complex expressions having the exact same variable part
+ * </ul>
  * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
  * monomials by pairs, and computing a result if possible.
  * @author Antoine Tran

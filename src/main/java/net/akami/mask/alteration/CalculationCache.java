@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The CalculationCache object is one of the cancellers added by default in the API.
+ * A {@link CalculationCanceller} added by default in the library that avoids calculation repetitions.
  * <p></p>
  * Depending on the need of the user, it might be useful or not. The class stores expressions previously calculated at
  * runtime, to reduce the execution time if one single calculation is performed several times.
