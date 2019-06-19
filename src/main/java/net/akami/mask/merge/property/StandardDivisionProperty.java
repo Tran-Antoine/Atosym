@@ -1,7 +1,7 @@
 package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
@@ -74,7 +74,7 @@ public class StandardDivisionProperty extends OverallMergeProperty<Monomial, Lis
 
         FractionOverlay overlay = FractionOverlay.fromExpression(Expression.of(new Monomial(finalDenFloat, denominatorVars)));
         Monomial insights = new Monomial(finalNumFloat, monomialNum.getVarPart());
-        return new Monomial(1, new ComplexVariable(insights, overlay));
+        return new Monomial(1, new IntricateVariable(insights, overlay));
     }
 
     private float multJoin(List<Float> list) {

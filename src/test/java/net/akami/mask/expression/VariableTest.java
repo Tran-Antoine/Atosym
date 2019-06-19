@@ -32,9 +32,9 @@ public class VariableTest {
         ExponentOverlay exp3 = ExponentOverlay.fromExpression(Expression.of('y'));
         Monomial simpleX = new Monomial('x', DEFAULT);
 
-        ComplexVariable[] simple = {new ComplexVariable(simpleX, exp1)};
-        ComplexVariable[] fraction = {new ComplexVariable(simpleX, exp2)};
-        ComplexVariable[] irreducible = {new ComplexVariable(simpleX, exp3)};
+        IntricateVariable[] simple = {new IntricateVariable(simpleX, exp1)};
+        IntricateVariable[] fraction = {new IntricateVariable(simpleX, exp2)};
+        IntricateVariable[] irreducible = {new IntricateVariable(simpleX, exp3)};
         assertDissociateVars(Arrays.asList(simple), "xxxxx");
         assertDissociateVars(Arrays.asList(fraction), "xxx^0.5");
         assertDissociateVars(Arrays.asList(irreducible), "x^y");
@@ -44,7 +44,7 @@ public class VariableTest {
     public void sortingVars() {
         SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);
         ExponentOverlay squared = ExponentOverlay.fromExpression(Expression.of(2));
-        ComplexVariable complex = new ComplexVariable(new Monomial('x',DEFAULT), squared);
+        IntricateVariable complex = new IntricateVariable(new Monomial('x',DEFAULT), squared);
         List<Variable> list = Arrays.asList(simple, complex);
         list.sort(VariableComparator.COMPARATOR);
         System.out.println(list);
@@ -73,14 +73,14 @@ public class VariableTest {
     public void getComplexExpressionTest() {
 
         Monomial m = new Monomial('x', DEFAULT);
-        ComplexVariable c1 = new ComplexVariable(m);
+        IntricateVariable c1 = new IntricateVariable(m);
         assertThat(c1.getExpression()).isEqualTo("x");
     }
 
     /*@Test
     public void recursiveComplexTest() {
         Expression result = ReducerFactory.reduce("y^4.0+5.0x");
-        ComplexVariable complex = new ComplexVariable(new Monomial(1, new ComplexVariable(result.getElements())));
+        IntricateVariable complex = new IntricateVariable(new Monomial(1, new IntricateVariable(result.getElements())));
         Monomial m1 = new NumberElement(4);
         Monomial m2 = new Monomial(1, complex);
         assertThat(multiplier.simpleMult(m1, m2)).isEqualTo("4.0y^4.0+20.0x");

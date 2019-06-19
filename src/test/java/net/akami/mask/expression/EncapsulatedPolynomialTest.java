@@ -25,7 +25,7 @@ public class EncapsulatedPolynomialTest {
                 new CosineFunction(DEFAULT),
                 new SinusFunction(DEFAULT)
         );
-        ComplexVariable polynomial = new ComplexVariable(monomials, layers);
+        IntricateVariable polynomial = new IntricateVariable(monomials, layers);
 
         assertThat(polynomial.getExpression()).isEqualTo("sin(cos((5.0x+3.0)^(5.0x+3.0)))");
     }

@@ -1,7 +1,7 @@
 package net.akami.mask.handler;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.merge.BasicMonomialAdditionMerge;
@@ -50,7 +50,7 @@ public class Divider extends BinaryOperationHandler<Expression> {
 
     private Expression uncompletedDivision(Expression a, Expression b) {
         FractionOverlay overlay = FractionOverlay.fromExpression(b);
-        ComplexVariable result = new ComplexVariable(a.getElements(), overlay);
+        IntricateVariable result = new IntricateVariable(a.getElements(), overlay);
         return Expression.of(new Monomial(1, result));
     }
 

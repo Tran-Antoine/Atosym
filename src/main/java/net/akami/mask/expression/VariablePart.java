@@ -48,7 +48,7 @@ public class VariablePart implements Iterable<Variable> {
         for(Variable variable : variables) {
             if(variable instanceof SingleCharVariable) continue;
 
-            ComplexVariable complex = (ComplexVariable) variable;
+            IntricateVariable complex = (IntricateVariable) variable;
             if(complex.getOverlaysSize() != 0) return true;
         }
         return false;

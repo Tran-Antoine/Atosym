@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * An immutable mathematical unknown. Two implementation of this interface exist, being {@link SingleCharVariable} and
- * {@link ComplexVariable}. <p>
+ * {@link IntricateVariable}. <p>
  * A list of variables goes along with a coefficient, both forming a monomial. Complex variables are recursive, by
  * handling a list of monomials, which also contain variables. The end of the recursivity chain
  * is made by single char variables, which are simple unknown such as "x" or "y", or by {@link NumberElement}s, a
@@ -16,7 +16,7 @@ import java.util.Optional;
  *
  * <li> {@code z} is a {@link SingleCharVariable}, with no overlay except the implicit {@code ^1} exponent. Its list
  * of monomials has a size of 1, the only monomial being 1x
- * <li> {@code sin(a+b)} is a {@link ComplexVariable}, with one overlay being {@code sin}, and two elements (monomials)
+ * <li> {@code sin(a+b)} is a {@link IntricateVariable}, with one overlay being {@code sin}, and two elements (monomials)
  * being {@code a} and {@code b}. These elements are both monomials with a SingleCharVariable as their unique variable.
  * @author Antoine Tran
  */

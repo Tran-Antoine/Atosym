@@ -1,6 +1,6 @@
 package net.akami.mask.merge.property;
 
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.SingleCharVariable;
 import net.akami.mask.expression.Variable;
@@ -19,10 +19,10 @@ public class BaseEquivalenceMultPropertyTest {
 
         SingleCharVariable s1 = new SingleCharVariable('x', DEFAULT);
         SingleCharVariable s2 = new SingleCharVariable('x', DEFAULT);
-        ComplexVariable c1 = new ComplexVariable(new Monomial('x', DEFAULT), ExponentOverlay.SQUARED);
-        ComplexVariable c2 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.SQUARED);
-        ComplexVariable c3 = new ComplexVariable(new Monomial('y', DEFAULT), ExponentOverlay.NULL_FACTOR);
-        ComplexVariable c4 = new ComplexVariable(new Monomial('y', DEFAULT), FractionOverlay.FRACTION_NULL_FACTOR);
+        IntricateVariable c1 = new IntricateVariable(new Monomial('x', DEFAULT), ExponentOverlay.SQUARED);
+        IntricateVariable c2 = new IntricateVariable(new Monomial('y', DEFAULT), ExponentOverlay.SQUARED);
+        IntricateVariable c3 = new IntricateVariable(new Monomial('y', DEFAULT), ExponentOverlay.NULL_FACTOR);
+        IntricateVariable c4 = new IntricateVariable(new Monomial('y', DEFAULT), FractionOverlay.FRACTION_NULL_FACTOR);
 
         assertThat(genProperty(s1, s2).isSuitable()).isNotEqualTo(false);
         assertThat(genProperty(c1, s2).isSuitable()).isNotEqualTo(false);

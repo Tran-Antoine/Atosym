@@ -1,7 +1,7 @@
 package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
@@ -39,7 +39,7 @@ public class DivisionOfFractionsProperty extends OverallMergeProperty<Monomial, 
 
         Variable singleM1 = p1.getVarPart().get(0);
         List<ExpressionOverlay> finalOverlays = singleM1.getOverlaysSection(0, -2);
-        Variable newSingleM1 = new ComplexVariable(singleM1.getElements(), finalOverlays);
+        Variable newSingleM1 = new IntricateVariable(singleM1.getElements(), finalOverlays);
         Monomial newM1 = new Monomial(p1.getNumericValue(), newSingleM1);
 
         return divider.operate(Expression.of(newM1), newDenominator).getElements();
