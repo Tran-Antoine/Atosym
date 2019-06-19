@@ -1,13 +1,13 @@
-net.akami.mask.affection
+net.akami.mask.alteration
+net.akami.mask.check
 net.akami.mask.core
-net.akami.mask.encapsulator
-net.akami.mask.encapsulator.property
 net.akami.mask.exception
 net.akami.mask.expression
 net.akami.mask.function
 net.akami.mask.handler
 net.akami.mask.handler.sign
 net.akami.mask.merge
-net.akami.mask.structure
+net.akami.mask.merge.property
+net.akami.mask.overlay
 net.akami.mask.tree
 net.akami.mask.utils
