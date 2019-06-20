@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * An immutable data class grouping a numeric coefficient with a literal part. <p>
+ * An immutable data class grouping a numeric coefficient with a literal part. <br>
  * Monomials are grouped into expressions, as a list of Monomials representing a mathematical expression.
  */
 public class Monomial implements Comparable<Monomial> {
@@ -93,11 +93,6 @@ public class Monomial implements Comparable<Monomial> {
 
     public String getExpression() {
         return expression;
-    }
-
-    public boolean isCompatibleWith(Monomial other) {
-        return getClass().isAssignableFrom(other.getClass())
-                || other.getClass().isAssignableFrom(getClass());
     }
 
     @Override

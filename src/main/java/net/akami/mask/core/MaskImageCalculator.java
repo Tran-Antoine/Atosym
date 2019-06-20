@@ -7,8 +7,8 @@ import net.akami.mask.utils.ReducerFactory;
 import java.util.Map;
 
 /**
- * Operator used for function images computation. <p>
- * With a given expression, it replaces all the variables from a map by their mapped value. <p>
+ * Operator used for function images computation. <br>
+ * With a given expression, it replaces all the variables from a map by their mapped value. <br>
  */
 public class MaskImageCalculator implements MaskOperator<Map<Character, String>> {
 
@@ -24,7 +24,7 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
     }
 
     /**
-     * Replaces all occurrences of {@code var} in {@code self} by {@code value}. <p>
+     * Replaces all occurrences of {@code var} in {@code self} by {@code value}. <br>
      * It manages to keep the replacement mathematically logic. For instance, replacing {@code x} by {@code 3}
      * in {@code 4x} will give {@code 4*3} instead of {@code 43}
      * @param var the var to be replaced

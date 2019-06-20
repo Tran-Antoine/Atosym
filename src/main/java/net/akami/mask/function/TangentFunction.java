@@ -3,7 +3,7 @@ package net.akami.mask.function;
 import net.akami.mask.core.MaskContext;
 
 /**
- * The Tangent trigonometric function, taking a single argument, computing a result between -1 and 1 if the input
+ * The Tangent trigonometric function, taking a single argument, computing a result if the input
  * is a number, otherwise computes nothing.
  */
 public class TangentFunction extends MathFunction<String> implements TrigonometryOperation {

@@ -3,7 +3,7 @@ package net.akami.mask.core;
 import net.akami.mask.tree.DerivativeTree;
 
 /**
- * An overlay to the {@link DerivativeTree} system. <p>
+ * An overlay to the {@link DerivativeTree} system. <br>
  * It basically constructs a tree with the given Mask given, then writes the result into the {@code out} Mask.
  */
 public class MaskDerivativeCalculator implements MaskOperator<Character> {

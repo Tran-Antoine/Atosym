@@ -15,15 +15,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Computes the sum between two expressions. The default Adder class handled the following properties :
+ * Computes the sum between two expressions. The default Adder class handles the following properties :
  *
  * <ul>
  * <li> {@link CosineSinusSquaredProperty}, converting {@code sin^2(x) + cos^2(x)} to 1.
  * <li> {@link CommonDenominatorAdditionProperty}, allowing sums of fractions having the same denominator
- * <li> {@link IdenticalVariablePartProperty}, for complex expressions having the exact same variable part
+ * <li> {@link IdenticalVariablePartProperty}, for expressions having the exact same variable part
  * </ul>
  * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
  * monomials by pairs, and computing a result if possible.
+ *
  * @author Antoine Tran
  */
 public class Adder extends BinaryOperationHandler<Expression> {
@@ -31,7 +32,6 @@ public class Adder extends BinaryOperationHandler<Expression> {
     public Adder(MaskContext context) {
         super(context);
     }
-
 
     @Override
     public Expression operate(Expression a, Expression b) {

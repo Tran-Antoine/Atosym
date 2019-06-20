@@ -7,23 +7,23 @@ import java.util.Optional;
 
 /**
  * An immutable mathematical unknown. Two implementation of this interface exist, being {@link SingleCharVariable} and
- * {@link IntricateVariable}. <p>
+ * {@link IntricateVariable}. <br>
  * A list of variables goes along with a coefficient, both forming a monomial. Complex variables are recursive, by
  * handling a list of monomials, which also contain variables. The end of the recursivity chain
  * is made by single char variables, which are simple unknown such as "x" or "y", or by {@link NumberElement}s, a
- * kind of monomial that does not contain any unknown part. <p>
+ * kind of monomial that does not contain any unknown part. <br>
  * Examples :
  *
  * <li> {@code z} is a {@link SingleCharVariable}, with no overlay except the implicit {@code ^1} exponent. Its list
  * of monomials has a size of 1, the only monomial being 1x
- * <li> {@code sin(a+b)} is a {@link IntricateVariable}, with one overlay being {@code sin}, and two elements (monomials)
+ * <li> {@code sin(a+b)} is an {@link IntricateVariable}, with one overlay being {@code sin}, and two elements (monomials)
  * being {@code a} and {@code b}. These elements are both monomials with a SingleCharVariable as their unique variable.
  * @author Antoine Tran
  */
 public interface Variable {
 
     /**
-     * For display only. Note that all methods returning strings should not be used for algebraic treatment at all. <p>
+     * For display only. Note that all methods returning strings should not be used for algebraic treatment at all. <br>
      * They are used recursively by the {@code getExpression()} method from the {@link Expression} class, to print
      * the final result of the calculation
      * @return the literal form of the variable, {@code x} or {@code sin(y^2)} for instance.
@@ -37,9 +37,9 @@ public interface Variable {
     List<ExpressionOverlay> getAbsoluteOverlays();
 
     /**
-     * Used to retrieve the overlay at the given index. <p>
+     * Used to retrieve the overlay at the given index. <br>
      * At least in the implementations provided by the library, negative indexes are supported.
-     * Therefore, 0 will give the first element, -1 the last one, -2 the penultimate one, etc. <p>
+     * Therefore, 0 will give the first element, -1 the last one, -2 the penultimate one, etc. <br>
      * Note that the only index supported for {@link SingleCharVariable}s is {@code -1}, being the implicit {@code ^1} exponent.
      * @param i the index of the list of overlays
      * @return the overlay present at the given index

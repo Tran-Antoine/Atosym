@@ -8,7 +8,7 @@ import net.akami.mask.utils.ExpressionUtils;
 import java.util.*;
 
 /**
- * A mathematical unknown containing overlays, encapsulating a series of irreducible monomials. <p>
+ * A mathematical unknown containing overlays, encapsulating a series of irreducible monomials. <br>
  * It handles :
  *
  * <ul>

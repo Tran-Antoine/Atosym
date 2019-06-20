@@ -5,7 +5,7 @@ import net.akami.mask.merge.property.ElementSequencedMergeProperty;
 import java.util.List;
 
 /**
- * Similar to {@link PairEraser}, although instead of nullifying common elements, it just adds one of them in the constructed list. <p>
+ * Similar to {@link PairEraser}, although instead of nullifying common elements, it just adds one of them in the constructed list. <br>
  * Equality checks are performed through the {@link #equals(Object)} method. Whenever two elements are equal, they
  * are removed from their former list, and one of them is added to the new list.
  * @param <T> the kind of object handled by the duplicate eraser

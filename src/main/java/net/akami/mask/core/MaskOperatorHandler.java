@@ -5,20 +5,20 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * Highest level object of the operation architecture. <p>
+ * Highest level object of the operation architecture. <br>
  * It corresponds to the manager for the {@link MaskOperator} instances. It allows the user to call the {@code compute()} methods with
- * the {@link MaskOperator#getClass()} type wanted. <p>
+ * the {@link MaskOperator#getClass()} type wanted. <br>
  *
  * Four data are handled at once by the manager. The first one is the default mask to use whenever the {@code in}
  * parameter is not specified through the {@code compute()} methods. Setting the default mask's value (by calling {@link #begin(Mask)})
- * is optional, though errors will be thrown if {@code compute()} is being called without {@code in} specified. <p>
+ * is optional, though errors will be thrown if {@code compute()} is being called without {@code in} specified. <br>
  * The second one is the calculation environment ({@link MaskContext}) to use for every calculation performed through the manager.
- * If no context is specified, {@link MaskContext#DEFAULT} will be used. <p>
+ * If no context is specified, {@link MaskContext#DEFAULT} will be used. <br>
  * The third one is a list of {@link MaskOperator}s. Those are the operators that are supported by the manager. Most of the time
  * this field doesn't require any modification. You'll only need to modify the list if you want to remove operators to limit
- * the features of the manager, or if you want to modify / add new operators. <p>
+ * the features of the manager, or if you want to modify / add new operators. <br>
  * Eventually, the fourth data is a boolean defining whether the {@code out} Mask should be set to the default Mask after
- * calls to {@code compute}. If set to true, it allows the user to chain operation without having to repeat the {@code in} Mask. <p>
+ * calls to {@code compute}. If set to true, it allows the user to chain operation without having to repeat the {@code in} Mask. <br>
  *
  * For further information, see {@link #compute(Class, Mask, Object)}, {@link #compute(Class, Mask, Mask, Object)}, {@link #compute(Class, Mask, Object, Consumer)}
  * and {@link #compute(Class, Mask, Mask, Object, Consumer)}
@@ -66,10 +66,10 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code default} mask, according to the operator type given. <p>
-     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <p>
+     * Computes a string based on the {@code default} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * If no mask is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
-     * or after any {@code compute()} call if {@code setToOut} is set to true. <p>
+     * or after any {@code compute()} call if {@code setToOut} is set to true. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information.
      * @param op the type of the operator
@@ -82,8 +82,8 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code in} mask, according to the operator type given. <p>
-     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <p>
+     * Computes a string based on the {@code in} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information.
      * @param op the type of the operator
@@ -97,12 +97,12 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code default} mask, according to the operator type given. <p>
-     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <p>
+     * Computes a string based on the {@code default} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * If no mask is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
-     * or after any {@code compute()} call if {@code setToOut} is set to true. <p>
+     * or after any {@code compute()} call if {@code setToOut} is set to true. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
-     * further information. <p>
+     * further information. <br>
      * A consumer is included so that the user can perform actions based on the computed result.
      * @param op the type of the operator
      * @param out where the result computed will be written
@@ -116,10 +116,10 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code in} mask, according to the operator type given. <p>
-     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <p>
+     * Computes a string based on the {@code in} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
-     * further information. <p>
+     * further information. <br>
      * A consumer is included so that the user can perform actions based on the computed result.
      * @param op the type of the operator
      * @param in the mask containing the expression the operator must base itself on.
@@ -166,6 +166,11 @@ public class MaskOperatorHandler {
     public String asExpression() {
         Objects.requireNonNull(currentIn);
         return currentIn.getExpression();
+    }
+
+    public float asNumber() {
+        Objects.requireNonNull(currentIn);
+        return Float.parseFloat(currentIn.getExpression());
     }
 
     /**

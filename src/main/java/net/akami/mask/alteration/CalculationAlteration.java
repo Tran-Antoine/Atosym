@@ -9,16 +9,16 @@ import net.akami.mask.handler.IOModificationHandler;
  * cancel the calculation.
  * Since the different alterations might have completely different behaviors, no other
  * methods than {@code appliesTo} and {@code priorityLevel} can be directly implemented from subclasses.
- * <p></p>
+ * <br>
  *
  * The two main behavior types provided by the API are the {@link IOCalculationModifier}
  * and the {@link CalculationCanceller} (both inheriting from this interface), which both define what exactly
  * the modification should be, depending of the input string given.
- * <p></p>
+ * <br>
  *
  * CalculationAffections must be handled by an {@link AlterationHandler} compatible with
  * the type of alteration managed, determining when exactly in the process of the calculations a modification must be done.
- * <p></p>
+ * <br>
  *
  * Because of the priority level feature, a handler must be easily able to sort its alterations from the greater priority
  * to the least. Hence the interface extends {@link Comparable}. If you want to sort a list of alterations, do the following :
@@ -35,7 +35,7 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
 
     /**
      * Checks a validity between the input given and the behavior of the current alteration.
-     * <p></p>
+     * <br>
      * The {@code appliesTo} method should be called by the handlers in order to determine if the current
      * alteration can be applied to the given input. It avoids unexpected results if the "change nothing" behavior
      * is not implemented by the alteration, and it can check whether a different merge must be returned, in case the affect is
@@ -48,15 +48,15 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
     /**
      * Because several affections might want to affect a single input at the same time, the priority level
      * method helps the handler deciding which affect will modify the input / cancel the calculation first.
-     * <p></p>
+     * <br>
      * For instance, the "let fraction or divide" cancelling affect will have a greater priority level than the
      * cache canceller, because even if the merge of the operation has already been calculated, it is up to the
      * "let fraction or divide" cancelling effect to determine whether this merge is wanted or not.
-     * <p></p>
+     * <br>
      * A float instead of an integer is used, so that the user is guaranteed to be able to fit as many affections as
      * he wants between others already existing affections. If an integer was being used, only 3 affections could fit
      * between a level 1 priority alteration and a level 5 priority alteration.
-     * <p></p>
+     * <br>
      * Note that all affections that are both cancellable and input modifiers should logically check for cancelling first.
      * @return the priority of the alteration. Between two different affections, the one with the greatest priority level
      *         will take effect first. If two affections of the same type have the same priority level (which should not happen),

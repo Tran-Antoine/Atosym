@@ -18,10 +18,9 @@ public class MonomialAdditionMerge implements SequencedMerge<Monomial> {
     @Override
     public List<ElementSequencedMergeProperty<Monomial>> generateElementProperties(Monomial p1, Monomial p2) {
         return Arrays.asList(
-            new SimpleMonomialAdditionProperty(p1, p2, context),
-            new CosineSinusSquaredProperty(p1, p2),
-            new CommonDenominatorAdditionProperty(p1, p2, context),
-            new IdenticalVariablePartProperty(p1, p2, context)
+                new IdenticalVariablePartProperty(p1, p2, context),
+                new CosineSinusSquaredProperty(p1, p2),
+                new CommonDenominatorAdditionProperty(p1, p2, context)
         );
     }
 

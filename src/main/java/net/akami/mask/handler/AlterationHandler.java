@@ -6,6 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Represents objects which handle
+ * @param <T>
+ * @param <R>
+ * @param <I>
+ */
 public interface AlterationHandler<T extends CalculationAlteration, R, I> {
 
     List<T> getAffections();

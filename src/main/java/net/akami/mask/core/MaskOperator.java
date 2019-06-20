@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * A specific operation taking an input, sorting out an output. <p>
+ * A specific operation taking an input, sorting out an output. <br>
  * Available operators :
  * <li> {@link MaskReducer}, a simple layer for the reducing tree system. It will soon replace the {@link ReducerFactory} class.
  * <li> {@link MaskDerivativeCalculator}, providing support for derivatives
@@ -32,7 +32,7 @@ public interface MaskOperator<E> {
     void compute(Mask in, Mask out, E extraData, MaskContext context);
 
     /**
-     * Used to retrieve a list containing the default operators currently provided by the library. <p>
+     * Used to retrieve a list containing the default operators currently provided by the library. <br>
      * Operators supported by now :
      * <li> {@link MaskReducer}
      * <li> {@link MaskDerivativeCalculator}

@@ -14,7 +14,7 @@ import java.util.Objects;
  * All referenced methods used belong to the {@link MathUtils} class created for this purpose. <br/>
  * The None operator allows the user to deal with the different {@link QuaternaryMathOperation}s two by two, without
  * getting any {@link IndexOutOfBoundsException}. See {@link DerivativeTree} for more details
- * about signs dealing and branch splitting. <p>
+ * about signs dealing and branch splitting. <br>
  *
  * Note that the None operator might be removed in the future.
  *
@@ -35,10 +35,6 @@ public enum QuaternaryOperationSign {
     QuaternaryOperationSign(char sign, QuaternaryMathOperation function) {
         this.sign = sign;
         this.quaternaryFunction = function;
-    }
-
-    public char getSign() {
-        return sign;
     }
 
     public Expression compute(Expression a, Expression a2, Expression b, Expression b2) {

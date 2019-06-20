@@ -3,20 +3,20 @@ package net.akami.mask.function;
 import net.akami.mask.utils.ExpressionUtils;
 
 /**
- * Util interface avoiding repetitions inside the trigonometric functions. <p>
+ * Util interface avoiding repetitions inside the trigonometric functions. <br>
  * Might not be required anymore after the expression system is finished.
  */
 public interface TrigonometryOperation {
 
     /**
-     * The trigonometric function matching the class. <p>
+     * The trigonometric function matching the class. <br>
      * Should be either {@code Math::sin}, {@code Math::cos} or {@code Math::tan}
      * @return
      */
     UnaryOperation getOperation();
 
     /**
-     * Computes a trigonometric operation from the given input and the given binding. <p>
+     * Computes a trigonometric operation from the given input and the given binding. <br>
      * Does not compute anything if the input is not a number.
      * @param input the input given, to which the operation is to be applied
      * @param opChar the binding corresponding to the trigonometric operation

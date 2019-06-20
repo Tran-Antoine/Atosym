@@ -1,7 +1,7 @@
 package net.akami.mask.check;
 
 /**
- * Verifies that the given input does not contain any non-manageable character. <p>
+ * Verifies that the given input does not contain any non-manageable character. <br>
  * Only letters, numbers and mathematical symbols are allowed
  */
 public class UnknownCharacter implements ValidityCheck {

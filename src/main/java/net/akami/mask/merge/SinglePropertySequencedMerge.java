@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * A simple wrapper for {@link SequencedMerge}s that only have one {@link ElementSequencedMergeProperty}. <p>
+ * A simple wrapper for {@link SequencedMerge}s that only have one {@link ElementSequencedMergeProperty}. <br>
  * Since a lot of sequenced merge seem to only require one property, this interfaces serves as a shortcut.
  * @param <T>
  */

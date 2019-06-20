@@ -1,7 +1,7 @@
 package net.akami.mask.check;
 
 /**
- * Verifies that a given string is a correct mathematical expression. <p>
+ * Verifies that a given string is a correct mathematical expression. <br>
  * Checks are performed at mask reload time (whenever an expression is set).
  */
 public interface ValidityCheck {

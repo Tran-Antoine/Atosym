@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * A representation of any possible mathematical expression. <p>
+ * A representation of any possible mathematical expression. <br>
  * The expression class is at the top of the expression hierarchy. An expression is composed of monomials,
- * which themselves are composed of a coefficient and a variable part. <p>
+ * which themselves are composed of a coefficient and a variable part. <br>
  * However, expressions might also be found at the bottom of the hierarchy. In fact, some overlays
  * are nothing else than subclasses of Expression. They are used by variables, which are at the bottom of the
  * expression hierarchy. These overlays are thus at the very bottom of the initial architecture, but are also at the top
- * of the new hierarchy they created. Thereby, expressions can indirectly contain other expressions. <p>
+ * of the new hierarchy they created. Thereby, expressions can indirectly contain other expressions. <br>
  *
  * Expression creation can be performed in two ways :
  *
