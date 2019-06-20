@@ -1,6 +1,6 @@
 package net.akami.mask.function;
 
-import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.alteration.CalculationCanceller;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.overlay.CompleteCoverOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;

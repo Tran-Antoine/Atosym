@@ -25,8 +25,8 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     public Expression operate(Expression a, Expression b) {
 
         LOGGER.debug("Operating mult {} * {}", a, b);
-        if(a.size() != 0 && a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
-        if(b.size() != 0 && b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
+        if(a.length() != 0 && a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
+        if(b.length() != 0 && b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
 
         List<Monomial> aMonomials = new ArrayList<>(a.getElements());
         List<Monomial> bMonomials = new ArrayList<>(b.getElements());

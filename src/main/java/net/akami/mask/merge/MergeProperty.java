@@ -1,5 +1,9 @@
 package net.akami.mask.merge;
 
+/**
+ *
+ * @param <P> the type of element handled by the property
+ */
 public abstract class MergeProperty<P> {
 
     protected P p1;

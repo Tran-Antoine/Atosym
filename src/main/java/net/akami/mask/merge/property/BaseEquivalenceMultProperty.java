@@ -1,7 +1,7 @@
 package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
@@ -59,6 +59,6 @@ public class BaseEquivalenceMultProperty extends ElementSequencedMergeProperty<V
         List<ExpressionOverlay> overlays = new ArrayList<>(otherOverlays);
         // The list is modifiable because created using the getFractionOverlay() method
         overlays.add(ExponentOverlay.fromExpression(newExponent));
-        constructed.add(new ComplexVariable(newElements, overlays));
+        constructed.add(new IntricateVariable(newElements, overlays));
     }
 }

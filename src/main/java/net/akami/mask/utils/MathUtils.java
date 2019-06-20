@@ -187,7 +187,7 @@ public class MathUtils {
         for(Variable var : vars) {
             if(var instanceof SingleCharVariable) {finalVars.add(var); continue; }
 
-            ComplexVariable complexVar = (ComplexVariable) var;
+            IntricateVariable complexVar = (IntricateVariable) var;
             if(complexVar.getOverlaysSize() == 0) {finalVars.add((complexVar)); continue; }
 
             ExpressionOverlay last = complexVar.getOverlay(-1);
@@ -202,14 +202,14 @@ public class MathUtils {
                 finalOverlays.add(ExponentOverlay.NULL_FACTOR);
 
                 while (expValue > 1) {
-                    finalVars.add(new ComplexVariable(complexVar.getElements(), finalOverlays));
+                    finalVars.add(new IntricateVariable(complexVar.getElements(), finalOverlays));
                     expValue--;
                 }
 
                 if (expValue != 0) {
                     List<ExpressionOverlay> otherFinalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
                     otherFinalOverlays.add(ExponentOverlay.fromExpression(Expression.of(expValue)));
-                    finalVars.add(new ComplexVariable(complexVar.getElements(), otherFinalOverlays));
+                    finalVars.add(new IntricateVariable(complexVar.getElements(), otherFinalOverlays));
                 }
             } else {
                 finalVars.add(complexVar);

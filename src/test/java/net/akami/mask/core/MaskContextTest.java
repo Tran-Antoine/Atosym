@@ -1,6 +1,6 @@
 package net.akami.mask.core;
 
-import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.alteration.CalculationAlteration;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 

@@ -1,15 +1,15 @@
 package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
 import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
 import net.akami.mask.handler.Divider;
 import net.akami.mask.handler.Multiplier;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FractionCombinationProperty extends OverallSequencedMergeProperty<Variable> {
 
@@ -58,6 +58,10 @@ public class FractionCombinationProperty extends OverallSequencedMergeProperty<V
 
         Expression divisionResult = divider.operate(fullNumerator, fullDenominator);
 
-        return Collections.singletonList(new ComplexVariable(divisionResult.getElements()));
+        //return Collections.singletonList(new IntricateVariable(divisionResult.getElements()));
+        return divisionResult.getElements()
+                .stream()
+                .map(IntricateVariable::new)
+                .collect(Collectors.toList());
     }
 }

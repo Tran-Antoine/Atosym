@@ -8,6 +8,16 @@ public class MainTester {
 
     public static void main(String... args) {
 
+        Mask curve = new Mask("x^2 + 3x + 4");
+        MaskOperatorHandler handler = MaskOperatorHandler.DEFAULT;
+        // Value already to true by default, if not changed
+        handler.setCurrentToOut(true);
+        String derivative = handler.compute(MaskDerivativeCalculator.class, curve, Mask.TEMP, 'x')
+                .asExpression();
+
+        System.out.println(derivative);
+
+
         Scanner sc = new Scanner(System.in);
         String expression;
 
@@ -19,7 +29,6 @@ public class MainTester {
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");
         }
-        MaskOperatorHandler handler = new MaskOperatorHandler();
         while(!(expression = sc.nextLine()).isEmpty()) {
             Mask.TEMP.reload(expression);
             handler.begin(Mask.TEMP);

@@ -8,6 +8,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * An immutable data class grouping a numeric coefficient with a literal part. <br>
+ * Monomials are grouped into expressions, as a list of Monomials representing a mathematical expression.
+ */
 public class Monomial implements Comparable<Monomial> {
 
     private final String expression;
@@ -34,11 +38,10 @@ public class Monomial implements Comparable<Monomial> {
     private String loadExpression() {
 
         if(numericValue == 0)  return "";
-        if(varPart.isEmpty())  return String.valueOf(numericValue);
-        if(numericValue == 1 && !variablesToString().startsWith("/"))  return variablesToString();
+        if(varPart.isEmpty() || varPart.getExpression().isEmpty())  return String.valueOf(numericValue);
+        if(numericValue == 1 && !variablesToString().startsWith("/")) return variablesToString();
         if(numericValue == -1) return '-' + variablesToString();
-
-        return numericValue + variablesToString();
+        else return numericValue + variablesToString();
     }
 
     public boolean hasSameVariablePartAs(Monomial other) {
@@ -92,11 +95,6 @@ public class Monomial implements Comparable<Monomial> {
         return expression;
     }
 
-    public boolean isCompatibleWith(Monomial other) {
-        return getClass().isAssignableFrom(other.getClass())
-                || other.getClass().isAssignableFrom(getClass());
-    }
-
     @Override
     public String toString() {
         return getExpression();
@@ -116,7 +114,7 @@ public class Monomial implements Comparable<Monomial> {
 
     public boolean isSimple() {
         for (Variable variable : varPart) {
-            if (variable instanceof ComplexVariable) return false;
+            if (variable instanceof IntricateVariable) return false;
         }
         return true;
     }

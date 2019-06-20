@@ -1,6 +1,6 @@
 package net.akami.mask.core;
 
-import net.akami.mask.affection.CalculationAlteration;
+import net.akami.mask.alteration.CalculationAlteration;
 import net.akami.mask.check.*;
 import net.akami.mask.exception.MaskException;
 import net.akami.mask.expression.Expression;
@@ -15,37 +15,33 @@ import java.math.MathContext;
 import java.util.*;
 
 /**
- * One of the core objects of the Mask API. It defines a calculation environment, required to perform any
- * operation on expressions. <p>
- * A context (or environment) allows you to customize different calculations.
- * In fact, one might not have the same needs as one other. <p>
- * You are free to add some support for
- * mathematical patterns that are supported by the API, or, on the other hand, remove some undesired features provided
- * by default, which will make your calculations run faster. <p>
+ * Definer of a calculation environment, required to perform any operation on expressions. <br>
+ * A context (or environment) allows you to customize different calculations. <br>
+ * You are free to add some support for mathematical patterns that are not supported by the library, or, on the other hand,
+ * remove some undesired features provided by default, which will make your calculations run faster. <br>
  * Furthermore, the environment gives you a total control over inputs and outputs, which means that a single expression
  * can merge in different outcomes. You will for instance be able to decide whether {@code 5/2} will remain {@code 5/2} or
- * will be reduced as {@code 2.5}. <p>
+ * will be reduced as {@code 2.5}. <br>
  * For further information about inputs and outputs alteration, see {@link CalculationAlteration} and
- * {@link AlterationHandler}.
- * <pre></pre>
+ * {@link AlterationHandler}. <br>
  *
  * The MaskContext class handles :
- *
+ * <ul>
  *      <li> A set of {@link BinaryOperationHandler}s. Basically, the 5 default operations, being the addition, the
  *      subtraction, the multiplication, the division and the power calculation. Although this is not recommended,
  *      you are free to remove any of these operations, if you are guaranteed that they won't be required. However,
  *      because your expression doesn't literally contain a given operation doesn't mean it is not required. For
  *      instance, the power calculator requires the multiplier to work, since it basically chains multiplications a given
- *      amount of times. <p>
- *      Note : binary operations take care of the affection system. You can directly modify the handlers, or add your owns
- *      with different affections. <p>
+ *      amount of times. <br>
+ *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or add your owns
+ *      with different affections. <br>
  *      <li> A set of {@link MathFunction}s. Only the mathematical functions present in the set wil be supported.
  *      Mathematical functions can require multiple arguments. See {@link MathFunction}'s documentation for further
- *      information <p>
+ *      information <br>
  *      <li> A list of {@link ValidityCheck}. They analyze the given input and throw an error if the input is invalid
- *      mathematically speaking. <p>
+ *      mathematically speaking. <br>
  *      <li> A {@link MathContext}, used to define the amount of significant digits for calculations.
- *  </pre>
+ *  </ul>
  *
  * 
  * @author Antoine Tran
@@ -72,7 +68,7 @@ public class MaskContext {
     }
 
     /**
-     * Constructs a context with the given precision. <p>
+     * Constructs a context with the given precision. <br>
      * See {@link MaskContext#MaskContext()} for further information concerning the other handled data.
      * @param precision the amount of significant digits handled by the context
      */
@@ -84,7 +80,7 @@ public class MaskContext {
     }
 
     /**
-     * Performs a calculation from the two elements given and the selected operator. <p>
+     * Performs a calculation from the two elements given and the selected operator. <br>
      * By default (recommended), the 5 operations (+-{@literal *}/^) are available. This method is generally called
      * from the {@link MathUtils} class
      * @param a the first element to compute with the second one
@@ -100,7 +96,7 @@ public class MaskContext {
 
     /**
      * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link BinaryOperationHandler#operate(Object, Object)} from it. <p>
+     * the default {@link BinaryOperationHandler#operate(Object, Object)} from it. <br>
      * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(Object, Object, Class)}
      * instead.
      * @param clazz the type of the operator
@@ -169,7 +165,7 @@ public class MaskContext {
     }
 
     /**
-     * Adds a new function to the set. <p>
+     * Adds a new function to the set. <br>
      * Note that the new function will replace any existing function whose binding would match with the new function's.
      * @param target a new function to add
      */
@@ -208,6 +204,10 @@ public class MaskContext {
         );
     }
 
+    /**
+     * Throws an error if the given Mask is invalid, according to the {@link ValidityCheck}s handled.
+     * @param self the mask to analyze
+     */
     public void assertExpressionValidity(Mask self) {
         for(ValidityCheck check : validityChecks) {
             if(!check.isValid(self.getExpression()))

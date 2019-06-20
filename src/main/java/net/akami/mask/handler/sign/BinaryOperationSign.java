@@ -1,6 +1,6 @@
 package net.akami.mask.handler.sign;
 
-import net.akami.mask.affection.CalculationCache;
+import net.akami.mask.alteration.CalculationCache;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.utils.MathUtils;
@@ -27,13 +27,13 @@ public enum BinaryOperationSign {
 
     /**
      * Sum operator, computes a + b using the {@link MathUtils#sum(Expression, Expression)} method.
-     * <p></p>
+     * <br>
      * This operator can deal with a chain of additions / subtractions. Therefore, there will not be any problem
      * if the a or b value happens to be a polynomial.
-     * <p></p>
+     * <br>
      *
      * Examples :
-     * <p></p><pre>
+     * <br><pre>
      * ---a---|---b---
      *    4   +   5     = 9
      *   4x   +   5     = 4x+5
@@ -45,13 +45,13 @@ public enum BinaryOperationSign {
 
     /**
      * Subtraction operator, computes a - b using the {@link MathUtils#subtract(Expression, Expression)} method.
-     * <p></p>
+     * <br>
      * This operator works the same way as the {@code SUM} operator, except that it multiply all the monomials
      * found in the {@code b} input by -1.
-     * <p></p>
+     * <br>
      *
      * Examples :
-     * <p></p><pre>
+     * <br><pre>
      * ---a---|---b---
      *    4   -   5     = -1
      *   4x   -   5     = 4x-5
@@ -63,13 +63,13 @@ public enum BinaryOperationSign {
 
     /**
      * Mult operator, computes a * b using the {@link MathUtils#mult(Expression, Expression)} method.
-     * <p></p>
+     * <br>
      * It also supports polynomial multiplication (not only the monomial ones) thus distributivity.
-     * <p></p>
+     * <br>
      * Note that the unknown parts are always sorted alphabetically.
-     * <p></p>
+     * <br>
      * Examples :
-     * <p></p><pre>
+     * <br><pre>
      * ---a---|---b---
      *    4   *   5     = 20
      *   4x   *   5     = 20x
@@ -90,9 +90,9 @@ public enum BinaryOperationSign {
      * <li> Polynomial a and Monomial / Numeric b </li>
      * </ul>
      * In other words, b can not be a polynomial, even if simplifications could technically be performed.
-     * <p></p>
+     * <br>
      * Examples :
-     * <p></p><pre>
+     * <br><pre>
      * ---a---|---b---
      *    4   /   5     = 0.8
      *   4x   /   5     = 4x/5
@@ -104,19 +104,19 @@ public enum BinaryOperationSign {
 
     /**
      * Pow operator, computes a ^ b using the {@link MathUtils#pow(Expression, Expression)} method.
-     * <p></p>
+     * <br>
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
      * to the power of a non integer number, as well as any algebraic exponent won't be calculated, thus the returned
      * merge will be {@code a^b, (a)^b, a^(b) or (a)^(b)} depending of the case, so that the priority of operations is respected.
-     * <p></p>
+     * <br>
      *
      * The {@link MaskContext} also influences whether the calculation will be performed or not,
      * if {@code b} is an integer. In fact, the context (or more precisely the {@link CalculationCache})
      * determines the maximal value of {@code b} before cancelling the operation.
-     * <p></p>
+     * <br>
      * Examples :
-     * <p></p><pre>
+     * <br><pre>
      * ---a---|---b---
      *    4   ^   5     = 1024
      *  4x+y  ^   4     = 256x^4+256x^3y+96x^2y^2+16xy^3+y^4
@@ -129,7 +129,7 @@ public enum BinaryOperationSign {
     /**
      * The None operator does not have any other utility than making the amount of operations an even number.
      * In other words, it allows the pow operator to have an other operation with an equal priority level.
-     * <p></p>
+     * <br>
      *
      * The purpose of this is to allow the {@link net.akami.mask.tree.CalculationTree} to deal with operation signs
      * two at once, without getting any {@link IndexOutOfBoundsException}.
@@ -146,10 +146,6 @@ public enum BinaryOperationSign {
         this.sign = sign;
         this.binaryFunction = function;
         this.priorityLevel = priorityLevel;
-    }
-
-    public char getSign() {
-        return sign;
     }
 
     public int getPriorityLevel() {

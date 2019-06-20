@@ -1,14 +1,14 @@
-package net.akami.mask.affection;
+package net.akami.mask.alteration;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * The CalculationCache object is one of the cancellers added by default in the API.
- * <p></p>
+ * A {@link CalculationCanceller} added by default in the library that avoids calculation repetitions.
+ * <br>
  * Depending on the need of the user, it might be useful or not. The class stores expressions previously calculated at
  * runtime, to reduce the execution time if one single calculation is performed several times.
- * <p></p>
+ * <br>
  * All binary handlers contain a calculation cache by default. If you want to disable the cache, call {@code setCapacity(0)}.
  * The reason why the cache might need to be disabled is that memory access to the HashMap can possibly be slower than
  * certain calculations. If you are guaranteed that only small calculations will be performed, disable the cache.
@@ -36,9 +36,9 @@ public class CalculationCache implements CalculationCanceller<String> {
      * input might not be detected, even though the calculation was already performed.
      * If the cache is full, its size being specified with the {@link #setCapacity(int)} method, the map will be cleared
      * before entering any new data.
-     * <p></p>
+     * <br>
      * Regular {@link net.akami.mask.handler.BinaryOperationHandler}s use the following format :
-     * <p></p>
+     * <br>
      *
      * <pre>
      * Initial : a|b

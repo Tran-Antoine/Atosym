@@ -1,5 +1,8 @@
 package net.akami.mask.check;
 
+/**
+ * Verifies that the last character of the given input is valid
+ */
 public class IllegalEndingCharacter implements ValidityCheck {
 
     @Override

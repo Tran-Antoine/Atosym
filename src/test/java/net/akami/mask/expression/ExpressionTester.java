@@ -90,7 +90,7 @@ public class ExpressionTester {
         Monomial m2 = create(3, 'y');
         Monomial m3 = create(6, 'x');
         Monomial simpleX = new Monomial('x', DEFAULT);
-        Monomial m4 = new Monomial(12, new ComplexVariable(simpleX, ExponentOverlay.fromExpression(Expression.of(2))));
+        Monomial m4 = new Monomial(12, new IntricateVariable(simpleX, ExponentOverlay.fromExpression(Expression.of(2))));
 
         assertThat(divider.monomialDivision(m1, m2).get(0).getExpression()).isEqualTo("x/y");
         assertThat(divider.monomialDivision(m1, m3).get(0).getExpression()).isEqualTo("1.0/2.0");
@@ -106,8 +106,8 @@ public class ExpressionTester {
         Monomial m1 = new NumberElement(4);
         Monomial m2 = new NumberElement(3);
 
-        ComplexVariable c1 = new ComplexVariable(m1, f1);
-        ComplexVariable c2 = new ComplexVariable(m2, f1);
+        IntricateVariable c1 = new IntricateVariable(m1, f1);
+        IntricateVariable c2 = new IntricateVariable(m2, f1);
 
         Monomial m3 = new Monomial(1, c1);
         Monomial m4 = new Monomial(1, c2);

@@ -7,34 +7,64 @@ import net.akami.mask.utils.ExpressionUtils;
 
 import java.util.*;
 
-public class ComplexVariable implements Variable, Cloneable {
+/**
+ * A mathematical unknown containing overlays, encapsulating a series of irreducible monomials. <br>
+ * It handles :
+ *
+ * <ul>
+ * <li> A list of {@link ExpressionOverlay}s, being the overlays encapsulating the variable
+ * <li> A list of {@link Monomial}s, being the elements encapsulated inside the overlays
+ * </ul>
+ *
+ * See {@link Variable} for examples
+ *
+ * @author Antoine Tran
+ */
+public class IntricateVariable implements Variable, Cloneable {
 
     private final List<ExpressionOverlay> overlays;
     private final List<Monomial> elements;
     private String finalExpression;
 
-    public ComplexVariable(Monomial singlePart) {
-        this(Collections.singletonList(singlePart));
+    /**
+     * Constructs an intricate variable with no overlays, and a single monomial. This is used only for conversion from monomial
+     * to variable, when variable merges are performed. Some properties work with operators, which means they compute
+     * list of monomials. This constructor is used to convert these monomials to variables through method referencing.
+     */
+    public IntricateVariable(Monomial singlePart) {
+        this(Collections.singletonList(singlePart), Collections.emptyList());
     }
 
-    public ComplexVariable(List<Monomial> parts) {
-        this(parts, Collections.emptyList());
-    }
-
-    public ComplexVariable(List<Monomial> parts, ExpressionOverlay singleOverlay) {
-        this(parts, Collections.singletonList(singleOverlay));
-    }
-
-    public ComplexVariable(Monomial singlePart, ExpressionOverlay singleOverlay) {
+    /**
+     * Constructs an intricate variable from a unique monomial and a unique overlay.
+     * @param singlePart the monomial encapsulated into the variable
+     * @param singleOverlay the overlay encapsulating the variable
+     */
+    public IntricateVariable(Monomial singlePart, ExpressionOverlay singleOverlay) {
         this(Collections.singletonList(singlePart), Collections.singletonList(singleOverlay));
     }
 
-    public ComplexVariable(List<Monomial> parts, List<ExpressionOverlay> layers) {
+    /**
+     * Constructs an intricate variable with a unique overlay, and a given list of monomials.
+     * @param parts the monomials encapsulated into the variable
+     * @param singleOverlay the unique overlay encapsulating the monomials
+     */
+    public IntricateVariable(List<Monomial> parts, ExpressionOverlay singleOverlay) {
+        this(parts, Collections.singletonList(singleOverlay));
+    }
+
+    /**
+     * Constructs an intricate variable with a list of overlays, and a list of monomials.
+     * @param parts the monomials encapsulated into the variable
+     * @param layers the overlays encapsulating the variable
+     */
+    public IntricateVariable(List<Monomial> parts, List<ExpressionOverlay> layers) {
         this.elements = Collections.unmodifiableList(Objects.requireNonNull(parts));
         this.overlays = Collections.unmodifiableList(Objects.requireNonNull(layers));
         if(parts.size() > 1 && layers.size() == 0)
             throw new IllegalArgumentException("Attempting to group multi variables into one complex");
     }
+
     @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof Variable)) return false;
@@ -108,7 +138,7 @@ public class ComplexVariable implements Variable, Cloneable {
          * Therefore, we need to check it*/
         if(getOverlaysSize() > amount) {
             List<ExpressionOverlay> newOverlays = getOverlaysSection(0, -amount);
-            Monomial singleMonomial = new Monomial(1, new ComplexVariable(getElements(), newOverlays));
+            Monomial singleMonomial = new Monomial(1, new IntricateVariable(getElements(), newOverlays));
             return Collections.singletonList(singleMonomial);
         }
 
@@ -132,6 +162,9 @@ public class ComplexVariable implements Variable, Cloneable {
         return Collections.singletonList(NumberElement.MULT_DIV_NULL_FACTOR);
     }
 
+    /**
+     * @return the overlays encapsulating the variable
+     */
     public List<ExpressionOverlay> getOverlays() {
         return overlays;
     }
@@ -160,7 +193,7 @@ public class ComplexVariable implements Variable, Cloneable {
 
     @Override
     public Object clone() {
-        return new ComplexVariable(getElements());
+        return new IntricateVariable(getElements(), getOverlays());
     }
 
     @Override

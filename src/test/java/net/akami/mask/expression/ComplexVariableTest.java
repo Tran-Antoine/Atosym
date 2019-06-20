@@ -35,9 +35,9 @@ public class ComplexVariableTest {
                 new SinusFunction(DEFAULT)
         );
 
-        ComplexVariable cVar1 = new ComplexVariable(elements, layers);
-        ComplexVariable cVar2 = new ComplexVariable(elements, layers);
-        ComplexVariable cVar3 = new ComplexVariable(elements, layers2);
+        IntricateVariable cVar1 = new IntricateVariable(elements, layers);
+        IntricateVariable cVar2 = new IntricateVariable(elements, layers);
+        IntricateVariable cVar3 = new IntricateVariable(elements, layers2);
         assertThat(cVar1).isEqualTo(cVar2);
         assertThat(cVar1).isNotEqualTo(cVar3);
     }
@@ -47,8 +47,8 @@ public class ComplexVariableTest {
 
         List<ExpressionOverlay> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
         Expression insights = multiplier.operate(Expression.of('x'), Expression.of('y'));
-        Monomial m1 = new Monomial(2, new ComplexVariable(insights.getElements(), layers));
-        Monomial m2 = new Monomial(5, new ComplexVariable(insights.getElements(), layers));
+        Monomial m1 = new Monomial(2, new IntricateVariable(insights.getElements(), layers));
+        Monomial m2 = new Monomial(5, new IntricateVariable(insights.getElements(), layers));
 
         Expression result = multiplier.operate(Expression.of(m1), Expression.of(m2));
         assertThat(result.toString()).isEqualTo("10.0sin(cos(xy))^2.0");

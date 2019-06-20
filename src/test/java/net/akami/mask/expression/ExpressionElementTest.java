@@ -31,8 +31,8 @@ public class ExpressionElementTest {
 
         List<Monomial> single = Collections.singletonList(new NumberElement(1));
 
-        ComplexVariable c1 = new ComplexVariable(single,layers1);
-        ComplexVariable c2 = new ComplexVariable(single, layers2);
+        IntricateVariable c1 = new IntricateVariable(single,layers1);
+        IntricateVariable c2 = new IntricateVariable(single, layers2);
 
         assertThat(c1.equals(c2)).isEqualTo(false);
     }
@@ -50,8 +50,8 @@ public class ExpressionElementTest {
         );
         List<Monomial> single = Collections.singletonList(new NumberElement(1));
 
-        ComplexVariable m1 = new ComplexVariable(single, layers1);
-        ComplexVariable m2 = new ComplexVariable(single, layers2);
+        IntricateVariable m1 = new IntricateVariable(single, layers1);
+        IntricateVariable m2 = new IntricateVariable(single, layers2);
 
         SequencedMerge<Variable> behavior = new VariableCombination(DEFAULT);
         assertThat(m1.equals(m2)).isEqualTo(false);

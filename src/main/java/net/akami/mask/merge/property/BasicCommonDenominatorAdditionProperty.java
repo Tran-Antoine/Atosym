@@ -1,7 +1,7 @@
 package net.akami.mask.merge.property;
 
 import net.akami.mask.core.MaskContext;
-import net.akami.mask.expression.ComplexVariable;
+import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.overlay.FractionOverlay;
@@ -24,7 +24,7 @@ public class BasicCommonDenominatorAdditionProperty extends CommonDenominatorAdd
     public void blendResult(List<Monomial> constructed) {
         Expression numerator = getDividend(p1, p2);
         FractionOverlay divisor = FractionOverlay.fromExpression(getDivisor(p1));
-        ComplexVariable variable = new ComplexVariable(numerator.getElements(), Collections.singletonList(divisor));
+        IntricateVariable variable = new IntricateVariable(numerator.getElements(), Collections.singletonList(divisor));
         constructed.add(new Monomial(1, variable));
     }
 }

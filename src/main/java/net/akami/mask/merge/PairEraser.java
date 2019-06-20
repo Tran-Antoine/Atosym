@@ -12,7 +12,8 @@ import java.util.List;
  * This class handles all kinds of objects, since every java object has an {@code equals()} method.
  * <pre></pre>
  * Note that merging a list with itself won't necessarily return an empty list, because elements with the same index
- * wont be compared. Thus merging {1,2,3,3,2,1} with itself will return an empty list, whereas {1,2,3} won't.
+ * wont be compared. Thus merging {1,2,3,1,3,2} with itself will return an empty list, whereas {1,2,3} won't.
+ * @param <T> the kind of object handled by the eraser
  */
 public class PairEraser<T> implements SinglePropertySequencedMerge<T> {
 
@@ -21,6 +22,12 @@ public class PairEraser<T> implements SinglePropertySequencedMerge<T> {
         return new PairNullifyingProperty(p1, p2);
     }
 
+    /**
+     * The property used for {@link PairEraser}. Suitable if the two elements are equal (according to the {@link #equals(Object)}
+     * method). Simply removes the elements from their former list if suitable. Since
+     * both elements are equal, which of the two elements is added to the list should not matter. This object does not provide
+     * any control over which element is added.
+     */
     public class PairNullifyingProperty extends ElementSequencedMergeProperty<T> {
 
         protected PairNullifyingProperty(T p1, T p2) {

@@ -16,14 +16,6 @@ public class MonomialDivisionMerge implements Merge<Monomial, List<Monomial>, Ov
     }
 
     @Override
-    public List<Monomial> merge(Monomial p1, Monomial p2, boolean selfMerge) {
-        for(OverallMergeProperty<Monomial, List<Monomial>> property : generateOverallProperties(p1, p2)) {
-            if(property.isSuitable()) return property.computeResult();
-        }
-        throw new IllegalStateException("Unable to find a property matching the two monomials");
-    }
-
-    @Override
     public List<OverallMergeProperty<Monomial, List<Monomial>>> generateOverallProperties(Monomial p1, Monomial p2) {
         return Arrays.asList(
                 new NumericalDivisionProperty(p1, p2, context),

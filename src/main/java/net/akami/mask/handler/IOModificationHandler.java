@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.IOCalculationModifier;
+import net.akami.mask.alteration.IOCalculationModifier;
 
 import java.util.Collections;
 import java.util.List;

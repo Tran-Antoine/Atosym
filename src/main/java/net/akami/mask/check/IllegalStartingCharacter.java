@@ -1,5 +1,8 @@
 package net.akami.mask.check;
 
+/**
+ * Verifies that the first character of the given input is valid
+ */
 public class IllegalStartingCharacter implements ValidityCheck {
 
     @Override

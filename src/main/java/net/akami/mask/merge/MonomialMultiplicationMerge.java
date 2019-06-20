@@ -20,11 +20,6 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
     }
 
     @Override
-    public Monomial merge(Monomial p1, Monomial p2, boolean selfMerge) {
-        return generateOverallProperties(p1, p2).get(0).computeResult();
-    }
-
-    @Override
     public List<FairOverallMergeProperty<Monomial>> generateOverallProperties(Monomial p1, Monomial p2) {
         return Collections.singletonList(
                 new MultiplicationMergeProperty(p1, p2)
@@ -32,7 +27,7 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
     }
 
     /**
-     * Property stating that every monomial can be multiplied successfully with any other. <p>
+     * Property stating that every monomial can be multiplied successfully with any other. <br>
      * In other words, there is only one multiplication property which multiplies the coefficients of both
      * monomials, then use another merge behavior to get the resulting variables from the two monomials.
      * A unique monomial is thus created, which will be added into the list.

@@ -1,6 +1,6 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.affection.CalculationCanceller;
+import net.akami.mask.alteration.CalculationCanceller;
 
 import java.util.*;
 

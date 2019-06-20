@@ -51,8 +51,8 @@ public class AdderTest {
         ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
 
         SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);
-        List<Variable> vars1 = Arrays.asList(new ComplexVariable(singleInsight, Arrays.asList(cos, exponent)), simple);
-        List<Variable> vars2 = Arrays.asList(new ComplexVariable(singleInsight, Arrays.asList(sin, exponent)), simple);
+        List<Variable> vars1 = Arrays.asList(new IntricateVariable(singleInsight, Arrays.asList(cos, exponent)), simple);
+        List<Variable> vars2 = Arrays.asList(new IntricateVariable(singleInsight, Arrays.asList(sin, exponent)), simple);
 
         Monomial m1 = new Monomial(4,vars1);
         Monomial m2 = new Monomial(4, vars2);
@@ -67,8 +67,8 @@ public class AdderTest {
         ExpressionOverlay fraction = FractionOverlay.fromExpression(Expression.of(2));
         Monomial insight1 = new Monomial(1, new SingleCharVariable('x', DEFAULT));
         Monomial insight2 = new Monomial(1, new SingleCharVariable('x', DEFAULT));
-        ComplexVariable complex1 = new ComplexVariable(insight1, fraction);
-        ComplexVariable complex2 = new ComplexVariable(insight2, fraction);
+        IntricateVariable complex1 = new IntricateVariable(insight1, fraction);
+        IntricateVariable complex2 = new IntricateVariable(insight2, fraction);
 
         Monomial m1 = new Monomial(7, complex1);
         Monomial m2 = new Monomial(3, complex2);
