@@ -7,7 +7,6 @@ import net.akami.mask.overlay.ExpressionOverlay;
 
 import java.util.List;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public final class ExpressionUtils {
 
@@ -48,12 +47,7 @@ public final class ExpressionUtils {
             builder.append(layers.get(i).getEncapsulationString(elements, i, layers)[0]);
         }
 
-        // TODO : find a better way of doing it
-        List<Monomial> copy = elements
-                .stream()
-                .filter(e -> !(e.getExpression().equals("1.0")))
-                .collect(Collectors.toList());
-        builder.append(chainElements(copy, Monomial::getExpression));
+        builder.append(chainElements(elements, Monomial::getExpression));
 
         int i = 0;
         for(ExpressionOverlay encapsulator : layers) {

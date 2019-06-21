@@ -1,18 +1,22 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.core.MaskContext;
+import net.akami.mask.function.MathFunction;
+
 public class FormatterFactory {
 
-    public static String formatForCalculations(String origin) {
-        origin = formatTrigonometry(addMultiplicationSigns(origin, false));
+    public static String formatForCalculations(String origin, MaskContext context) {
+        origin = addMultiplicationSigns(formatFunctions(origin, context), true);
         return origin;
     }
 
-    public static String formatTrigonometry(String origin) {
-        origin = origin
-                .replaceAll("\\s", "")
-                .replaceAll("s\\*i\\*n\\*\\((.*?)\\)", "\\(\\($1\\)@\\)")
-                .replaceAll("c\\*o\\*s\\*\\((.*?)\\)", "\\(\\($1\\)#\\)")
-                .replaceAll("t\\*a\\*n\\*\\((.*?)\\)", "\\(\\($1\\)§\\)");
+    public static String formatFunctions(String origin, MaskContext context) {
+        for(MathFunction function : context.getSupportedFunctions()) {
+            String replaced = function.getName() + "\\((.*?)\\)";
+            String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
+            while(origin.contains(function.getName()))
+                origin = origin.replaceAll(replaced, replacement);
+        }
         return origin;
     }
 

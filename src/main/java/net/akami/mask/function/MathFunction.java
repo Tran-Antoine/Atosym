@@ -2,6 +2,7 @@ package net.akami.mask.function;
 
 import net.akami.mask.alteration.CalculationCanceller;
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.expression.Expression;
 import net.akami.mask.overlay.CompleteCoverOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.expression.Monomial;
@@ -27,16 +28,20 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
     protected final char binding;
     protected final String name;
     private final MaskContext context;
+    private final int argsLength;
 
-    public MathFunction(char binding, String name, MaskContext context) {
+    public MathFunction(char binding, String name, MaskContext context, int argsLength) {
         this.binding = binding;
         this.name = name;
         this.context = context;
+        this.argsLength = argsLength;
     }
 
     protected abstract T operate(T... input);
 
     public T rawOperate(T... input) {
+        if(input.length != argsLength) throw new IllegalArgumentException
+                (input.length+" params given, only "+argsLength+" required.");
         if(isCancellable(input)) {
             return findResult(input);
         }
@@ -48,7 +53,7 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
     }
 
     @Override
-    public void postCalculation(Object result, Object... input) {
+    public void postCalculation(T result, T... input) {
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
         //getAffection(CalculationCache.class).getElement().push(calculation, merge);
     }
@@ -78,11 +83,18 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
         return binding;
     }
 
-    public static Set<MathFunction> generateDefaultFunctions(MaskContext context) {
+    public String getName() {
+        return name;
+    }
+
+    public static Set<MathFunction<Expression>> generateDefaultFunctions(MaskContext context) {
         return new HashSet<>(Arrays.asList(
                 new SinusFunction(context),
                 new CosineFunction(context),
-                new TangentFunction(context)
+                new TangentFunction(context),
+                new SquareRootFunction(context),
+                new DegreesToRadiansFunction(context),
+                new PiValue(context)
         ));
     }
 }

@@ -112,7 +112,7 @@ public class ExpressionTester {
         Monomial m3 = new Monomial(1, c1);
         Monomial m4 = new Monomial(1, c2);
 
-        assertThat(divider.monomialDivision(m3, m4).get(0).getExpression()).isEqualTo("1.3333334");
+        assertThat(divider.monomialDivision(m3, m4).get(0).getExpression()).isEqualTo("4.0/3.0");
         //assertThat(divider.monomialDivision(f1, m2).getElement(0).getExpression()).isEqualTo("3.0/(xy)");
         //assertThat(divider.monomialDivision(f1, f2).getElement(0).getExpression()).isEqualTo("3.0/4.0");
     }

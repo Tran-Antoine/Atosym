@@ -8,15 +8,9 @@ public class MainTester {
 
     public static void main(String... args) {
 
-        Mask curve = new Mask("x^2 + 3x + 4");
+        System.out.println(ReducerFactory.reduce("cos(pi())"));
+
         MaskOperatorHandler handler = MaskOperatorHandler.DEFAULT;
-        // Value already to true by default, if not changed
-        handler.setCurrentToOut(true);
-        String derivative = handler.compute(MaskDerivativeCalculator.class, curve, Mask.TEMP, 'x')
-                .asExpression();
-
-        System.out.println(derivative);
-
 
         Scanner sc = new Scanner(System.in);
         String expression;

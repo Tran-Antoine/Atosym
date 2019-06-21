@@ -4,6 +4,7 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.FunctionSign;
 import net.akami.mask.expression.Monomial;
+import net.akami.mask.function.MathFunction;
 import net.akami.mask.merge.FairMerge;
 import net.akami.mask.merge.MonomialAdditionMerge;
 import net.akami.mask.merge.MonomialMultiplicationMerge;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Multiplier extends BinaryOperationHandler<Expression> {
 
@@ -24,15 +26,27 @@ public class Multiplier extends BinaryOperationHandler<Expression> {
     @Override
     public Expression operate(Expression a, Expression b) {
 
-        LOGGER.debug("Operating mult {} * {}", a, b);
-        if(a.length() != 0 && a.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
-        if(b.length() != 0 && b.getElements().get(0) instanceof FunctionSign) throw new RuntimeException("Unsupported yet");
+        List<Monomial> aMonomials = a.getElements();
+        List<Monomial> bMonomials = b.getElements();
 
-        List<Monomial> aMonomials = new ArrayList<>(a.getElements());
-        List<Monomial> bMonomials = new ArrayList<>(b.getElements());
+        LOGGER.debug("Operating mult {} * {}", a, b);
+        if(a.length() != 0 && aMonomials.get(0) instanceof FunctionSign) {
+            return functionOperation(a, b);
+        }
+
+        if(b.length() != 0 && bMonomials.get(0) instanceof FunctionSign) {
+            return functionOperation(b, a);
+        }
 
         List<Monomial> reducedResult = resolveMult(aMonomials, bMonomials);
         return new Expression(reducedResult);
+    }
+
+    private Expression functionOperation(Expression bindingExpression, Expression target) {
+        char binding = bindingExpression.get(0).getExpression().charAt(0);
+        Optional<MathFunction<Expression>> optional = context.getFunctionByBinding(binding);
+        if(optional.isPresent()) return optional.get().rawOperate(target);
+        else throw new IllegalStateException("Unknown binding");
     }
 
     private List<Monomial> resolveMult(List<Monomial> aMonomials, List<Monomial> bMonomials) {
