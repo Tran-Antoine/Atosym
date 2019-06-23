@@ -8,7 +8,7 @@ import net.akami.mask.utils.ExpressionUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class PowerCalculator extends BinaryOperationHandler<Expression> {
+public class PowerCalculator extends BinaryOperationHandler {
 
     public PowerCalculator(MaskContext context) {
         super(context);

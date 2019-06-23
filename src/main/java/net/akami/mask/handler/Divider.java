@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Divider extends BinaryOperationHandler<Expression> {
+public class Divider extends BinaryOperationHandler {
 
     public Divider(MaskContext context) {
         super(context);

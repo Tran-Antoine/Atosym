@@ -1,5 +1,6 @@
 package net.akami.mask.core;
 
+import net.akami.mask.utils.FormatterFactory;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Scanner;
@@ -8,7 +9,7 @@ public class MainTester {
 
     public static void main(String... args) {
 
-        System.out.println(ReducerFactory.reduce("cos(pi())"));
+        System.out.println(FormatterFactory.formatFunctions("cos(pi())", MaskContext.DEFAULT));
 
         MaskOperatorHandler handler = MaskOperatorHandler.DEFAULT;
 

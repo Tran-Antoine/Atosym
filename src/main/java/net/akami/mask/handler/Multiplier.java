@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Multiplier extends BinaryOperationHandler<Expression> {
+public class Multiplier extends BinaryOperationHandler {
 
     public Multiplier(MaskContext context) {
         super(context);

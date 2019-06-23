@@ -89,7 +89,7 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
 
     public static Set<MathFunction<Expression>> generateDefaultFunctions(MaskContext context) {
         return new HashSet<>(Arrays.asList(
-                new SinusFunction(context),
+                new SineFunction(context),
                 new CosineFunction(context),
                 new TangentFunction(context),
                 new SquareRootFunction(context),

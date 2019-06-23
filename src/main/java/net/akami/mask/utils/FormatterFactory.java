@@ -17,6 +17,7 @@ public class FormatterFactory {
             while(origin.contains(function.getName()))
                 origin = origin.replaceAll(replaced, replacement);
         }
+        System.out.println("Formatted version : "+origin);
         return origin;
     }
 

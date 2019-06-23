@@ -1,7 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.function.CosineFunction;
-import net.akami.mask.function.SinusFunction;
+import net.akami.mask.function.SineFunction;
 import net.akami.mask.function.TangentFunction;
 import net.akami.mask.handler.Multiplier;
 import net.akami.mask.overlay.ExpressionOverlay;
@@ -25,14 +25,14 @@ public class ComplexVariableTest {
 
         List<ExpressionOverlay> layers = Arrays.asList(
                 new CosineFunction(DEFAULT),
-                new SinusFunction(DEFAULT),
+                new SineFunction(DEFAULT),
                 new TangentFunction(DEFAULT)
         );
 
         List<ExpressionOverlay> layers2 = Arrays.asList(
                 new CosineFunction(DEFAULT),
                 new TangentFunction(DEFAULT),
-                new SinusFunction(DEFAULT)
+                new SineFunction(DEFAULT)
         );
 
         IntricateVariable cVar1 = new IntricateVariable(elements, layers);
@@ -45,7 +45,7 @@ public class ComplexVariableTest {
     @Test
     public void composedMultTest() {
 
-        List<ExpressionOverlay> layers = Arrays.asList(new CosineFunction(DEFAULT), new SinusFunction(DEFAULT));
+        List<ExpressionOverlay> layers = Arrays.asList(new CosineFunction(DEFAULT), new SineFunction(DEFAULT));
         Expression insights = multiplier.operate(Expression.of('x'), Expression.of('y'));
         Monomial m1 = new Monomial(2, new IntricateVariable(insights.getElements(), layers));
         Monomial m2 = new Monomial(5, new IntricateVariable(insights.getElements(), layers));

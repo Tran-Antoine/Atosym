@@ -3,7 +3,7 @@ package net.akami.mask.handler;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 
-public class Subtractor extends BinaryOperationHandler<Expression> {
+public class Subtractor extends BinaryOperationHandler {
 
     public Subtractor(MaskContext context) {
         super(context);
