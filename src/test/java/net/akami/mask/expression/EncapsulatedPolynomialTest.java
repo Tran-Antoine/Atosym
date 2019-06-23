@@ -3,7 +3,7 @@ package net.akami.mask.expression;
 import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.function.CosineFunction;
-import net.akami.mask.function.SinusFunction;
+import net.akami.mask.function.SineFunction;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -23,7 +23,7 @@ public class EncapsulatedPolynomialTest {
         List<ExpressionOverlay> layers = Arrays.asList(
                 new ExponentOverlay(monomials),
                 new CosineFunction(DEFAULT),
-                new SinusFunction(DEFAULT)
+                new SineFunction(DEFAULT)
         );
         IntricateVariable polynomial = new IntricateVariable(monomials, layers);
 

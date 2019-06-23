@@ -34,7 +34,7 @@ public class ReducerFactory {
         long time = System.nanoTime();
 
         // deletes all the spaces, adds the necessary '*' and formats trigonometry
-        String localExp = FormatterFactory.formatForCalculations(exp);
+        String localExp = FormatterFactory.formatForCalculations(exp, context);
         BinaryTree<Branch> tree = new ReducerTree(localExp, context);
         LOGGER.info("Initial branch added : {}", tree.getBranches().get(0));
 

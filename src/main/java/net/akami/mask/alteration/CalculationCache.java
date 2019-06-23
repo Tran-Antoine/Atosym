@@ -1,5 +1,7 @@
 package net.akami.mask.alteration;
 
+import net.akami.mask.expression.Expression;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,20 +17,20 @@ import java.util.Map;
  *
  * @author Antoine Tran
  */
-public class CalculationCache implements CalculationCanceller<String> {
+public class CalculationCache implements CalculationCanceller<Expression> {
 
-    private Map<String, String> cache = new HashMap<>();
+    private Map<String, Expression> cache = new HashMap<>();
     private int capacity = 200;
 
     @Override
-    public String resultIfCancelled(String... input) {
-        return cache.get(input[0]+'|'+input[1]);
+    public Expression resultIfCancelled(Expression... input) {
+        return cache.get(input[0].toString()+'|'+input[1].toString());
     }
 
     @Override
-    public boolean appliesTo(String... input) {
+    public boolean appliesTo(Expression... input) {
         if (capacity == 0) return false;
-        return cache.containsKey(String.join("|", input));
+        return cache.containsKey(input[0].toString()+'|'+input[1].toString());
     }
 
     /**
@@ -53,7 +55,7 @@ public class CalculationCache implements CalculationCanceller<String> {
      * @param initial the input, computing a merge with a given operation
      * @param result the merge of the computed version of the input
      */
-    public void push(String initial, String result) {
+    public void push(String initial, Expression result) {
         if(capacity == 0) return;
 
         if(cache.size() >= capacity) {

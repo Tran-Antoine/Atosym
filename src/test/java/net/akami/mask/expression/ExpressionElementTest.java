@@ -1,7 +1,7 @@
 package net.akami.mask.expression;
 
 import net.akami.mask.function.CosineFunction;
-import net.akami.mask.function.SinusFunction;
+import net.akami.mask.function.SineFunction;
 import net.akami.mask.function.TangentFunction;
 import net.akami.mask.merge.SequencedMerge;
 import net.akami.mask.merge.VariableCombination;
@@ -26,7 +26,7 @@ public class ExpressionElementTest {
         );
         List<ExpressionOverlay> layers2 = Arrays.asList(
                 new CosineFunction(DEFAULT),
-                new SinusFunction(DEFAULT)
+                new SineFunction(DEFAULT)
         );
 
         List<Monomial> single = Collections.singletonList(new NumberElement(1));
@@ -42,10 +42,10 @@ public class ExpressionElementTest {
 
         List<ExpressionOverlay> layers1 = Arrays.asList(
                 new CosineFunction(DEFAULT),
-                new SinusFunction(DEFAULT)
+                new SineFunction(DEFAULT)
         );
         List<ExpressionOverlay> layers2 = Arrays.asList(
-                new SinusFunction(DEFAULT),
+                new SineFunction(DEFAULT),
                 new CosineFunction(DEFAULT)
         );
         List<Monomial> single = Collections.singletonList(new NumberElement(1));

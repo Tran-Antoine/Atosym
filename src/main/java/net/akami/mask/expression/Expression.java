@@ -208,8 +208,8 @@ public class Expression implements Cloneable {
         if(expression.length() > 1)
             throw new RuntimeException("Unsolvable statement reached : trying to simpleAnalyze a non-simple expression : "+expression);
 
-        if(MaskContext.DEFAULT.getFunctionByExpression(expression).isPresent())
-            throw new RuntimeException("Unsupported yet");//return new FunctionSign(expression.charAt(0), context);
+        if(MaskContext.DEFAULT.getFunctionByBinding(expression.charAt(0)).isPresent())
+            return new FunctionSign(expression.charAt(0), context);
 
         if(expression.matches("[a-zA-DF-Z]")) {
             return new Monomial(1, new SingleCharVariable(expression.charAt(0), context));
@@ -254,7 +254,7 @@ public class Expression implements Cloneable {
     public List<Monomial> getElements() {
         if(length() == 1 && get(0).getVarPart().size() == 1 && get(0).getNumericValue() == 1) {
             VariablePart uniquePart = get(0).getVarPart();
-            if(uniquePart.get(0).getOverlaysSize() == 0)
+            if(uniquePart.size() > 1 && uniquePart.get(0).getOverlaysSize() == 0)
                 return uniquePart.get(0).getElements();
         }
         return elements;

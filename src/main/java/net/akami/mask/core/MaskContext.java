@@ -51,7 +51,7 @@ public class MaskContext {
     public static final MaskContext DEFAULT = new MaskContext();
 
     private Set<BinaryOperationHandler<Expression>> binaryHandlers;
-    private Set<MathFunction> supportedFunctions;
+    private Set<MathFunction<Expression>> supportedFunctions;
     private List<ValidityCheck> validityChecks;
     private MathContext bigDecimalContext;
 
@@ -118,8 +118,8 @@ public class MaskContext {
      * @return an {@link Optional#empty()} if the binding does not match anything, otherwise {@link Optional#of(Object)},
      * the parameter being the matched function.
      */
-    public Optional<MathFunction> getFunctionByBinding(char binding) {
-        for(MathFunction function : supportedFunctions) {
+    public Optional<MathFunction<Expression>> getFunctionByBinding(char binding) {
+        for(MathFunction<Expression> function : supportedFunctions) {
             if(function.getBinding() == binding)
                 return Optional.of(function);
         }
@@ -132,9 +132,9 @@ public class MaskContext {
      * @param self the given input
      * @return the first function that matches a char from the input
      */
-    public Optional<MathFunction> getFunctionByExpression(String self) {
+    public Optional<MathFunction<Expression>> getFunctionByExpression(String self) {
         for(char c : self.toCharArray()) {
-            Optional<MathFunction> function = getFunctionByBinding(c);
+            Optional<MathFunction<Expression>> function = getFunctionByBinding(c);
             if(function.isPresent())
                 return function;
         }
@@ -213,5 +213,12 @@ public class MaskContext {
             if(!check.isValid(self.getExpression()))
                 throw new MaskException(check.errorMessage(self.getExpression()), self);
         }
+    }
+
+    /**
+     * @return the list of math functions supported
+     */
+    public Set<MathFunction<Expression>> getSupportedFunctions() {
+        return supportedFunctions;
     }
 }

@@ -30,7 +30,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
      * @param var
      */
     public DerivativeTree(String initial, char var, MaskContext context) {
-        super(FormatterFactory.formatForCalculations(initial), context);
+        super(FormatterFactory.formatForCalculations(initial, context), context);
         this.var = var;
     }
 

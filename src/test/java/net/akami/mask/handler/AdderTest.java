@@ -2,7 +2,7 @@ package net.akami.mask.handler;
 
 import net.akami.mask.expression.*;
 import net.akami.mask.function.CosineFunction;
-import net.akami.mask.function.SinusFunction;
+import net.akami.mask.function.SineFunction;
 import net.akami.mask.overlay.ExponentOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.overlay.FractionOverlay;
@@ -46,7 +46,7 @@ public class AdderTest {
     @Test
     public void sinusCosineSquaredProperty() {
         List<Monomial> singleInsight = Collections.singletonList(new Monomial('x', DEFAULT));
-        ExpressionOverlay sin = new SinusFunction(DEFAULT);
+        ExpressionOverlay sin = new SineFunction(DEFAULT);
         ExpressionOverlay cos = new CosineFunction(DEFAULT);
         ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
 

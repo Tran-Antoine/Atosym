@@ -3,7 +3,7 @@ package net.akami.mask.merge.property;
 import net.akami.mask.expression.Monomial;
 import net.akami.mask.expression.Variable;
 import net.akami.mask.function.CosineFunction;
-import net.akami.mask.function.SinusFunction;
+import net.akami.mask.function.SineFunction;
 import net.akami.mask.merge.PairEraser;
 import net.akami.mask.merge.SequencedMerge;
 import net.akami.mask.overlay.ExponentOverlay;
@@ -54,9 +54,9 @@ public class CosineSinusSquaredProperty extends ElementSequencedMergeProperty<Mo
         int cosLeft = 1;
         int sinLeft = 1;
 
-        if(v1.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
+        if(v1.getOverlay(-2) instanceof SineFunction)  sinLeft--;
         if(v1.getOverlay(-2) instanceof CosineFunction) cosLeft--;
-        if(v2.getOverlay(-2) instanceof SinusFunction)  sinLeft--;
+        if(v2.getOverlay(-2) instanceof SineFunction)  sinLeft--;
         if(v2.getOverlay(-2) instanceof CosineFunction) cosLeft--;
 
         if(cosLeft == 0 && sinLeft == 0){

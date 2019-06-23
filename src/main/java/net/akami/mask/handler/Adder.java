@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  *
  * @author Antoine Tran
  */
-public class Adder extends BinaryOperationHandler<Expression> {
+public class Adder extends BinaryOperationHandler {
 
     public Adder(MaskContext context) {
         super(context);
@@ -46,7 +46,7 @@ public class Adder extends BinaryOperationHandler<Expression> {
         elements = elements.stream().filter(e -> e.getNumericValue() != 0).collect(Collectors.toList());
         Collections.sort(elements);
         Expression result = new Expression(elements);
-        LOGGER.info("---> Adder findResult of {} |+| {}: {}", a, b, result);
+        LOGGER.info("---> Result of {} |+| {}: {}", a, b, result);
         return result;
     }
 }

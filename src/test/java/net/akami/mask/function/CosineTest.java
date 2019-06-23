@@ -1,6 +1,7 @@
 package net.akami.mask.function;
 
 import net.akami.mask.core.MaskContext;
+import net.akami.mask.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
@@ -10,21 +11,21 @@ public class CosineTest {
 
     @Test
     public void numericValuesTest() {
-        assertCosine(String.valueOf(Math.toRadians(-90)), "0.0");
+        assertCosine(String.valueOf(Math.toRadians(-90)), "0");
         assertCosine("0.0", "1.0");
         assertCosine(String.valueOf(Math.PI), "-1.0");
-        assertCosine(String.valueOf(Math.PI/2), "0.0");
+        assertCosine(String.valueOf(Math.PI/2), "0");
     }
 
     @Test
     public void algebraicValuesTest() {
-        assertCosine("x", "(x)#");
-        assertCosine("x+1", "(x+1)#");
-        assertCosine("x-3^2+8.3", "(x-3^2+8.3)#");
+        assertCosine("x", "cos(x)");
+        assertCosine("x+1", "cos(x+1.0)");
+        assertCosine("x-3^2+8.3", "cos(x-0.6999998)");
     }
 
 
     private void assertCosine(String input, String result) {
-        Assertions.assertThat(function.rawOperate(input)).isEqualTo(result);
+        Assertions.assertThat(function.rawOperate(ReducerFactory.reduce(input)).toString()).isEqualTo(result);
     }
 }
