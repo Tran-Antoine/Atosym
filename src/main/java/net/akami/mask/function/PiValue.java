@@ -3,7 +3,7 @@ package net.akami.mask.function;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 
-public class PiValue extends MathFunction<Expression> {
+public class PiValue extends MathFunction {
 
     // The size has to be 1, no param is considered as 0
     public PiValue(MaskContext context) {

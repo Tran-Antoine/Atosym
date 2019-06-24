@@ -13,7 +13,7 @@ public class MaskHandlerTest {
     @Test
     public void reducerTest() {
         prepare("(x+y)^2");
-        assertOperator(MaskReducer.class, null, "x^2.0+y^2.0+2.0xy");
+        assertOperator(MaskSimplifier.class, null, "x^2.0+y^2.0+2.0xy");
         end();
     }
 

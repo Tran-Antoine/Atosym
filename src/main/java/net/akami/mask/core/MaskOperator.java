@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * A specific operation taking an input, sorting out an output. <br>
  * Available operators :
- * <li> {@link MaskReducer}, a simple layer for the reducing tree system. It will soon replace the {@link ReducerFactory} class.
+ * <li> {@link MaskSimplifier}, a simple layer for the reducing tree system. It will soon replace the {@link ReducerFactory} class.
  * <li> {@link MaskDerivativeCalculator}, providing support for derivatives
  * <li> {@link MaskImageCalculator}, calculating images with a given function. <pre></pre>
  *
@@ -34,14 +34,14 @@ public interface MaskOperator<E> {
     /**
      * Used to retrieve a list containing the default operators currently provided by the library. <br>
      * Operators supported by now :
-     * <li> {@link MaskReducer}
+     * <li> {@link MaskSimplifier}
      * <li> {@link MaskDerivativeCalculator}
      * <li> {@link MaskImageCalculator}
      * @return a list of MaskOperators
      */
     static List<MaskOperator> defaultOperators() {
         return Arrays.asList(
-                new MaskReducer(),
+                new MaskSimplifier(),
                 new MaskDerivativeCalculator(),
                 new MaskImageCalculator()
         );

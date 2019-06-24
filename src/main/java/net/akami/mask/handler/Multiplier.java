@@ -44,7 +44,7 @@ public class Multiplier extends BinaryOperationHandler {
 
     private Expression functionOperation(Expression bindingExpression, Expression target) {
         char binding = bindingExpression.get(0).getExpression().charAt(0);
-        Optional<MathFunction<Expression>> optional = context.getFunctionByBinding(binding);
+        Optional<MathFunction> optional = context.getFunctionByBinding(binding);
         if(optional.isPresent()) return optional.get().rawOperate(target);
         else throw new IllegalStateException("Unknown binding");
     }

@@ -1,13 +1,14 @@
 package net.akami.mask.function;
 
 import net.akami.mask.alteration.CalculationCanceller;
+import net.akami.mask.alteration.IOCalculationModifier;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
+import net.akami.mask.expression.Monomial;
+import net.akami.mask.handler.AlterationHandler;
+import net.akami.mask.handler.PostCalculationActionable;
 import net.akami.mask.overlay.CompleteCoverOverlay;
 import net.akami.mask.overlay.ExpressionOverlay;
-import net.akami.mask.expression.Monomial;
-import net.akami.mask.handler.CancellableHandler;
-import net.akami.mask.handler.PostCalculationActionable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,11 +21,13 @@ import java.util.*;
  * parameters, such as {@code log} or {@code root} will be added in the future.
  * @author Antoine Tran
  */
-public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalculationActionable<T>, CompleteCoverOverlay {
+public abstract class MathFunction implements
+        AlterationHandler<Expression, Expression>, PostCalculationActionable<Expression>, CompleteCoverOverlay {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathFunction.class);
 
-    protected final List<CalculationCanceller<T>> cancellers = new ArrayList<>();
+    protected List<CalculationCanceller<Expression>> cancellers;
+    protected List<IOCalculationModifier<Expression>> modifiers;
     protected final char binding;
     protected final String name;
     private final MaskContext context;
@@ -35,16 +38,20 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
         this.name = name;
         this.context = context;
         this.argsLength = argsLength;
+        initAlterations();
     }
 
-    protected abstract T operate(T... input);
+    protected abstract Expression operate(Expression... input);
 
-    public T rawOperate(T... input) {
+    public Expression rawOperate(Expression... input) {
         if(input.length != argsLength) throw new IllegalArgumentException
                 (input.length+" params given, only "+argsLength+" required.");
-        if(isCancellable(input)) {
-            return findResult(input);
+        for(IOCalculationModifier<Expression> modifier : getSuitableModifiers(input)) {
+            input = modifier.modify(input);
         }
+
+        Optional<CalculationCanceller<Expression>> canceller = getSuitableCanceller(input);
+        if(canceller.isPresent()) return canceller.get().resultIfCancelled(input);
         return operate(input);
     }
 
@@ -53,14 +60,19 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
     }
 
     @Override
-    public void postCalculation(T result, T... input) {
+    public void postCalculation(Expression result, Expression... input) {
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
         //getAffection(CalculationCache.class).getElement().push(calculation, merge);
     }
 
     @Override
-    public List<CalculationCanceller<T>> getAffections() {
+    public List<CalculationCanceller<Expression>> getCancellers() {
         return cancellers;
+    }
+
+    @Override
+    public List<IOCalculationModifier<Expression>> getModifiers() {
+        return modifiers;
     }
 
     @Override
@@ -87,7 +99,12 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
         return name;
     }
 
-    public static Set<MathFunction<Expression>> generateDefaultFunctions(MaskContext context) {
+    private void initAlterations() {
+        this.cancellers = new ArrayList<>();
+        this.modifiers = new ArrayList<>();
+    }
+
+    public static Set<MathFunction> generateDefaultFunctions(MaskContext context) {
         return new HashSet<>(Arrays.asList(
                 new SineFunction(context),
                 new CosineFunction(context),
@@ -96,5 +113,28 @@ public abstract class MathFunction<T> implements CancellableHandler<T>, PostCalc
                 new DegreesToRadiansFunction(context),
                 new PiValue(context)
         ));
+    }
+
+    public void addCanceller(CalculationCanceller<Expression> canceller) {
+        cancellers.add(canceller);
+    }
+
+    public void removeCanceller(CalculationCanceller<Expression> canceller) {
+        cancellers.remove(canceller);
+    }
+
+    public void setCancellers(List<CalculationCanceller<Expression>> cancellers) {
+        this.cancellers = cancellers;
+    }
+    public void addModifier(IOCalculationModifier<Expression> modifier) {
+        modifiers.add(modifier);
+    }
+
+    public void removeModifier(IOCalculationModifier<Expression> modifier) {
+        modifiers.remove(modifier);
+    }
+
+    public void setModifiers(List<IOCalculationModifier<Expression>> modifiers) {
+        this.modifiers = modifiers;
     }
 }

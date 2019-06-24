@@ -1,5 +1,6 @@
 package net.akami.mask.utils;
 
+import net.akami.mask.core.MaskSimplifier;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.core.MaskContext;
 import net.akami.mask.handler.sign.BinaryOperationSign;
@@ -10,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Objects;
 
 /**
- * Class which will be merged with the {@link net.akami.mask.core.MaskReducer} class soon.
+ * Class which will be merged with the {@link MaskSimplifier} class soon.
  */
 public class ReducerFactory {
 

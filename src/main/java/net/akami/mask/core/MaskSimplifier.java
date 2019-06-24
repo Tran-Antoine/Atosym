@@ -8,7 +8,7 @@ import net.akami.mask.utils.ReducerFactory;
  * In the future, the {@link ReducerFactory} class will be removed and calculations will be performable through this operator
  * only.
  */
-public class MaskReducer implements MaskOperator<Void> {
+public class MaskSimplifier implements MaskOperator<Void> {
 
     @Override
     public void compute(Mask in, Mask out, Void e, MaskContext context) {

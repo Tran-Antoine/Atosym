@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 
-public abstract class NumberRequiredFunction extends MathFunction<Expression> {
+public abstract class NumberRequiredFunction extends MathFunction {
 
     public NumberRequiredFunction(char binding, String name, MaskContext context) {
         super(binding, name, context, 1);

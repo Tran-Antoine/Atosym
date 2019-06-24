@@ -60,7 +60,7 @@ public class PowerCalculator extends BinaryOperationHandler {
     }
 
     // The entire expression becomes a monomial with 1 as numeric value, encapsulated in a new overlay
-    private Expression layerPow(Expression a, Expression b) {
+    public Expression layerPow(Expression a, Expression b) {
         List<Monomial> insights = a.getElements();
         IntricateVariable variable = new IntricateVariable(insights, Collections.singletonList(ExponentOverlay.fromExpression(b)));
         Expression newExpression = Expression.of(new Monomial(1, variable));

@@ -1,7 +1,6 @@
 package net.akami.mask.alteration;
 
 import net.akami.mask.handler.AlterationHandler;
-import net.akami.mask.handler.IOModificationHandler;
 
 /**
  * Definer of the behavior of an expression modifier, in the context of

@@ -1,39 +1,51 @@
 package net.akami.mask.handler;
 
-import net.akami.mask.alteration.CalculationAlteration;
+import net.akami.mask.alteration.CalculationCanceller;
+import net.akami.mask.alteration.IOCalculationModifier;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Represents objects which handle
- * @param <T>
- * @param <R>
- * @param <I>
  */
-public interface AlterationHandler<T extends CalculationAlteration, R, I> {
+public interface AlterationHandler<T, R> {
 
-    List<T> getAffections();
+    List<CalculationCanceller<T>> getCancellers();
+    List<IOCalculationModifier<T>> getModifiers();
 
-    default <S extends T> Optional<S> getAffection(Class<S> type) {
-        for(T affection : getAffections()) {
-            if(affection.getClass().equals(type))
-                return (Optional<S>) Optional.of(affection);
+    default Optional<CalculationCanceller<T>> getSuitableCanceller(T... input) {
+        for(CalculationCanceller<T> affection : getCancellers()) {
+            if(affection.appliesTo(input)) return Optional.of(affection);
         }
         return Optional.empty();
     }
 
-    default List<T> compatibleAlterationsFor(R... input) {
-        List<T> compatibles = new ArrayList<>();
+    default List<IOCalculationModifier<T>> getSuitableModifiers(T... input) {
+        List<IOCalculationModifier<T>> compatibles = new ArrayList<>();
 
-        for(T affection : getAffections()) {
-            if(affection.appliesTo(input))
-                compatibles.add(affection);
+        for(IOCalculationModifier<T> affection : getModifiers()) {
+            if(affection.appliesTo(input)) compatibles.add(affection);
         }
-
+        Collections.sort(compatibles);
         return compatibles;
     }
 
-    R findResult(I input);
+    default <S extends CalculationCanceller<T>> Optional<S> getCanceller(Class<S> clazz) {
+        for(CalculationCanceller<T> canceller : getCancellers()) {
+            // cast is secured
+            if(canceller.getClass().equals(clazz)) return (Optional<S>) Optional.of(canceller);
+        }
+        return Optional.empty();
+    }
+
+    default <S extends IOCalculationModifier<T>> Optional<S> getModifier(Class<S> clazz) {
+        for(IOCalculationModifier<T> canceller : getModifiers()) {
+            // cast is secured
+            if(canceller.getClass().equals(clazz)) return (Optional<S>) Optional.of(canceller);
+        }
+        return Optional.empty();
+    }
 }
