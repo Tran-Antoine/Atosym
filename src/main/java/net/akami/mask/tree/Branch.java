@@ -5,11 +5,11 @@ import net.akami.mask.utils.FormatterFactory;
 
 /**
  * The Branch class is a data class that handles a left part and a right part, as well as an expression and a reduced value.
- * Extra data might be added by creating another branch class inheriting from this one. <br/>
+ * Extra data might be added by creating another branch class inheriting from this one. <br>
  *
- * A couple of methods belonging to the class might be useful to redefine in children's classes, such as : <br/>
+ * A couple of methods belonging to the class might be useful to redefine in children's classes, such as : <br>
  * - {@link Branch#branchFormat(String)}, which defines how an input String must be formatted before being stored
- * <br/>
+ * <br>
  * - {@link Branch#canBeEvaluated()}, which defines whether a part of the branch can be calculated or not. By default a
  * branch can be evaluated as long as it has children (a left and a right part). Some branches such as the {@link DerivativeBranch}
  * one have different behaviors.
@@ -38,7 +38,7 @@ public class Branch<T extends Branch> {
 
     /**
      * Defines how a given expression must be formatted, before being stored as the expression field.
-     * <br/>
+     * <br>
      * The default behavior is to remove the edges brackets, except if the expression is trigonometric. See
      * {@link net.akami.mask.utils.FormatterFactory#removeEdgeBrackets(String, boolean)} for further information.
      * @param initial the initial string to format

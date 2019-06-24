@@ -4,8 +4,8 @@ import net.akami.mask.expression.Expression;
 
 /**
  * Implementation of the base Branch class. The {@link DerivativeBranch} class brings two changes :
- * <br/>
- * - It adds a new value, the derivative value <br/>
+ * <br>
+ * - It adds a new value, the derivative value <br>
  * - It redefines the {@code canBeEvaluated} method, making it return true all the time
  *
  * @author Antoine Tran

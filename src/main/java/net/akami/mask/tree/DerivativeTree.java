@@ -11,7 +11,7 @@ import java.util.Optional;
 /**
  * Implementation of the {@link CalculationTree} class. Basically, it adds support for children-less branch evaluation,
  * redefines the {@code finalResult} method and adds support for derivative's calculations for each branch it handles.
- * <br/>
+ * <br>
  * The Branch type handled is the {@link DerivativeBranch} type.
  *
  * @author Antoine Tran
@@ -27,7 +27,8 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
      * {@code (ax^2)'} equals {@code 2ax} if var = x
      * {@code (ax^2)'} equals {@code x^2} if var = a
      * @param initial the
-     * @param var
+     * @param var the variable that is not constant
+     * @param context the context that the tree belongs to
      */
     public DerivativeTree(String initial, char var, MaskContext context) {
         super(FormatterFactory.formatForCalculations(initial, context), context);

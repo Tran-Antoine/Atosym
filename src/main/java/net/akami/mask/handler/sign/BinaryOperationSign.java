@@ -10,13 +10,13 @@ import java.util.Objects;
 /**
  * A BinaryOperationSign links a char to a defined operation, taking two strings as inputs, and computing a single
  * string out of the input. Binary operations also have a priority level, which determines whether an operation has a
- * higher priority than another. <br/> <br/>
+ * higher priority than another. <br> <br>
  *
  * For instance, the sum operator has a lower priority level than the mult operator, but an equal priority level
- * to the subtract operator's. <br/>  <br/>
+ * to the subtract operator's. <br>  <br>
  *
  * The operation is defined using method referencing, via the functional sub-interface {@link BinaryMathCalculation}.
- * All referenced methods used belong to the {@link MathUtils} class created for this purpose. <br/>
+ * All referenced methods used belong to the {@link MathUtils} class created for this purpose. <br>
  * The None operator allows the user to deal with the different {@link BinaryOperationSign}s two by two, without
  * getting any {@link IndexOutOfBoundsException}. See {@link net.akami.mask.tree.CalculationTree} for more details
  * about signs dealing and branch splitting. Note that the None operator might be removed in the future.

@@ -10,12 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * A Binary tree handles branch splitting, evaluating and merging with the defined behaviours. <br/> <br/>
+ * A Binary tree handles branch splitting, evaluating and merging with the defined behaviours. <br> <br>
  * When instantiating a BinaryTree, note that the splitting should automatically and instantly be performed
- * in the {@link BinaryTree#begin(Branch)}, starting off with the given branch. <br/>
+ * in the {@link BinaryTree#begin(Branch)}, starting off with the given branch. <br>
  * This {@link BinaryTree#begin(Branch)} method must define how a branch must be divided according to ALL the splitters, whereas
  * {@link BinaryTree#split(Branch, char...)} defines how each branch must be divided, according to the splitter(s) given.
- * <br/> <br/>
+ * <br> <br>
  * In other words, the begin method defines how and with which parameter the split method will be called.
  *
  * Note that BinaryTree implements {@link Iterable}, so that you can actually use for each loops with it.
@@ -56,7 +56,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     }
 
     /**
-     * Defines how the splitting of a defined branch must be planned. <br/>
+     * Defines how the splitting of a defined branch must be planned. <br>
      * In other words, begin must call the split() method one or more times according to the different splitters.
      * @param self the branch itself
      */
@@ -90,8 +90,8 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
     /**
      * Merges the whole tree. The usual behavior is to go from the last branch to the first one,
      * see if the current actually is calculable, and if yes then calls the {@link BinaryTree#evalBranch(Branch)}
-     * method. <br/>
-     * If the finalResult method does not return an empty optional, the value found is returned <br/>
+     * method. <br>
+     * If the finalResult method does not return an empty optional, the value found is returned <br>
      * Note that the merge method can be redefined if the behavior does not suits the tree.
      * @return the reduced value of the first branch, while finalResult() is not redefined
      */

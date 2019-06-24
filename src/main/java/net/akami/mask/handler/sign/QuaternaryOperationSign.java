@@ -8,10 +8,10 @@ import java.util.Objects;
 
 /**
  * A QuaternaryMathOperation links a char to a defined operation, taking four strings as inputs, and computing a single
- * string out of the input. <br/> <br/>
+ * string out of the input. <br> <br>
  *
  * The operation is defined using method referencing, via the functional sub-interface {@link QuaternaryMathOperation}.
- * All referenced methods used belong to the {@link MathUtils} class created for this purpose. <br/>
+ * All referenced methods used belong to the {@link MathUtils} class created for this purpose. <br>
  * The None operator allows the user to deal with the different {@link QuaternaryMathOperation}s two by two, without
  * getting any {@link IndexOutOfBoundsException}. See {@link DerivativeTree} for more details
  * about signs dealing and branch splitting. <br>

@@ -9,7 +9,7 @@ import net.akami.mask.utils.TreeUtils;
 
 /**
  * CalculationTree is an implementation of the {@link BinaryTree} class that manages algebraic calculations, containing
- * the 5 basic binary operations (+ - * / ^) plus the three trigonometric unary operations (sin cos tan). <br/>
+ * the 5 basic binary operations (+ - * / ^) plus the three trigonometric unary operations (sin cos tan). <br>
  *
  * To respect the priority of operations, the {@code begin} method tries to split the expression with (+ -) first, then
  * with (* /), and eventually with (^). Whenever a valid splitter is found, the branch ceases to be analyzed.
@@ -93,7 +93,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
     }
 
     /**
-     * Defines what is the merge of the calculation (corresponding to the char given) between left and right. <br/>
+     * Defines what is the merge of the calculation (corresponding to the char given) between left and right. <br>
      *
      * The {@code evalValue} method might be redefined in a sub class of {@code CalculationTree}.
      * @param left the 'a' value of the calculation
