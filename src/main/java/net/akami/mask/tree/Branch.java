@@ -79,7 +79,7 @@ public class Branch<T extends Branch> {
      * By default, returns {@link Branch#hasChildren()}. This behavior might need to be changed depending
      * of the branch. For instance, every {@link DerivativeBranch} can be evaluated, thus its {@code canBeEvaluated}
      * method returns {@code true}.
-     * @return
+     * @return whether the branch can be evaluated or not
      */
     public boolean canBeEvaluated() {
         return hasChildren();

@@ -6,7 +6,7 @@ import net.akami.mask.merge.MergeProperty;
  * Properties which have an appliance depending on both entire sequences. If a property is detected as
  * suitable for the two lists, it will be able to compute a full result from the two lists, and potentially require
  * a restart merge.
- * @param <P>
+ * @param <P> what type of object is handled by the property
  */
 public abstract class OverallMergeProperty<P, R> extends MergeProperty<P> {
 

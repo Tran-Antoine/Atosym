@@ -12,9 +12,9 @@ import java.util.List;
  * If there is only one property that can be applied to any pair of input, use {@code Collections.singletonList(property)}. <br>
  *
  * The merge method takes a boolean in parameter, which defines whether the object is being merged with itself. This is
- * only useful through redefinitions of the {@link #merge(P, P, boolean)} method, such as {@link SequencedMerge}. If
+ * only useful through redefinitions of the {@link #merge(Object, Object, boolean)} method, such as {@link SequencedMerge}. If
  * your method is not redefined, the value passed in parameter will not be taken into account.
- * @param <br> the input type used
+ * @param <P> the input type used
  * @param <R> the result type, might or might not be the same as the input type
  * @param <PROP> the type of {@link OverallMergeProperty} handled
  *

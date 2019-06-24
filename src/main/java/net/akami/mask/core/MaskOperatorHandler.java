@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 /**
  * Highest level object of the operation architecture. <br>
  * It corresponds to the manager for the {@link MaskOperator} instances. It allows the user to call the {@code compute()} methods with
- * the {@link MaskOperator#getClass()} type wanted. <br>
+ * the {@link MaskOperator} wanted, using class types as parameters. <br>
  *
  * Four data are handled at once by the manager. The first one is the default mask to use whenever the {@code in}
  * parameter is not specified through the {@code compute()} methods. Setting the default mask's value (by calling {@link #begin(Mask)})
@@ -75,6 +75,8 @@ public class MaskOperatorHandler {
      * @param op the type of the operator
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
+     * @param <T> the type of operator, such as {@code MaskSimplifier.class}, {@code MaskDerivativeCalculator.class}, etc
+     * @param <E> the type of extra data required by the operator
      * @return the operator itself for chaining
      */
     public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask out, E extraData) {
@@ -90,6 +92,8 @@ public class MaskOperatorHandler {
      * @param in the mask containing the expression the operator must base itself on.
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
+     * @param <T> the type of operator, such as {@code MaskSimplifier.class}, {@code MaskDerivativeCalculator.class}, etc
+     * @param <E> the type of extra data required by the operator
      * @return the operator itself for chaining
      */
     public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask in, Mask out, E extraData) {
@@ -108,6 +112,8 @@ public class MaskOperatorHandler {
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
      * @param outAction an action to perform with the {@code out} Mask after being reloaded.
+     * @param <T> the type of operator, such as {@code MaskSimplifier.class}, {@code MaskDerivativeCalculator.class}, etc
+     * @param <E> the type of extra data required by the operator
      * @return the operator itself for chaining
      */
     public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask out,
@@ -126,6 +132,8 @@ public class MaskOperatorHandler {
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
      * @param outAction an action to perform with the {@code out} Mask after being reloaded.
+     * @param <T> the type of operator, such as {@code MaskSimplifier.class}, {@code MaskDerivativeCalculator.class}, etc
+     * @param <E> the type of extra data required by the operator
      * @return the operator itself for chaining
      */
     public <E, T extends MaskOperator<E>> MaskOperatorHandler compute(Class<T> op, Mask in, Mask out,

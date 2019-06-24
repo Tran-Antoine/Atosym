@@ -4,7 +4,6 @@ import net.akami.mask.core.MaskContext;
 import net.akami.mask.expression.Expression;
 import net.akami.mask.expression.IntricateVariable;
 import net.akami.mask.expression.Monomial;
-import net.akami.mask.function.TrigonometryOperation.UnaryOperation;
 import net.akami.mask.overlay.ExpressionOverlay;
 import net.akami.mask.utils.ExpressionUtils;
 

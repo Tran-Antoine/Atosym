@@ -1,10 +1,9 @@
 package net.akami.mask.alteration;
 
 /**
- * One of the two core objects of the alteration system, provided by the API.
- * An IOModifier checks whether a given expression needs to be formatted or not. If yes, it replaces the input by its
- * formatted version. The modifications can be applied before or after performing a calculation.
- * <br>
+ * An IOModifier checks whether a given expression needs to be formatted or not. <br>
+ * When required, it replaces the input by its formatted version. The modifications can be applied before
+ * or after performing a calculation. <br>
  * For instance, the angle unit modifier will check before performing a trigonometric operation whether it must convert
  * the input to radians before proceeding.
  * On the other hand, the fraction modifier will check after performing any operation whether the merge must be

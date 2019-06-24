@@ -16,7 +16,7 @@ import java.util.*;
 
 /**
  * Represents a mathematical function matching the following syntax : {@code name(p1, p2, ...)}.
- * <pre></pre>
+ * <br><br>
  * The currently available functions are the trigonometry functions exclusively. More functions with multiple
  * parameters, such as {@code log} or {@code root} will be added in the future.
  * @author Antoine Tran

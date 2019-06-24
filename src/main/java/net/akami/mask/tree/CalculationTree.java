@@ -99,7 +99,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
      * @param left the 'a' value of the calculation
      * @param right the 'b' value of the calculation
      * @param sign the operation sign corresponding to a calculation
-     * @return
+     * @return an expression corresponding to the evaluation of a and b through the operation matching the sign
      */
     protected Expression evalValue(Expression left, Expression right, char sign) {
         return BinaryOperationSign.getBySign(sign).compute(left, right, context);

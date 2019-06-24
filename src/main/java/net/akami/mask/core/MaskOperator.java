@@ -1,6 +1,5 @@
 package net.akami.mask.core;
 
-import net.akami.mask.expression.Expression;
 import net.akami.mask.utils.ReducerFactory;
 
 import java.util.Arrays;
@@ -9,11 +8,11 @@ import java.util.List;
 /**
  * A specific operation taking an input, sorting out an output. <br>
  * Available operators :
+ * <ul>
  * <li> {@link MaskSimplifier}, a simple layer for the reducing tree system. It will soon replace the {@link ReducerFactory} class.
  * <li> {@link MaskDerivativeCalculator}, providing support for derivatives
- * <li> {@link MaskImageCalculator}, calculating images with a given function. <pre></pre>
- *
- * Note that the {@link Mask} class will be replaced by the {@link Expression} class in the future.
+ * <li> {@link MaskImageCalculator}, calculating images with a given function.
+ * </ul>
  * @param <E> potential required additional data
  */
 public interface MaskOperator<E> {
@@ -34,9 +33,11 @@ public interface MaskOperator<E> {
     /**
      * Used to retrieve a list containing the default operators currently provided by the library. <br>
      * Operators supported by now :
+     * <ul>
      * <li> {@link MaskSimplifier}
      * <li> {@link MaskDerivativeCalculator}
      * <li> {@link MaskImageCalculator}
+     * </ul>
      * @return a list of MaskOperators
      */
     static List<MaskOperator> defaultOperators() {

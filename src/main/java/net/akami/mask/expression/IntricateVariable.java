@@ -30,6 +30,7 @@ public class IntricateVariable implements Variable, Cloneable {
      * Constructs an intricate variable with no overlays, and a single monomial. This is used only for conversion from monomial
      * to variable, when variable merges are performed. Some properties work with operators, which means they compute
      * list of monomials. This constructor is used to convert these monomials to variables through method referencing.
+     * @param singlePart the unique monomial encapsulated into the variable
      */
     public IntricateVariable(Monomial singlePart) {
         this(Collections.singletonList(singlePart), Collections.emptyList());

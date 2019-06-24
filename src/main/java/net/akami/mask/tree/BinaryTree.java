@@ -45,7 +45,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Loads a new branch for the given expression. Note that {@link BinaryTree#generate(String)} should
      * never be used outside binary classes, since it should only return a branch from the given expression, whereas
      * the load() method performs necessary actions for splitting the tree.
-     * @param expression
+     * @param expression the given expression
      * @return a branch created from the expression given
      */
     public T load(String expression) {

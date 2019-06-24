@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Deletes the elements that are found in both lists. Checks for common elements are made by calling
  * {@link #equals(Object)} between both objects.
- * <pre></pre>
+ * <br><br>
  *
  * This class handles all kinds of objects, since every java object has an {@code equals()} method.
- * <pre></pre>
+ * <br><br>
  * Note that merging a list with itself won't necessarily return an empty list, because elements with the same index
  * wont be compared. Thus merging {1,2,3,1,3,2} with itself will return an empty list, whereas {1,2,3} won't.
  * @param <T> the kind of object handled by the eraser

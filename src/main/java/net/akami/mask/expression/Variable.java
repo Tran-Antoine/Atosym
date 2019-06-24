@@ -14,10 +14,12 @@ import java.util.Optional;
  * kind of monomial that does not contain any unknown part. <br>
  * Examples :
  *
+ * <ul>
  * <li> {@code z} is a {@link SingleCharVariable}, with no overlay except the implicit {@code ^1} exponent. Its list
  * of monomials has a size of 1, the only monomial being 1x
  * <li> {@code sin(a+b)} is an {@link IntricateVariable}, with one overlay being {@code sin}, and two elements (monomials)
  * being {@code a} and {@code b}. These elements are both monomials with a SingleCharVariable as their unique variable.
+ * </ul>
  * @author Antoine Tran
  */
 public interface Variable {
