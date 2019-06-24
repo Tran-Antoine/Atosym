@@ -15,7 +15,7 @@ public interface IOCalculationModifier<T> extends CalculationAlteration<T> {
     /**
      * Defines how a given input must be formatted.
      * <br>
-     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(Object...)}
+     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(Object[])}
      * method should already take care of that.
      * @param input the given input
      * @return the formatted version of the input

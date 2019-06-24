@@ -25,8 +25,7 @@ import net.akami.mask.handler.AlterationHandler;
  * List<T> compatibles = someAlterationHandler.compatibleAlterationsFor(input);
  * Collections.sort(compatibles);
  * }</pre>
- * @see net.akami.mask.handler.CancellableHandler
- * @see IOModificationHandler
+ * @see AlterationHandler
  *
  * @author Antoine Tran
  */

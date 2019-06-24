@@ -4,7 +4,9 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.utils.ExpressionUtils;
 
 /**
- * Specifies that angles are given in degrees. Conversions will be performed whenever an angle is detected.
+ * Specifies that angles are given in degrees. Conversions will be performed whenever a scalar value is detected. <br>
+ * Be aware that you must be careful about where you add this modifier. If by mistake you add it to a binary operator,
+ * every scalar value will be converted, even though binary operators don't work with angles.
  */
 public class DegreeUnit implements IOCalculationModifier<Expression> {
 

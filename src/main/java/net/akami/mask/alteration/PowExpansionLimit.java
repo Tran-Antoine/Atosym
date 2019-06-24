@@ -5,6 +5,11 @@ import net.akami.mask.expression.Expression;
 import net.akami.mask.handler.PowerCalculator;
 import net.akami.mask.utils.ExpressionUtils;
 
+/**
+ * Decides what the maximal numeric exponent is before canceling the power calculation. <br>
+ * If set to 3 for instance, {@code (x+y)^3} will be expanded as {@code x^3 + 3x^2y + 3xy^2 + y^3},
+ * whereas {@code (x+y)^4} will remain {@code (x+y)^4}
+ */
 public class PowExpansionLimit implements CalculationCanceller<Expression> {
 
     private int limit;
@@ -36,10 +41,16 @@ public class PowExpansionLimit implements CalculationCanceller<Expression> {
         return 10;
     }
 
+    /**
+     * @param limit the maximal allowed numeric exponent before cancelling the calculation
+     */
     public void setLimit(int limit) {
         this.limit = limit;
     }
 
+    /**
+     * @return the maximal allowed numeric exponent before cancelling the calculation
+     */
     public int getLimit() {
         return limit;
     }
