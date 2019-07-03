@@ -46,7 +46,7 @@ public abstract class BinaryOperationHandler implements AlterationHandler<Expres
     @Override
     public void postCalculation(Expression result, Expression... input) {
         String toPush = input[0] + "|" + input[1];
-        getCanceller(CalculationCache.class).ifPresent(affection -> affection.push(toPush, result));
+        getCanceller(CalculationCache.class).ifPresent(alteration -> alteration.push(toPush, result));
     }
 
     public static Set<BinaryOperationHandler> generateDefaultHandlers(MaskContext context) {

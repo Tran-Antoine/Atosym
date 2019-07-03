@@ -17,8 +17,8 @@ public interface AlterationHandler<T, R> {
     List<IOCalculationModifier<T>> getModifiers();
 
     default Optional<CalculationCanceller<T>> getSuitableCanceller(T... input) {
-        for(CalculationCanceller<T> affection : getCancellers()) {
-            if(affection.appliesTo(input)) return Optional.of(affection);
+        for(CalculationCanceller<T> alteration : getCancellers()) {
+            if(alteration.appliesTo(input)) return Optional.of(alteration);
         }
         return Optional.empty();
     }
@@ -26,8 +26,8 @@ public interface AlterationHandler<T, R> {
     default List<IOCalculationModifier<T>> getSuitableModifiers(T... input) {
         List<IOCalculationModifier<T>> compatibles = new ArrayList<>();
 
-        for(IOCalculationModifier<T> affection : getModifiers()) {
-            if(affection.appliesTo(input)) compatibles.add(affection);
+        for(IOCalculationModifier<T> alteration : getModifiers()) {
+            if(alteration.appliesTo(input)) compatibles.add(alteration);
         }
         Collections.sort(compatibles);
         return compatibles;

@@ -62,7 +62,7 @@ public abstract class MathFunction implements
     @Override
     public void postCalculation(Expression result, Expression... input) {
         //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        //getAffection(CalculationCache.class).getElement().push(calculation, merge);
+        //getalteration(CalculationCache.class).getElement().push(calculation, merge);
     }
 
     @Override

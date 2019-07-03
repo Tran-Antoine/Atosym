@@ -29,7 +29,7 @@ See [releases](https://github.com/Askigh/Mask/releases) section for the last rel
 
 ## How to use it
 
-> See the wiki for all the required information. Note that the wiki is incompatible with the master branch, containing the new
+> See the wiki for all the required information. Note that the french wiki is incompatible with the master branch, containing the new
 architecture. An updated version will come soon
 
 ## Also

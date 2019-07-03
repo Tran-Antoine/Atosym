@@ -15,7 +15,7 @@ import net.akami.mask.handler.AlterationHandler;
  * the modification should be, depending of the input string given.
  * <br>
  *
- * CalculationAffections must be handled by an {@link AlterationHandler} compatible with
+ * Calculationalterations must be handled by an {@link AlterationHandler} compatible with
  * the type of alteration managed, determining when exactly in the process of the calculations a modification must be done.
  * <br>
  *
@@ -44,27 +44,27 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
     boolean appliesTo(T... input);
 
     /**
-     * Because several affections might want to affect a single input at the same time, the priority level
+     * Because several alterations might want to affect a single input at the same time, the priority level
      * method helps the handler deciding which affect will modify the input / cancel the calculation first.
      * <br>
      * For instance, the "let fraction or divide" cancelling affect will have a greater priority level than the
      * cache canceller, because even if the merge of the operation has already been calculated, it is up to the
      * "let fraction or divide" cancelling effect to determine whether this merge is wanted or not.
      * <br>
-     * A float instead of an integer is used, so that the user is guaranteed to be able to fit as many affections as
-     * he wants between others already existing affections. If an integer was being used, only 3 affections could fit
+     * A float instead of an integer is used, so that the user is guaranteed to be able to fit as many alterations as
+     * he wants between others already existing alterations. If an integer was being used, only 3 alterations could fit
      * between a level 1 priority alteration and a level 5 priority alteration.
      * <br>
-     * Note that all affections that are both cancellable and input modifiers should logically check for cancelling first.
-     * @return the priority of the alteration. Between two different affections, the one with the greatest priority level
-     *         will take effect first. If two affections of the same type have the same priority level (which should not happen),
+     * Note that all alterations that are both cancellable and input modifiers should logically check for cancelling first.
+     * @return the priority of the alteration. Between two different alterations, the one with the greatest priority level
+     *         will take effect first. If two alterations of the same type have the same priority level (which should not happen),
      *         one will be randomly taking effect first.
      */
     float priorityLevel();
 
     /**
      * Compares the alteration itself with another {@link CalculationAlteration}. The {@code compareTo} method
-     * helps a handler sort its array of affections, so that he gets them from the most priority alteration to the least.
+     * helps a handler sort its array of alterations, so that he gets them from the most priority alteration to the least.
      * @param other another alteration to compare to the alteration itself
      * @return a negative number if the current priority is greater that the other's, 0 if both have the same priority,
      *         and a positive number if the current priority if less than the other's.

@@ -20,8 +20,8 @@ public class MaskContextTest {
 
         Collections.sort(list);
         String s = "";
-        for(CalculationAlteration affection : list) {
-            s += String.valueOf(affection.priorityLevel());
+        for(CalculationAlteration alteration : list) {
+            s += String.valueOf(alteration.priorityLevel());
         }
         Assertions.assertThat(s).isEqualTo("5.03.01.0");
     }

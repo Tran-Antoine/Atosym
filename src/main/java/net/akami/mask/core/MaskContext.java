@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 
 /**
- * Definer of a calculation environment, required to perform any operation on expressions. <br>
+ * Defines a calculation environment, required to perform any operation on expressions. <br>
  * A context (or environment) allows you to customize different calculations. <br>
  * You are free to add some support for mathematical patterns that are not supported by the library, or, on the other hand,
  * remove some undesired features provided by default, which will make your calculations run faster. <br>
@@ -39,7 +39,7 @@ import java.util.Set;
  *      instance, the power calculator requires the multiplier to work, since it basically chains multiplications a given
  *      amount of times. <br>
  *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or add your owns
- *      with different affections. <br>
+ *      with different alterations. <br>
  *      <li> A set of {@link MathFunction}s. Only the mathematical functions present in the set wil be supported.
  *      Mathematical functions can require multiple arguments. See {@link MathFunction}'s documentation for further
  *      information <br>
