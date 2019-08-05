@@ -5,6 +5,7 @@ import net.akami.atosym.expression.Expression;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * A {@link CalculationCanceller} added by default in the library that avoids calculation repetitions.
@@ -98,5 +99,9 @@ public class CalculationCache implements FairCalculationCanceller<Expression> {
      */
     public void setCapacity(int capacity) {
         this.capacity = capacity;
+    }
+
+    public static Supplier<FairCalculationCanceller<Expression>> supply(int capacity) {
+        return () -> new CalculationCache(capacity);
     }
 }

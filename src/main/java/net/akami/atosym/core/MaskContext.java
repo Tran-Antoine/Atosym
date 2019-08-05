@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.MathContext;
 import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * Defines a calculation environment, required to perform any operation on expressions. <br>
@@ -58,7 +59,7 @@ public class MaskContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
     static {
-        DEFAULT.addGlobalCanceller(new CalculationCache(100), BinaryOperationHandler.class);
+        DEFAULT.addClonedCanceller(CalculationCache::new, BinaryOperationHandler.class);
     }
     /**
      * Constructs a context with the default parameters. The set of {@link BinaryOperationHandler}s will be generated
@@ -225,33 +226,42 @@ public class MaskContext {
     }
 
     public void addGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
+        addClonedModifier(() -> modifier, type);
+    }
+
+    public void addGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+        addClonedCanceller(() -> canceller, type);
+    }
+
+    public void addClonedModifier(Supplier<IOCalculationModifier<Expression>> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::addModifier, modifier, type);
     }
 
-    public void addGlobalCanceller(FairCalculationCanceller<Expression> modifier, Class<?> type) {
-        actionGlobal(AlterationHandler::addCanceller, modifier, type);
+    public void addClonedCanceller(Supplier<FairCalculationCanceller<Expression>> canceller, Class<?> type) {
+        actionGlobal(AlterationHandler::addCanceller, canceller, type);
     }
 
     public void removeGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
-        actionGlobal(AlterationHandler::removeModifier, modifier, type);
+        actionGlobal(AlterationHandler::removeModifier, () -> modifier, type);
     }
 
-    public void removeGlobalCanceller(FairCalculationCanceller<Expression> modifier, Class<?> type) {
-        actionGlobal(AlterationHandler::removeCanceller, modifier, type);
+    public void removeGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+        actionGlobal(AlterationHandler::removeCanceller, () -> canceller, type);
     }
 
-    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<Expression>, S> action, S s1, Class<?> type) {
+    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<Expression>, S> action, Supplier<S> s1, Class<?> type) {
         List<FairAlterationHandler<Expression>> alterationHandlers = new ArrayList<>();
         alterationHandlers.addAll(supportedFunctions);
         alterationHandlers.addAll(binaryHandlers);
 
         for(FairAlterationHandler<Expression> element : alterationHandlers) {
             if(type.isAssignableFrom(element.getClass())) {
-                action.action(element, s1);
+                action.action(element, s1.get());
             }
         }
     }
 
+    @FunctionalInterface
     private interface AlterationAction<T, S> {
         void action(T t, S s);
     }

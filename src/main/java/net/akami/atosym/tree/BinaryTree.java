@@ -117,7 +117,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
             }
 
             evalBranch(self);
-            if(self.getReducedValue() != null && self.getReducedValue().equals("Infinity"))
+            if(self.getReducedValue() != null && self.getReducedValue().toString().equals("Infinity"))
                 throw new ArithmeticException("Infinity value found");
 
             if(finalResult().isPresent()) {

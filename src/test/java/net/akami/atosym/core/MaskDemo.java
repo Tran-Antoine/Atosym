@@ -16,7 +16,7 @@ public class MaskDemo {
         MaskContext context = new MaskContext();
         context.addGlobalModifier(new DegreeUnit(), AngleUnitDependent.class);
         context.addGlobalCanceller(new PowExpansionLimit(50, context), PowerCalculator.class);
-        context.addGlobalCanceller(new CalculationCache(300), BinaryOperationHandler.class);
+        context.addClonedCanceller(CalculationCache.supply(300), BinaryOperationHandler.class);
 
         MaskOperatorHandler manager = new MaskOperatorHandler(context);
 
