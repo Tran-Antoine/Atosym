@@ -1,2 +1,3 @@
-rootProject.name = 'Mask'
+rootProject.name = 'Atosym'
+include 'samples'
 
