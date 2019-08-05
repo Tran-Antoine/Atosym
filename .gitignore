@@ -2,3 +2,5 @@
 out/
 .idea/
 javadoc
+src/main/resources
+samples/samples.iml
