@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="600" height="250" src="https://i.imgur.com/7EpsvTB.png">
+  <img width="600" height="300" src="https://i.imgur.com/7EpsvTB.png">
 </p>
 
 **Atosym** is a free open source parser that helps the user deal with calculations concerning **algebraic expressions**. Build a calculator, improve your algorithms or compute entity trajectories in your game, everything related to algebra can be simpler using this tool !
