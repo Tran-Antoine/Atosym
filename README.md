@@ -2,7 +2,7 @@
   <img width="600" height="320" src="https://i.imgur.com/7EpsvTB.png">
 </p>
 
-**Atosym** is a free open source parser that helps the user deal with calculations concerning **algebraic expressions**. Build a calculator, improve your algorithms or compute entity trajectories in your game, everything related to algebra can be simpler using this tool !
+**Atosym** is a free open source parser that helps the user deal with calculations concerning **algebraic expressions**. Build a calculator, improve your algorithms or even compute entity trajectories in your game, everything related to algebra can be simpler with this tool !
 ***
 
 Table of contents
@@ -103,15 +103,17 @@ See the [releases](https://github.com/Askigh/Mask/releases) section for the last
 ## How to use Atosym
 
 > The [Wiki](https://github.com/Tran-Antoine/Atosym/wiki) is a great place to start.  <br>
-Note that the french wiki is incompatible with the master branch, containing a different
-architecture. An updated version will come soon. <br>
-You might see the term "Mask-algebra" used, which simply
+
+:warning: Note that the french wiki is incompatible with the master branch, containing a different
+architecture. An updated version might come soon. <br>
+
+:warning: :warning: You might see the term "Mask-algebra" used, which simply
 refers to "Atosym", "Mask-algebra" being the former name of the library.
 ***
 
 ## Documentation
 
-The documentation is available on the repository's description. Note that the API still being at an early stage, the javadoc is quite incomplete for now.
+The documentation is available on the repository's description. Note that the tool still being at an early stage, the javadoc is not fully complete by now.
 ***
 
 ## Also
