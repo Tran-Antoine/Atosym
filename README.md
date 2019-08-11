@@ -11,12 +11,15 @@ Table of contents
 * [Features](#features) <br>
 *An exhaustive list of the principal aspects of the library* <br>
 
+* [Sample](#sample) <br>
+*A code example to illustrate the tool*
+
 * [Build](#build) <br>
 	* Gradle
 	* Maven
 * [How to use Atosym](#how-to-use-atosym) <br>
 	* Wiki
-	* General remarks on **how** and **why** use or not use Atosym
+	* General comments on **how** and **why** to use or not to use Atosym
 * [Documentation](#documentation)
 * [See also](#also) <br>
 *A direct implementation of the tool through a calculator*
@@ -45,7 +48,7 @@ In addition to the previous feature, entries support:
 * Litteral characters, uppercase or lowercase. The supported characters list can be extended or restricted by changing the [ValidityChecks](https://tran-antoine.github.io/Atosym/javadoc/index.html?net/akami/mask/check/ValidityCheck.html)
 ***
 
-#### Images calculation of any function from given values for given unknowns
+#### Image calculations of any function from given values for given unknowns
 
 It replaces defined unknowns by `litteral` or `numeric` values. <br>
 Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values. 
@@ -60,10 +63,71 @@ Additionally, the unknown of the function must be specified. In a differentiatio
 #### Customization of calculations
 
 Depending on the context and the need of the user, a single calculation might result in several different outcomes. For instance, simplifying `cos(90)` might outputs `0` or `-0.448074` depending on the unit chosen (degrees for the first result, radians for the second one)
-As another example, expansion might want to be limited, thereby simplifying `(a+b)^100` may output `(a+b)^100` or `a^100 + b^100 + 100a^99b + ...` <br>
+As another example, expansions might want to be limited, thereby simplifying `(a+b)^100` may output `(a+b)^100` or `a^100 + b^100 + 100a^99b + ...` <br>
 
 Therefore, Atosym allows calculation customization through [MaskContexts](https://tran-antoine.github.io/Atosym/javadoc/index.html?net/akami/mask/core/MaskContext.html). See [How to use Atosym](#how-to-use-atosym) for further information about calculation environments.
 ***
+
+## Sample
+
+The following code serves as a quick example to show how a series of calculations using **Atosym** would look like. See the [how to use Atosym](#how-to-use-atosym) section for further information. <br>
+
+```java
+public class AtosymDemo {
+
+    public static void main(String[] args) {
+
+        // Creates 3 objects handling various expressions
+        Mask mask1 = new Mask("cos(90) - a/b/c/d");
+        Mask mask2 = new Mask("(a+b)^100.0 + (a+b)^3");
+        Mask mask3 = new Mask("(3-x)^3 + 3x - 12x^2 - 2x^2");
+
+        // Initializing a calculation environment to customize the calculations
+        MaskContext context = new MaskContext();
+        // Alteration #1 : Changes angles to degrees
+        context.addGlobalModifier(new DegreeUnit(), AngleUnitDependent.class);
+        // Alteration #2 : Stops (...)^x expansions when x is over 10
+        context.addGlobalCanceller(new PowExpansionLimit(10, context), PowerCalculator.class);
+        // Alteration #3 : Adds a cache that store the results from the previous calculations to increase the performances
+        // This alteration must be duplicated, which means that every object computing results must have its own cache
+        context.addDuplicatedCanceller(CalculationCache::new, BinaryOperationHandler.class);
+
+        MaskOperatorHandler manager = new MaskOperatorHandler(context);
+
+        // Stores the simplified result to the temporary Mask instance, in order to get its string value
+        String result1 = manager
+                .compute(MaskSimplifier.class, mask1, Mask.TEMP, null)
+                .asExpression();
+        String result2 = manager
+                // "begin(Mask)" is an alternative to putting (in this case) mask2 before "Mask.TEMP" as in the previous example
+                .begin(mask2)
+                .compute(MaskSimplifier.class, Mask.TEMP, null)
+                .asExpression();
+
+        // Instead of retrieving the string value, we want to store the result of the calculation in a different object
+        Mask result3 = new Mask();
+        manager
+                .begin(mask3)
+                // instead of using Mask.TEMP, we change the mask itself so its new string value is simplified
+                .compute(MaskSimplifier.class, mask3, null)
+                // we store the derivative in another object
+                .compute(MaskDerivativeCalculator.class, result3, 'x');
+	// cos(90) indeed gives 0 since we set the angle unit to degrees
+        System.out.printf("%s = %s\n", mask1.getExpression(), result1);
+	// (a+b)^100 is not expanded, whereas (a+b)^3 is, since we set the expansion limit to 10
+        System.out.printf("%s = %s\n", mask2.getExpression(), result2);
+	// The left expression is simplified, since we changed the value of "mask3" when we simplified the expression
+        System.out.printf("(%s)' = %s", mask3.getExpression(), result3.getExpression());
+    }
+}
+```
+```
+Output :
+
+cos(90)-a/b/c/d = -a/(bcd)
+(a+b)^100.0+(a+b)^3 = (a+b)^100.0+a^3.0+b^3.0+3.0a^2.0b+3.0b^2.0a
+(-x^3.0-5.0x^2.0-24.0x+27.0)' = -3.0x^2.0-10.0x-24.0
+```
 
 ## Build
 
@@ -104,11 +168,12 @@ See the [releases](https://github.com/Askigh/Mask/releases) section for the last
 
 > The [Wiki](https://github.com/Tran-Antoine/Atosym/wiki) is a great place to start.  <br>
 
-:warning: Note that the french wiki is incompatible with the master branch, containing a different
-architecture. An updated version might come soon. <br>
+You'll find various pieces of information explaining how to properly use the library, as well as how to customize or add features to it.
+You might want to add different operators which are not implemented, such as function integration, or even new customizations for calculations, a limit for "long numerators" division for example. <br>
 
-:warning: :warning: You might see the term "Mask-algebra" used, which simply
-refers to "Atosym", "Mask-algebra" being the former name of the library.
+Several examples of what to do or what not to do are also provided.
+
+:warning: The french wiki is incompatible with the master branch, containing an outdated architecture. An updated version might come soon. <br>
 ***
 
 ## Documentation
@@ -127,5 +192,4 @@ For a direct implementation of the Atosym library, see [MaskInterface](https://g
 * [Differentiation of functions](#differentiation-of-functions)
 <br>
 
-Calculations customization is not supported by **MaskInterface**. <br>
-:warning: Angles are assumed to be given in radians
+Calculations customization is not supported by **MaskInterface**. <br> For instance, be aware that angles are assumed to be given in radians
