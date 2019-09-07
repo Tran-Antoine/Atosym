@@ -14,7 +14,7 @@ public class MaskException extends RuntimeException {
 
     /**
      * @param message the message printed
-     * @param origin the atosym that threw the exception
+     * @param origin the mask that threw the exception
      */
     public MaskException(String message, Mask origin) {
         super(message);

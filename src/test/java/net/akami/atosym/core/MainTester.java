@@ -12,7 +12,7 @@ public class MainTester {
 
         MaskContext context = new MaskContext();
         // Adds a cache for every handler supported, including binary operators and math functions
-        context.addClonedCanceller(CalculationCache.supply(300), BinaryOperationHandler.class);
+        context.addDuplicatedCanceller(CalculationCache.supply(300), BinaryOperationHandler.class);
 
         Scanner sc = new Scanner(System.in);
         String expression;

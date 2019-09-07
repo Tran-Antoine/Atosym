@@ -59,7 +59,7 @@ public class MaskContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
     static {
-        DEFAULT.addClonedCanceller(CalculationCache::new, BinaryOperationHandler.class);
+        DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperationHandler.class);
     }
     /**
      * Constructs a context with the default parameters. The set of {@link BinaryOperationHandler}s will be generated
@@ -230,14 +230,14 @@ public class MaskContext {
     }
 
     public void addGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
-        addClonedCanceller(() -> canceller, type);
+        addDuplicatedCanceller(() -> canceller, type);
     }
 
     public void addClonedModifier(Supplier<IOCalculationModifier<Expression>> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::addModifier, modifier, type);
     }
 
-    public void addClonedCanceller(Supplier<FairCalculationCanceller<Expression>> canceller, Class<?> type) {
+    public void addDuplicatedCanceller(Supplier<FairCalculationCanceller<Expression>> canceller, Class<?> type) {
         actionGlobal(AlterationHandler::addCanceller, canceller, type);
     }
 

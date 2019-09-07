@@ -52,9 +52,11 @@ public class MaskOperatorHandler {
      * Sets the "default Mask" to the given value. Default masks are used when {@code in} parameters are omitted when
      * calling {@code compute()}
      * @param current the atosym to set as the default atosym
+     * @return current the instance itself for chaining
      */
-    public void begin(Mask current) {
+    public MaskOperatorHandler begin(Mask current) {
         this.currentIn = current;
+        return this;
     }
 
     /**
@@ -66,9 +68,9 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code default} atosym, according to the operator type given. <br>
-     * Once the result is computed, the {@code out} atosym will be reloaded with it through {@link Mask#reload(String)}. <br>
-     * If no atosym is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
+     * Computes a string based on the {@code default} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
+     * If no mask is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
      * or after any {@code compute()} call if {@code setToOut} is set to true. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information.
@@ -84,12 +86,12 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code in} atosym, according to the operator type given. <br>
-     * Once the result is computed, the {@code out} atosym will be reloaded with it through {@link Mask#reload(String)}. <br>
+     * Computes a string based on the {@code in} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information.
      * @param op the type of the operator
-     * @param in the atosym containing the expression the operator must base itself on.
+     * @param in the mask containing the expression the operator must base itself on.
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
      * @param <T> the type of operator, such as {@code MaskSimplifier.class}, {@code MaskDerivativeCalculator.class}, etc
@@ -101,9 +103,9 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code default} atosym, according to the operator type given. <br>
-     * Once the result is computed, the {@code out} atosym will be reloaded with it through {@link Mask#reload(String)}. <br>
-     * If no atosym is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
+     * Computes a string based on the {@code default} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
+     * If no mask is set as the default {@code in}, an error will be thrown. Default masks can be set through {@link #begin(Mask)},
      * or after any {@code compute()} call if {@code setToOut} is set to true. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information. <br>
@@ -122,13 +124,13 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Computes a string based on the {@code in} atosym, according to the operator type given. <br>
-     * Once the result is computed, the {@code out} atosym will be reloaded with it through {@link Mask#reload(String)}. <br>
+     * Computes a string based on the {@code in} mask, according to the operator type given. <br>
+     * Once the result is computed, the {@code out} mask will be reloaded with it through {@link Mask#reload(String)}. <br>
      * The extra data corresponds to the additional information required by the operator to work. See {@link MaskOperator} for
      * further information. <br>
      * A consumer is included so that the user can perform actions based on the computed result.
      * @param op the type of the operator
-     * @param in the atosym containing the expression the operator must base itself on.
+     * @param in the mask containing the expression the operator must base itself on.
      * @param out where the result computed will be written
      * @param extraData extra data required by the operator
      * @param outAction an action to perform with the {@code out} Mask after being reloaded.
@@ -169,7 +171,7 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * @return the expression of the default Mask. If no default atosym is defined, an exception will be thrown
+     * @return the expression of the default Mask. If no default mask is defined, an exception will be thrown
      */
     public String asExpression() {
         Objects.requireNonNull(currentIn);
@@ -182,7 +184,7 @@ public class MaskOperatorHandler {
     }
 
     /**
-     * Sets the current default value to null. Used to make sure that the atosym can not me modified by accident
+     * Sets the current default value to null. Used to make sure that the mask can not me modified by accident
      */
     public void end() {
         this.currentIn = null;

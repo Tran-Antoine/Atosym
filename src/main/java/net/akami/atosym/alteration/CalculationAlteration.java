@@ -3,7 +3,7 @@ package net.akami.atosym.alteration;
 import net.akami.atosym.handler.AlterationHandler;
 
 /**
- * Definer of the behavior of an expression modifier, in the context of
+ * Defines the behavior of an expression modifier, in the context of
  * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
  * cancel the calculation.
  * Since the different alterations might have completely different behaviors, no other
