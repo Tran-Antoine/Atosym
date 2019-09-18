@@ -1,7 +1,5 @@
 package net.akami.atosym.tree;
 
-import net.akami.atosym.expression.Expression;
-
 /**
  * Implementation of the base Branch class. The {@link DerivativeBranch} class brings two changes :
  * <br>

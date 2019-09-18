@@ -1,6 +1,5 @@
 package net.akami.atosym.tree;
 
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.utils.FormatterFactory;
 
 /**

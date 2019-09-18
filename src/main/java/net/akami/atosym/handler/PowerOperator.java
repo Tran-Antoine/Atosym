@@ -8,15 +8,18 @@ import net.akami.atosym.utils.ExpressionUtils;
 import java.util.Collections;
 import java.util.List;
 
-public class PowerCalculator extends BinaryOperationHandler {
+public class PowerOperator extends BinaryOperator {
 
-    public PowerCalculator(MaskContext context) {
-        super(context);
+    private MaskContext context;
+
+    public PowerOperator(MaskContext context) {
+        super("pow");
+        this.context = context;
     }
 
     @Override
-    public Expression operate(Expression a, Expression b) {
-        LOGGER.info("PowerCalculator operation process between {} and {} : \n", a, b);
+    public Expression binaryOperate(Expression a, Expression b) {
+        LOGGER.info("PowerOperator operation process between {} and {} : \n", a, b);
 
         if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             return fullNumericPow(a, b);
@@ -43,7 +46,7 @@ public class PowerCalculator extends BinaryOperationHandler {
 
         Expression finalExpression = (Expression) a.clone();
 
-        Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+        MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
         for(int i = 1; i < val; i++) {
             finalExpression = multiplier.operate(finalExpression, a);
         }

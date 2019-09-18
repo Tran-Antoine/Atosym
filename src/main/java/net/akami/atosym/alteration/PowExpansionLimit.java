@@ -1,8 +1,7 @@
 package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.handler.PowerCalculator;
+import net.akami.atosym.handler.PowerOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 /**
@@ -26,7 +25,7 @@ public class PowExpansionLimit implements FairCalculationCanceller<Expression> {
 
     @Override
     public Expression resultIfCancelled(Expression... input) {
-        return context.getBinaryOperation(PowerCalculator.class).layerPow(input[0], input[1]);
+        return context.getBinaryOperation(PowerOperator.class).layerPow(input[0], input[1]);
     }
 
     @Override

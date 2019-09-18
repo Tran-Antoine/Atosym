@@ -1,7 +1,7 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.function.MathFunction;
+import net.akami.atosym.function.MathOperator;
 
 public class FormatterFactory {
 
@@ -11,7 +11,7 @@ public class FormatterFactory {
     }
 
     public static String formatFunctions(String origin, MaskContext context) {
-        for(MathFunction function : context.getSupportedFunctions()) {
+        for(MathOperator function : context.getSupportedFunctions()) {
             String replaced = function.getName() + "\\((.*?)\\)";
             String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
             while(origin.contains(function.getName()))

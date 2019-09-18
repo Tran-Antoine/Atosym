@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.Multiplier;
+import net.akami.atosym.handler.MultOperator;
 import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.merge.VariableCombination;
 import net.akami.atosym.overlay.ExponentOverlay;
@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class VariableTest {
 
-    private final Multiplier multiplier = new Multiplier(DEFAULT);
+    private final MultOperator multiplier = new MultOperator(DEFAULT);
 
     @Test
     public void combineVars() {

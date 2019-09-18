@@ -3,9 +3,8 @@ package net.akami.atosym.function;
 import net.akami.atosym.alteration.CalculationCanceller;
 import net.akami.atosym.alteration.FairAlterationHandler;
 import net.akami.atosym.alteration.IOCalculationModifier;
-import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.PostCalculationActionable;
 import net.akami.atosym.overlay.CompleteCoverOverlay;
 import net.akami.atosym.overlay.ExpressionOverlay;
@@ -19,46 +18,42 @@ import java.util.*;
  * parameters, such as {@code log} or {@code root} will be added in the future.
  * @author Antoine Tran
  */
-public abstract class MathFunction implements
+public abstract class MathOperator implements
         FairAlterationHandler<Expression>, PostCalculationActionable<Expression>, CompleteCoverOverlay {
 
     protected List<CalculationCanceller<Expression, Expression>> cancellers;
     protected List<IOCalculationModifier<Expression>> modifiers;
-    protected final char binding;
     protected final String name;
-    private final MaskContext context;
     private final int argsLength;
 
-    public MathFunction(char binding, String name, MaskContext context, int argsLength) {
-        this.binding = binding;
+    public MathOperator(String name, int argsLength) {
         this.name = name;
-        this.context = context;
         this.argsLength = argsLength;
         initAlterations();
     }
 
-    protected abstract Expression operate(Expression... input);
+    protected abstract MathObject operate(MathObject... input);
 
-    public Expression rawOperate(Expression... input) {
-        if(input.length != argsLength) throw new IllegalArgumentException
-                (input.length+" params given, only "+argsLength+" required.");
+    public MathObject rawOperate(MathObject... input) {
+        if(input.length != argsLength) {
+            throw new IllegalArgumentException(input.length + " params given, only " + argsLength + " required.");
+        }
+
         for(IOCalculationModifier<Expression> modifier : getSuitableModifiers(input)) {
             input = modifier.modify(input);
         }
 
         Optional<CalculationCanceller<Expression, Expression>> canceller = getSuitableCanceller(input);
-        if(canceller.isPresent()) return canceller.get().resultIfCancelled(input);
-        return operate(input);
-    }
+        if(canceller.isPresent()) {
+            return canceller.get().resultIfCancelled(input);
+        }
 
-    public boolean exists() {
-        return context.getFunctionByBinding(this.binding).isPresent();
+        return operate(input);
     }
 
     @Override
     public void postCalculation(Expression result, Expression... input) {
-        //String calculation = input[0].equals(String.valueOf(this.binding)) ? input[1] : input[0];
-        //getalteration(CalculationCache.class).getElement().push(calculation, merge);
+
     }
 
     @Override
@@ -73,10 +68,10 @@ public abstract class MathFunction implements
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof MathFunction))
+        if(!(obj instanceof MathOperator))
             return false;
 
-        return this.binding == ((MathFunction) obj).binding;
+        return this.name.equals(((MathOperator) obj).name);
     }
 
     @Override
@@ -85,10 +80,6 @@ public abstract class MathFunction implements
         parts[0] = name + '(';
         parts[1] = ")";
         return parts;
-    }
-
-    public char getBinding() {
-        return binding;
     }
 
     public String getName() {
@@ -100,15 +91,18 @@ public abstract class MathFunction implements
         this.modifiers = new ArrayList<>();
     }
 
-    public static Set<MathFunction> generateDefaultFunctions(MaskContext context) {
+    public static Set<MathOperator> generateDefaultFunctions() {
         return new HashSet<>(Arrays.asList(
-                new SineFunction(context),
-                new CosineFunction(context),
-                new TangentFunction(context),
-                new SquareRootFunction(context),
-                new DegreesToRadiansFunction(context),
-                new PiValue(context)
+                new SineOperator(),
+                new CosineOperator(),
+                new TangentOperator(),
+                new RootOperator(),
+                new DegreesToRadiansOperator()
         ));
+    }
+
+    public void addCanceller(CalculationCanceller<Expression, Expression> canceller) {
+        cancellers.add(canceller);
     }
 
     public void removeCanceller(CalculationCanceller<Expression, Expression> canceller) {
@@ -117,6 +111,9 @@ public abstract class MathFunction implements
 
     public void setCancellers(List<CalculationCanceller<Expression, Expression>> cancellers) {
         this.cancellers = cancellers;
+    }
+    public void addModifier(IOCalculationModifier<Expression> modifier) {
+        modifiers.add(modifier);
     }
 
     public void removeModifier(IOCalculationModifier<Expression> modifier) {

@@ -1,7 +1,6 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Monomial;
 
 import java.math.BigDecimal;
 import java.util.List;

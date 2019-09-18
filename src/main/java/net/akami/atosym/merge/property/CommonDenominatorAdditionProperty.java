@@ -1,13 +1,9 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.expression.VariablePart;
-import net.akami.atosym.handler.Adder;
-import net.akami.atosym.handler.Divider;
-import net.akami.atosym.handler.Multiplier;
+import net.akami.atosym.handler.DivOperator;
+import net.akami.atosym.handler.SumOperator;
+import net.akami.atosym.handler.MultOperator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +33,7 @@ public class CommonDenominatorAdditionProperty extends ElementSequencedMergeProp
         Expression finalDividend = getDividend(p1, p2);
         Expression divisor = getDivisor(p1);
 
-        Expression divisionResult = context.getBinaryOperation(Divider.class).operate(finalDividend, divisor);
+        Expression divisionResult = context.getBinaryOperation(DivOperator.class).operate(finalDividend, divisor);
         constructed.addAll(divisionResult.getElements());
     }
 
@@ -47,7 +43,7 @@ public class CommonDenominatorAdditionProperty extends ElementSequencedMergeProp
 
         Expression dividendA = getNumerator(uniqueVar1, m1.getNumericValue());
         Expression dividendB = getNumerator(uniqueVar2, m2.getNumericValue());
-        Expression finalDividend = context.getBinaryOperation(Adder.class).operate(dividendA, dividendB);
+        Expression finalDividend = context.getBinaryOperation(SumOperator.class).operate(dividendA, dividendB);
 
         return finalDividend;
     }
@@ -64,7 +60,7 @@ public class CommonDenominatorAdditionProperty extends ElementSequencedMergeProp
         List<Monomial> initialElements = var.uncover(1);
         List<Monomial> finalMonomials = new ArrayList<>();
 
-        Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+        MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
 
         for(Monomial current : initialElements) {
             float replacementFloat = multiplier.mult(current.getNumericValue(), numericValue);

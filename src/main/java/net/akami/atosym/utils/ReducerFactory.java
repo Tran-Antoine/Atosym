@@ -1,7 +1,6 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskSimplifier;
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
 import net.akami.atosym.tree.*;

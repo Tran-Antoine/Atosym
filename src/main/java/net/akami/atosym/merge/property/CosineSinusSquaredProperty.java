@@ -1,9 +1,7 @@
 package net.akami.atosym.merge.property;
 
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.function.CosineFunction;
-import net.akami.atosym.function.SineFunction;
+import net.akami.atosym.function.CosineOperator;
+import net.akami.atosym.function.SineOperator;
 import net.akami.atosym.merge.PairEraser;
 import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.overlay.ExponentOverlay;
@@ -54,10 +52,10 @@ public class CosineSinusSquaredProperty extends ElementSequencedMergeProperty<Mo
         int cosLeft = 1;
         int sinLeft = 1;
 
-        if(v1.getOverlay(-2) instanceof SineFunction)  sinLeft--;
-        if(v1.getOverlay(-2) instanceof CosineFunction) cosLeft--;
-        if(v2.getOverlay(-2) instanceof SineFunction)  sinLeft--;
-        if(v2.getOverlay(-2) instanceof CosineFunction) cosLeft--;
+        if(v1.getOverlay(-2) instanceof SineOperator)  sinLeft--;
+        if(v1.getOverlay(-2) instanceof CosineOperator) cosLeft--;
+        if(v2.getOverlay(-2) instanceof SineOperator)  sinLeft--;
+        if(v2.getOverlay(-2) instanceof CosineOperator) cosLeft--;
 
         if(cosLeft == 0 && sinLeft == 0){
             this.v1 = v1;

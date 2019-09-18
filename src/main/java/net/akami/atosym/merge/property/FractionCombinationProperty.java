@@ -1,12 +1,8 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.handler.Divider;
-import net.akami.atosym.handler.Multiplier;
+import net.akami.atosym.handler.DivOperator;
+import net.akami.atosym.handler.MultOperator;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,7 +41,7 @@ public class FractionCombinationProperty extends OverallSequencedMergeProperty<V
 
     @Override
     protected List<Variable> computeResult() {
-        Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+        MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
 
         Expression numPart1 = new Expression(numerator1);
         Expression numPart2 = new Expression(numerator2);
@@ -54,7 +50,7 @@ public class FractionCombinationProperty extends OverallSequencedMergeProperty<V
         Expression denPart1 = new Expression(denominator1);
         Expression denPart2 = new Expression(denominator2);
         Expression fullDenominator = multiplier.operate(denPart1, denPart2);
-        Divider divider = context.getBinaryOperation(Divider.class);
+        DivOperator divider = context.getBinaryOperation(DivOperator.class);
 
         Expression divisionResult = divider.operate(fullNumerator, fullDenominator);
 

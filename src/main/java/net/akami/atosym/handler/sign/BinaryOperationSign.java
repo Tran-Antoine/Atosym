@@ -1,7 +1,6 @@
 package net.akami.atosym.handler.sign;
 
 import net.akami.atosym.alteration.CalculationCache;
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.utils.MathUtils;
 

@@ -1,8 +1,6 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
 import net.akami.atosym.merge.MonomialAdditionMerge;
 import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.merge.property.CommonDenominatorAdditionProperty;
@@ -15,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Computes the sum between two expressions. The default Adder class handles the following properties :
+ * Computes the sum between two expressions. The default SumOperator class handles the following properties :
  *
  * <ul>
  * <li> {@link CosineSinusSquaredProperty}, converting {@code sin^2(x) + cos^2(x)} to 1.
@@ -27,15 +25,19 @@ import java.util.stream.Collectors;
  *
  * @author Antoine Tran
  */
-public class Adder extends BinaryOperationHandler {
+public class SumOperator extends BinaryOperator {
 
-    public Adder(MaskContext context) {
-        super(context);
+    private MaskContext context;
+
+    public SumOperator(MaskContext context) {
+        super("sum");
+        this.context = context;
     }
 
     @Override
-    public Expression operate(Expression a, Expression b) {
-        LOGGER.info("Adder process of {} |+| {}: \n", a, b);
+    public Expression binaryOperate(Expression a, Expression b) {
+
+        LOGGER.info("SumOperator process of {} |+| {}: \n", a, b);
         List<Monomial> aElements = new ArrayList<>(a.getElements());
         List<Monomial> bElements = new ArrayList<>(b.getElements());
 

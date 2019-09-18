@@ -1,10 +1,7 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.FunctionSign;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.function.MathFunction;
+import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.merge.FairMerge;
 import net.akami.atosym.merge.MonomialAdditionMerge;
 import net.akami.atosym.merge.MonomialMultiplicationMerge;
@@ -17,14 +14,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class Multiplier extends BinaryOperationHandler {
+public class MultOperator extends BinaryOperator {
 
-    public Multiplier(MaskContext context) {
-        super(context);
+    private MaskContext context;
+
+    public MultOperator(MaskContext context) {
+        super("mult");
+        this.context = context;
     }
 
     @Override
-    public Expression operate(Expression a, Expression b) {
+    public Expression binaryOperate(Expression a, Expression b) {
 
         List<Monomial> aMonomials = a.getElements();
         List<Monomial> bMonomials = b.getElements();
@@ -44,7 +44,7 @@ public class Multiplier extends BinaryOperationHandler {
 
     private Expression functionOperation(Expression bindingExpression, Expression target) {
         char binding = bindingExpression.get(0).getExpression().charAt(0);
-        Optional<MathFunction> optional = context.getFunctionByBinding(binding);
+        Optional<MathOperator> optional = context.getFunctionByBinding(binding);
         if(optional.isPresent()) return optional.get().rawOperate(target);
         else throw new IllegalStateException("Unknown binding");
     }

@@ -1,9 +1,6 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
 import net.akami.atosym.merge.BasicMonomialAdditionMerge;
 import net.akami.atosym.merge.MonomialDivisionMerge;
 import net.akami.atosym.merge.SequencedMerge;
@@ -13,15 +10,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Divider extends BinaryOperationHandler {
+public class DivOperator extends BinaryOperator {
 
-    public Divider(MaskContext context) {
-        super(context);
+    private MaskContext context;
+
+    public DivOperator(MaskContext context) {
+        super("div");
+        this.context = context;
     }
 
     @Override
-    public Expression operate(Expression a, Expression b) {
-        LOGGER.debug("Divider process of {} |/| {}: \n", a, b);
+    public Expression binaryOperate(Expression a, Expression b) {
+        LOGGER.debug("DivOperator process of {} |/| {}: \n", a, b);
 
         if(b.length() == 1 && b.get(0) != null && b.get(0).getNumericValue() == 0)
             throw new IllegalArgumentException("Cannot compute a division by zero");
@@ -61,7 +61,7 @@ public class Divider extends BinaryOperationHandler {
         return new Expression(newFinalElements);
     }
 
-    // For Unit tests only
+    /** For Unit tests only */
     public List<Monomial> monomialDivision(Monomial a, Monomial b) {
         return operate(Expression.of(a), Expression.of(b)).getElements();
     }

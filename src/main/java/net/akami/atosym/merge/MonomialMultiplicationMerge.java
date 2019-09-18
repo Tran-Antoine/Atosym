@@ -1,9 +1,7 @@
 package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.handler.Multiplier;
+import net.akami.atosym.handler.MultOperator;
 import net.akami.atosym.merge.property.FairOverallMergeProperty;
 import net.akami.atosym.utils.VariableComparator;
 
@@ -49,7 +47,7 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
 
         @Override
         public Monomial computeResult() {
-            Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
+            MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
             float floatResult = multiplier.mult(p1.getNumericValue(), p2.getNumericValue());
 
             SequencedMerge<Variable> merge = new VariableCombination(context);

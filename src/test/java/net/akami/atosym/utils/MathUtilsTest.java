@@ -1,6 +1,5 @@
 package net.akami.atosym.utils;
 
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.handler.sign.QuaternaryOperationSign.QuaternaryMathOperation;
 import org.junit.Test;
 
@@ -45,7 +44,7 @@ public class MathUtilsTest {
         Assertions.assertThat(MathUtils.divide("6.4+6.4z", "3.2")).isEqualTo("2+2z");
         MaskContext defaultContext = MaskContext.DEFAULT;
 
-        Assertions.assertThat(defaultContext.getBinaryOperation(Divider.class).monomialDivision("-2x", "4")).isEqualTo("x/-2");
+        Assertions.assertThat(defaultContext.getBinaryOperation(DivOperator.class).monomialDivision("-2x", "4")).isEqualTo("x/-2");
     }*/
 
     @Test

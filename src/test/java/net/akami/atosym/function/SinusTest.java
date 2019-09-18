@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class SinusTest {
 
-    private final SineFunction function = new SineFunction(MaskContext.DEFAULT);
+    private final SineOperator function = new SineOperator(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

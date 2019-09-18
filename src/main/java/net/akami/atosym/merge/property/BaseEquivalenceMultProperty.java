@@ -1,11 +1,7 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.handler.Adder;
+import net.akami.atosym.handler.SumOperator;
 import net.akami.atosym.overlay.ExponentOverlay;
 import net.akami.atosym.overlay.ExpressionOverlay;
 
@@ -55,7 +51,7 @@ public class BaseEquivalenceMultProperty extends ElementSequencedMergeProperty<V
     @Override
     public void blendResult(List<Variable> constructed) {
         List<Monomial> newElements = elements;
-        Expression newExponent = context.getBinaryOperation(Adder.class).operate(exponent1, exponent2);
+        Expression newExponent = context.getBinaryOperation(SumOperator.class).operate(exponent1, exponent2);
         List<ExpressionOverlay> overlays = new ArrayList<>(otherOverlays);
         // The list is modifiable because created using the getFractionOverlay() method
         overlays.add(ExponentOverlay.fromExpression(newExponent));

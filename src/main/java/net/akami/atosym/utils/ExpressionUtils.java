@@ -1,8 +1,6 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
 import net.akami.atosym.overlay.ExpressionOverlay;
 
 import java.util.List;

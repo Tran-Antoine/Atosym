@@ -1,10 +1,6 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
 import net.akami.atosym.merge.PairEraser;
 import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.merge.VariableCombination;

@@ -1,7 +1,5 @@
 package net.akami.atosym.overlay;
 
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.NumberElement;
 import org.junit.Test;
 
 import java.util.Arrays;

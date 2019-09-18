@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class CosineTest {
 
-    private final CosineFunction function = new CosineFunction(MaskContext.DEFAULT);
+    private final CosineOperator function = new CosineOperator(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

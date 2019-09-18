@@ -7,7 +7,7 @@ import org.junit.Test;
 
 public class TangentTest {
 
-    private final TangentFunction function = new TangentFunction(MaskContext.DEFAULT);
+    private final TangentOperator function = new TangentOperator(MaskContext.DEFAULT);
 
     @Test
     public void numericValuesTest() {

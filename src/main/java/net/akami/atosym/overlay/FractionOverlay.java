@@ -1,8 +1,5 @@
 package net.akami.atosym.overlay;
 
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-
 import java.util.List;
 
 public class FractionOverlay extends Expression implements ExpressionOverlay {

@@ -1,7 +1,6 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.check.ValidityCheck;
-import net.akami.atosym.expression.Expression;
 
 /**
  * Mutable object representing a raw mathematical expression as a string, without any extra information. <br>

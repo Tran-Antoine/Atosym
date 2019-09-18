@@ -1,9 +1,5 @@
 package net.akami.atosym.merge.property;
 
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.SingleCharVariable;
-import net.akami.atosym.expression.Variable;
 import net.akami.atosym.overlay.ExponentOverlay;
 import net.akami.atosym.overlay.FractionOverlay;
 import org.junit.Test;

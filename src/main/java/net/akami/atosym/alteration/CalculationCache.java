@@ -1,7 +1,7 @@
 package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
+import net.akami.atosym.handler.BinaryOperator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class CalculationCache implements FairCalculationCanceller<Expression> {
      * If the cache is full, its size being specified with the {@link #setCapacity(int)} method, the map will be cleared
      * before entering any new data.
      * <br>
-     * Regular {@link net.akami.atosym.handler.BinaryOperationHandler}s use the following format :
+     * Regular {@link BinaryOperator}s use the following format :
      * <br>
      *
      * <pre>

@@ -1,8 +1,8 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.expression.*;
-import net.akami.atosym.function.CosineFunction;
-import net.akami.atosym.function.SineFunction;
+import net.akami.atosym.function.CosineOperator;
+import net.akami.atosym.function.SineOperator;
 import net.akami.atosym.overlay.ExponentOverlay;
 import net.akami.atosym.overlay.ExpressionOverlay;
 import net.akami.atosym.overlay.FractionOverlay;
@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdderTest {
 
-    private final Adder adder = DEFAULT.getBinaryOperation(Adder.class);
+    private final SumOperator adder = DEFAULT.getBinaryOperation(SumOperator.class);
 
     @Test
     public void numericTest() {
@@ -46,8 +46,8 @@ public class AdderTest {
     @Test
     public void sinusCosineSquaredProperty() {
         List<Monomial> singleInsight = Collections.singletonList(new Monomial('x', DEFAULT));
-        ExpressionOverlay sin = new SineFunction(DEFAULT);
-        ExpressionOverlay cos = new CosineFunction(DEFAULT);
+        ExpressionOverlay sin = new SineOperator(DEFAULT);
+        ExpressionOverlay cos = new CosineOperator(DEFAULT);
         ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
 
         SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);

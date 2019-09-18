@@ -1,6 +1,5 @@
 package net.akami.atosym.alteration;
 
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.math.BigDecimal;

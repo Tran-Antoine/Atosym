@@ -1,7 +1,5 @@
 package net.akami.atosym.utils;
 
-import net.akami.atosym.expression.Variable;
-
 import java.util.Comparator;
 
 public class VariableComparator implements Comparator<Variable> {

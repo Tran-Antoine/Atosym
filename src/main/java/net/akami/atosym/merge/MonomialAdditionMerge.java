@@ -1,7 +1,6 @@
 package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Monomial;
 import net.akami.atosym.merge.property.*;
 
 import java.util.Arrays;

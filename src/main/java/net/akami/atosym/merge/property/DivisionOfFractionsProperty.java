@@ -1,12 +1,8 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.handler.Divider;
-import net.akami.atosym.handler.Multiplier;
+import net.akami.atosym.handler.DivOperator;
+import net.akami.atosym.handler.MultOperator;
 import net.akami.atosym.overlay.ExpressionOverlay;
 
 import java.util.List;
@@ -30,8 +26,8 @@ public class DivisionOfFractionsProperty extends OverallMergeProperty<Monomial, 
 
     @Override
     protected List<Monomial> computeResult() {
-        Multiplier multiplier = context.getBinaryOperation(Multiplier.class);
-        Divider divider = context.getBinaryOperation(Divider.class);
+        MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
+        DivOperator divider = context.getBinaryOperation(DivOperator.class);
         // cast is secure here
         Expression denominator = (Expression) p1.getVarPart().get(0).getOverlay(-1);
         Expression secondDenominator = Expression.of(p2);

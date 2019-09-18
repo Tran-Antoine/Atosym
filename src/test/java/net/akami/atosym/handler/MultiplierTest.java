@@ -1,7 +1,6 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.utils.ReducerFactory;
 import org.junit.Test;
 
@@ -9,7 +8,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultiplierTest {
 
-    private final Multiplier MULT = MaskContext.DEFAULT.getBinaryOperation(Multiplier.class);
+    private final MultOperator MULT = MaskContext.DEFAULT.getBinaryOperation(MultOperator.class);
 
     @Test
     public void multTest() {

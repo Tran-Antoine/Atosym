@@ -23,11 +23,11 @@ public class MathUtils {
     public static Expression divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
     public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);      }
 
-    public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, Adder.class);         }
-    public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, Subtractor.class);    }
-    public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, Multiplier.class); }
-    public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, Divider.class);       }
-    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerCalculator.class); }
+    public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, SumOperator.class);         }
+    public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, SubOperator.class);    }
+    public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, MultOperator.class); }
+    public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, DivOperator.class);       }
+    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerOperator.class); }
 
     public static Expression diffSum(Expression a, Expression altA, Expression b, Expression altB) {
         return sum(altA, altB);

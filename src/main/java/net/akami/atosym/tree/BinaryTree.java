@@ -1,6 +1,5 @@
 package net.akami.atosym.tree;
 
-import net.akami.atosym.expression.Expression;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

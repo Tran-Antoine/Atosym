@@ -1,8 +1,6 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
 import net.akami.atosym.utils.MathUtils;
 import net.akami.atosym.utils.ReducerFactory;
 import org.junit.Test;
@@ -11,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DividerTest {
 
-    private final Divider divider = MaskContext.DEFAULT.getBinaryOperation(Divider.class);
+    private final DivOperator divider = MaskContext.DEFAULT.getBinaryOperation(DivOperator.class);
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test

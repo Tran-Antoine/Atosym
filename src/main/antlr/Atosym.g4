@@ -3,7 +3,7 @@ grammar Atosym;
 main: exp;
 
 exp
-    : func OPENING_BRACKET (exp',')* exp CLOSING_BRACKET      // functions such as sin(x), log(x, y), etc
+    : func OPENING_BRACKET series CLOSING_BRACKET
     | OPENING_BRACKET exp CLOSING_BRACKET
     | exp OTHER_SYMBOL
     | exp POW exp
@@ -11,6 +11,8 @@ exp
     | exp (SUM | SUB) exp
     | NUMBER
     | CHAR;
+
+series : (exp',')* exp;
 
 func returns [int length]
     : 'sin'  {$length = 1}  // sin(angle)

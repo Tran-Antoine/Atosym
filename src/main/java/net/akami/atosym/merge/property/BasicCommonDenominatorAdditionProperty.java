@@ -1,9 +1,6 @@
 package net.akami.atosym.merge.property;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.Monomial;
 import net.akami.atosym.overlay.FractionOverlay;
 
 import java.util.Collections;
