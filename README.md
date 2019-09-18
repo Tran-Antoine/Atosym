@@ -28,11 +28,12 @@ Table of contents
 ## Features
 
 #### Calculation of any series of numbers split by different operators
+
 <br>
 <p align="center">
-  <img width="400" height="100" src="https://i.imgur.com/IR3cKUc.png
-">
+  <img width="400" height="100" src="https://i.imgur.com/IR3cKUc.png">
 </p>
+
 Basically, it acts as a classic numeric calculator. With a given entry, the library outputs the number that the entry equals. <br>
 Entries support: 
 
@@ -43,10 +44,12 @@ Entries support:
 ***
 
 #### Evaluation of any algebraic expression, giving the most simplified result
+
 <br>
 <p align="center">
   <img width="800" height="100" src="https://i.imgur.com/JlpUq3V.png">
 </p>
+
 It evaluates expressions containing **unknowns** (or **variables**). Results are not necessarily numbers, therefore the **most simplified** expression is returned.
 
 In addition to the previous feature, entries support:
@@ -55,9 +58,10 @@ In addition to the previous feature, entries support:
 ***
 
 #### Image calculations of any function from given values for given unknowns
+
 <br>
 <p align="center">
-  <img width="450" height="100" src="https://i.imgur.com/YnA7FH7.png">
+  <img width="500" height="90" src="https://i.imgur.com/YnA7FH7.png">
 </p>
 
 It replaces defined unknowns by `literal` or `numeric` values. <br>
@@ -65,10 +69,12 @@ Entries support exactly what the previous feature does. Additionally, they requi
 ***
 
 #### Differentiation of functions
+
 <br>
 <p align="center">
-  <img width="400" height="110" src="https://i.imgur.com/gNnOG0o.png">
+  <img width="400" height="120" src="https://i.imgur.com/gNnOG0o.png">
 </p>
+
 It computes the derivative of a given function. Entries are given the same way as for evaluating algebraic expressions. <br>
 Additionally, the unknown of the function must be specified. In a differentiation context, functions have a single unknown, and other **non-numeric** elements are considered as constants.
 ***
