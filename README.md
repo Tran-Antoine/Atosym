@@ -33,7 +33,7 @@ Table of contents
 <p align="center">
   <img width="400" height="100" src="https://i.imgur.com/IR3cKUc.png">
 </p>
-
+<br>
 Basically, it acts as a classic numeric calculator. With a given entry, the library outputs the number that the entry equals. <br>
 Entries support: 
 
@@ -47,9 +47,9 @@ Entries support:
 
 <br>
 <p align="center">
-  <img width="800" height="100" src="https://i.imgur.com/JlpUq3V.png">
+  <img width="830" height="100" src="https://i.imgur.com/JlpUq3V.png">
 </p>
-
+<br>
 It evaluates expressions containing **unknowns** (or **variables**). Results are not necessarily numbers, therefore the **most simplified** expression is returned.
 
 In addition to the previous feature, entries support:
@@ -61,9 +61,9 @@ In addition to the previous feature, entries support:
 
 <br>
 <p align="center">
-  <img width="500" height="90" src="https://i.imgur.com/YnA7FH7.png">
+  <img width="320" height="50" src="https://i.imgur.com/YnA7FH7.png">
 </p>
-
+<br>
 It replaces defined unknowns by `literal` or `numeric` values. <br>
 Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values. 
 ***
@@ -72,9 +72,9 @@ Entries support exactly what the previous feature does. Additionally, they requi
 
 <br>
 <p align="center">
-  <img width="400" height="120" src="https://i.imgur.com/gNnOG0o.png">
+  <img width="280" height="90" src="https://i.imgur.com/gNnOG0o.png">
 </p>
-
+<br>
 It computes the derivative of a given function. Entries are given the same way as for evaluating algebraic expressions. <br>
 Additionally, the unknown of the function must be specified. In a differentiation context, functions have a single unknown, and other **non-numeric** elements are considered as constants.
 ***
@@ -204,6 +204,7 @@ You'll find various pieces of information explaining how to properly use the lib
 You might want to add different operators which are not implemented, such as function integration, or even new customizations for calculations, a limit for "long numerators" division for example. <br>
 
 Several examples of what to do or what not to do are also provided.
+If you have any question, feel free to contact me on discord (`Akami#3635`) or by email (`antoine2001.tran@gmail.com`).
 
 :warning: The french wiki is incompatible with the master branch, containing an outdated architecture. An updated version might come soon. <br>
 ***
@@ -215,7 +216,7 @@ The documentation is available on the repository's description. Note that the to
 
 ## Also
 
-For a direct implementation of the Atosym library, look at [MaskInterface](https://github.com/lolilolulolilol/MaskInterface). <br>
+For a direct implementation of the Atosym library, check out [MaskInterface](https://github.com/lolilolulolilol/MaskInterface). <br>
 **MaskInterface** is a GUI based calculator that implements the following features of the library:
 
 * [Calculation of any series of numbers split by different operators](#calculation-of-any-series-of-numbers-split-by-different-operators)
