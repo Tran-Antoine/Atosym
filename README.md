@@ -34,6 +34,7 @@ Table of contents
   <img width="400" height="100" src="https://i.imgur.com/IR3cKUc.png">
 </p>
 <br>
+
 Basically, it acts as a classic numeric calculator. With a given entry, the library outputs the number that the entry equals. <br>
 Entries support: 
 
@@ -65,6 +66,7 @@ In addition to the previous feature, entries support:
   <img width="320" height="50" src="https://i.imgur.com/YnA7FH7.png">
 </p>
 <br>
+
 It replaces defined unknowns by `literal` or `numeric` values. <br>
 Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values.
 
