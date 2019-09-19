@@ -50,6 +50,7 @@ Entries support:
   <img width="830" height="100" src="https://i.imgur.com/JlpUq3V.png">
 </p>
 <br>
+
 It evaluates expressions containing **unknowns** (or **variables**). Results are not necessarily numbers, therefore the **most simplified** expression is returned.
 
 In addition to the previous feature, entries support:
@@ -65,7 +66,8 @@ In addition to the previous feature, entries support:
 </p>
 <br>
 It replaces defined unknowns by `literal` or `numeric` values. <br>
-Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values. 
+Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values.
+
 ***
 
 #### Differentiation of functions
@@ -75,6 +77,7 @@ Entries support exactly what the previous feature does. Additionally, they requi
   <img width="280" height="90" src="https://i.imgur.com/gNnOG0o.png">
 </p>
 <br>
+
 It computes the derivative of a given function. Entries are given the same way as for evaluating algebraic expressions. <br>
 Additionally, the unknown of the function must be specified. In a differentiation context, functions have a single unknown, and other **non-numeric** elements are considered as constants.
 ***
