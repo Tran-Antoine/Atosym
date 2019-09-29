@@ -6,13 +6,13 @@ public final class DisplayUtils {
 
     public static String join(MathObject a, MathObject b, String separator) {
 
-        StringBuilder builder = new StringBuilder();
         // TODO : Test if () are needed for the numerator
-        builder
-                .append('(')
-                .append(a.display()).append(')').append(separator).append('(')
-                .append(b.display())
-                .append(")");
-        return builder.toString();
+        return surroundWithParenthesis(a)
+                + separator
+                + surroundWithParenthesis(b);
+    }
+
+    private static String surroundWithParenthesis(MathObject mathObject){
+        return '(' + mathObject.display() + ')';
     }
 }
