@@ -13,6 +13,10 @@ public final class DisplayUtils {
     }
 
     private static String surroundWithParenthesis(MathObject mathObject){
-        return '(' + mathObject.display() + ')';
+        return surroundWithParenthesis(mathObject.display());
+    }
+
+    public static String surroundWithParenthesis(String str){
+        return '(' + str + ')';
     }
 }
