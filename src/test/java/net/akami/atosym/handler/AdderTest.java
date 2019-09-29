@@ -1,16 +1,14 @@
 package net.akami.atosym.handler;
 
-import net.akami.atosym.expression.*;
-import net.akami.atosym.function.CosineOperator;
-import net.akami.atosym.function.SineOperator;
-import net.akami.atosym.overlay.ExponentOverlay;
-import net.akami.atosym.overlay.ExpressionOverlay;
-import net.akami.atosym.overlay.FractionOverlay;
-import net.akami.atosym.utils.ReducerFactory;
+import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.NumberExpression;
+import net.akami.atosym.expression.SumMathObject;
+import net.akami.atosym.expression.VariableExpression;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
@@ -43,7 +41,7 @@ public class AdderTest {
         assertSum("2/5", "y","y+0.4");
     }
 
-    @Test
+    /*@Test
     public void sinusCosineSquaredProperty() {
         List<Monomial> singleInsight = Collections.singletonList(new Monomial('x', DEFAULT));
         ExpressionOverlay sin = new SineOperator(DEFAULT);
@@ -80,12 +78,28 @@ public class AdderTest {
     public void monomialSumTest() {
         List<String> monomials = Arrays.asList("2xyz", "2xyz", "2xyz");
         //assertThat(adder.monomialSum(monomials, true)).isEqualTo("6xyz");
+    }*/
+
+    @Test
+    public void testSumChain() {
+        MaskContext context = new MaskContext();
+        List<MathObject> elements = toList(new NumberExpression(3f), new NumberExpression(5f));
+        List<MathObject> elements2 = toList(new NumberExpression(4f), new VariableExpression('x'));
+        SumOperator operator = context.getBinaryOperation(SumOperator.class);
+        MathObject sum = new SumMathObject(operator, elements);
+        MathObject sum2 = new SumMathObject(operator, elements2);
+
+        assertThat(sum.operate().display()).isEqualTo("8.0");
+        assertThat(sum2.operate().display()).isEqualTo("4.0+x");
     }
 
+    private List<MathObject> toList(MathObject... objects) {
+        return new ArrayList<>(Arrays.asList(objects));
+    }
 
     private void assertSum(String a, String b, String result) {
-        Expression aExp = ReducerFactory.reduce(a);
+        /*Expression aExp = ReducerFactory.reduce(a);
         Expression bExp = ReducerFactory.reduce(b);
-        assertThat(adder.operate(aExp, bExp).toString()).isEqualTo(result);
+        assertThat(adder.operate(aExp, bExp).toString()).isEqualTo(result);*/
     }
 }

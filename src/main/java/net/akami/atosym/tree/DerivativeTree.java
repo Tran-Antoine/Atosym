@@ -1,6 +1,7 @@
 package net.akami.atosym.tree;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
 import net.akami.atosym.handler.sign.QuaternaryOperationSign;
 import net.akami.atosym.utils.FormatterFactory;
@@ -42,15 +43,15 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     @Override
     protected void evalBranch(DerivativeBranch self) {
         if(!self.hasChildren()) {
-            self.setReducedValue(new Expression(self.getExpression()));
-            self.setDerivativeValue(new Expression(differentiateElement(self.getExpression())));
+            self.setReducedValue(null); // TODO
+            //self.setDerivativeValue(new Expression(differentiateElement(self.getExpression())));
             return;
         }
 
-        Expression left = self.getLeftValue(); // either a reduced or the original expression
-        Expression right = self.getRightValue(); // either a reduced or the original expression
-        Expression derLeft = self.getLeft().getDerivativeValue(); // we know it has one
-        Expression derRight = self.getRight().getDerivativeValue(); // we know it has one
+        MathObject left = self.getLeftValue(); // either a reduced or the original expression
+        MathObject right = self.getRightValue(); // either a reduced or the original expression
+        MathObject derLeft = self.getLeft().getDerivativeValue(); // we know it has one
+        MathObject derRight = self.getRight().getDerivativeValue(); // we know it has one
         char op = self.getOperation();
 
         // It can avoid a long execution time. The initial branch does not need a reduced value
@@ -69,7 +70,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
     }
 
     @Override
-    public Optional<Expression> finalResult() {
+    public Optional<MathObject> finalResult() {
         DerivativeBranch first = getBranches().get(0);
         if(first.getDerivativeValue() != null) {
             return Optional.of(first.getDerivativeValue());

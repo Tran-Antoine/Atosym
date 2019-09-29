@@ -1,12 +1,7 @@
 package net.akami.atosym.handler;
 
-import net.akami.atosym.overlay.ExponentOverlay;
-import net.akami.atosym.expression.*;
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.utils.ExpressionUtils;
-
-import java.util.Collections;
-import java.util.List;
+import net.akami.atosym.expression.MathObject;
 
 public class PowerOperator extends BinaryOperator {
 
@@ -18,8 +13,8 @@ public class PowerOperator extends BinaryOperator {
     }
 
     @Override
-    public Expression binaryOperate(Expression a, Expression b) {
-        LOGGER.info("PowerOperator operation process between {} and {} : \n", a, b);
+    public MathObject binaryOperate(MathObject a, MathObject b) {
+        /*LOGGER.info("PowerOperator operation process between {} and {} : \n", a, b);
 
         if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
             return fullNumericPow(a, b);
@@ -30,10 +25,11 @@ public class PowerOperator extends BinaryOperator {
             return extensiblePow(a, (int) first.getNumericValue());
         }
 
-        return layerPow(a, b);
+        return layerPow(a, b);*/
+        return null;
     }
 
-    private Expression fullNumericPow(Expression a, Expression b) {
+    /*private Expression fullNumericPow(Expression a, Expression b) {
         float aFloat = a.get(0).getNumericValue();
         float bFloat = b.get(0).getNumericValue();
         return Expression.of((float) Math.pow(aFloat, bFloat));
@@ -60,13 +56,14 @@ public class PowerOperator extends BinaryOperator {
         Expression denominator = extensiblePow(a, -b);
 
         throw new RuntimeException("Unsupported yet");
-    }
+    }*/
 
     // The entire expression becomes a monomial with 1 as numeric value, encapsulated in a new overlay
-    public Expression layerPow(Expression a, Expression b) {
-        List<Monomial> insights = a.getElements();
+    public MathObject layerPow(MathObject a, MathObject b) {
+        /*List<Monomial> insights = a.getElements();
         IntricateVariable variable = new IntricateVariable(insights, Collections.singletonList(ExponentOverlay.fromExpression(b)));
         Expression newExpression = Expression.of(new Monomial(1, variable));
-        return newExpression;
+        return newExpression;*/
+        return null;
     }
 }

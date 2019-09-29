@@ -1,5 +1,6 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.expression.MathObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -94,14 +95,14 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Note that the merge method can be redefined if the behavior does not suits the tree.
      * @return the reduced value of the first branch, while finalResult() is not redefined
      */
-    public Expression merge() {
+    public MathObject merge() {
         /*
         If we give a very simple expression such as '50' to the reducer, it will detect that no operation
         needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
         */
         if (getBranches().size() == 1 && !branches.get(0).canBeEvaluated()) {
             LOGGER.debug("Only one branch found. Returns it.");
-            return new Expression(getBranches().get(0).getExpression());
+            return null;//new Expression(getBranches().get(0).getExpression());
         }
 
         //Merging the branches from the last one to the first one (this initial expression)
@@ -111,7 +112,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
             if (!self.canBeEvaluated()) {
                 LOGGER.info("Not calculable : ");
-                self.setReducedValue(new Expression(self.getExpression()));
+                //self.setReducedValue(new Expression(self.getExpression()));
                 continue;
             }
 
@@ -130,7 +131,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Defines whether the final findResult has been calculated or not.
      * @return the final findResult if calculated, otherwise an empty optional.
      */
-    public Optional<Expression> finalResult() {
+    public Optional<MathObject> finalResult() {
         T first = getBranches().get(0);
         if (first.hasReducedValue()) {
             return Optional.of(first.getReducedValue());

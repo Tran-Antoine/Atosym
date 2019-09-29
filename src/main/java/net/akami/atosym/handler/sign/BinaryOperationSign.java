@@ -2,6 +2,7 @@ package net.akami.atosym.handler.sign;
 
 import net.akami.atosym.alteration.CalculationCache;
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.MathUtils;
 
 import java.util.Objects;
@@ -79,7 +80,7 @@ public enum BinaryOperationSign {
     MULT('*', MathUtils::mult, 1),
 
     /**
-     * Division operator, computes a / b using the {@link MathUtils#divide(Expression, Expression)} method.
+     * Division operator, computes a / b using the {@link MathUtils#divide(MathObject, MathObject)} method.
      *
      * Note that only the following division types are supported by now :
      *
@@ -102,7 +103,7 @@ public enum BinaryOperationSign {
     DIVIDE('/', MathUtils::divide, 1),
 
     /**
-     * Pow operator, computes a ^ b using the {@link MathUtils#pow(Expression, Expression)} method.
+     * Pow operator, computes a ^ b using the {@link MathUtils#pow(MathObject, MathObject)} method.
      * <br>
      *
      * The operator performs the calculation only if it is mathematically possible, therefore any monomial / polynomial
@@ -151,7 +152,7 @@ public enum BinaryOperationSign {
         return priorityLevel;
     }
 
-    public Expression compute(Expression a, Expression b, MaskContext context) {
+    public MathObject compute(MathObject a, MathObject b, MaskContext context) {
         Objects.requireNonNull(binaryFunction);
         return binaryFunction.compute(a, b, context);
     }
@@ -167,6 +168,6 @@ public enum BinaryOperationSign {
 
     @FunctionalInterface
     public interface BinaryMathCalculation {
-        Expression compute(Expression a, Expression b, MaskContext context);
+        MathObject compute(MathObject a, MathObject b, MaskContext context);
     }
 }

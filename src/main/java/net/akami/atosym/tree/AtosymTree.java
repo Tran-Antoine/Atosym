@@ -1,6 +1,5 @@
 package net.akami.atosym.tree;
 
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.expression.MathObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,10 +93,10 @@ public abstract class AtosymTree<T extends AtosymBranch> implements Iterable<T> 
      * @return the final findResult if calculated, otherwise an empty optional.
      */
     public Optional<MathObject> finalResult() {
-        T first = getBranches().get(0);
+        /*T first = getBranches().get(0);
         if (first.hasReducedValue()) {
             return Optional.of(first.getReducedValue());
-        }
+        }*/
         return Optional.empty();
     }
 

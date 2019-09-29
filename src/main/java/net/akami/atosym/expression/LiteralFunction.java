@@ -5,7 +5,7 @@ import net.akami.atosym.function.MathOperator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class LiteralFunction extends MathFunction {
+public abstract class LiteralFunction extends MathFunction {
 
     private String name;
 

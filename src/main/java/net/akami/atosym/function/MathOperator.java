@@ -3,11 +3,9 @@ package net.akami.atosym.function;
 import net.akami.atosym.alteration.CalculationCanceller;
 import net.akami.atosym.alteration.FairAlterationHandler;
 import net.akami.atosym.alteration.IOCalculationModifier;
-import net.akami.atosym.expression.Expression;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.PostCalculationActionable;
-import net.akami.atosym.overlay.CompleteCoverOverlay;
-import net.akami.atosym.overlay.ExpressionOverlay;
+
 
 import java.util.*;
 
@@ -19,10 +17,10 @@ import java.util.*;
  * @author Antoine Tran
  */
 public abstract class MathOperator implements
-        FairAlterationHandler<Expression>, PostCalculationActionable<Expression>, CompleteCoverOverlay {
+        FairAlterationHandler<MathObject>, PostCalculationActionable<MathObject> {
 
-    protected List<CalculationCanceller<Expression, Expression>> cancellers;
-    protected List<IOCalculationModifier<Expression>> modifiers;
+    protected List<CalculationCanceller<MathObject, MathObject>> cancellers;
+    protected List<IOCalculationModifier<MathObject>> modifiers;
     protected final String name;
     private final int argsLength;
 
@@ -39,11 +37,11 @@ public abstract class MathOperator implements
             throw new IllegalArgumentException(input.length + " params given, only " + argsLength + " required.");
         }
 
-        for(IOCalculationModifier<Expression> modifier : getSuitableModifiers(input)) {
+        for(IOCalculationModifier<MathObject> modifier : getSuitableModifiers(input)) {
             input = modifier.modify(input);
         }
 
-        Optional<CalculationCanceller<Expression, Expression>> canceller = getSuitableCanceller(input);
+        Optional<CalculationCanceller<MathObject, MathObject>> canceller = getSuitableCanceller(input);
         if(canceller.isPresent()) {
             return canceller.get().resultIfCancelled(input);
         }
@@ -52,17 +50,17 @@ public abstract class MathOperator implements
     }
 
     @Override
-    public void postCalculation(Expression result, Expression... input) {
+    public void postCalculation(MathObject result, MathObject... input) {
 
     }
 
     @Override
-    public List<CalculationCanceller<Expression, Expression>> getCancellers() {
+    public List<CalculationCanceller<MathObject, MathObject>> getCancellers() {
         return cancellers;
     }
 
     @Override
-    public List<IOCalculationModifier<Expression>> getModifiers() {
+    public List<IOCalculationModifier<MathObject>> getModifiers() {
         return modifiers;
     }
 
@@ -74,13 +72,13 @@ public abstract class MathOperator implements
         return this.name.equals(((MathOperator) obj).name);
     }
 
-    @Override
-    public String[] getEncapsulationString(List<Monomial> elements, int index, List<ExpressionOverlay> others) {
+    /*@Override
+    public String[] getEncapsulationString(List<MathObject> elements, int index, List<ExpressionOverlay> others) {
         String[] parts = new String[2];
         parts[0] = name + '(';
         parts[1] = ")";
         return parts;
-    }
+    }*/
 
     public String getName() {
         return name;
@@ -101,26 +99,26 @@ public abstract class MathOperator implements
         ));
     }
 
-    public void addCanceller(CalculationCanceller<Expression, Expression> canceller) {
+    public void addCanceller(CalculationCanceller<MathObject, MathObject> canceller) {
         cancellers.add(canceller);
     }
 
-    public void removeCanceller(CalculationCanceller<Expression, Expression> canceller) {
+    public void removeCanceller(CalculationCanceller<MathObject, MathObject> canceller) {
         cancellers.remove(canceller);
     }
 
-    public void setCancellers(List<CalculationCanceller<Expression, Expression>> cancellers) {
+    public void setCancellers(List<CalculationCanceller<MathObject, MathObject>> cancellers) {
         this.cancellers = cancellers;
     }
-    public void addModifier(IOCalculationModifier<Expression> modifier) {
+    public void addModifier(IOCalculationModifier<MathObject> modifier) {
         modifiers.add(modifier);
     }
 
-    public void removeModifier(IOCalculationModifier<Expression> modifier) {
+    public void removeModifier(IOCalculationModifier<MathObject> modifier) {
         modifiers.remove(modifier);
     }
 
-    public void setModifiers(List<IOCalculationModifier<Expression>> modifiers) {
+    public void setModifiers(List<IOCalculationModifier<MathObject>> modifiers) {
         this.modifiers = modifiers;
     }
 }

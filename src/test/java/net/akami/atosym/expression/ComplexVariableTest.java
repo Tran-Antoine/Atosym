@@ -1,23 +1,14 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.CosineOperator;
-import net.akami.atosym.function.SineOperator;
-import net.akami.atosym.function.TangentOperator;
 import net.akami.atosym.handler.MultOperator;
-import net.akami.atosym.overlay.ExpressionOverlay;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class ComplexVariableTest {
 
     private final MultOperator multiplier = new MultOperator(DEFAULT);
 
-    @Test
+    /*@Test
     public void getExpressionTest() {
 
         List<Monomial> elements = Arrays.asList(
@@ -52,5 +43,5 @@ public class ComplexVariableTest {
 
         Expression result = multiplier.operate(Expression.of(m1), Expression.of(m2));
         assertThat(result.toString()).isEqualTo("10.0sin(cos(xy))^2.0");
-    }
+    }*/
 }

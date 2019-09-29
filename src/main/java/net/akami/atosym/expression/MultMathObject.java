@@ -44,4 +44,14 @@ public class MultMathObject extends MathFunction {
     private boolean validMultShortcut(char a, char b) {
         return ExpressionUtils.isANumber(String.valueOf(a)) || ExpressionUtils.isANumber(String.valueOf(b));
     }
+
+    @Override
+    protected int size() {
+        return -1;
+    }
+
+    @Override
+    public MathObjectType getType() {
+        return MathObjectType.MULT;
+    }
 }

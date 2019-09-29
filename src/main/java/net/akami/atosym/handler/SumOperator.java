@@ -1,11 +1,11 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.merge.MonomialAdditionMerge;
 import net.akami.atosym.merge.SequencedMerge;
-import net.akami.atosym.merge.property.CommonDenominatorAdditionProperty;
-import net.akami.atosym.merge.property.CosineSinusSquaredProperty;
-import net.akami.atosym.merge.property.IdenticalVariablePartProperty;
+import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,20 +35,26 @@ public class SumOperator extends BinaryOperator {
     }
 
     @Override
-    public Expression binaryOperate(Expression a, Expression b) {
+    public MathObject binaryOperate(MathObject a, MathObject b) {
 
         LOGGER.info("SumOperator process of {} |+| {}: \n", a, b);
-        List<Monomial> aElements = new ArrayList<>(a.getElements());
-        List<Monomial> bElements = new ArrayList<>(b.getElements());
+        List<MathObject> aElements = toList(a);
+        List<MathObject> bElements = toList(b);
 
-        LOGGER.info("Monomials : {} and {}", aElements, bElements);
+        SequencedMerge<MathObject> additionBehavior = new MonomialAdditionMerge(context);
+        List<MathObject> elements = additionBehavior.merge(aElements, bElements, false);
+        elements = elements.stream().filter(NumericUtils::isNotZero).collect(Collectors.toList());
+        //Collections.sort(elements);
+        if(elements.size() == 1) {
+            return elements.get(0);
+        }
 
-        SequencedMerge<Monomial> additionBehavior = new MonomialAdditionMerge(context);
-        List<Monomial> elements = additionBehavior.merge(aElements, bElements, false);
-        elements = elements.stream().filter(e -> e.getNumericValue() != 0).collect(Collectors.toList());
-        Collections.sort(elements);
-        Expression result = new Expression(elements);
+        MathObject result = new SumMathObject(this, elements);
         LOGGER.info("---> Result of {} |+| {}: {}", a, b, result);
         return result;
+    }
+
+    private List<MathObject> toList(MathObject x) {
+        return new ArrayList<>(Collections.singletonList(x));
     }
 }

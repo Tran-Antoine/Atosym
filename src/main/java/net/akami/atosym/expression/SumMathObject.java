@@ -31,4 +31,14 @@ public class SumMathObject extends MathFunction {
 
         return builder.toString();
     }
+
+    @Override
+    protected int size() {
+        return -1;
+    }
+
+    @Override
+    public MathObjectType getType() {
+        return MathObjectType.SUM;
+    }
 }

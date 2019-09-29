@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-public class Expression<V> implements MathObject {
+public abstract class Expression<V> implements MathObject {
 
     private V value;
 

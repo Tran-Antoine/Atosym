@@ -3,6 +3,7 @@ package net.akami.atosym.core;
 import net.akami.atosym.alteration.*;
 import net.akami.atosym.check.*;
 import net.akami.atosym.exception.MaskException;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
 import net.akami.atosym.handler.BinaryOperator;
@@ -58,7 +59,7 @@ public class MaskContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
     static {
-        DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);
+        //DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);
     }
     /**
      * Constructs a context with the default parameters. The set of {@link BinaryOperator}s will be generated
@@ -76,7 +77,7 @@ public class MaskContext {
      * @param precision the amount of significant digits handled by the context
      */
     public MaskContext(int precision) {
-        this.binaryHandlers = BinaryOperator.generateDefaultBinaryOperators();
+        this.binaryHandlers = BinaryOperator.generateDefaultBinaryOperators(this);
         this.supportedFunctions = MathOperator.generateDefaultFunctions();
         this.bigDecimalContext = new MathContext(precision);
         this.validityChecks = defaultValidityChecks();
@@ -91,7 +92,7 @@ public class MaskContext {
      * @param clazz the type of the binary operator in charge of the calculation
      * @return a result computed by the operator from the two elements given
      */
-    public Expression binaryCompute(Expression a, Expression b, Class<? extends BinaryOperator> clazz) {
+    public MathObject binaryCompute(MathObject a, MathObject b, Class<? extends BinaryOperator> clazz) {
         BinaryOperator handler = getBinaryOperation(clazz);
         return handler.rawOperate(a, b);
     }
@@ -122,8 +123,8 @@ public class MaskContext {
      */
     public Optional<MathOperator> getFunctionByBinding(char binding) {
         for(MathOperator function : supportedFunctions) {
-            if(function.getBinding() == binding)
-                return Optional.of(function);
+            //if(function.getBinding() == binding)
+                //return Optional.of(function);
         }
         return Optional.empty();
     }
@@ -224,36 +225,35 @@ public class MaskContext {
         return supportedFunctions;
     }
 
-    public void addGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
+    public void addGlobalModifier(IOCalculationModifier<MathObject> modifier, Class<?> type) {
         addClonedModifier(() -> modifier, type);
     }
 
-    public void addGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+    public void addGlobalCanceller(FairCalculationCanceller<MathObject> canceller, Class<?> type) {
         addDuplicatedCanceller(() -> canceller, type);
     }
 
-    public void addClonedModifier(Supplier<IOCalculationModifier<Expression>> modifier, Class<?> type) {
+    public void addClonedModifier(Supplier<IOCalculationModifier<MathObject>> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::addModifier, modifier, type);
     }
 
-    public void addDuplicatedCanceller(Supplier<FairCalculationCanceller<Expression>> canceller, Class<?> type) {
+    public void addDuplicatedCanceller(Supplier<FairCalculationCanceller<MathObject>> canceller, Class<?> type) {
         actionGlobal(AlterationHandler::addCanceller, canceller, type);
     }
 
-    public void removeGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
+    public void removeGlobalModifier(IOCalculationModifier<MathObject> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::removeModifier, () -> modifier, type);
     }
 
-    public void removeGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+    public void removeGlobalCanceller(FairCalculationCanceller<MathObject> canceller, Class<?> type) {
         actionGlobal(AlterationHandler::removeCanceller, () -> canceller, type);
     }
 
-    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<Expression>, S> action, Supplier<S> s1, Class<?> type) {
-        List<FairAlterationHandler<Expression>> alterationHandlers = new ArrayList<>();
-        alterationHandlers.addAll(supportedFunctions);
-        alterationHandlers.addAll(binaryHandlers);
-
-        for(FairAlterationHandler<Expression> element : alterationHandlers) {
+    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<MathObject>, S> action, Supplier<S> s1, Class<?> type) {
+        List<FairAlterationHandler<MathObject>> alterationHandlers = new ArrayList<>();
+        //alterationHandlers.addAll(supportedFunctions); TODO
+        //alterationHandlers.addAll(binaryHandlers);
+        for(FairAlterationHandler<MathObject> element : alterationHandlers) {
             if(type.isAssignableFrom(element.getClass())) {
                 action.action(element, s1.get());
             }

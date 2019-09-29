@@ -1,6 +1,7 @@
 package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.BinaryOperator;
 
 import java.util.HashMap;
@@ -20,9 +21,9 @@ import java.util.function.Supplier;
  *
  * @author Antoine Tran
  */
-public class CalculationCache implements FairCalculationCanceller<Expression> {
+public class CalculationCache implements FairCalculationCanceller<MathObject> {
 
-    private Map<String, Expression> cache = new HashMap<>();
+    private Map<String, MathObject> cache = new HashMap<>();
     private int capacity;
 
     /**
@@ -41,12 +42,12 @@ public class CalculationCache implements FairCalculationCanceller<Expression> {
     }
 
     @Override
-    public Expression resultIfCancelled(Expression... input) {
+    public MathObject resultIfCancelled(MathObject... input) {
         return cache.get(input[0].toString()+'|'+input[1].toString());
     }
 
     @Override
-    public boolean appliesTo(Expression... input) {
+    public boolean appliesTo(MathObject... input) {
         if (capacity == 0) return false;
         return cache.containsKey(input[0].toString()+'|'+input[1].toString());
     }
@@ -73,7 +74,7 @@ public class CalculationCache implements FairCalculationCanceller<Expression> {
      * @param initial the input, computing a merge with a given operation
      * @param result the merge of the computed version of the input
      */
-    public void push(String initial, Expression result) {
+    public void push(String initial, MathObject result) {
         if(capacity == 0) return;
 
         if(cache.size() >= capacity) {
@@ -101,7 +102,7 @@ public class CalculationCache implements FairCalculationCanceller<Expression> {
         this.capacity = capacity;
     }
 
-    public static Supplier<FairCalculationCanceller<Expression>> supply(int capacity) {
+    public static Supplier<FairCalculationCanceller<MathObject>> supply(int capacity) {
         return () -> new CalculationCache(capacity);
     }
 }

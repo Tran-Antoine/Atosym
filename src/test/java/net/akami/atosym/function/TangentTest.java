@@ -1,13 +1,12 @@
 package net.akami.atosym.function;
 
-import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class TangentTest {
 
-    private final TangentOperator function = new TangentOperator(MaskContext.DEFAULT);
+    private final TangentOperator function = new TangentOperator();
 
     @Test
     public void numericValuesTest() {

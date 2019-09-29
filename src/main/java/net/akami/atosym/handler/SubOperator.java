@@ -1,6 +1,7 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
 
 public class SubOperator extends BinaryOperator {
 
@@ -12,12 +13,13 @@ public class SubOperator extends BinaryOperator {
     }
 
     @Override
-    protected Expression binaryOperate(Expression a, Expression b) {
-        LOGGER.debug("SubOperator process of {} |-| {}: \n", a, b);
+    protected MathObject binaryOperate(MathObject a, MathObject b) {
+        /*LOGGER.debug("SubOperator process of {} |-| {}: \n", a, b);
         SumOperator adder = context.getBinaryOperation(SumOperator.class);
         MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
 
         Expression oppositeB = multiplier.operate(Expression.of(-1), b);
-        return adder.operate(a, oppositeB);
+        return adder.operate(a, oppositeB);*/
+        return null;
     }
 }

@@ -12,9 +12,18 @@ public class DivisionMathObject extends MathFunction {
 
     @Override
     public String display() {
-
-        if(children.size() != 2) throw new IllegalStateException("Division containing more or less than 2 elements");
-
+        super.checkSize(children.size());
         return DisplayUtils.join(children.get(0), children.get(1), "/");
+    }
+
+    @Override
+    protected int size() {
+        // a/b/c should become a/(bc)
+        return 2;
+    }
+
+    @Override
+    public MathObjectType getType() {
+        return MathObjectType.DIV;
     }
 }

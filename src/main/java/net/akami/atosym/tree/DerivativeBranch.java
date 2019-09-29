@@ -1,5 +1,7 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.expression.MathObject;
+
 /**
  * Implementation of the base Branch class. The {@link DerivativeBranch} class brings two changes :
  * <br>
@@ -10,7 +12,7 @@ package net.akami.atosym.tree;
  */
 public class DerivativeBranch extends Branch<DerivativeBranch> {
 
-    private Expression derivativeValue;
+    private MathObject derivativeValue;
 
     public DerivativeBranch(String expression) {
         super(expression);
@@ -26,11 +28,11 @@ public class DerivativeBranch extends Branch<DerivativeBranch> {
         return true;
     }
 
-    public Expression getDerivativeValue() {
+    public MathObject getDerivativeValue() {
         return derivativeValue;
     }
 
-    public void setDerivativeValue(Expression derivativeValue) {
+    public void setDerivativeValue(MathObject derivativeValue) {
         this.derivativeValue = derivativeValue;
     }
 }

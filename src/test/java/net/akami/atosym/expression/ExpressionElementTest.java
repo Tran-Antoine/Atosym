@@ -1,23 +1,8 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.CosineOperator;
-import net.akami.atosym.function.SineOperator;
-import net.akami.atosym.function.TangentOperator;
-import net.akami.atosym.merge.SequencedMerge;
-import net.akami.atosym.merge.VariableCombination;
-import net.akami.atosym.overlay.ExpressionOverlay;
-import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static net.akami.atosym.core.MaskContext.DEFAULT;
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class ExpressionElementTest {
 
-    @Test
+    /*@Test
     public void compareDifferentLayers() {
 
         List<ExpressionOverlay> layers1 = Arrays.asList(
@@ -56,5 +41,5 @@ public class ExpressionElementTest {
         SequencedMerge<Variable> behavior = new VariableCombination(DEFAULT);
         assertThat(m1.equals(m2)).isEqualTo(false);
         assertThat(behavior.generateElementProperties(m1, m2).get(0).isSuitable()).isEqualTo(false);
-    }
+    }*/
 }

@@ -1,48 +1,45 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.*;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.handler.*;
-import net.akami.atosym.overlay.ExponentOverlay;
-import net.akami.atosym.overlay.ExpressionOverlay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static net.akami.atosym.core.MaskContext.DEFAULT;
+
 
 public class MathUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
 
-    public static Expression sum(Expression a, Expression b)      { return sum(a, b, DEFAULT);      }
-    public static Expression subtract(Expression a, Expression b) { return subtract(a, b, DEFAULT); }
-    public static Expression mult(Expression a, Expression b)     { return mult(a, b, DEFAULT);     }
-    public static Expression divide(Expression a, Expression b)   { return divide(a, b, DEFAULT);   }
-    public static Expression pow(Expression a, Expression b)      { return pow(a, b, DEFAULT);      }
+    public static MathObject sum(MathObject a, MathObject b)      { return sum(a, b, DEFAULT);      }
+    public static MathObject subtract(MathObject a, MathObject b) { return subtract(a, b, DEFAULT); }
+    public static MathObject mult(MathObject a, MathObject b)     { return mult(a, b, DEFAULT);     }
+    public static MathObject divide(MathObject a, MathObject b)   { return divide(a, b, DEFAULT);   }
+    public static MathObject pow(MathObject a, MathObject b)      { return pow(a, b, DEFAULT);      }
 
-    public static Expression sum(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, SumOperator.class);         }
-    public static Expression subtract(Expression a, Expression b, MaskContext context) { return context.binaryCompute(a, b, SubOperator.class);    }
-    public static Expression mult(Expression a, Expression b, MaskContext context)     { return context.binaryCompute(a, b, MultOperator.class); }
-    public static Expression divide(Expression a, Expression b, MaskContext context)   { return context.binaryCompute(a, b, DivOperator.class);       }
-    public static Expression pow(Expression a, Expression b, MaskContext context)      { return context.binaryCompute(a, b, PowerOperator.class); }
+    public static MathObject sum(MathObject a, MathObject b, MaskContext context)      { return context.binaryCompute(a, b, SumOperator.class);         }
+    public static MathObject subtract(MathObject a, MathObject b, MaskContext context) { return context.binaryCompute(a, b, SubOperator.class);    }
+    public static MathObject mult(MathObject a, MathObject b, MaskContext context)     { return context.binaryCompute(a, b, MultOperator.class); }
+    public static MathObject divide(MathObject a, MathObject b, MaskContext context)   { return context.binaryCompute(a, b, DivOperator.class);       }
+    public static MathObject pow(MathObject a, MathObject b, MaskContext context)      { return context.binaryCompute(a, b, PowerOperator.class); }
 
-    public static Expression diffSum(Expression a, Expression altA, Expression b, Expression altB) {
+    public static MathObject diffSum(MathObject a, MathObject altA, MathObject b, MathObject altB) {
         return sum(altA, altB);
     }
-    public static Expression diffSubtract(Expression a, Expression altA, Expression b, Expression altB) {
+    public static MathObject diffSubtract(MathObject a, MathObject altA, MathObject b, MathObject altB) {
         return subtract(altA, altB);
     }
-    public static Expression diffMult(Expression a, Expression altA, Expression b, Expression altB) {
+    public static MathObject diffMult(MathObject a, MathObject altA, MathObject b, MathObject altB) {
         return sum(mult(altA, b), mult(altB, a));
     }
-    public static Expression diffDivide(Expression a, Expression altA, Expression b, Expression altB) {
+    public static MathObject diffDivide(MathObject a, MathObject altA, MathObject b, MathObject altB) {
         return divide(subtract(mult(altA,b), mult(altB, a)), mult(b, b));
     }
-    public static Expression diffPow(Expression a, Expression altA, Expression b, Expression altB) {
-        return mult(mult(b, pow(a, subtract(b, Expression.of(1)))), altA);
+    public static MathObject diffPow(MathObject a, MathObject altA, MathObject b, MathObject altB) {
+        return mult(mult(b, pow(a, subtract(b, new NumberExpression(1f)))), altA);
     }
 
     public static String sin(String a) {
@@ -88,7 +85,7 @@ public class MathUtils {
      * @param self the number to decompose
      * @return a list of strings being the divided version of the given parameter
      */
-    public static List<String> decomposeNumberToString(float self) {
+    /*public static List<String> decomposeNumberToString(float self) {
         LOGGER.info("Now decomposing float {}", self);
 
         List<String> results = new ArrayList<>();
@@ -217,7 +214,7 @@ public class MathUtils {
         }
         return finalVars;
     }
-
+    */
     @FunctionalInterface
     private interface UnaryOperation {
         double compute(double d);

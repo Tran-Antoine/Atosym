@@ -1,10 +1,7 @@
 package net.akami.atosym.utils;
 
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.overlay.ExpressionOverlay;
-
-import java.util.List;
-import java.util.function.Function;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.NumberExpression;
 
 public final class ExpressionUtils {
 
@@ -14,7 +11,7 @@ public final class ExpressionUtils {
     public static final String TRIGONOMETRY_SHORTCUTS = "@#§";
     public static final String NUMBERS = "0123456789";
 
-    public static boolean isANumber(Expression exp) {
+    /*public static boolean isANumber(Expression exp) {
         if(exp.length() != 1) return false;
         return isANumber(exp.get(0));
     }
@@ -22,18 +19,17 @@ public final class ExpressionUtils {
     public static boolean isANumber(Monomial element) {
         List<Variable> vars = element.getVarPart().getVariables();
         return vars.size() == 0;
-    }
+    }*/
     public static boolean isANumber(String exp) {
         if (exp.length() == 0)
             return false;
         return exp.matches("(\\+|-|)[\\d]+(\\.[\\d]+|)") || NUMBERS.contains(exp);
     }
 
-    public static boolean isAnInteger(Expression exp) {
-        if(exp.length() != 1) return false;
-        return isAnInteger(exp.get(0));
+    public static boolean isAnInteger(MathObject exp) {
+        return exp instanceof NumberExpression && ((NumberExpression) exp).getValue()%1 == 0;
     }
-
+    /*
     public static boolean isAnInteger(Monomial element) {
         List<Variable> vars = element.getVarPart().getVariables();
         return vars.size() == 0 && element.getNumericValue() % 1 == 0;
@@ -69,7 +65,7 @@ public final class ExpressionUtils {
         }
         return builder.toString();
     }
-
+    */
     public static boolean isSurroundedByParentheses(int index, String exp) {
 
         int b = FormatterFactory.areEdgesBracketsConnected(exp, false) ? 1 : 0;

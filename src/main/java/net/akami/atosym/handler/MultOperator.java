@@ -1,18 +1,9 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.function.MathOperator;
-import net.akami.atosym.merge.FairMerge;
-import net.akami.atosym.merge.MonomialAdditionMerge;
-import net.akami.atosym.merge.MonomialMultiplicationMerge;
-import net.akami.atosym.merge.SequencedMerge;
-import net.akami.atosym.merge.property.FairOverallMergeProperty;
+import net.akami.atosym.expression.MathObject;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
 
 public class MultOperator extends BinaryOperator {
 
@@ -24,9 +15,9 @@ public class MultOperator extends BinaryOperator {
     }
 
     @Override
-    public Expression binaryOperate(Expression a, Expression b) {
+    public MathObject binaryOperate(MathObject a, MathObject b) {
 
-        List<Monomial> aMonomials = a.getElements();
+        /*List<Monomial> aMonomials = a.getElements();
         List<Monomial> bMonomials = b.getElements();
 
         LOGGER.debug("Operating mult {} * {}", a, b);
@@ -39,10 +30,11 @@ public class MultOperator extends BinaryOperator {
         }
 
         List<Monomial> reducedResult = resolveMult(aMonomials, bMonomials);
-        return new Expression(reducedResult);
+        return new Expression(reducedResult);*/
+        return null;
     }
 
-    private Expression functionOperation(Expression bindingExpression, Expression target) {
+    /*private Expression functionOperation(Expression bindingExpression, Expression target) {
         char binding = bindingExpression.get(0).getExpression().charAt(0);
         Optional<MathOperator> optional = context.getFunctionByBinding(binding);
         if(optional.isPresent()) return optional.get().rawOperate(target);
@@ -67,7 +59,7 @@ public class MultOperator extends BinaryOperator {
         Collections.sort(reducedResult);
         return reducedResult;
     }
-
+    */
     public float mult(float a, float b) {
         BigDecimal bigA = new BigDecimal(a, context.getMathContext());
         BigDecimal bigB = new BigDecimal(b, context.getMathContext());

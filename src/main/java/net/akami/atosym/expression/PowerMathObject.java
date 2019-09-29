@@ -12,9 +12,16 @@ public class PowerMathObject extends MathFunction {
 
     @Override
     public String display() {
-
-        if(children.size() != 2) throw new IllegalStateException("Power containing more or less than 2 elements");
-
         return DisplayUtils.join(children.get(0), children.get(1), "^");
+    }
+
+    @Override
+    protected int size() {
+        return -1;
+    }
+
+    @Override
+    public MathObjectType getType() {
+        return MathObjectType.POW;
     }
 }

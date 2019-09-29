@@ -4,4 +4,5 @@ public interface MathObject {
 
     String display();
     MathObject operate();
+    MathObjectType getType();
 }

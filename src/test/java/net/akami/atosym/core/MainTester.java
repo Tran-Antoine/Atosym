@@ -20,7 +20,7 @@ public class MainTester {
         System.out.println("Next expression to reduce : ");
         while(!(expression = sc.nextLine()).isEmpty()) {
             long time = System.nanoTime();
-            System.out.println("Result : "+ ReducerFactory.reduce(expression, context));
+            System.out.println("Result : "+ ReducerFactory.reduce(expression));
             float deltaTime = (System.nanoTime() - time) / 1000000000f;
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");

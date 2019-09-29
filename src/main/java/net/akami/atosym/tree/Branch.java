@@ -1,5 +1,6 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.FormatterFactory;
 
 /**
@@ -23,7 +24,7 @@ public class Branch<T extends Branch> {
     private char operation;
     private String expression;
     private boolean reduced;
-    private Expression reducedValue;
+    private MathObject reducedValue;
 
     /**
      * Available constructor for the Branch class. Formats the initial expression given according to the
@@ -87,13 +88,13 @@ public class Branch<T extends Branch> {
     /**
      * @return the left expression if it does not have a reduced value, otherwise its reduced value
      */
-    public Expression getLeftValue() {
+    public MathObject getLeftValue() {
         return left.getReducedValue();
     }
     /**
      * @return the right expression if it does not have a reduced value, otherwise its reduced value.
      */
-    public Expression getRightValue() {
+    public MathObject getRightValue() {
         return right.getReducedValue();
     }
 
@@ -114,7 +115,7 @@ public class Branch<T extends Branch> {
     /**
      * @return the reduced value of the branch, null if not calculated / calculable
      */
-    public Expression getReducedValue()  { return reducedValue; }
+    public MathObject getReducedValue()  { return reducedValue; }
 
     /**
      * @return the char corresponding to a defined calculation behavior. Empty if the branch is not split
@@ -147,5 +148,5 @@ public class Branch<T extends Branch> {
      * @param value the reduced value of the branch. Once the method is called, {@link Branch#hasReducedValue()}
      *              will always return true.
      */
-    public void setReducedValue(Expression value) { this.reducedValue = value; reduced = true; }
+    public void setReducedValue(MathObject value) { this.reducedValue = value; reduced = true; }
 }

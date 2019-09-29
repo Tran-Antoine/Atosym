@@ -1,5 +1,6 @@
 package net.akami.atosym.core;
 
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.ExpressionUtils;
 import net.akami.atosym.utils.ReducerFactory;
 
@@ -17,7 +18,7 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
         for(Character c : extraData.keySet()) {
             input = replace(c, extraData.get(c), input);
         }
-        Expression finalResult = ReducerFactory.reduce(input, context);
+        MathObject finalResult = ReducerFactory.reduce(input, context);
         out.reload(finalResult.toString());
     }
 

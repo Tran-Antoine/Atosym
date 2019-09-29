@@ -1,5 +1,6 @@
 package net.akami.atosym.handler.sign;
 
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.tree.DerivativeTree;
 import net.akami.atosym.utils.MathUtils;
 
@@ -36,7 +37,7 @@ public enum QuaternaryOperationSign {
         this.quaternaryFunction = function;
     }
 
-    public Expression compute(Expression a, Expression a2, Expression b, Expression b2) {
+    public MathObject compute(MathObject a, MathObject a2, MathObject b, MathObject b2) {
         Objects.requireNonNull(quaternaryFunction);
         return quaternaryFunction.compute(a, a2, b, b2);
     }
@@ -52,6 +53,6 @@ public enum QuaternaryOperationSign {
 
     @FunctionalInterface
     public interface QuaternaryMathOperation {
-        Expression compute(Expression a, Expression altA, Expression b, Expression altB);
+        MathObject compute(MathObject a, MathObject altA, MathObject b, MathObject altB);
     }
 }

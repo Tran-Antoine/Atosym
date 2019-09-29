@@ -1,13 +1,11 @@
 package net.akami.atosym.utils;
 
-import net.akami.atosym.core.MaskSimplifier;
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.core.MaskSimplifier;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
-import net.akami.atosym.tree.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Objects;
 
 /**
  * Class which will be merged with the {@link MaskSimplifier} class soon.
@@ -25,11 +23,16 @@ public class ReducerFactory {
         };
     }
 
-    public static Expression reduce(String exp) {
+    public static MathObject reduce(String exp) {
         return reduce(exp, MaskContext.DEFAULT);
     }
 
-    public static Expression reduce(String exp, MaskContext context) {
+    public static MathObject reduce(String exp, MaskContext context) {
+        return null;
+    }
+
+    /*
+    public static MathObject reduce(String exp, MaskContext context) {
         Objects.requireNonNull(exp, "Cannot reduce a null expression");
         long time = System.nanoTime();
 
@@ -40,7 +43,7 @@ public class ReducerFactory {
 
         TreeUtils.printBranches(tree);
         LOGGER.debug("Now merging branches");
-        Expression result;
+        MathObject result;
         try {
             result = tree.merge();
         } catch (ArithmeticException | NumberFormatException e) {
@@ -55,5 +58,6 @@ public class ReducerFactory {
         float deltaTime = (System.nanoTime() - time) / 1000000000f;
         LOGGER.info("Expression successfully reduced in {} seconds.", deltaTime);
         return result;
-    }
+    }*/
+
 }

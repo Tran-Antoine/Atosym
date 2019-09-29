@@ -1,5 +1,6 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.utils.ExpressionUtils;
@@ -80,11 +81,11 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
         LOGGER.info("Actual branch : {}", self.getExpression());
 
         // We are sure that the branch has a left and a right part, because the branch can be calculated
-        Expression left = self.getLeftValue();
-        Expression right = self.getRightValue();
+        MathObject left = self.getLeftValue();
+        MathObject right = self.getRightValue();
 
         LOGGER.debug("Left : {}, Right : {}, Operation : {}", left, right, self.getOperation());
-        Expression value = evalValue(left, right, self.getOperation());
+        MathObject value = evalValue(left, right, self.getOperation());
         // The findResult is defined as the reduced value of the expression
         LOGGER.info("Successfully calculated the value of " + self.getExpression() + " : " + value);
 
@@ -100,7 +101,7 @@ public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
      * @param sign the operation sign corresponding to a calculation
      * @return an expression corresponding to the evaluation of a and b through the operation matching the sign
      */
-    protected Expression evalValue(Expression left, Expression right, char sign) {
+    protected MathObject evalValue(MathObject left, MathObject right, char sign) {
         return BinaryOperationSign.getBySign(sign).compute(left, right, context);
     }
 }

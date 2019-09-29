@@ -1,15 +1,13 @@
 package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.handler.MultOperator;
+import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.merge.property.FairOverallMergeProperty;
-import net.akami.atosym.utils.VariableComparator;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOverallMergeProperty<Monomial>>{
+public class MonomialMultiplicationMerge implements FairMerge<MathObject, FairOverallMergeProperty<MathObject>>{
 
     private MaskContext context;
 
@@ -18,7 +16,7 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
     }
 
     @Override
-    public List<FairOverallMergeProperty<Monomial>> generateOverallProperties(Monomial p1, Monomial p2) {
+    public List<FairOverallMergeProperty<MathObject>> generateOverallProperties(MathObject p1, MathObject p2) {
         return Collections.singletonList(
                 new MultiplicationMergeProperty(p1, p2)
         );
@@ -30,9 +28,9 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
      * monomials, then use another merge behavior to get the resulting variables from the two monomials.
      * A unique monomial is thus created, which will be added into the list.
      */
-    public class MultiplicationMergeProperty extends FairOverallMergeProperty<Monomial> {
+    public class MultiplicationMergeProperty extends FairOverallMergeProperty<MathObject> {
 
-        protected MultiplicationMergeProperty(Monomial p1, Monomial p2) {
+        protected MultiplicationMergeProperty(MathObject p1, MathObject p2) {
             super(p1, p2, false);
         }
 
@@ -46,8 +44,8 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
         }
 
         @Override
-        public Monomial computeResult() {
-            MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
+        public MathObject computeResult() {
+            /*MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
             float floatResult = multiplier.mult(p1.getNumericValue(), p2.getNumericValue());
 
             SequencedMerge<Variable> merge = new VariableCombination(context);
@@ -57,7 +55,8 @@ public class MonomialMultiplicationMerge implements FairMerge<Monomial, FairOver
             List<Variable> finalVars = merge.merge(vars1, vars2, false);
             finalVars.sort(VariableComparator.COMPARATOR);
 
-            return new Monomial(floatResult, finalVars);
+            return new Monomial(floatResult, finalVars);*/
+            return null;
         }
     }
 }

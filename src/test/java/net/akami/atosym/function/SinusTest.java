@@ -1,13 +1,12 @@
 package net.akami.atosym.function;
 
-import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.utils.ReducerFactory;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 public class SinusTest {
 
-    private final SineOperator function = new SineOperator(MaskContext.DEFAULT);
+    private final SineOperator function = new SineOperator();
 
     @Test
     public void numericValuesTest() {
