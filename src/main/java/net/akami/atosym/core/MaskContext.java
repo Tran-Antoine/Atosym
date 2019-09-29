@@ -13,7 +13,10 @@ import org.slf4j.LoggerFactory;
 
 import java.math.MathContext;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Defines a calculation environment, required to perform any operation on expressions. <br>
@@ -59,11 +62,11 @@ public class MaskContext {
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
     static {
-        //DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);
+        DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);
     }
     /**
      * Constructs a context with the default parameters. The set of {@link BinaryOperator}s will be generated
-     * from {@link BinaryOperator#generateDefaultHandlers()}, the set of mathematical functions
+     * from {@link BinaryOperator#generateDefaultBinaryOperators(MaskContext)}, the set of mathematical functions
      * will be generated from {@link MathOperator#generateDefaultFunctions()}, and the MathContext will
      * use a 100 digits precision.
      */
@@ -93,20 +96,20 @@ public class MaskContext {
      * @return a result computed by the operator from the two elements given
      */
     public MathObject binaryCompute(MathObject a, MathObject b, Class<? extends BinaryOperator> clazz) {
-        BinaryOperator handler = getBinaryOperation(clazz);
+        BinaryOperator handler = getBinaryOperator(clazz);
         return handler.rawOperate(a, b);
     }
 
     /**
      * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link BinaryOperator#operate(Expression, Expression)} from it. <br>
-     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(Expression, Expression, Class)}
+     * the default {@link BinaryOperator#operate(MathObject[])} from it. <br>
+     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
      * instead.
      * @param clazz the type of the operator
      * @param <T> the generic type to avoid casting
      * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
      */
-    public <T extends BinaryOperator> T getBinaryOperation(Class<T> clazz) {
+    public <T extends BinaryOperator> T getBinaryOperator(Class<T> clazz) {
         for(BinaryOperator current : binaryHandlers) {
             if(current.getClass().equals(clazz))
                 return (T) current;
@@ -115,37 +118,7 @@ public class MaskContext {
     }
 
     /**
-     * Returns the mathematical function matching the given binding. Since two functions are equals as long as their
-     * binding is similar, there can be only one function matching it, because the functions are grouped in a set.
-     * @param binding the given binding, supposed to match a single function present in the set
-     * @return an {@link Optional#empty()} if the binding does not match anything, otherwise {@link Optional#of(Object)},
-     * the parameter being the matched function.
-     */
-    public Optional<MathOperator> getFunctionByBinding(char binding) {
-        for(MathOperator function : supportedFunctions) {
-            //if(function.getBinding() == binding)
-                //return Optional.of(function);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Goes through the given input, and tries to match every char with a mathematical function. The first matched function
-     * found is returned.
-     * @param self the given input
-     * @return the first function that matches a char from the input
-     */
-    public Optional<MathOperator> getFunctionByExpression(String self) {
-        for(char c : self.toCharArray()) {
-            Optional<MathOperator> function = getFunctionByBinding(c);
-            if(function.isPresent())
-                return function;
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Adds a new handler to the set. Only {@link BinaryOperator}s with {@link Expression} as generic type
+     * Adds a new handler to the set. Only {@link BinaryOperator}s with {@link MathObject} as generic type
      * are supported.
      * @param handler a new handler to add
      */
@@ -251,8 +224,8 @@ public class MaskContext {
 
     private <S> void actionGlobal(AlterationAction<FairAlterationHandler<MathObject>, S> action, Supplier<S> s1, Class<?> type) {
         List<FairAlterationHandler<MathObject>> alterationHandlers = new ArrayList<>();
-        //alterationHandlers.addAll(supportedFunctions); TODO
-        //alterationHandlers.addAll(binaryHandlers);
+        alterationHandlers.addAll(supportedFunctions);
+        alterationHandlers.addAll(binaryHandlers);
         for(FairAlterationHandler<MathObject> element : alterationHandlers) {
             if(type.isAssignableFrom(element.getClass())) {
                 action.action(element, s1.get());
@@ -263,5 +236,34 @@ public class MaskContext {
     @FunctionalInterface
     private interface AlterationAction<T, S> {
         void action(T t, S s);
+    }
+
+
+    public static class Builder {
+
+        private MaskContext context;
+
+        public Builder() {
+            this.context = new MaskContext();
+        }
+
+        public MaskContext build() {
+            return context;
+        }
+
+        public Builder withPrecision(int precision) {
+            context.bigDecimalContext = new MathContext(precision);
+            return this;
+        }
+
+        public Builder withBinaryOperators(Function<MaskContext, BinaryOperator>... operators) {
+            context.binaryHandlers = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+            return this;
+        }
+
+        public Builder withFunctionOperators(Function<MaskContext, MathOperator>... operators) {
+            context.supportedFunctions = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+            return this;
+        }
     }
 }

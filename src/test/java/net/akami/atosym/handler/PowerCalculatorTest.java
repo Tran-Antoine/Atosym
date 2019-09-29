@@ -1,13 +1,11 @@
 package net.akami.atosym.handler;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import net.akami.atosym.core.MaskContext;
 import org.junit.Test;
 
 public class PowerCalculatorTest {
 
-    PowerOperator POW = MaskContext.DEFAULT.getBinaryOperation(PowerOperator.class);
+    PowerOperator POW = MaskContext.DEFAULT.getBinaryOperator(PowerOperator.class);
 
     @Test
     public void powTest() {

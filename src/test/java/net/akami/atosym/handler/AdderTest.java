@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdderTest {
 
-    private final SumOperator adder = DEFAULT.getBinaryOperation(SumOperator.class);
+    private final SumOperator adder = DEFAULT.getBinaryOperator(SumOperator.class);
 
     @Test
     public void numericTest() {
@@ -82,15 +82,21 @@ public class AdderTest {
 
     @Test
     public void testSumChain() {
-        MaskContext context = new MaskContext();
-        List<MathObject> elements = toList(new NumberExpression(3f), new NumberExpression(5f));
-        List<MathObject> elements2 = toList(new NumberExpression(4f), new VariableExpression('x'));
-        SumOperator operator = context.getBinaryOperation(SumOperator.class);
-        MathObject sum = new SumMathObject(operator, elements);
-        MathObject sum2 = new SumMathObject(operator, elements2);
+        MaskContext context = new MaskContext.Builder()
+                .withBinaryOperators(SumOperator::new)
+                .withFunctionOperators()
+                .build();
 
-        assertThat(sum.operate().display()).isEqualTo("8.0");
-        assertThat(sum2.operate().display()).isEqualTo("4.0+x");
+        assertSum(new NumberExpression(3f), new NumberExpression(5f), context, "8.0");
+        assertSum(new NumberExpression(4f), new VariableExpression('x'), context, "4.0+x");
+        assertSum(new VariableExpression('x'), new VariableExpression('x'), context, "2.0x");
+    }
+
+    private void assertSum(MathObject a, MathObject b, MaskContext context, String result) {
+        List<MathObject> elements = toList(a, b);
+        SumOperator operator = context.getBinaryOperator(SumOperator.class);
+        MathObject sum = new SumMathObject(operator, elements);
+        assertThat(sum.operate().display()).isEqualTo(result);
     }
 
     private List<MathObject> toList(MathObject... objects) {

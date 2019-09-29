@@ -1,0 +1,33 @@
+package net.akami.atosym.merge.property;
+
+import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.*;
+import net.akami.atosym.handler.MultOperator;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class IdenticalVariablesSumProperty extends ElementSequencedMergeProperty<MathObject> {
+
+    private MaskContext context;
+
+    public IdenticalVariablesSumProperty(MathObject p1, MathObject p2, MaskContext context) {
+        super(p1, p2, false);
+        this.context = context;
+    }
+
+    @Override
+    public void blendResult(List<MathObject> constructed) {
+        List<MathObject> elements = Arrays.asList(
+                new NumberExpression(2f),
+                new VariableExpression(((VariableExpression) p1).getValue()));
+        constructed.add(new MultMathObject(context.getBinaryOperator(MultOperator.class), elements));
+    }
+
+    @Override
+    public boolean isSuitable() {
+        if(p1.getType() != MathObjectType.VARIABLE) return false;
+        if(p2.getType() != MathObjectType.VARIABLE) return false;
+        return ((VariableExpression) p1).getValue() == ((VariableExpression) p2).getValue();
+    }
+}

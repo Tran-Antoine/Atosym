@@ -5,7 +5,7 @@ import org.junit.Test;
 
 public class MultiplierTest {
 
-    private final MultOperator MULT = MaskContext.DEFAULT.getBinaryOperation(MultOperator.class);
+    private final MultOperator MULT = MaskContext.DEFAULT.getBinaryOperator(MultOperator.class);
 
     @Test
     public void multTest() {

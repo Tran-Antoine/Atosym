@@ -26,7 +26,7 @@ import java.util.Objects;
 public enum BinaryOperationSign {
 
     /**
-     * Sum operator, computes a + b using the {@link MathUtils#sum(Expression, Expression)} method.
+     * Sum operator, computes a + b using the {@link MathUtils#sum(MathObject, MathObject)} method.
      * <br>
      * This operator can deal with a chain of additions / subtractions. Therefore, there will not be any problem
      * if the a or b value happens to be a polynomial.
@@ -44,7 +44,7 @@ public enum BinaryOperationSign {
     SUM('+', MathUtils::sum, 0),
 
     /**
-     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(Expression, Expression)} method.
+     * Subtraction operator, computes a - b using the {@link MathUtils#subtract(MathObject, MathObject)} method.
      * <br>
      * This operator works the same way as the {@code SUM} operator, except that it multiply all the monomials
      * found in the {@code b} input by -1.
@@ -62,7 +62,7 @@ public enum BinaryOperationSign {
     SUBTRACT('-', MathUtils::subtract, 0),
 
     /**
-     * Mult operator, computes a * b using the {@link MathUtils#mult(Expression, Expression)} method.
+     * Mult operator, computes a * b using the {@link MathUtils#mult(MathObject, MathObject)} method.
      * <br>
      * It also supports polynomial multiplication (not only the monomial ones) thus distributivity.
      * <br>

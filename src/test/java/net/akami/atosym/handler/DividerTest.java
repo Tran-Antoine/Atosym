@@ -7,7 +7,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DividerTest {
 
-    private final DivOperator divider = MaskContext.DEFAULT.getBinaryOperation(DivOperator.class);
+    private final DivOperator divider = MaskContext.DEFAULT.getBinaryOperator(DivOperator.class);
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test

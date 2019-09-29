@@ -3,6 +3,7 @@ package net.akami.atosym.merge;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.IdenticalVariablesSumProperty;
 import net.akami.atosym.merge.property.NumericSumProperty;
 
 import java.util.Arrays;
@@ -19,7 +20,8 @@ public class MonomialAdditionMerge implements SequencedMerge<MathObject> {
     @Override
     public List<ElementSequencedMergeProperty<MathObject>> generateElementProperties(MathObject p1, MathObject p2) {
         return Arrays.asList(
-                new NumericSumProperty(p1, p2, this.context)
+                new NumericSumProperty(p1, p2, this.context),
+                new IdenticalVariablesSumProperty(p1, p2, this.context)
         );
     }
 
