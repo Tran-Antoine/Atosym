@@ -16,13 +16,14 @@ public class SumMathObject extends MathFunction {
 
         int i = 0;
 
-        for(MathObject displayable : children) {
+        for (MathObject displayable : children) {
 
             String display = displayable.display();
             boolean isSigned = !(display.startsWith("+") || display.startsWith("-"));
 
-            if(i != 0 && isSigned)
+            if (i != 0 && isSigned) {
                 builder.append('+');
+            }
 
             builder.append(display);
 

@@ -2,7 +2,8 @@ package net.akami.atosym.expression;
 
 public final class DisplayUtils {
 
-    private DisplayUtils(){}
+    private DisplayUtils() {
+    }
 
     public static String join(MathObject a, MathObject b, String separator) {
 
@@ -12,11 +13,11 @@ public final class DisplayUtils {
                 + surroundWithParenthesis(b);
     }
 
-    private static String surroundWithParenthesis(MathObject mathObject){
+    private static String surroundWithParenthesis(MathObject mathObject) {
         return surroundWithParenthesis(mathObject.display());
     }
 
-    public static String surroundWithParenthesis(String str){
+    public static String surroundWithParenthesis(String str) {
         return '(' + str + ')';
     }
 }
