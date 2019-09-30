@@ -12,7 +12,7 @@ import static net.akami.atosym.core.MaskContext.DEFAULT;
 
 public class MathUtils {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
+    // private static final Logger LOGGER = LoggerFactory.getLogger(MathUtils.class);
 
     public static MathObject sum(MathObject a, MathObject b)      { return sum(a, b, DEFAULT);      }
     public static MathObject subtract(MathObject a, MathObject b) { return subtract(a, b, DEFAULT); }
@@ -59,6 +59,12 @@ public class MathUtils {
             double result = operation.compute(Double.valueOf(a));
             return String.valueOf(Math.abs(result) > 10E-15 ? result : 0);
         }
+        /* TODO: Replace with
+            DisplayUtils.surroundWithParenthesis(DisplayUtils.surroundWithParenthesis(a) + opChar);
+            or
+            DisplayUtils.surroundWithParenthesis("(" + a + ")" + opChar);
+            or not??
+         */
         return "(("+a+")"+opChar+")";
     }
 

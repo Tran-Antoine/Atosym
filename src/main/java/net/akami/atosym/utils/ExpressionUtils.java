@@ -5,10 +5,10 @@ import net.akami.atosym.expression.NumberExpression;
 
 public final class ExpressionUtils {
 
-    public static final String MATH_SIGNS = "+-*/^()";
+    static final String MATH_SIGNS = "+-*/^()";
     // 'E' deliberately missing, because it corresponds to "*10^x"
-    public static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
-    public static final String TRIGONOMETRY_SHORTCUTS = "@#§";
+    static final String VARIABLES = "abcdefghijklmnopqrstuvwxyzABCDFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String TRIGONOMETRY_SHORTCUTS = "@#§";
     public static final String NUMBERS = "0123456789";
 
     /*public static boolean isANumber(Expression exp) {
@@ -70,13 +70,13 @@ public final class ExpressionUtils {
 
         int b = FormatterFactory.areEdgesBracketsConnected(exp, false) ? 1 : 0;
         // In case the exp is 5*-3 or 5/-3
-        if (index > 0+b && (exp.charAt(index - 1-b) == '/' || exp.charAt(index - 1-b) == '*')) {
+        if (index > b && (exp.charAt(index - 1-b) == '/' || exp.charAt(index - 1-b) == '*')) {
             return true;
         }
 
         int leftParenthesis = 0;
 
-        for (int i = 0+b; i < exp.length()-b; i++) {
+        for (int i = b; i < exp.length()-b; i++) {
             if (exp.charAt(i) == '(') {
                 leftParenthesis++;
             }
@@ -90,15 +90,15 @@ public final class ExpressionUtils {
         }
         return false;
     }
-
+    /*
     public static boolean isSigned(String exp) {
         return exp.charAt(0) == '+' || exp.charAt(0) == '-';
     }
-
-    public static boolean isTrigonometricShortcut(String exp) {
+    */
+    static boolean isTrigonometricShortcut(String exp) {
         return exp.length() == 1 && TRIGONOMETRY_SHORTCUTS.contains(exp);
     }
-    public static boolean isTrigonometric(String exp) {
+    static boolean isTrigonometric(String exp) {
         return exp.contains("@") || exp.contains("#") || exp.contains("§");
     }
 }
