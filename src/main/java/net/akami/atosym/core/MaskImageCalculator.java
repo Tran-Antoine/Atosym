@@ -1,6 +1,6 @@
 package net.akami.atosym.core;
 
-import net.akami.atosym.expression.DisplayUtils;
+import net.akami.atosym.utils.DisplayUtils;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.ExpressionUtils;
 import net.akami.atosym.utils.ReducerFactory;

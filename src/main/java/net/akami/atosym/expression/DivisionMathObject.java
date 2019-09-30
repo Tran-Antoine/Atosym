@@ -1,6 +1,7 @@
 package net.akami.atosym.expression;
 
 import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;
 
