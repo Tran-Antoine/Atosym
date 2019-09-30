@@ -20,4 +20,8 @@ public final class DisplayUtils {
     public static String surroundWithParenthesis(String str) {
         return '(' + str + ')';
     }
+
+    public static void surroundWithParenthesis(StringBuilder stringBuilder, String str) {
+        stringBuilder.append('(').append(str).append(')');
+    }
 }
