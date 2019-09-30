@@ -16,7 +16,7 @@ public class MultMathObject extends MathFunction {
 
         StringBuilder builder = new StringBuilder();
 
-        for(MathObject displayable : children) {
+        for (MathObject displayable : children) {
             fillBuilder(builder, displayable);
         }
 
@@ -26,7 +26,7 @@ public class MultMathObject extends MathFunction {
     private void fillBuilder(StringBuilder self, MathObject displayable) {
         String currentDisplay = displayable.display();
 
-        if(self.length() == 0) {
+        if (self.length() == 0) {
             self.append(currentDisplay);
             return;
         }
@@ -34,7 +34,7 @@ public class MultMathObject extends MathFunction {
         char lastChar = self.charAt(self.length() - 1);
         char nextChar = currentDisplay.charAt(0);
 
-        if(!validMultShortcut(lastChar, nextChar)) {
+        if (!validMultShortcut(lastChar, nextChar)) {
             self.append('*');
         }
 

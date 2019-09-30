@@ -16,13 +16,7 @@ public abstract class LiteralFunction extends MathFunction {
 
     @Override
     public String display() {
-
-        StringBuilder builder = new StringBuilder();
-        builder
-                .append(name)
-                .append('(')
-                .append(String.join(", ", children.stream().map(MathObject::display).collect(Collectors.toList())))
-                .append(')');
-        return builder.toString();
+        String concatWithComma = String.join(", ", children.stream().map(MathObject::display).collect(Collectors.toList()));
+        return name + DisplayUtils.surroundWithParenthesis(concatWithComma);
     }
 }
