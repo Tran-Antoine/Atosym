@@ -30,11 +30,11 @@ public abstract class MathOperator implements
         initAlterations();
     }
 
-    protected abstract MathObject operate(MathObject... input);
+    protected abstract MathObject operate(List<MathObject> input);
 
-    public MathObject rawOperate(MathObject... input) {
-        if(input.length != argsLength) {
-            throw new IllegalArgumentException(input.length + " params given, only " + argsLength + " required.");
+    public MathObject rawOperate(List<MathObject> input) {
+        if(input.size() != argsLength) {
+            throw new IllegalArgumentException(input.size() + " params given, only " + argsLength + " required.");
         }
 
         for(IOCalculationModifier<MathObject> modifier : getSuitableModifiers(input)) {

@@ -2,6 +2,8 @@ package net.akami.atosym.alteration;
 
 import net.akami.atosym.handler.AlterationHandler;
 
+import java.util.List;
+
 /**
  * Defines the behavior of an expression modifier, in the context of
  * mathematical calculations. Modifiers can change the input string given, change the result calculated or even
@@ -41,7 +43,7 @@ public interface CalculationAlteration<T> extends Comparable<CalculationAlterati
      * @param input the given input string that will be checked
      * @return whether the given input can be modified or if the calculation can be cancelled
      */
-    boolean appliesTo(T... input);
+    boolean appliesTo(List<T> input);
 
     /**
      * Because several alterations might want to affect a single input at the same time, the priority level

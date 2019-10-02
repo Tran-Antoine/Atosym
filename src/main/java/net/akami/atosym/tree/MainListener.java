@@ -1,5 +1,6 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.parser.AtosymBaseListener;
 import net.akami.atosym.parser.AtosymLexer;
 import net.akami.atosym.parser.AtosymParser;
@@ -10,11 +11,16 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainListener extends AtosymBaseListener {
+
+    private static AtosymTree<SimpleBranch> tree = new AtosymTree<SimpleBranch>(MaskContext.DEFAULT);
 
     public static void main(String... args) {
 
-        CharStream inputStream = CharStreams.fromString("sin(1,2,3)");
+        CharStream inputStream = CharStreams.fromString("sin(1,2,3+1)");
         AtosymLexer atosymLexer = new AtosymLexer(inputStream);
         CommonTokenStream commonTokenStream = new CommonTokenStream(atosymLexer);
         AtosymParser atosymParser = new AtosymParser(commonTokenStream);
@@ -28,10 +34,25 @@ public class MainListener extends AtosymBaseListener {
     }
 
     @Override
-    public void enterExp(ExpContext ctx) {
-        for(ParseTree tree : ctx.children) {
-            System.out.println(tree.getText()+" | "+tree.getChildCount());
+    public void enterMain(AtosymParser.MainContext ctx) {
+        ExpContext context = (ExpContext) ctx.getChild(0);
+        tree.setInitialBranch(createChildren(context, tree).get(0));
+    }
+
+    private List<SimpleBranch> createChildren(ExpContext context, AtosymTree<SimpleBranch> tree) {
+        List<SimpleBranch> branches = new ArrayList<>();
+        for(ParseTree parseTree : context.children) {
+            branches.add(parseTreeToBranch(parseTree, tree));
         }
-        System.out.println("END");
+        return branches;
+    }
+
+    private SimpleBranch parseTreeToBranch(ParseTree parseTree, AtosymTree<SimpleBranch> tree) {
+        if(!(parseTree instanceof ExpContext)) {
+            throw new UnsupportedOperationException();
+        }
+
+        ExpContext context = (ExpContext) parseTree;
+        return null;
     }
 }

@@ -10,7 +10,7 @@ import net.akami.atosym.expression.MathObject;
  *
  * @author Antoine Tran
  */
-public class DerivativeBranch extends Branch<DerivativeBranch> {
+public class DerivativeBranch extends SimpleBranch<DerivativeBranch> {
 
     private MathObject derivativeValue;
 

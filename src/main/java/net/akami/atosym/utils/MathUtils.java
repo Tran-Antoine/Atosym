@@ -51,7 +51,7 @@ public class MathUtils {
     }
 
     public static String tan(String a) {
-        return trigonometryOperation(a, '§', Math::tan);
+        return trigonometryOperation(a, ' ', Math::tan);
     }
 
     public static String trigonometryOperation(String a, char opChar, UnaryOperation operation) {

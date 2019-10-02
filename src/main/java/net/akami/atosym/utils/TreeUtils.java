@@ -3,7 +3,6 @@ package net.akami.atosym.utils;
 import net.akami.atosym.tree.BinaryTree;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.akami.atosym.tree.Branch;
 
 public class TreeUtils {
 

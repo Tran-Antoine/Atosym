@@ -12,9 +12,9 @@ import java.util.Optional;
 /**
  * A Binary tree handles branch splitting, evaluating and merging with the defined behaviours. <br> <br>
  * When instantiating a BinaryTree, note that the splitting should automatically and instantly be performed
- * in the {@link BinaryTree#begin(Branch)}, starting off with the given branch. <br>
- * This {@link BinaryTree#begin(Branch)} method must define how a branch must be divided according to ALL the splitters, whereas
- * {@link BinaryTree#split(Branch, char...)} defines how each branch must be divided, according to the splitter(s) given.
+ * in the {@link BinaryTree#begin(SimpleBranch)}, starting off with the given branch. <br>
+ * This {@link BinaryTree#begin(SimpleBranch)} method must define how a branch must be divided according to ALL the splitters, whereas
+ * {@link BinaryTree#split(SimpleBranch, char...)} defines how each branch must be divided, according to the splitter(s) given.
  * <br> <br>
  * In other words, the begin method defines how and with which parameter the split method will be called.
  *
@@ -23,7 +23,7 @@ import java.util.Optional;
  * @param <T> what kind of branch will be handled by the tree.
  * @author Antoine Tran
  */
-public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
+public abstract class BinaryTree<T extends SimpleBranch> implements Iterable<T> {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BinaryTree.class);
     private List<T> branches;
@@ -33,7 +33,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
      * Available constructor for any binary tree. Note that as soon as the tree is created, the splitting will
      * automatically begin.
      * @param expression the initial expression that forms the top of the tree
-     * @param splitters the chars used to split the tree, see {@link BinaryTree#begin(Branch)} for further information.
+     * @param splitters the chars used to split the tree, see {@link BinaryTree#begin(SimpleBranch)} for further information.
      */
     public BinaryTree(String expression, char... splitters) {
         this.branches = new ArrayList<>();
@@ -89,7 +89,7 @@ public abstract class BinaryTree<T extends Branch> implements Iterable<T> {
 
     /**
      * Merges the whole tree. The usual behavior is to go from the last branch to the first one,
-     * see if the current actually is calculable, and if yes then calls the {@link BinaryTree#evalBranch(Branch)}
+     * see if the current actually is calculable, and if yes then calls the {@link BinaryTree#evalBranch(SimpleBranch)}
      * method. <br>
      * If the finalResult method does not return an empty optional, the value found is returned <br>
      * Note that the merge method can be redefined if the behavior does not suits the tree.

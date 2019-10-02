@@ -48,14 +48,14 @@ public interface AlterationHandler<T, R> {
         getModifiers().removeAll(modifiers);
     }
 
-    default Optional<CalculationCanceller<T, R>> getSuitableCanceller(T... input) {
+    default Optional<CalculationCanceller<T, R>> getSuitableCanceller(List<T> input) {
         for(CalculationCanceller<T, R> alteration : getCancellers()) {
             if(alteration.appliesTo(input)) return Optional.of(alteration);
         }
         return Optional.empty();
     }
 
-    default List<IOCalculationModifier<T>> getSuitableModifiers(T... input) {
+    default List<IOCalculationModifier<T>> getSuitableModifiers(List<T> input) {
         List<IOCalculationModifier<T>> compatibles = new ArrayList<>();
 
         for(IOCalculationModifier<T> alteration : getModifiers()) {

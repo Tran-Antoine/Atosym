@@ -1,5 +1,7 @@
 package net.akami.atosym.alteration;
 
+import java.util.List;
+
 /**
  * An IOModifier checks whether a given expression needs to be formatted or not. <br>
  * When required, it replaces the input by its formatted version. The modifications can be applied before
@@ -14,10 +16,10 @@ public interface IOCalculationModifier<T> extends CalculationAlteration<T> {
     /**
      * Defines how a given input must be formatted.
      * <br>
-     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(Object[])}
+     * Note that no validity check must be done inside the method itself, since the {@link #appliesTo(List<T>)}
      * method should already take care of that.
      * @param input the given input
      * @return the formatted version of the input
      */
-    T[] modify(T... input);
+    List<T> modify(List<T> input);
 }

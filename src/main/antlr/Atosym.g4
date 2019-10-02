@@ -6,9 +6,9 @@ exp
     : func OPENING_BRACKET series CLOSING_BRACKET
     | OPENING_BRACKET exp CLOSING_BRACKET
     | exp OTHER_SYMBOL
-    | exp POW exp
-    | exp (MULT | DIV |) exp
-    | exp (SUM | SUB) exp
+    | exp non_lit_func[3] exp
+    | exp non_lit_func[2] exp
+    | exp non_lit_func[1] exp
     | NUMBER
     | CHAR;
 
@@ -18,7 +18,14 @@ func returns [int length]
     : 'sin'  {$length = 1}  // sin(angle)
     | 'cos'  {$length = 1}  // cos(angle)
     | 'log'  {$length = 2}  // log(base, n)
-    | 'root' {$length = 2}; // root(base, n)
+    | 'root' {$length = 2} // root(base, n)
+    ;
+
+non_lit_func [int priority]
+    : {$priority == 1}? (SUM | SUB)
+    | {$priority == 2}? (DIV | MULT)
+    | {$priority == 3}? POW
+    ;
 
 NUMBER : DIGIT+;
 DIGIT  : [0-9];

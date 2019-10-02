@@ -21,7 +21,7 @@ import net.akami.atosym.utils.TreeUtils;
  *
  * @author Antoine Tran
  */
-public abstract class CalculationTree<T extends Branch> extends BinaryTree<T> {
+public abstract class CalculationTree<T extends SimpleBranch> extends BinaryTree<T> {
 
     protected final MaskContext context;
 
