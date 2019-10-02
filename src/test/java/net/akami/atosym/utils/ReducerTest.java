@@ -98,7 +98,7 @@ public class ReducerTest {
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     /*@Test
     public void decomposeExpressionTest() {
-        Divider div = MaskContext.DEFAULT.getBinaryOperation(Divider.class);
+        DivOperator div = MaskContext.DEFAULT.getBinaryOperation(DivOperator.class);
         Assertions.assertThat(div.monomialDivision("4", "2")).isEqualTo("2");
         Assertions.assertThat(div.monomialDivision("5", "2")).isEqualTo("5/2");
         Assertions.assertThat(div.monomialDivision("6", "4")).isEqualTo("3/2");

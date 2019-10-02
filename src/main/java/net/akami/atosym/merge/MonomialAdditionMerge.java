@@ -1,13 +1,15 @@
 package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.merge.property.*;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.IdenticalVariablesSumProperty;
+import net.akami.atosym.merge.property.NumericSumProperty;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class MonomialAdditionMerge implements SequencedMerge<Monomial> {
+public class MonomialAdditionMerge implements SequencedMerge<MathObject> {
 
     protected MaskContext context;
 
@@ -16,11 +18,10 @@ public class MonomialAdditionMerge implements SequencedMerge<Monomial> {
     }
 
     @Override
-    public List<ElementSequencedMergeProperty<Monomial>> generateElementProperties(Monomial p1, Monomial p2) {
+    public List<ElementSequencedMergeProperty<MathObject>> generateElementProperties(MathObject p1, MathObject p2) {
         return Arrays.asList(
-                new CosineSinusSquaredProperty(p1, p2),
-                new CommonDenominatorAdditionProperty(p1, p2, context),
-                new IdenticalVariablePartProperty(p1, p2, context)
+                new NumericSumProperty(p1, p2, this.context),
+                new IdenticalVariablesSumProperty(p1, p2, this.context)
         );
     }
 

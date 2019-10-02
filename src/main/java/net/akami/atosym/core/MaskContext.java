@@ -3,17 +3,20 @@ package net.akami.atosym.core;
 import net.akami.atosym.alteration.*;
 import net.akami.atosym.check.*;
 import net.akami.atosym.exception.MaskException;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.function.MathFunction;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
-import net.akami.atosym.handler.BinaryOperationHandler;
+import net.akami.atosym.handler.BinaryOperator;
 import net.akami.atosym.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.MathContext;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Defines a calculation environment, required to perform any operation on expressions. <br>
@@ -28,7 +31,7 @@ import java.util.function.Supplier;
  *
  * The MaskContext class handles :
  * <ul>
- *      <li> A set of {@link BinaryOperationHandler}s. Basically, the 5 default operations, being the addition, the
+ *      <li> A set of {@link BinaryOperator}s. Basically, the 5 default operations, being the addition, the
  *      subtraction, the multiplication, the division and the power calculation. Although this is not recommended,
  *      you are free to remove any of these operations, if you are guaranteed that they won't be required. However,
  *      because your expression doesn't literally contain a given operation doesn't mean it is not required. For
@@ -36,8 +39,8 @@ import java.util.function.Supplier;
  *      amount of times. <br>
  *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or add your owns
  *      with different alterations. <br>
- *      <li> A set of {@link MathFunction}s. Only the mathematical functions present in the set wil be supported.
- *      Mathematical functions can require multiple arguments. See {@link MathFunction}'s documentation for further
+ *      <li> A set of {@link MathOperator}s. Only the mathematical functions present in the set wil be supported.
+ *      Mathematical functions can require multiple arguments. See {@link MathOperator}'s documentation for further
  *      information <br>
  *      <li> A list of {@link ValidityCheck}. They analyze the given input and throw an error if the input is invalid
  *      mathematically speaking. <br>
@@ -51,20 +54,20 @@ public class MaskContext {
 
     public static final MaskContext DEFAULT = new MaskContext();
 
-    private Set<BinaryOperationHandler> binaryHandlers;
-    private Set<MathFunction> supportedFunctions;
+    private Set<BinaryOperator> binaryHandlers;
+    private Set<MathOperator> supportedFunctions;
     private List<ValidityCheck> validityChecks;
     private MathContext bigDecimalContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
 
     static {
-        DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperationHandler.class);
+        DEFAULT.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);
     }
     /**
-     * Constructs a context with the default parameters. The set of {@link BinaryOperationHandler}s will be generated
-     * from {@link BinaryOperationHandler#generateDefaultHandlers(MaskContext)}, the set of mathematical functions
-     * will be generated from {@link MathFunction#generateDefaultFunctions(MaskContext)}, and the MathContext will
+     * Constructs a context with the default parameters. The set of {@link BinaryOperator}s will be generated
+     * from {@link BinaryOperator#generateDefaultBinaryOperators(MaskContext)}, the set of mathematical functions
+     * will be generated from {@link MathOperator#generateDefaultFunctions()}, and the MathContext will
      * use a 100 digits precision.
      */
     public MaskContext() {
@@ -77,8 +80,8 @@ public class MaskContext {
      * @param precision the amount of significant digits handled by the context
      */
     public MaskContext(int precision) {
-        this.binaryHandlers = BinaryOperationHandler.generateDefaultHandlers(this);
-        this.supportedFunctions = MathFunction.generateDefaultFunctions(this);
+        this.binaryHandlers = BinaryOperator.generateDefaultBinaryOperators(this);
+        this.supportedFunctions = MathOperator.generateDefaultFunctions();
         this.bigDecimalContext = new MathContext(precision);
         this.validityChecks = defaultValidityChecks();
     }
@@ -92,22 +95,22 @@ public class MaskContext {
      * @param clazz the type of the binary operator in charge of the calculation
      * @return a result computed by the operator from the two elements given
      */
-    public Expression binaryCompute(Expression a, Expression b, Class<? extends BinaryOperationHandler> clazz) {
-        BinaryOperationHandler handler = getBinaryOperation(clazz);
+    public MathObject binaryCompute(MathObject a, MathObject b, Class<? extends BinaryOperator> clazz) {
+        BinaryOperator handler = getBinaryOperator(clazz);
         return handler.rawOperate(a, b);
     }
 
     /**
      * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link BinaryOperationHandler#operate(Expression, Expression)} from it. <br>
-     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(Expression, Expression, Class)}
+     * the default {@link BinaryOperator#operate(MathObject[])} from it. <br>
+     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
      * instead.
      * @param clazz the type of the operator
      * @param <T> the generic type to avoid casting
      * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
      */
-    public <T extends BinaryOperationHandler> T getBinaryOperation(Class<T> clazz) {
-        for(BinaryOperationHandler current : binaryHandlers) {
+    public <T extends BinaryOperator> T getBinaryOperator(Class<T> clazz) {
+        for(BinaryOperator current : binaryHandlers) {
             if(current.getClass().equals(clazz))
                 return (T) current;
         }
@@ -115,41 +118,11 @@ public class MaskContext {
     }
 
     /**
-     * Returns the mathematical function matching the given binding. Since two functions are equals as long as their
-     * binding is similar, there can be only one function matching it, because the functions are grouped in a set.
-     * @param binding the given binding, supposed to match a single function present in the set
-     * @return an {@link Optional#empty()} if the binding does not match anything, otherwise {@link Optional#of(Object)},
-     * the parameter being the matched function.
-     */
-    public Optional<MathFunction> getFunctionByBinding(char binding) {
-        for(MathFunction function : supportedFunctions) {
-            if(function.getBinding() == binding)
-                return Optional.of(function);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Goes through the given input, and tries to match every char with a mathematical function. The first matched function
-     * found is returned.
-     * @param self the given input
-     * @return the first function that matches a char from the input
-     */
-    public Optional<MathFunction> getFunctionByExpression(String self) {
-        for(char c : self.toCharArray()) {
-            Optional<MathFunction> function = getFunctionByBinding(c);
-            if(function.isPresent())
-                return function;
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Adds a new handler to the set. Only {@link BinaryOperationHandler}s with {@link Expression} as generic type
+     * Adds a new handler to the set. Only {@link BinaryOperator}s with {@link MathObject} as generic type
      * are supported.
      * @param handler a new handler to add
      */
-    public void addHandler(BinaryOperationHandler handler) {
+    public void addHandler(BinaryOperator handler) {
         binaryHandlers.add(handler);
     }
 
@@ -157,8 +130,8 @@ public class MaskContext {
      * Removes the handler from the set whose {@link #getClass()} method equals the clazz parameter
      * @param clazz the class type to remove
      */
-    public void removeHandler(Class<? extends BinaryOperationHandler> clazz) {
-        for(BinaryOperationHandler handler : binaryHandlers) {
+    public void removeHandler(Class<? extends BinaryOperator> clazz) {
+        for(BinaryOperator handler : binaryHandlers) {
             if(handler.getClass().equals(clazz)) {
                 binaryHandlers.remove(handler);
                 return;
@@ -172,7 +145,7 @@ public class MaskContext {
      * Note that the new function will replace any existing function whose binding would match with the new function's.
      * @param target a new function to add
      */
-    public void addFunction(MathFunction target) {
+    public void addFunction(MathOperator target) {
         supportedFunctions.add(target);
     }
 
@@ -180,8 +153,8 @@ public class MaskContext {
      * Removes the function from the set whose {@link #getClass()} method equals the clazz parameter
      * @param clazz the class type to remove
      */
-    public void removeFunction(Class<? extends MathFunction> clazz) {
-        for(MathFunction func : supportedFunctions) {
+    public void removeFunction(Class<? extends MathOperator> clazz) {
+        for(MathOperator func : supportedFunctions) {
             if(func.getClass().equals(clazz)) {
                 supportedFunctions.remove(func);
                 return;
@@ -221,40 +194,39 @@ public class MaskContext {
     /**
      * @return the list of math functions supported
      */
-    public Set<MathFunction> getSupportedFunctions() {
+    public Set<MathOperator> getSupportedFunctions() {
         return supportedFunctions;
     }
 
-    public void addGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
+    public void addGlobalModifier(IOCalculationModifier<MathObject> modifier, Class<?> type) {
         addClonedModifier(() -> modifier, type);
     }
 
-    public void addGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+    public void addGlobalCanceller(FairCalculationCanceller<MathObject> canceller, Class<?> type) {
         addDuplicatedCanceller(() -> canceller, type);
     }
 
-    public void addClonedModifier(Supplier<IOCalculationModifier<Expression>> modifier, Class<?> type) {
+    public void addClonedModifier(Supplier<IOCalculationModifier<MathObject>> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::addModifier, modifier, type);
     }
 
-    public void addDuplicatedCanceller(Supplier<FairCalculationCanceller<Expression>> canceller, Class<?> type) {
+    public void addDuplicatedCanceller(Supplier<FairCalculationCanceller<MathObject>> canceller, Class<?> type) {
         actionGlobal(AlterationHandler::addCanceller, canceller, type);
     }
 
-    public void removeGlobalModifier(IOCalculationModifier<Expression> modifier, Class<?> type) {
+    public void removeGlobalModifier(IOCalculationModifier<MathObject> modifier, Class<?> type) {
         actionGlobal(AlterationHandler::removeModifier, () -> modifier, type);
     }
 
-    public void removeGlobalCanceller(FairCalculationCanceller<Expression> canceller, Class<?> type) {
+    public void removeGlobalCanceller(FairCalculationCanceller<MathObject> canceller, Class<?> type) {
         actionGlobal(AlterationHandler::removeCanceller, () -> canceller, type);
     }
 
-    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<Expression>, S> action, Supplier<S> s1, Class<?> type) {
-        List<FairAlterationHandler<Expression>> alterationHandlers = new ArrayList<>();
+    private <S> void actionGlobal(AlterationAction<FairAlterationHandler<MathObject>, S> action, Supplier<S> s1, Class<?> type) {
+        List<FairAlterationHandler<MathObject>> alterationHandlers = new ArrayList<>();
         alterationHandlers.addAll(supportedFunctions);
         alterationHandlers.addAll(binaryHandlers);
-
-        for(FairAlterationHandler<Expression> element : alterationHandlers) {
+        for(FairAlterationHandler<MathObject> element : alterationHandlers) {
             if(type.isAssignableFrom(element.getClass())) {
                 action.action(element, s1.get());
             }
@@ -264,5 +236,34 @@ public class MaskContext {
     @FunctionalInterface
     private interface AlterationAction<T, S> {
         void action(T t, S s);
+    }
+
+
+    public static class Builder {
+
+        private MaskContext context;
+
+        public Builder() {
+            this.context = new MaskContext();
+        }
+
+        public MaskContext build() {
+            return context;
+        }
+
+        public Builder withPrecision(int precision) {
+            context.bigDecimalContext = new MathContext(precision);
+            return this;
+        }
+
+        public Builder withBinaryOperators(Function<MaskContext, BinaryOperator>... operators) {
+            context.binaryHandlers = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+            return this;
+        }
+
+        public Builder withFunctionOperators(Function<MaskContext, MathOperator>... operators) {
+            context.supportedFunctions = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+            return this;
+        }
     }
 }

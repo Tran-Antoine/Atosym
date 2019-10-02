@@ -1,14 +1,14 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.check.ValidityCheck;
-import net.akami.atosym.expression.Expression;
+import net.akami.atosym.expression.MathObject;
 
 /**
  * Mutable object representing a raw mathematical expression as a string, without any extra information. <br>
  * Masks are used by a {@link MaskOperatorHandler} as containers for string results. <br>
- * The Mask class is different from the {@link Expression} class. A Mask is a simple object handling a string that can be
- * changed through operations, whereas an Expression is an immutable data class containing the whole mathematical translation
- * of the string. Expressions are exclusively used along with the binary tree algorithm, for calculations. <br>
+ * The Mask class is different from the {@link MathObject} class. A Mask is a simple object handling a string that can be
+ * changed through operations, whereas a MathObject is an immutable data class containing the whole mathematical translation
+ * of the string. MathObjects are exclusively used along with the abstract syntax tree algorithm, for calculations. <br>
  * Masks can be created without initial value (String). Modifications are performed through {@link #reload(String)}. <br><br>
  *
  * Whenever an expression is defined for the current atosym, validity checks are performed. They ensure that the given

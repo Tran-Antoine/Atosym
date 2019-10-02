@@ -1,16 +1,14 @@
 package net.akami.atosym.handler;
 
-import net.akami.atosym.expression.*;
-import net.akami.atosym.function.CosineFunction;
-import net.akami.atosym.function.SineFunction;
-import net.akami.atosym.overlay.ExponentOverlay;
-import net.akami.atosym.overlay.ExpressionOverlay;
-import net.akami.atosym.overlay.FractionOverlay;
-import net.akami.atosym.utils.ReducerFactory;
+import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.NumberExpression;
+import net.akami.atosym.expression.SumMathObject;
+import net.akami.atosym.expression.VariableExpression;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class AdderTest {
 
-    private final Adder adder = DEFAULT.getBinaryOperation(Adder.class);
+    private final SumOperator adder = DEFAULT.getBinaryOperator(SumOperator.class);
 
     @Test
     public void numericTest() {
@@ -43,11 +41,11 @@ public class AdderTest {
         assertSum("2/5", "y","y+0.4");
     }
 
-    @Test
+    /*@Test
     public void sinusCosineSquaredProperty() {
         List<Monomial> singleInsight = Collections.singletonList(new Monomial('x', DEFAULT));
-        ExpressionOverlay sin = new SineFunction(DEFAULT);
-        ExpressionOverlay cos = new CosineFunction(DEFAULT);
+        ExpressionOverlay sin = new SineOperator(DEFAULT);
+        ExpressionOverlay cos = new CosineOperator(DEFAULT);
         ExpressionOverlay exponent = ExponentOverlay.fromExpression(Expression.of(2));
 
         SingleCharVariable simple = new SingleCharVariable('x', DEFAULT);
@@ -80,12 +78,34 @@ public class AdderTest {
     public void monomialSumTest() {
         List<String> monomials = Arrays.asList("2xyz", "2xyz", "2xyz");
         //assertThat(adder.monomialSum(monomials, true)).isEqualTo("6xyz");
+    }*/
+
+    @Test
+    public void testSumChain() {
+        MaskContext context = new MaskContext.Builder()
+                .withBinaryOperators(SumOperator::new)
+                .withFunctionOperators()
+                .build();
+
+        assertSum(new NumberExpression(3f), new NumberExpression(5f), context, "8.0");
+        assertSum(new NumberExpression(4f), new VariableExpression('x'), context, "4.0+x");
+        assertSum(new VariableExpression('x'), new VariableExpression('x'), context, "2.0x");
     }
 
+    private void assertSum(MathObject a, MathObject b, MaskContext context, String result) {
+        List<MathObject> elements = toList(a, b);
+        SumOperator operator = context.getBinaryOperator(SumOperator.class);
+        MathObject sum = new SumMathObject(operator, elements);
+        assertThat(sum.operate().display()).isEqualTo(result);
+    }
+
+    private List<MathObject> toList(MathObject... objects) {
+        return new ArrayList<>(Arrays.asList(objects));
+    }
 
     private void assertSum(String a, String b, String result) {
-        Expression aExp = ReducerFactory.reduce(a);
+        /*Expression aExp = ReducerFactory.reduce(a);
         Expression bExp = ReducerFactory.reduce(b);
-        assertThat(adder.operate(aExp, bExp).toString()).isEqualTo(result);
+        assertThat(adder.operate(aExp, bExp).toString()).isEqualTo(result);*/
     }
 }

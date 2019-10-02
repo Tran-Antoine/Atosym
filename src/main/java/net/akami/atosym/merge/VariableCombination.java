@@ -1,13 +1,14 @@
 package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.merge.property.*;
+import net.akami.atosym.expression.VariableExpression;
+import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.OverallSequencedMergeProperty;
 
 import java.util.Collections;
 import java.util.List;
 
-public class VariableCombination implements SequencedMerge<Variable> {
+public class VariableCombination implements SequencedMerge<VariableExpression> {
 
     private MaskContext context;
 
@@ -17,16 +18,16 @@ public class VariableCombination implements SequencedMerge<Variable> {
 
     // For now it only has one property
     @Override
-    public List<ElementSequencedMergeProperty<Variable>> generateElementProperties(Variable p1, Variable p2) {
+    public List<ElementSequencedMergeProperty<VariableExpression>> generateElementProperties(VariableExpression p1, VariableExpression p2) {
         return Collections.singletonList(
-                new BaseEquivalenceMultProperty(p1, p2, context)
+                null//new BaseEquivalenceMultProperty(p1, p2, context)
         );
     }
 
     @Override
-    public List<OverallSequencedMergeProperty<Variable>> generateOverallProperties(List<Variable> p1, List<Variable> p2) {
+    public List<OverallSequencedMergeProperty<VariableExpression>> generateOverallProperties(List<VariableExpression> p1, List<VariableExpression> p2) {
         return Collections.singletonList(
-                new FractionCombinationProperty(p1, p2, context)
+                null//new FractionCombinationProperty(p1, p2, context)
         );
     }
 }

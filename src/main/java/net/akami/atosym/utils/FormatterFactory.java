@@ -1,7 +1,6 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.function.MathFunction;
 
 public class FormatterFactory {
 
@@ -11,13 +10,13 @@ public class FormatterFactory {
     }
 
     public static String formatFunctions(String origin, MaskContext context) {
-        for(MathFunction function : context.getSupportedFunctions()) {
+        /*for(MathOperator function : context.getSupportedFunctions()) {
             String replaced = function.getName() + "\\((.*?)\\)";
             String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
             while(origin.contains(function.getName()))
                 origin = origin.replaceAll(replaced, replacement);
         }
-        return origin;
+        return origin;*/ return null;
     }
 
     public static String addMultiplicationSigns(String self, boolean addForTrigonometry) {

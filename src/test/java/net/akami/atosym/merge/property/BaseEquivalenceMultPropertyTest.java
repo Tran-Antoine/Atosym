@@ -1,20 +1,9 @@
 package net.akami.atosym.merge.property;
 
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.expression.SingleCharVariable;
-import net.akami.atosym.expression.Variable;
-import net.akami.atosym.overlay.ExponentOverlay;
-import net.akami.atosym.overlay.FractionOverlay;
-import org.junit.Test;
-
-import static net.akami.atosym.core.MaskContext.DEFAULT;
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class BaseEquivalenceMultPropertyTest {
 
 
-    @Test
+    /*@Test
     public void compatibleTest() {
 
         SingleCharVariable s1 = new SingleCharVariable('x', DEFAULT);
@@ -32,5 +21,5 @@ public class BaseEquivalenceMultPropertyTest {
 
     private ElementSequencedMergeProperty<Variable> genProperty(Variable v1, Variable v2) {
         return new BaseEquivalenceMultProperty(v1, v2, DEFAULT);
-    }
+    }*/
 }

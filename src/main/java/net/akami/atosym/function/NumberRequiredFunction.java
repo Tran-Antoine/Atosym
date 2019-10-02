@@ -1,42 +1,42 @@
 package net.akami.atosym.function;
 
-import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.expression.IntricateVariable;
-import net.akami.atosym.expression.Monomial;
-import net.akami.atosym.overlay.ExpressionOverlay;
-import net.akami.atosym.utils.ExpressionUtils;
+import net.akami.atosym.expression.MathObject;
 
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
+public abstract class NumberRequiredFunction extends MathOperator {
 
-public abstract class NumberRequiredFunction extends MathFunction {
-
-    public NumberRequiredFunction(char binding, String name, MaskContext context) {
-        super(binding, name, context, 1);
+    public NumberRequiredFunction(String name, int argsLength) {
+        super(name, argsLength);
     }
 
     @Override
-    protected Expression operate(Expression... input) {
-        Expression unique = input[0];
-        if(!ExpressionUtils.isANumber(unique)) return encapsulate(unique);
-        else return compute(unique);
+    protected MathObject operate(MathObject... input) {
+        if(areAllNumbers(input)) return encapsulate(input);
+
+        return computeNumbers(input[0]);
     }
 
-    private Expression encapsulate(Expression unique) {
-        List<Monomial> elements = unique.getElements();
+    private MathObject encapsulate(MathObject... unique) {
+        /*List<MathObject> elements = unique.getElements();
         List<ExpressionOverlay> overlays = Collections.singletonList(this);
 
         IntricateVariable var = new IntricateVariable(elements, overlays);
-        return Expression.of(new Monomial(1, var));
+        return MathObject.of(new Monomial(1, var));*/
+        return null;
     }
 
-    private Expression compute(Expression unique) {
-        double result = function().compute(Double.parseDouble(unique.toString()));
+    private MathObject computeNumbers(MathObject unique) {
+        /*double result = function().compute(Double.parseDouble(unique.toString()));
         BigDecimal decimal = new BigDecimal(result).setScale(6, BigDecimal.ROUND_HALF_UP);
-        return Expression.of(decimal.floatValue());
+        return Expression.of(decimal.floatValue());*/
+        return null;
     }
 
-    protected abstract UnaryOperation function();
+    private boolean areAllNumbers(MathObject... input) {
+        for(MathObject exp : input) {
+            //if(!ExpressionUtils.isANumber(exp)) return false;
+        }
+        return true;
+    }
+
+    protected abstract DoubleOperation function();
 }

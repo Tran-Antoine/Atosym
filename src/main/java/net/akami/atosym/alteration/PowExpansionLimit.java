@@ -1,8 +1,8 @@
 package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.Expression;
-import net.akami.atosym.handler.PowerCalculator;
+import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.handler.PowerOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 /**
@@ -10,7 +10,7 @@ import net.akami.atosym.utils.ExpressionUtils;
  * If set to 3 for instance, {@code (x+y)^3} will be expanded as {@code x^3 + 3x^2y + 3xy^2 + y^3},
  * whereas {@code (x+y)^4} will remain {@code (x+y)^4}
  */
-public class PowExpansionLimit implements FairCalculationCanceller<Expression> {
+public class PowExpansionLimit implements FairCalculationCanceller<MathObject> {
 
     private int limit;
     private MaskContext context;
@@ -25,13 +25,13 @@ public class PowExpansionLimit implements FairCalculationCanceller<Expression> {
     }
 
     @Override
-    public Expression resultIfCancelled(Expression... input) {
-        return context.getBinaryOperation(PowerCalculator.class).layerPow(input[0], input[1]);
+    public MathObject resultIfCancelled(MathObject... input) {
+        return context.getBinaryOperator(PowerOperator.class).layerPow(input[0], input[1]);
     }
 
     @Override
-    public boolean appliesTo(Expression... input) {
-        Expression exponent = input[1];
+    public boolean appliesTo(MathObject... input) {
+        MathObject exponent = input[1];
         // using parseFloat instead of parseInt for possible ".0", such as "5.0"
         return ExpressionUtils.isAnInteger(exponent) && Float.parseFloat(exponent.toString()) > limit;
     }
