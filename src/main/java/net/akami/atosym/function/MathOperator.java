@@ -23,11 +23,11 @@ public abstract class MathOperator implements
 
     protected List<CalculationCanceller<MathObject, MathObject>> cancellers;
     protected List<IOCalculationModifier<MathObject>> modifiers;
-    protected final String name;
+    protected final List<String> names;
     private final int argsLength;
 
-    public MathOperator(String name, int argsLength) {
-        this.name = name;
+    public MathOperator(List<String> names, int argsLength) {
+        this.names = names;
         this.argsLength = argsLength;
         initAlterations();
     }
@@ -71,7 +71,7 @@ public abstract class MathOperator implements
         if(!(obj instanceof MathOperator))
             return false;
 
-        return this.name.equals(((MathOperator) obj).name);
+        return this.names.equals(((MathOperator) obj).names);
     }
 
     /*@Override
@@ -82,8 +82,8 @@ public abstract class MathOperator implements
         return parts;
     }*/
 
-    public String getName() {
-        return name;
+    public List<String> getNames() {
+        return names;
     }
 
     private void initAlterations() {
@@ -93,7 +93,7 @@ public abstract class MathOperator implements
 
     public static Set<MathOperator> generateDefaultOperators(MaskContext context) {
         Set<MathOperator> operators = new HashSet<>(Arrays.asList(
-            // TODO : add functions
+            new SineOperator()
         ));
 
         operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));
@@ -121,5 +121,9 @@ public abstract class MathOperator implements
 
     public void setModifiers(List<IOCalculationModifier<MathObject>> modifiers) {
         this.modifiers = modifiers;
+    }
+
+    public int getSize() {
+        return argsLength;
     }
 }

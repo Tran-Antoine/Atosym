@@ -9,5 +9,6 @@ public enum MathObjectType {
     MULT,
     DIV,
     POW,
+    SIN,
     // TODO : Add other functions
 }

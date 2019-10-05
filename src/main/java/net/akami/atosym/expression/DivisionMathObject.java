@@ -1,13 +1,13 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.handler.DivOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;
 
-public class DivisionMathObject extends MathFunction {
+public class DivisionMathObject extends MathFunction<DivOperator> {
 
-    public DivisionMathObject(MathOperator operator, List<MathObject> children) {
+    public DivisionMathObject(DivOperator operator, List<MathObject> children) {
         super(operator, children);
     }
 

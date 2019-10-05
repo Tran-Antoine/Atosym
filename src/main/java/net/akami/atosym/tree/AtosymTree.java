@@ -46,9 +46,8 @@ public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
     public MathObject merge() {
 
         //Merging the branches from the last one to the first one (this initial expression)
-        for (int i = branches.size() - 1; i >= 0; i--) {
+        for (T self : branches) {
 
-            T self = branches.get(i);
             self.merge();
 
             Optional<MathObject> result = finalResult();
@@ -61,7 +60,7 @@ public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
     }
 
     public Optional<MathObject> finalResult() {
-        T first = branches.get(0);
+        T first = branches.get(branches.size()-1);
         if (first.hasSimplifiedValue()) {
             return Optional.of(first.getSimplifiedValue());
         }

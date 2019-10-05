@@ -6,10 +6,7 @@ import net.akami.atosym.function.MathOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /*
     To not confuse :
@@ -28,7 +25,11 @@ public abstract class BinaryOperator extends MathOperator {
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperator.class);
 
     public BinaryOperator(String name) {
-        super(name, 2);
+        this(new String[]{name});
+    }
+
+    public BinaryOperator(String... names) {
+        super(Arrays.asList(names), 2);
     }
 
     @Override

@@ -20,4 +20,9 @@ public class NumberExpression extends Expression<Float> {
     public MathObjectType getType() {
         return MathObjectType.NUMBER;
     }
+
+    @Override
+    public String toString() {
+        return display();
+    }
 }

@@ -1,4 +1,5 @@
 package net.akami.atosym.parser;
+
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -33,18 +34,6 @@ public class AtosymBaseListener implements AtosymListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExp(AtosymParser.ExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSeries(AtosymParser.SeriesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSeries(AtosymParser.SeriesContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

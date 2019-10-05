@@ -4,12 +4,12 @@ import net.akami.atosym.function.MathOperator;
 
 import java.util.List;
 
-public abstract class MathFunction implements MathObject {
+public abstract class MathFunction<T extends MathOperator> implements MathObject {
 
-    protected MathOperator operator;
+    protected T operator;
     protected List<MathObject> children;
 
-    public MathFunction(MathOperator operator, List<MathObject> children) {
+    public MathFunction(T operator, List<MathObject> children) {
         this.operator = operator;
         this.children = children;
     }
@@ -27,5 +27,7 @@ public abstract class MathFunction implements MathObject {
         }
     }
 
-    protected abstract int size();
+    protected int size() {
+        return operator.getSize();
+    }
 }

@@ -30,7 +30,7 @@ public class SumOperator extends BinaryOperator {
     private MaskContext context;
 
     public SumOperator(MaskContext context) {
-        super("sum");
+        super("+", "sum");
         this.context = context;
     }
 
@@ -41,7 +41,7 @@ public class SumOperator extends BinaryOperator {
         List<MathObject> elements = toList(a, b);
 
         SequencedMerge<MathObject> additionBehavior = new MonomialAdditionMerge(context);
-        List<MathObject> mergedElements = additionBehavior.merge(elements, elements, false);
+        List<MathObject> mergedElements = additionBehavior.merge(elements, elements, true);
 
         return result(mergedElements);
     }

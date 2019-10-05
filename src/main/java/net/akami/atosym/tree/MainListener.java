@@ -5,13 +5,12 @@ import net.akami.atosym.parser.AtosymBaseListener;
 import net.akami.atosym.parser.AtosymLexer;
 import net.akami.atosym.parser.AtosymParser;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
-import net.akami.atosym.parser.AtosymParser.FuncContext;
-import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.CharStreams;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class MainListener extends AtosymBaseListener {
 
@@ -21,7 +20,7 @@ public class MainListener extends AtosymBaseListener {
 
     public static void main(String... args) {
 
-        CharStream inputStream = CharStreams.fromString("sin(3)");
+        CharStream inputStream = CharStreams.fromString("sin(3)+2");
         AtosymLexer atosymLexer = new AtosymLexer(inputStream);
         voc = atosymLexer.getVocabulary();
         stream = new CommonTokenStream(atosymLexer);
@@ -39,12 +38,10 @@ public class MainListener extends AtosymBaseListener {
     public void enterMain(AtosymParser.MainContext ctx) {
         ExpContext context = (ExpContext) ctx.getChild(0);
         new SimpleBranch(tree, context);
-
-        for(SimpleBranch branch : tree) {
-            System.out.println(branch);
-        }
+        tree.forEach(SimpleBranch::debug);
+        System.out.println(tree.merge().display());
     }
-    @Override
+    /*@Override
     public void enterExp(ExpContext ctx) {
         System.out.println(ctx.getText());
         System.out.println("Has children : "+ctx.children.stream().map(ParseTree::getText).collect(Collectors.toList()));
@@ -68,5 +65,5 @@ public class MainListener extends AtosymBaseListener {
         }
 
         System.out.println("Function found : "+text);
-    }
+    }*/
 }

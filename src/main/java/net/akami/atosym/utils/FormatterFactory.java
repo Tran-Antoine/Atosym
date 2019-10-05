@@ -11,9 +11,9 @@ public class FormatterFactory {
 
     public static String formatFunctions(String origin, MaskContext context) {
         /*for(MathOperator function : context.getSupportedOperators()) {
-            String replaced = function.getName() + "\\((.*?)\\)";
+            String replaced = function.getNames() + "\\((.*?)\\)";
             String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
-            while(origin.contains(function.getName()))
+            while(origin.contains(function.getNames()))
                 origin = origin.replaceAll(replaced, replacement);
         }
         return origin;*/ return null;

@@ -50,6 +50,8 @@ public class CalculationCache implements FairCalculationCanceller<MathObject> {
     @Override
     public boolean appliesTo(List<MathObject> input) {
         if (capacity == 0) return false;
+        if (input == null) return false;
+
         return cache.containsKey(input.get(0).toString()+'|'+input.get(1).toString());
     }
 

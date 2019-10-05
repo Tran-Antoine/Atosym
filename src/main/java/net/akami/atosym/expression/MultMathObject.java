@@ -1,13 +1,13 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.handler.MultOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.util.List;
 
-public class MultMathObject extends MathFunction {
+public class MultMathObject extends MathFunction<MultOperator> {
 
-    public MultMathObject(MathOperator operator, List<MathObject> children) {
+    public MultMathObject(MultOperator operator, List<MathObject> children) {
         super(operator, children);
     }
 

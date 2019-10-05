@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  */
 public class ReducerFactory {
 
-    // private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getName());
+    // private static final Logger LOGGER = LoggerFactory.getLogger(ReducerFactory.class.getNames());
     public static final BinaryOperationSign[] PROCEDURAL_OPERATIONS;
 
     static {

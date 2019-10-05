@@ -6,18 +6,15 @@ import net.akami.atosym.utils.DisplayUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public abstract class LiteralFunction extends MathFunction {
+public abstract class LiteralFunction<T extends MathOperator> extends MathFunction<T> {
 
-    private String name;
-
-    public LiteralFunction(MathOperator operator, List<MathObject> children, String name) {
+    public LiteralFunction(T operator, List<MathObject> children) {
         super(operator, children);
-        this.name = name;
     }
 
     @Override
     public String display() {
         String concatWithComma = String.join(", ", children.stream().map(MathObject::display).collect(Collectors.toList()));
-        return name + DisplayUtils.surroundWithParenthesis(concatWithComma);
+        return operator.getNames().get(0) + DisplayUtils.surroundWithParenthesis(concatWithComma);
     }
 }

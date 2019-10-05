@@ -189,12 +189,12 @@ public class MaskContext {
         }
     }
 
-    public MathOperator getOperator(String text) {
+    public Optional<MathOperator> getOperator(String text) {
         for(MathOperator operator : supportedOperators) {
-            if(operator.getName().equalsIgnoreCase(text))
-                return operator;
+            if(operator.getNames().contains(text))
+                return Optional.of(operator);
         }
-        throw new UnsupportedOperationException("Could not find the operator corresponding to the function");
+        return Optional.empty();
     }
 
     /**

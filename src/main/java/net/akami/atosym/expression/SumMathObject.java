@@ -1,12 +1,12 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.handler.SumOperator;
 
 import java.util.List;
 
-public class SumMathObject extends MathFunction {
+public class SumMathObject extends MathFunction<SumOperator> {
 
-    public SumMathObject(MathOperator operator, List<MathObject> children) {
+    public SumMathObject(SumOperator operator, List<MathObject> children) {
         super(operator, children);
     }
 

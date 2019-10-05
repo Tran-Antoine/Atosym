@@ -1,13 +1,13 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.handler.SubOperator;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SubtractionMathObject extends MathFunction {
+public class SubtractionMathObject extends MathFunction<SubOperator> {
 
-    public SubtractionMathObject(MathOperator operator, List<MathObject> children) {
+    public SubtractionMathObject(SubOperator operator, List<MathObject> children) {
         super(operator, children);
     }
 
