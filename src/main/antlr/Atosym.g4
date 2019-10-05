@@ -3,16 +3,16 @@ grammar Atosym;
 main: exp;
 
 exp
-    : func OPENING_BRACKET series CLOSING_BRACKET
+    : func OPENING_BRACKET arguments_series CLOSING_BRACKET
     | OPENING_BRACKET exp CLOSING_BRACKET
     | exp OTHER_SYMBOL
-    | exp non_lit_func[3] exp
-    | exp non_lit_func[2] exp
-    | exp non_lit_func[1] exp
+    | exp binop=POW exp
+    | exp binop=(DIV|MULT) exp
+    | exp binop=(SUM|SUB) exp
     | NUMBER
     | CHAR;
 
-series : (exp',')* exp;
+arguments_series : (exp',')* exp;
 
 func returns [int length]
     : 'sin'  {$length = 1}  // sin(angle)
@@ -21,16 +21,10 @@ func returns [int length]
     | 'root' {$length = 2} // root(base, n)
     ;
 
-non_lit_func [int priority]
-    : {$priority == 1}? (SUM | SUB)
-    | {$priority == 2}? (DIV | MULT)
-    | {$priority == 3}? POW
-    ;
-
 NUMBER : DIGIT+;
-DIGIT  : [0-9];
+DIGIT  : [0-9]('.'[0-9] |);
 CHAR   : [a-zA-Z];
-OTHER_SYMBOL : '!';
+OTHER_SYMBOL : '!'|'π';
 SUM : '+';
 SUB : '-';
 MULT : '*';

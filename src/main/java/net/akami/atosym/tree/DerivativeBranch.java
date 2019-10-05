@@ -15,7 +15,7 @@ public class DerivativeBranch extends SimpleBranch {
     private MathObject derivativeValue;
 
     public DerivativeBranch(String expression) {
-        super(null, expression, null);
+        super(null, null);
     }
 
     /**

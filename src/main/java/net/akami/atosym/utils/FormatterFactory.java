@@ -10,7 +10,7 @@ public class FormatterFactory {
     }
 
     public static String formatFunctions(String origin, MaskContext context) {
-        /*for(MathOperator function : context.getSupportedFunctions()) {
+        /*for(MathOperator function : context.getSupportedOperators()) {
             String replaced = function.getName() + "\\((.*?)\\)";
             String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
             while(origin.contains(function.getName()))

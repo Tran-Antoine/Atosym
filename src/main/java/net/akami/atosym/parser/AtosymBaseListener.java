@@ -38,6 +38,18 @@ public class AtosymBaseListener implements AtosymListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSeries(AtosymParser.SeriesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSeries(AtosymParser.SeriesContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterFunc(AtosymParser.FuncContext ctx) { }
 	/**
 	 * {@inheritDoc}

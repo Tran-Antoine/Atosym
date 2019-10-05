@@ -54,8 +54,7 @@ public class MaskContext {
 
     public static final MaskContext DEFAULT = new MaskContext();
 
-    private Set<BinaryOperator> binaryHandlers;
-    private Set<MathOperator> supportedFunctions;
+    private Set<MathOperator> supportedOperators;
     private List<ValidityCheck> validityChecks;
     private MathContext bigDecimalContext;
 
@@ -67,7 +66,7 @@ public class MaskContext {
     /**
      * Constructs a context with the default parameters. The set of {@link BinaryOperator}s will be generated
      * from {@link BinaryOperator#generateDefaultBinaryOperators(MaskContext)}, the set of mathematical functions
-     * will be generated from {@link MathOperator#generateDefaultFunctions()}, and the MathContext will
+     * will be generated from {@link MathOperator#generateDefaultOperators(MaskContext)}, and the MathContext will
      * use a 100 digits precision.
      */
     public MaskContext() {
@@ -80,8 +79,7 @@ public class MaskContext {
      * @param precision the amount of significant digits handled by the context
      */
     public MaskContext(int precision) {
-        this.binaryHandlers = BinaryOperator.generateDefaultBinaryOperators(this);
-        this.supportedFunctions = MathOperator.generateDefaultFunctions();
+        this.supportedOperators = MathOperator.generateDefaultOperators(this);
         this.bigDecimalContext = new MathContext(precision);
         this.validityChecks = defaultValidityChecks();
     }
@@ -101,62 +99,22 @@ public class MaskContext {
     }
 
     /**
-     * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link BinaryOperator#operate(MathObject[])} from it. <br>
-     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
-     * instead.
-     * @param clazz the type of the operator
-     * @param <T> the generic type to avoid casting
-     * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
-     */
-    public <T extends BinaryOperator> T getBinaryOperator(Class<T> clazz) {
-        for(BinaryOperator current : binaryHandlers) {
-            if(current.getClass().equals(clazz))
-                return (T) current;
-        }
-        return null;
-    }
-
-    /**
-     * Adds a new handler to the set. Only {@link BinaryOperator}s with {@link MathObject} as generic type
-     * are supported.
-     * @param handler a new handler to add
-     */
-    public void addHandler(BinaryOperator handler) {
-        binaryHandlers.add(handler);
-    }
-
-    /**
-     * Removes the handler from the set whose {@link #getClass()} method equals the clazz parameter
-     * @param clazz the class type to remove
-     */
-    public void removeHandler(Class<? extends BinaryOperator> clazz) {
-        for(BinaryOperator handler : binaryHandlers) {
-            if(handler.getClass().equals(clazz)) {
-                binaryHandlers.remove(handler);
-                return;
-            }
-        }
-        LOGGER.warn("Unable to remove handler from the given class name : {}", clazz.getName());
-    }
-
-    /**
      * Adds a new function to the set. <br>
      * Note that the new function will replace any existing function whose binding would match with the new function's.
      * @param target a new function to add
      */
-    public void addFunction(MathOperator target) {
-        supportedFunctions.add(target);
+    public void addOperator(MathOperator target) {
+        supportedOperators.add(target);
     }
 
     /**
      * Removes the function from the set whose {@link #getClass()} method equals the clazz parameter
      * @param clazz the class type to remove
      */
-    public void removeFunction(Class<? extends MathOperator> clazz) {
-        for(MathOperator func : supportedFunctions) {
+    public void removeOperator(Class<? extends MathOperator> clazz) {
+        for(MathOperator func : supportedOperators) {
             if(func.getClass().equals(clazz)) {
-                supportedFunctions.remove(func);
+                supportedOperators.remove(func);
                 return;
             }
         }
@@ -194,8 +152,8 @@ public class MaskContext {
     /**
      * @return the list of math functions supported
      */
-    public Set<MathOperator> getSupportedFunctions() {
-        return supportedFunctions;
+    public Set<MathOperator> getSupportedOperators() {
+        return supportedOperators;
     }
 
     public void addGlobalModifier(IOCalculationModifier<MathObject> modifier, Class<?> type) {
@@ -223,14 +181,37 @@ public class MaskContext {
     }
 
     private <S> void actionGlobal(AlterationAction<FairAlterationHandler<MathObject>, S> action, Supplier<S> s1, Class<?> type) {
-        List<FairAlterationHandler<MathObject>> alterationHandlers = new ArrayList<>();
-        alterationHandlers.addAll(supportedFunctions);
-        alterationHandlers.addAll(binaryHandlers);
+        List<FairAlterationHandler<MathObject>> alterationHandlers = new ArrayList<>(supportedOperators);
         for(FairAlterationHandler<MathObject> element : alterationHandlers) {
             if(type.isAssignableFrom(element.getClass())) {
                 action.action(element, s1.get());
             }
         }
+    }
+
+    public MathOperator getOperator(String text) {
+        for(MathOperator operator : supportedOperators) {
+            if(operator.getName().equalsIgnoreCase(text))
+                return operator;
+        }
+        throw new UnsupportedOperationException("Could not find the operator corresponding to the function");
+    }
+
+    /**
+     * Returns the instance of a required operator, allowing the user to call other methods than
+     * the default {@link BinaryOperator#operate(List<MathObject>)} from it. <br>
+     * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
+     * instead.
+     * @param clazz the type of the operator
+     * @param <T> the generic type to avoid casting
+     * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
+     */
+    public <T extends MathOperator> T getBinaryOperator(Class<T> clazz) {
+        for(MathOperator current : supportedOperators) {
+            if(current.getClass().equals(clazz))
+                return (T) current;
+        }
+        return null;
     }
 
     @FunctionalInterface
@@ -256,13 +237,8 @@ public class MaskContext {
             return this;
         }
 
-        public Builder withBinaryOperators(Function<MaskContext, BinaryOperator>... operators) {
-            context.binaryHandlers = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
-            return this;
-        }
-
-        public Builder withFunctionOperators(Function<MaskContext, MathOperator>... operators) {
-            context.supportedFunctions = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+        public Builder withOperators(Function<MaskContext, MathOperator>... operators) {
+            context.supportedOperators = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
             return this;
         }
     }

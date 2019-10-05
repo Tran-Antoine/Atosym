@@ -3,7 +3,9 @@ package net.akami.atosym.function;
 import net.akami.atosym.alteration.CalculationCanceller;
 import net.akami.atosym.alteration.FairAlterationHandler;
 import net.akami.atosym.alteration.IOCalculationModifier;
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.handler.BinaryOperator;
 import net.akami.atosym.handler.PostCalculationActionable;
 
 
@@ -89,10 +91,13 @@ public abstract class MathOperator implements
         this.modifiers = new ArrayList<>();
     }
 
-    public static Set<MathOperator> generateDefaultFunctions() {
-        return new HashSet<>(Arrays.asList(
-
+    public static Set<MathOperator> generateDefaultOperators(MaskContext context) {
+        Set<MathOperator> operators = new HashSet<>(Arrays.asList(
+            // TODO : add functions
         ));
+
+        operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));
+        return operators;
     }
 
     public void addCanceller(CalculationCanceller<MathObject, MathObject> canceller) {

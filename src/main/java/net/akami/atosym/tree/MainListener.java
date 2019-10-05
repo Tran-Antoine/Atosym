@@ -5,26 +5,28 @@ import net.akami.atosym.parser.AtosymBaseListener;
 import net.akami.atosym.parser.AtosymLexer;
 import net.akami.atosym.parser.AtosymParser;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
-import org.antlr.v4.runtime.CharStream;
-import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonTokenStream;
+import net.akami.atosym.parser.AtosymParser.FuncContext;
+import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MainListener extends AtosymBaseListener {
 
-    private static AtosymTree<SimpleBranch> tree = new AtosymTree<SimpleBranch>(MaskContext.DEFAULT);
+    private static AtosymTree<SimpleBranch> tree;
+    private static CommonTokenStream stream;
+    private static Vocabulary voc;
 
     public static void main(String... args) {
 
-        CharStream inputStream = CharStreams.fromString("sin(1,2,3+1)");
+        CharStream inputStream = CharStreams.fromString("sin(3)");
         AtosymLexer atosymLexer = new AtosymLexer(inputStream);
-        CommonTokenStream commonTokenStream = new CommonTokenStream(atosymLexer);
-        AtosymParser atosymParser = new AtosymParser(commonTokenStream);
-
+        voc = atosymLexer.getVocabulary();
+        stream = new CommonTokenStream(atosymLexer);
+        AtosymParser atosymParser = new AtosymParser(stream);
+        tree = new AtosymTree<>(MaskContext.DEFAULT, voc, stream);
         ParseTree tree = atosymParser.main();
         ParseTreeWalker walker = new ParseTreeWalker();
 
@@ -36,23 +38,35 @@ public class MainListener extends AtosymBaseListener {
     @Override
     public void enterMain(AtosymParser.MainContext ctx) {
         ExpContext context = (ExpContext) ctx.getChild(0);
-        tree.setInitialBranch(createChildren(context, tree).get(0));
-    }
+        new SimpleBranch(tree, context);
 
-    private List<SimpleBranch> createChildren(ExpContext context, AtosymTree<SimpleBranch> tree) {
-        List<SimpleBranch> branches = new ArrayList<>();
-        for(ParseTree parseTree : context.children) {
-            branches.add(parseTreeToBranch(parseTree, tree));
+        for(SimpleBranch branch : tree) {
+            System.out.println(branch);
         }
-        return branches;
     }
+    @Override
+    public void enterExp(ExpContext ctx) {
+        System.out.println(ctx.getText());
+        System.out.println("Has children : "+ctx.children.stream().map(ParseTree::getText).collect(Collectors.toList()));
+        List<Token> tokens = stream.getTokens(ctx.start.getStartIndex(), ctx.stop.getStopIndex()-1);
 
-    private SimpleBranch parseTreeToBranch(ParseTree parseTree, AtosymTree<SimpleBranch> tree) {
-        if(!(parseTree instanceof ExpContext)) {
-            throw new UnsupportedOperationException();
+        if(tokens != null)
+            System.out.println(tokens.stream().map(t -> voc.getSymbolicName(t.getType())).collect(Collectors.toList()));
+
+        String text;
+        Token binOp = ctx.binop;
+
+        if(binOp != null) {
+            text = binOp.getText();
+        } else {
+            FuncContext context = ctx.func();
+            if(context != null) {
+                text = context.getText();
+            } else {
+                text = "NONE";
+            }
         }
 
-        ExpContext context = (ExpContext) parseTree;
-        return null;
+        System.out.println("Function found : "+text);
     }
 }

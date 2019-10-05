@@ -4,8 +4,13 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
 import net.akami.atosym.function.MathOperator;
-import net.akami.atosym.utils.ExpressionUtils;
+import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.Vocabulary;
+import org.antlr.v4.runtime.tree.ParseTree;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,13 +22,49 @@ public class SimpleBranch {
     private MathOperator operator;
     private MathObject simplifiedValue;
 
+    private ParserRuleContext parseTree;
     private String exp;
     private float evalTime;
 
-    public SimpleBranch(AtosymTree<SimpleBranch> parent, String exp, List<SimpleBranch> children) {
+    public SimpleBranch(AtosymTree<SimpleBranch> parent, ParserRuleContext parseTree) {
         this.parent = parent;
-        this.exp = exp;
-        this.children = children;
+        this.parseTree = parseTree;
+        this.exp = parseTree.getText();
+        this.children = loadChildren();
+        parent.add(this);
+
+        loadOperator();
+    }
+
+    private void loadOperator() {
+        if(!hasChildren()) return;
+
+        /*String text;
+        Token binOp = parseTree.binop;
+
+        if(binOp != null) {
+            text = binOp.getText();
+        } else {
+            FuncContext context = parseTree.func();
+            if(context != null) {
+                text = context.getText();
+            } else {
+                throw new UnsupportedOperationException();
+            }
+        }
+
+        this.operator = parent.getContext().getOperator(text);*/
+    }
+
+    private List<SimpleBranch> loadChildren() {
+        List<SimpleBranch> children = new ArrayList<>();
+        for(ParseTree child : parseTree.children) {
+            if(!(child instanceof ParserRuleContext)) {
+                break;
+            }
+            children.add(new SimpleBranch(parent, (ParserRuleContext) child));
+        }
+        return children;
     }
 
     public void merge() {
@@ -34,19 +75,32 @@ public class SimpleBranch {
         mergeChildren();
     }
 
-    // TODO : USE TOKENS
     private void simpleEval() {
-        if(ExpressionUtils.isANumber(exp)) {
-            this.simplifiedValue = new NumberExpression(Float.parseFloat(exp));
-            return;
+
+        Vocabulary voc = parent.getVocabulary();
+        Token token = getUniqueToken();
+        String exp = token.getText();
+
+        switch (voc.getSymbolicName(token.getType())) {
+            case "NUMBER":
+               this.simplifiedValue = new NumberExpression(exp);
+               break;
+            case "CHAR":
+                this.simplifiedValue = new VariableExpression(exp.charAt(0));
+            default:
+                throw new UnsupportedOperationException();
+        }
+    }
+
+    private Token getUniqueToken() {
+        CommonTokenStream stream = parent.getTokenStream();
+        List<Token> tokens = stream.getTokens(parseTree.start.getStartIndex(), parseTree.stop.getStopIndex());
+
+        if(tokens.size() != 1) {
+            throw new RuntimeException("Unreachable statement : more or less than one token found for a simple evaluation");
         }
 
-        if(exp.length() == 1) {
-            this.simplifiedValue = new VariableExpression(exp.charAt(0));
-            return;
-        }
-
-        throw new UnsupportedOperationException();
+        return tokens.get(0);
     }
 
     private void mergeChildren() {
@@ -69,6 +123,17 @@ public class SimpleBranch {
 
     @Override
     public String toString() {
+        if(simplifiedValue == null) {
+            return exp;
+        }
         return simplifiedValue.display();
+    }
+
+    public boolean hasSimplifiedValue() {
+        return simplifiedValue != null;
+    }
+
+    public float getEvalTime() {
+        return evalTime;
     }
 }
