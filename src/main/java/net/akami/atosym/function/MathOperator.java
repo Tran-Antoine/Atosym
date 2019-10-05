@@ -91,11 +91,7 @@ public abstract class MathOperator implements
 
     public static Set<MathOperator> generateDefaultFunctions() {
         return new HashSet<>(Arrays.asList(
-                new SineOperator(),
-                new CosineOperator(),
-                new TangentOperator(),
-                new RootOperator(),
-                new DegreesToRadiansOperator()
+
         ));
     }
 

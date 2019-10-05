@@ -16,6 +16,6 @@ public class ReducerTree extends CalculationTree<SimpleBranch> {
 
     @Override
     public SimpleBranch generate(String origin) {
-        return new SimpleBranch(origin);
+        return new SimpleBranch(null, origin, null);
     }
 }

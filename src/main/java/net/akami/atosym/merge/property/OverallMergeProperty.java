@@ -6,6 +6,7 @@ import net.akami.atosym.handler.AlterationHandler;
 import net.akami.atosym.merge.MergeProperty;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,8 +28,7 @@ public abstract class OverallMergeProperty<P, R> extends MergeProperty<P> implem
     protected abstract R computeResult();
 
     public R rawComputeResult() {
-        // secure cast. Java does not support generic arrays creation
-        P[] rawExpressions = (P[]) new Object[]{p1, p2};
+        List<P> rawExpressions = Arrays.asList(p1, p2);
         for(IOCalculationModifier<P> modifier : getSuitableModifiers(rawExpressions)) {
             rawExpressions = modifier.modify(rawExpressions);
         }
@@ -36,8 +36,8 @@ public abstract class OverallMergeProperty<P, R> extends MergeProperty<P> implem
         Optional<CalculationCanceller<P, R>> canceller = getSuitableCanceller(rawExpressions);
         if(canceller.isPresent()) return canceller.get().resultIfCancelled(rawExpressions);
 
-        this.p1 = rawExpressions[0];
-        this.p2 = rawExpressions[1];
+        this.p1 = rawExpressions.get(0);
+        this.p2 = rawExpressions.get(1);
 
         return computeResult();
     }

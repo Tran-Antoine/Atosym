@@ -97,7 +97,7 @@ public class MaskContext {
      */
     public MathObject binaryCompute(MathObject a, MathObject b, Class<? extends BinaryOperator> clazz) {
         BinaryOperator handler = getBinaryOperator(clazz);
-        return handler.rawOperate(a, b);
+        return handler.rawOperate(Arrays.asList(a, b));
     }
 
     /**

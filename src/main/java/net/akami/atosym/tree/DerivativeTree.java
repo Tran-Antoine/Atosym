@@ -1,12 +1,7 @@
 package net.akami.atosym.tree;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.handler.sign.BinaryOperationSign;
-import net.akami.atosym.handler.sign.QuaternaryOperationSign;
 import net.akami.atosym.utils.FormatterFactory;
-
-import java.util.Optional;
 
 /**
  * Implementation of the {@link CalculationTree} class. Basically, it adds support for children-less branch evaluation,
@@ -42,7 +37,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
 
     @Override
     protected void evalBranch(DerivativeBranch self) {
-        if(!self.hasChildren()) {
+        /*if(!self.hasChildren()) {
             self.setReducedValue(null); // TODO
             //self.setDerivativeValue(new Expression(differentiateElement(self.getExpression())));
             return;
@@ -58,7 +53,7 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
         if(getBranches().indexOf(self) != 0) {
             self.setReducedValue(BinaryOperationSign.getBySign(op).compute(left, right, super.context));
         }
-        self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));
+        self.setDerivativeValue(QuaternaryOperationSign.getBySign(op).compute(left, derLeft, right, derRight));*/
     }
 
     public String differentiateElement(String element) {
@@ -67,14 +62,5 @@ public class DerivativeTree extends CalculationTree<DerivativeBranch> {
             return "1";
 
         return "0";
-    }
-
-    @Override
-    public Optional<MathObject> finalResult() {
-        DerivativeBranch first = getBranches().get(0);
-        if(first.getDerivativeValue() != null) {
-            return Optional.of(first.getDerivativeValue());
-        }
-        return Optional.empty();
     }
 }

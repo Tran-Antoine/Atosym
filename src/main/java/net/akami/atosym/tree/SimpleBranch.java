@@ -12,9 +12,11 @@ import java.util.stream.Collectors;
 public class SimpleBranch {
 
     private AtosymTree<SimpleBranch> parent;
+
     private List<SimpleBranch> children;
     private MathOperator operator;
     private MathObject simplifiedValue;
+
     private String exp;
     private float evalTime;
 
@@ -29,15 +31,10 @@ public class SimpleBranch {
             simpleEval();
             return;
         }
-        long time = System.nanoTime();
-        List<MathObject> objects = children
-                .stream()
-                .map(SimpleBranch::getSimplifiedValue)
-                .collect(Collectors.toList());
-        this.simplifiedValue = operator.rawOperate(objects);
-        this.evalTime = (System.nanoTime() - time) / 1E9f;
+        mergeChildren();
     }
 
+    // TODO : USE TOKENS
     private void simpleEval() {
         if(ExpressionUtils.isANumber(exp)) {
             this.simplifiedValue = new NumberExpression(Float.parseFloat(exp));
@@ -50,6 +47,16 @@ public class SimpleBranch {
         }
 
         throw new UnsupportedOperationException();
+    }
+
+    private void mergeChildren() {
+        long time = System.nanoTime();
+        List<MathObject> objects = children
+                .stream()
+                .map(SimpleBranch::getSimplifiedValue)
+                .collect(Collectors.toList());
+        this.simplifiedValue = operator.rawOperate(objects);
+        this.evalTime = (System.nanoTime() - time) / 1E9f;
     }
 
     public boolean hasChildren() {

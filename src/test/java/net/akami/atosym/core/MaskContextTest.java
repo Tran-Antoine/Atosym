@@ -29,7 +29,7 @@ public class MaskContextTest {
     private void testWithLevel(List<CalculationAlteration> list, float level) {
         list.add(new CalculationAlteration<String>() {
             @Override
-            public boolean appliesTo(String... input) {
+            public boolean appliesTo(List<String> input) {
                 return false;
             }
 

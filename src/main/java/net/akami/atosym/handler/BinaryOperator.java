@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /*
@@ -27,8 +28,8 @@ public abstract class BinaryOperator extends MathOperator {
     }
 
     @Override
-    protected MathObject operate(MathObject... input) {
-        return binaryOperate(input[0], input[1]);
+    protected MathObject operate(List<MathObject> input) {
+        return binaryOperate(input.get(0), input.get(1));
     }
 
     protected abstract MathObject binaryOperate(MathObject a, MathObject b);

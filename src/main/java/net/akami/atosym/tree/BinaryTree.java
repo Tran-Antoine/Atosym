@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * A Binary tree handles branch splitting, evaluating and merging with the defined behaviours. <br> <br>
@@ -96,48 +95,9 @@ public abstract class BinaryTree<T extends SimpleBranch> implements Iterable<T> 
      * @return the reduced value of the first branch, while finalResult() is not redefined
      */
     public MathObject merge() {
-        /*
-        If we give a very simple expression such as '50' to the reducer, it will detect that no operation
-        needs to be done, and will simply calculate nothing. In this case, we return the expression itself.
-        */
-        if (getBranches().size() == 1 && !branches.get(0).canBeEvaluated()) {
-            LOGGER.debug("Only one branch found. Returns it.");
-            return null;//new Expression(getBranches().get(0).getExpression());
-        }
-
-        //Merging the branches from the last one to the first one (this initial expression)
-        for (int i = getBranches().size() - 1; i >= 0; i--) {
-
-            T self = getBranches().get(i);
-
-            if (!self.canBeEvaluated()) {
-                LOGGER.info("Not calculable : ");
-                //self.setReducedValue(new Expression(self.getExpression()));
-                continue;
-            }
-
-            evalBranch(self);
-            if(self.getReducedValue() != null && self.getReducedValue().toString().equals("Infinity"))
-                throw new ArithmeticException("Infinity value found");
-
-            if(finalResult().isPresent()) {
-                return finalResult().get();
-            }
-        }
         return null;
     }
 
-    /**
-     * Defines whether the final findResult has been calculated or not.
-     * @return the final findResult if calculated, otherwise an empty optional.
-     */
-    public Optional<MathObject> finalResult() {
-        T first = getBranches().get(0);
-        if (first.hasReducedValue()) {
-            return Optional.of(first.getReducedValue());
-        }
-        return Optional.empty();
-    }
 
     /**
      *

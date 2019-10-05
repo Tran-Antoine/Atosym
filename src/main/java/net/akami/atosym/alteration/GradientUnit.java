@@ -5,6 +5,8 @@ import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Specifies that angles are given in gradients. Conversions will be performed whenever a scalar value is detected. <br>
@@ -16,17 +18,15 @@ public class GradientUnit implements IOCalculationModifier<MathObject> {
     public static final double CONVERSION_TO_RADIANS = 0.015707963267949D;
 
     @Override
-    public MathObject[] modify(MathObject... input) {
-        MathObject[] output = new MathObject[1];
-        BigDecimal inputDecimal = new BigDecimal(input[0].toString());
+    public List<MathObject> modify(List<MathObject> input) {
+        BigDecimal inputDecimal = new BigDecimal(input.get(0).toString());
         BigDecimal conversion = new BigDecimal(CONVERSION_TO_RADIANS);
-        output[0] = new NumberExpression(inputDecimal.multiply(conversion).floatValue());
-        return output;
+        return Collections.singletonList(new NumberExpression(inputDecimal.multiply(conversion).floatValue()));
     }
 
     @Override
-    public boolean appliesTo(MathObject... input) {
-        return ExpressionUtils.isANumber(input[0].toString());
+    public boolean appliesTo(List<MathObject> input) {
+        return ExpressionUtils.isANumber(input.get(0).toString());
     }
 
     @Override

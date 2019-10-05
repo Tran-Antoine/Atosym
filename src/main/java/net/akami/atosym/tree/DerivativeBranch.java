@@ -10,12 +10,12 @@ import net.akami.atosym.expression.MathObject;
  *
  * @author Antoine Tran
  */
-public class DerivativeBranch extends SimpleBranch<DerivativeBranch> {
+public class DerivativeBranch extends SimpleBranch {
 
     private MathObject derivativeValue;
 
     public DerivativeBranch(String expression) {
-        super(expression);
+        super(null, expression, null);
     }
 
     /**
@@ -23,7 +23,6 @@ public class DerivativeBranch extends SimpleBranch<DerivativeBranch> {
      * derivative of it.
      * @return {@code true}
      */
-    @Override
     public boolean canBeEvaluated() {
         return true;
     }

@@ -16,9 +16,8 @@ public abstract class MathFunction implements MathObject {
 
     @Override
     public MathObject operate() {
-        MathObject[] array = children.toArray(new MathObject[]{});
-        checkSize(array.length);
-        return operator.rawOperate(array);
+        checkSize(children.size());
+        return operator.rawOperate(children);
     }
 
     public void checkSize(int size) {

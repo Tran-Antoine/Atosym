@@ -5,6 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.BinaryOperator;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -42,14 +43,14 @@ public class CalculationCache implements FairCalculationCanceller<MathObject> {
     }
 
     @Override
-    public MathObject resultIfCancelled(MathObject... input) {
-        return cache.get(input[0].toString()+'|'+input[1].toString());
+    public MathObject resultIfCancelled(List<MathObject> input) {
+        return cache.get(input.get(0).toString()+'|'+input.get(1).toString());
     }
 
     @Override
-    public boolean appliesTo(MathObject... input) {
+    public boolean appliesTo(List<MathObject> input) {
         if (capacity == 0) return false;
-        return cache.containsKey(input[0].toString()+'|'+input[1].toString());
+        return cache.containsKey(input.get(0).toString()+'|'+input.get(1).toString());
     }
 
     /**

@@ -5,6 +5,8 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.PowerOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
+import java.util.List;
+
 /**
  * Decides what the maximal numeric exponent is before canceling the power calculation. <br>
  * If set to 3 for instance, {@code (x+y)^3} will be expanded as {@code x^3 + 3x^2y + 3xy^2 + y^3},
@@ -25,13 +27,13 @@ public class PowExpansionLimit implements FairCalculationCanceller<MathObject> {
     }
 
     @Override
-    public MathObject resultIfCancelled(MathObject... input) {
-        return context.getBinaryOperator(PowerOperator.class).layerPow(input[0], input[1]);
+    public MathObject resultIfCancelled(List<MathObject> input) {
+        return context.getBinaryOperator(PowerOperator.class).layerPow(input.get(0), input.get(1));
     }
 
     @Override
-    public boolean appliesTo(MathObject... input) {
-        MathObject exponent = input[1];
+    public boolean appliesTo(List<MathObject> input) {
+        MathObject exponent = input.get(1);
         // using parseFloat instead of parseInt for possible ".0", such as "5.0"
         return ExpressionUtils.isAnInteger(exponent) && Float.parseFloat(exponent.toString()) > limit;
     }

@@ -1,11 +1,9 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
-import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.utils.ExpressionUtils;
 import net.akami.atosym.utils.FormatterFactory;
-import net.akami.atosym.utils.TreeUtils;
 
 /**
  * CalculationTree is an implementation of the {@link BinaryTree} class that manages algebraic calculations, containing
@@ -46,7 +44,7 @@ public abstract class CalculationTree<T extends SimpleBranch> extends BinaryTree
     @Override
     protected boolean split(T self, char... by) {
 
-        char c1 = by[0];
+        /*char c1 = by[0];
         char c2 = by[1];
         String expression = self.getExpression();
         /*
@@ -55,7 +53,7 @@ public abstract class CalculationTree<T extends SimpleBranch> extends BinaryTree
             2 |/| 2*2. 2*2 will be calculated first, the final findResult will be 1/2. If we go from exp.getElementsSize() -1
             to 0, the expression will be divided like this :
             2 / 2 |*| 2. 2/2 will be calculated first, the final findResult will be 2.
-        */
+
         for (int i = expression.length() - 1; i >= 0; i--) {
 
 
@@ -72,13 +70,13 @@ public abstract class CalculationTree<T extends SimpleBranch> extends BinaryTree
                 }
             }
         }
-        LOGGER.debug("Separations with the operations {} and {} are now done", c1, c2);
+        LOGGER.debug("Separations with the operations {} and {} are now done", c1, c2); */
         return false;
     }
 
     @Override
     protected void evalBranch(T self) {
-        LOGGER.info("Actual branch : {}", self.getExpression());
+        /*LOGGER.info("Actual branch : {}", self.getExpression());
 
         // We are sure that the branch has a left and a right part, because the branch can be calculated
         MathObject left = self.getLeftValue();
@@ -89,7 +87,7 @@ public abstract class CalculationTree<T extends SimpleBranch> extends BinaryTree
         // The findResult is defined as the reduced value of the expression
         LOGGER.info("Successfully calculated the value of " + self.getExpression() + " : " + value);
 
-        self.setReducedValue(value);
+        self.setReducedValue(value);*/
     }
 
     /**
