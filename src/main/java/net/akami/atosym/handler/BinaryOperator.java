@@ -18,6 +18,10 @@ import java.util.Set;
         However, it does not mean that the mult function can only store 2 arguments.
 
         mult(a, mult(b,c)) can be computed, and will result in mult(a,b,c)
+
+        Same goes for the sum :
+
+        sum(1,2,3) will never be "computed", but sum(1, sum(2,3) will result in sum(1,2,3)
  */
 public abstract class BinaryOperator extends MathOperator {
 

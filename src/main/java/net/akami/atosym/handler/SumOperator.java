@@ -8,12 +8,12 @@ import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Computes the sum between two expressions. The default SumOperator class handles the following properties :
+ * Computes the sum between two objects. The default SumOperator class handles the following properties :
  *
  * <ul>
  * <li> {@link CosineSinusSquaredProperty}, converting {@code sin^2(x) + cos^2(x)} to 1.
@@ -37,24 +37,26 @@ public class SumOperator extends BinaryOperator {
     @Override
     public MathObject binaryOperate(MathObject a, MathObject b) {
 
-        LOGGER.info("SumOperator process of {} |+| {}: \n", a, b);
-        List<MathObject> aElements = toList(a);
-        List<MathObject> bElements = toList(b);
+        LOGGER.debug("SumOperator process of {} |+| {}: \n", a, b);
+        List<MathObject> elements = toList(a, b);
 
         SequencedMerge<MathObject> additionBehavior = new MonomialAdditionMerge(context);
-        List<MathObject> elements = additionBehavior.merge(aElements, bElements, false);
-        elements = elements.stream().filter(NumericUtils::isNotZero).collect(Collectors.toList());
-        //Collections.sort(elements);
-        if(elements.size() == 1) {
-            return elements.get(0);
-        }
+        List<MathObject> mergedElements = additionBehavior.merge(elements, elements, false);
 
-        MathObject result = new SumMathObject(this, elements);
-        LOGGER.info("---> Result of {} |+| {}: {}", a, b, result);
-        return result;
+        return result(mergedElements);
     }
 
-    private List<MathObject> toList(MathObject x) {
-        return new ArrayList<>(Collections.singletonList(x));
+    private MathObject result(List<MathObject> mergedElements) {
+        mergedElements = mergedElements.stream().filter(NumericUtils::isNotZero).collect(Collectors.toList());
+        //Collections.sort(elements);
+        if(mergedElements.size() == 1) {
+            return mergedElements.get(0);
+        }
+
+        return new SumMathObject(this, mergedElements);
+    }
+
+    private List<MathObject> toList(MathObject... x) {
+        return new ArrayList<>(Arrays.asList(x));
     }
 }
