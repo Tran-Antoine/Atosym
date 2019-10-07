@@ -3,7 +3,7 @@ grammar Atosym;
 main: exp;
 
 exp
-    : func '(' (exp',')* exp ')'
+    : FUNC '(' (exp',')* exp ')'
     | '(' exp ')'
     | exp OTHER_SYMBOL
     | exp binop=POW exp
@@ -12,11 +12,11 @@ exp
     | NUMBER
     | CHAR;
 
-func returns [int length]
-    : 'sin'  {$length = 1}  // sin(angle)
-    | 'cos'  {$length = 1}  // cos(angle)
-    | 'log'  {$length = 2}  // log(base, n)
-    | 'root' {$length = 2} // root(base, n)
+FUNC
+    : 'sin'  // sin(angle)
+    | 'cos'  // cos(angle)
+    | 'log'  // log(base, n)
+    | 'root' // root(base, n)
     ;
 
 NUMBER : DIGIT+;

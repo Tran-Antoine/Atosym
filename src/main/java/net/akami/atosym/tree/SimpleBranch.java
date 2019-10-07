@@ -5,12 +5,12 @@ import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
 import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
-import net.akami.atosym.parser.AtosymParser.FuncContext;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,9 +54,9 @@ public class SimpleBranch {
         if(binOp != null) {
             text = binOp.getText();
         } else {
-            FuncContext context = expTree.func();
-            if(context != null) {
-                text = context.getText();
+            TerminalNode func = expTree.FUNC();
+            if(func != null) {
+                text = func.getText();
             } else {
                 throw new UnsupportedOperationException();
             }
@@ -87,7 +87,13 @@ public class SimpleBranch {
         CommonTokenStream stream = parent.getTokenStream();
         Vocabulary voc = parent.getVocabulary();
 
-        List<Token> tokens = stream.getTokens(parseTree.start.getStopIndex(), parseTree.stop.getStopIndex());
+        List<Token> tokens = new ArrayList<>();
+        for(int i = 0; i < parseTree.getChildCount(); i++) {
+            ParseTree child = parseTree.getChild(i);
+            if(child instanceof TerminalNode) {
+                tokens.add(((TerminalNode) child).getSymbol());
+            }
+        }
 
         for(Token token : tokens) {
             String name = voc.getSymbolicName(token.getType());

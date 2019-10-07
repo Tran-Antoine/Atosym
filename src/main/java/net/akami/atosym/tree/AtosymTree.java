@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
-public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
+public class AtosymTree<T extends SimpleBranch> implements AbstractSyntaxTree<T> {
 
     public static final Logger LOGGER = LoggerFactory.getLogger(BinaryTree.class);
     private MaskContext context;
@@ -43,6 +43,7 @@ public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
         return context;
     }
 
+    @Override
     public MathObject merge() {
 
         //Merging the branches from the last one to the first one (this initial expression)
@@ -59,7 +60,7 @@ public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
         throw new RuntimeException("Internal error : Could not solve the given tree");
     }
 
-    public Optional<MathObject> finalResult() {
+    private Optional<MathObject> finalResult() {
         T first = branches.get(branches.size()-1);
         if (first.hasSimplifiedValue()) {
             return Optional.of(first.getSimplifiedValue());
@@ -67,10 +68,12 @@ public class AtosymTree<T extends SimpleBranch> implements Iterable<T> {
         return Optional.empty();
     }
 
+    @Override
     public Vocabulary getVocabulary() {
         return vocabulary;
     }
 
+    @Override
     public CommonTokenStream getTokenStream() {
         return tokenStream;
     }

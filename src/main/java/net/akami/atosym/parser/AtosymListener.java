@@ -1,3 +1,4 @@
+// Generated from J:/Java/workspace/Atosym/src/main/antlr\Atosym.g4 by ANTLR 4.7.2
 package net.akami.atosym.parser;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -26,14 +27,4 @@ public interface AtosymListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExp(AtosymParser.ExpContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link AtosymParser#func}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunc(AtosymParser.FuncContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link AtosymParser#func}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunc(AtosymParser.FuncContext ctx);
 }

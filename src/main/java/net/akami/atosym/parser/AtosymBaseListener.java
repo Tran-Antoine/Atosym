@@ -1,3 +1,4 @@
+// Generated from J:/Java/workspace/Atosym/src/main/antlr\Atosym.g4 by ANTLR 4.7.2
 package net.akami.atosym.parser;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -34,18 +35,6 @@ public class AtosymBaseListener implements AtosymListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExp(AtosymParser.ExpContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunc(AtosymParser.FuncContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunc(AtosymParser.FuncContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

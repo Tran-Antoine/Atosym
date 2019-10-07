@@ -20,7 +20,7 @@ public class MainListener extends AtosymBaseListener {
 
     public static void main(String... args) {
 
-        CharStream inputStream = CharStreams.fromString("sin(3)+2");
+        CharStream inputStream = CharStreams.fromString("sin(sin(sin(90)))");
         AtosymLexer atosymLexer = new AtosymLexer(inputStream);
         voc = atosymLexer.getVocabulary();
         stream = new CommonTokenStream(atosymLexer);
@@ -31,14 +31,13 @@ public class MainListener extends AtosymBaseListener {
 
         MainListener listener = new MainListener();
         walker.walk(listener, tree);
-
     }
 
     @Override
     public void enterMain(AtosymParser.MainContext ctx) {
         ExpContext context = (ExpContext) ctx.getChild(0);
         new SimpleBranch(tree, context);
-        tree.forEach(SimpleBranch::debug);
+        //tree.forEach(SimpleBranch::debug);
         System.out.println(tree.merge().display());
     }
     /*@Override
