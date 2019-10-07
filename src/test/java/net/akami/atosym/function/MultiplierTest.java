@@ -1,6 +1,7 @@
-package net.akami.atosym.handler;
+package net.akami.atosym.function;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.function.MultOperator;
 import org.junit.Test;
 
 public class MultiplierTest {
@@ -44,8 +45,8 @@ public class MultiplierTest {
     }
 
     private void assertOperation(String i1, String i2, String result) {
-        /*Expression e1 = ReducerFactory.reduce(i1);
-        Expression e2 = ReducerFactory.reduce(i2);
+        /*Expression e1 = FastAtosymMath.reduce(i1);
+        Expression e2 = FastAtosymMath.reduce(i2);
         assertThat(MULT.operate(e1, e2).toString()).isEqualTo(result);*/
     }
 }

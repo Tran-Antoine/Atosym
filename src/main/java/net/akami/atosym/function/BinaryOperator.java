@@ -1,8 +1,7 @@
-package net.akami.atosym.handler;
+package net.akami.atosym.function;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.function.MathOperator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

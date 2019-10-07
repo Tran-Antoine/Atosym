@@ -91,7 +91,7 @@ public class ReducerTest {
     }
 
     private void assertReduction(String s1, String s) {
-        assertThat(ReducerFactory.reduce(s1).toString()).isEqualTo(s);
+        assertThat(FastAtosymMath.reduce(s1).toString()).isEqualTo(s);
     }
 
     // It won't support factorisation for now. Therefore :

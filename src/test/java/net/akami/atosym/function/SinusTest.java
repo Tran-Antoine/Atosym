@@ -23,6 +23,6 @@ public class SinusTest {
 
 
     private void assertSinus(String input, String result) {
-        //Assertions.assertThat(function.rawOperate(ReducerFactory.reduce(input)).toString()).isEqualTo(result);
+        //Assertions.assertThat(function.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
     }
 }

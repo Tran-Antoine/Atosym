@@ -1,8 +1,8 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.alteration.CalculationCache;
-import net.akami.atosym.handler.BinaryOperator;
-import net.akami.atosym.utils.ReducerFactory;
+import net.akami.atosym.function.BinaryOperator;
+import net.akami.atosym.utils.FastAtosymMath;
 
 import java.util.Scanner;
 
@@ -20,7 +20,7 @@ public class MainTester {
         System.out.println("Next expression to reduce : ");
         while(!(expression = sc.nextLine()).isEmpty()) {
             long time = System.nanoTime();
-            System.out.println("Result : "+ ReducerFactory.reduce(expression));
+            System.out.println("Result : "+ FastAtosymMath.reduce(expression));
             float deltaTime = (System.nanoTime() - time) / 1000000000f;
             System.out.println("Calculations ended after "+deltaTime+" seconds");
             System.out.println("Next expression to reduce : ");

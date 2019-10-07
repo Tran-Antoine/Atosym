@@ -124,19 +124,7 @@ public enum BinaryOperationSign {
      *  3y-2  ^  x+y    = (3y-2)^(x+y)
      * </pre>
      */
-    POW('^', MathUtils::pow, 2),
-
-    /**
-     * The None operator does not have any other utility than making the amount of operations an even number.
-     * In other words, it allows the pow operator to have an other operation with an equal priority level.
-     * <br>
-     *
-     * The purpose of this is to allow the {@link net.akami.atosym.tree.CalculationTree} to deal with operation signs
-     * two at once, without getting any {@link IndexOutOfBoundsException}.
-     *
-     * @see net.akami.atosym.tree.CalculationTree for further information
-     */
-    NONE(' ', null, 2);
+    POW('^', MathUtils::pow, 2);
 
     private char sign;
     private BinaryMathCalculation binaryFunction;

@@ -1,8 +1,9 @@
-package net.akami.atosym.merge.property;
+package net.akami.atosym.merge.property.sum;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.*;
-import net.akami.atosym.handler.MultOperator;
+import net.akami.atosym.function.MultOperator;
+import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
 
 import java.util.Arrays;
 import java.util.List;

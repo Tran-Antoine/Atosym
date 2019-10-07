@@ -3,9 +3,7 @@ package net.akami.atosym.utils;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.handler.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.akami.atosym.function.*;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 
@@ -97,11 +95,11 @@ public class MathUtils {
         List<String> results = new ArrayList<>();
         if (self % 1 != 0) {
             LOGGER.info("Non-integer given, returns it");
-            results.add(String.valueOf(self));
+            results.addBranch(String.valueOf(self));
             return results;
         }
         if (self < 0) {
-            results.add("-1");
+            results.addBranch("-1");
             self *= -1;
         }
 
@@ -112,7 +110,7 @@ public class MathUtils {
             int divider = dividers.get(index);
             if (self % divider == 0) {
                 LOGGER.error("{} is a divider of {}", divider, self);
-                results.add(String.valueOf(divider));
+                results.addBranch(String.valueOf(divider));
                 self /= divider;
             } else {
                 LOGGER.error("{} is not a divider of {}", divider, self);
@@ -134,16 +132,16 @@ public class MathUtils {
         if(other != 0 && self % other == 0) {
             float divResult = self / other;
             self /= divResult;
-            results.add(divResult);
+            results.addBranch(divResult);
         }
 
         if (self % 1 != 0) {
             LOGGER.info("Non-integer given, returns it");
-            results.add(self);
+            results.addBranch(self);
             return results;
         }
         if (self < 0) {
-            results.add(-1.0f);
+            results.addBranch(-1.0f);
             self *= -1;
         }
 
@@ -154,7 +152,7 @@ public class MathUtils {
             int divider = dividers.get(index);
             if (self % divider == 0) {
                 LOGGER.debug("{} is a divider of {}", divider, self);
-                results.add((float) divider);
+                results.addBranch((float) divider);
                 self /= divider;
             } else {
                 LOGGER.debug("{} is not a divider of {}", divider, self);
@@ -177,7 +175,7 @@ public class MathUtils {
                 }
             }
             if (unique) {
-                dividers.add(i);
+                dividers.addBranch(i);
             }
         }
         return dividers;
@@ -188,34 +186,34 @@ public class MathUtils {
         List<Variable> finalVars = new ArrayList<>();
 
         for(Variable var : vars) {
-            if(var instanceof SingleCharVariable) {finalVars.add(var); continue; }
+            if(var instanceof SingleCharVariable) {finalVars.addBranch(var); continue; }
 
             IntricateVariable complexVar = (IntricateVariable) var;
-            if(complexVar.getOverlaysSize() == 0) {finalVars.add((complexVar)); continue; }
+            if(complexVar.getOverlaysSize() == 0) {finalVars.addBranch((complexVar)); continue; }
 
             ExpressionOverlay last = complexVar.getOverlay(-1);
 
-            if(!(last instanceof ExponentOverlay)) {finalVars.add((complexVar)); continue; }
+            if(!(last instanceof ExponentOverlay)) {finalVars.addBranch((complexVar)); continue; }
 
             ExponentOverlay exponent = (ExponentOverlay) last;
 
             if(ExpressionUtils.isANumber(exponent)) {
                 float expValue = exponent.get(0).getNumericValue();
                 List<ExpressionOverlay> finalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
-                finalOverlays.add(ExponentOverlay.NULL_FACTOR);
+                finalOverlays.addBranch(ExponentOverlay.NULL_FACTOR);
 
                 while (expValue > 1) {
-                    finalVars.add(new IntricateVariable(complexVar.getElements(), finalOverlays));
+                    finalVars.addBranch(new IntricateVariable(complexVar.getElements(), finalOverlays));
                     expValue--;
                 }
 
                 if (expValue != 0) {
                     List<ExpressionOverlay> otherFinalOverlays = new ArrayList<>(complexVar.getOverlaysSection(0, -2));
-                    otherFinalOverlays.add(ExponentOverlay.fromExpression(Expression.of(expValue)));
-                    finalVars.add(new IntricateVariable(complexVar.getElements(), otherFinalOverlays));
+                    otherFinalOverlays.addBranch(ExponentOverlay.fromExpression(Expression.of(expValue)));
+                    finalVars.addBranch(new IntricateVariable(complexVar.getElements(), otherFinalOverlays));
                 }
             } else {
-                finalVars.add(complexVar);
+                finalVars.addBranch(complexVar);
             }
         }
         return finalVars;

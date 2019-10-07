@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.PowerOperator;
+import net.akami.atosym.function.PowerOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;

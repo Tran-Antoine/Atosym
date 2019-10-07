@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.DivOperator;
+import net.akami.atosym.function.DivOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;

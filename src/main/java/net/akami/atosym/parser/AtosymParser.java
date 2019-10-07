@@ -1,4 +1,4 @@
-// Generated from J:/Java/workspace/Atosym/src/main/antlr\Atosym.g4 by ANTLR 4.7.2
+// Generated from C:/Users/antoi/Desktop/Programmation Java/WorkSpace/Atosym/src/main/antlr\Atosym.g4 by ANTLR 4.7.2
 package net.akami.atosym.parser;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -18,7 +18,7 @@ public class AtosymParser extends Parser {
 		new PredictionContextCache();
 	public static final int
 		T__0=1, T__1=2, T__2=3, FUNC=4, NUMBER=5, DIGIT=6, CHAR=7, OTHER_SYMBOL=8, 
-		SUM=9, SUB=10, MULT=11, DIV=12, POW=13, WHITESPACE=14;
+		SUM=9, SUB=10, MULT=11, IMPLICIT_MULT=12, DIV=13, POW=14, WHITESPACE=15;
 	public static final int
 		RULE_main = 0, RULE_exp = 1;
 	private static String[] makeRuleNames() {
@@ -31,14 +31,14 @@ public class AtosymParser extends Parser {
 	private static String[] makeLiteralNames() {
 		return new String[] {
 			null, "'('", "','", "')'", null, null, null, null, null, "'+'", "'-'", 
-			"'*'", "'/'", "'^'"
+			"'*'", null, "'/'", "'^'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
 			null, null, null, null, "FUNC", "NUMBER", "DIGIT", "CHAR", "OTHER_SYMBOL", 
-			"SUM", "SUB", "MULT", "DIV", "POW", "WHITESPACE"
+			"SUM", "SUB", "MULT", "IMPLICIT_MULT", "DIV", "POW", "WHITESPACE"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -237,17 +237,17 @@ public class AtosymParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(41);
+			setState(43);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(39);
+					setState(41);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,2,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
@@ -266,18 +266,26 @@ public class AtosymParser extends Parser {
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
 						setState(31);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(32);
-						((ExpContext)_localctx).binop = _input.LT(1);
-						_la = _input.LA(1);
-						if ( !(_la==MULT || _la==DIV) ) {
-							((ExpContext)_localctx).binop = (Token)_errHandler.recoverInline(this);
-						}
-						else {
-							if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-							_errHandler.reportMatch(this);
-							consume();
-						}
 						setState(33);
+						_errHandler.sync(this);
+						_la = _input.LA(1);
+						if (_la==MULT || _la==DIV) {
+							{
+							setState(32);
+							((ExpContext)_localctx).binop = _input.LT(1);
+							_la = _input.LA(1);
+							if ( !(_la==MULT || _la==DIV) ) {
+								((ExpContext)_localctx).binop = (Token)_errHandler.recoverInline(this);
+							}
+							else {
+								if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+								_errHandler.reportMatch(this);
+								consume();
+							}
+							}
+						}
+
+						setState(35);
 						exp(5);
 						}
 						break;
@@ -285,9 +293,9 @@ public class AtosymParser extends Parser {
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(34);
+						setState(36);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(35);
+						setState(37);
 						((ExpContext)_localctx).binop = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==SUM || _la==SUB) ) {
@@ -298,7 +306,7 @@ public class AtosymParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(36);
+						setState(38);
 						exp(4);
 						}
 						break;
@@ -306,18 +314,18 @@ public class AtosymParser extends Parser {
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(37);
+						setState(39);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(38);
+						setState(40);
 						match(OTHER_SYMBOL);
 						}
 						break;
 					}
 					} 
 				}
-				setState(43);
+				setState(45);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,3,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
 			}
 			}
 		}
@@ -354,20 +362,20 @@ public class AtosymParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20/\4\2\t\2\4\3\t"+
-		"\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3\17\n\3\f\3\16\3\22\13\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\35\n\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3"+
-		"\3\3\3\3\3\3\3\7\3*\n\3\f\3\16\3-\13\3\3\3\2\3\4\4\2\4\2\4\3\2\r\16\3"+
-		"\2\13\f\2\64\2\6\3\2\2\2\4\34\3\2\2\2\6\7\5\4\3\2\7\3\3\2\2\2\b\t\b\3"+
-		"\1\2\t\n\7\6\2\2\n\20\7\3\2\2\13\f\5\4\3\2\f\r\7\4\2\2\r\17\3\2\2\2\16"+
-		"\13\3\2\2\2\17\22\3\2\2\2\20\16\3\2\2\2\20\21\3\2\2\2\21\23\3\2\2\2\22"+
-		"\20\3\2\2\2\23\24\5\4\3\2\24\25\7\5\2\2\25\35\3\2\2\2\26\27\7\3\2\2\27"+
-		"\30\5\4\3\2\30\31\7\5\2\2\31\35\3\2\2\2\32\35\7\7\2\2\33\35\7\t\2\2\34"+
-		"\b\3\2\2\2\34\26\3\2\2\2\34\32\3\2\2\2\34\33\3\2\2\2\35+\3\2\2\2\36\37"+
-		"\f\7\2\2\37 \7\17\2\2 *\5\4\3\b!\"\f\6\2\2\"#\t\2\2\2#*\5\4\3\7$%\f\5"+
-		"\2\2%&\t\3\2\2&*\5\4\3\6\'(\f\b\2\2(*\7\n\2\2)\36\3\2\2\2)!\3\2\2\2)$"+
-		"\3\2\2\2)\'\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,\5\3\2\2\2-+\3\2\2\2"+
-		"\6\20\34)+";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\21\61\4\2\t\2\4\3"+
+		"\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3\17\n\3\f\3\16\3\22\13\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\35\n\3\3\3\3\3\3\3\3\3\3\3\5\3$\n\3"+
+		"\3\3\3\3\3\3\3\3\3\3\3\3\7\3,\n\3\f\3\16\3/\13\3\3\3\2\3\4\4\2\4\2\4\4"+
+		"\2\r\r\17\17\3\2\13\f\2\67\2\6\3\2\2\2\4\34\3\2\2\2\6\7\5\4\3\2\7\3\3"+
+		"\2\2\2\b\t\b\3\1\2\t\n\7\6\2\2\n\20\7\3\2\2\13\f\5\4\3\2\f\r\7\4\2\2\r"+
+		"\17\3\2\2\2\16\13\3\2\2\2\17\22\3\2\2\2\20\16\3\2\2\2\20\21\3\2\2\2\21"+
+		"\23\3\2\2\2\22\20\3\2\2\2\23\24\5\4\3\2\24\25\7\5\2\2\25\35\3\2\2\2\26"+
+		"\27\7\3\2\2\27\30\5\4\3\2\30\31\7\5\2\2\31\35\3\2\2\2\32\35\7\7\2\2\33"+
+		"\35\7\t\2\2\34\b\3\2\2\2\34\26\3\2\2\2\34\32\3\2\2\2\34\33\3\2\2\2\35"+
+		"-\3\2\2\2\36\37\f\7\2\2\37 \7\20\2\2 ,\5\4\3\b!#\f\6\2\2\"$\t\2\2\2#\""+
+		"\3\2\2\2#$\3\2\2\2$%\3\2\2\2%,\5\4\3\7&\'\f\5\2\2\'(\t\3\2\2(,\5\4\3\6"+
+		")*\f\b\2\2*,\7\n\2\2+\36\3\2\2\2+!\3\2\2\2+&\3\2\2\2+)\3\2\2\2,/\3\2\2"+
+		"\2-+\3\2\2\2-.\3\2\2\2.\5\3\2\2\2/-\3\2\2\2\7\20\34#+-";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

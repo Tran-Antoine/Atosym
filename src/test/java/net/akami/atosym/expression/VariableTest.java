@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.MultOperator;
+import net.akami.atosym.function.MultOperator;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 
@@ -70,7 +70,7 @@ public class VariableTest {
 
     @Test
     public void recursiveComplexTest() {
-        Expression result = ReducerFactory.reduce("y^4.0+5.0x");
+        Expression result = FastAtosymMath.reduce("y^4.0+5.0x");
         IntricateVariable complex = new IntricateVariable(new Monomial(1, new IntricateVariable(result.getElements())));
         Monomial m1 = new NumberElement(4);
         Monomial m2 = new Monomial(1, complex);

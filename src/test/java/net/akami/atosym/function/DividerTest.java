@@ -1,6 +1,7 @@
-package net.akami.atosym.handler;
+package net.akami.atosym.function;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.function.DivOperator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,15 +39,15 @@ public class DividerTest {
     @Test
     public void simpleMonomialDivisionTest() {
 
-        /*Monomial m1 = ReducerFactory.reduce("4xy").get(0);
-        Monomial m2 = ReducerFactory.reduce("6x").get(0);
+        /*Monomial m1 = FastAtosymMath.reduce("4xy").get(0);
+        Monomial m2 = FastAtosymMath.reduce("6x").get(0);
 
         assertThat(divider.monomialDivision(m1, m2).get(0).getExpression()).isEqualTo("0.6666667y");*/
     }
 
     private void assertDivision(String a, String b, String result) {
-        /*Expression aExp = ReducerFactory.reduce(a);
-        Expression bExp = ReducerFactory.reduce(b);
+        /*Expression aExp = FastAtosymMath.reduce(a);
+        Expression bExp = FastAtosymMath.reduce(b);
         assertThat(divider.operate(aExp, bExp).toString()).isEqualTo(result);*/
     }
 }

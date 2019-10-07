@@ -30,4 +30,8 @@ public abstract class MathFunction<T extends MathOperator> implements MathObject
     protected int size() {
         return operator.getSize();
     }
+
+    public void addChildrenTo(List<MathObject> list) {
+        list.addAll(children);
+    }
 }

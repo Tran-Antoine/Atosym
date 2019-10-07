@@ -1,9 +1,10 @@
-package net.akami.atosym.merge.property;
+package net.akami.atosym.merge.property.sum;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
+import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.List;

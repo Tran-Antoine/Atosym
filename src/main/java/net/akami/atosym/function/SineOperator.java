@@ -8,7 +8,7 @@ import net.akami.atosym.expression.SineMathObject;
 import java.util.Collections;
 import java.util.List;
 
-public class SineOperator extends MathOperator {
+public class SineOperator extends MathOperator implements AngleUnitDependent {
 
     public SineOperator() {
         super(Collections.singletonList("sin"), 1);

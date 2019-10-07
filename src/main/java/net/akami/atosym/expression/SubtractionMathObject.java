@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.SubOperator;
+import net.akami.atosym.function.SubOperator;
 
 import java.util.List;
 import java.util.function.Predicate;

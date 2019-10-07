@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.SumOperator;
+import net.akami.atosym.function.SumOperator;
 
 import java.util.List;
 

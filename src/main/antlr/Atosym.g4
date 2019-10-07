@@ -7,10 +7,11 @@ exp
     | '(' exp ')'
     | exp OTHER_SYMBOL
     | exp binop=POW exp
-    | exp binop=(DIV|MULT) exp
+    | exp (binop=(DIV|MULT))? exp
     | exp binop=(SUM|SUB) exp
     | NUMBER
-    | CHAR;
+    | CHAR
+    ;
 
 FUNC
     : 'sin'  // sin(angle)
@@ -26,6 +27,7 @@ OTHER_SYMBOL : '!'|'π';
 SUM : '+';
 SUB : '-';
 MULT : '*';
+IMPLICIT_MULT : ;
 DIV : '/';
 POW : '^';
 

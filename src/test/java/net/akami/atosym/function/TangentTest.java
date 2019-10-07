@@ -20,6 +20,6 @@ public class TangentTest {
     }
 
     private void assertTangent(String input, String result) {
-        //Assertions.assertThat(function.rawOperate(ReducerFactory.reduce(input)).toString()).isEqualTo(result);
+        //Assertions.assertThat(function.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
     }
 }

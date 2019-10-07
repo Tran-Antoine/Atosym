@@ -16,7 +16,7 @@ import java.util.function.Consumer;
  * If no context is specified, {@link MaskContext#DEFAULT} will be used. <br>
  * The third one is a list of {@link MaskOperator}s. Those are the operators that are supported by the manager. Most of the time
  * this field doesn't require any modification. You'll only need to modify the list if you want to remove operators to limit
- * the features of the manager, or if you want to modify / add new operators. <br>
+ * the features of the manager, or if you want to modify / addBranch new operators. <br>
  * Eventually, the fourth data is a boolean defining whether the {@code out} Mask should be set to the default Mask after
  * calls to {@code compute}. If set to true, it allows the user to chain operation without having to repeat the {@code in} Mask. <br>
  *

@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.MultOperator;
+import net.akami.atosym.function.MultOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.util.List;

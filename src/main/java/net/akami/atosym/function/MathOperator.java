@@ -5,7 +5,6 @@ import net.akami.atosym.alteration.FairAlterationHandler;
 import net.akami.atosym.alteration.IOCalculationModifier;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.handler.BinaryOperator;
 import net.akami.atosym.handler.PostCalculationActionable;
 
 
@@ -20,6 +19,8 @@ import java.util.*;
  */
 public abstract class MathOperator implements
         FairAlterationHandler<MathObject>, PostCalculationActionable<MathObject> {
+
+    public static final MathOperator NONE = null;
 
     protected List<CalculationCanceller<MathObject, MathObject>> cancellers;
     protected List<IOCalculationModifier<MathObject>> modifiers;
@@ -74,16 +75,12 @@ public abstract class MathOperator implements
         return this.names.equals(((MathOperator) obj).names);
     }
 
-    /*@Override
-    public String[] getEncapsulationString(List<MathObject> elements, int index, List<ExpressionOverlay> others) {
-        String[] parts = new String[2];
-        parts[0] = name + '(';
-        parts[1] = ")";
-        return parts;
-    }*/
-
     public List<String> getNames() {
         return names;
+    }
+
+    public boolean matches(String name) {
+        return names.contains(name);
     }
 
     private void initAlterations() {

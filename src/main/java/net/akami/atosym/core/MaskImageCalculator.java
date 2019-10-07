@@ -1,9 +1,8 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.utils.DisplayUtils;
-import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.ExpressionUtils;
-import net.akami.atosym.utils.ReducerFactory;
+import net.akami.atosym.utils.FastAtosymMath;
 
 import java.util.Map;
 
@@ -19,8 +18,8 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
         for (Character c : extraData.keySet()) {
             input = replace(c, extraData.get(c), input);
         }
-        MathObject finalResult = ReducerFactory.reduce(input, context);
-        out.reload(finalResult.toString());
+        String finalResult = FastAtosymMath.reduce(input, context);
+        out.reload(finalResult);
     }
 
     /**
@@ -47,7 +46,7 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
                 } // No number before the variable, for instance 3+x
                 DisplayUtils.surroundWithParenthesis(builder, value);
             } else {
-                // No variable found, we just add the same char
+                // No variable found, we just addBranch the same char
                 builder.append(currentChar);
             }
         }

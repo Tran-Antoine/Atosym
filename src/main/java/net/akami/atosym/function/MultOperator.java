@@ -1,4 +1,4 @@
-package net.akami.atosym.handler;
+package net.akami.atosym.function;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
@@ -10,7 +10,7 @@ public class MultOperator extends BinaryOperator {
     private MaskContext context;
 
     public MultOperator(MaskContext context) {
-        super("mult");
+        super("mult", "*", "");
         this.context = context;
     }
 
@@ -52,7 +52,7 @@ public class MultOperator extends BinaryOperator {
 
         for(Monomial a : aMonomials) {
             for(Monomial b : bMonomials) {
-                rawResult.add(multBehavior.merge(a, b, false));
+                rawResult.addBranch(multBehavior.merge(a, b, false));
             }
         }
         List<Monomial> reducedResult = additionBehavior.merge(rawResult, rawResult, true);

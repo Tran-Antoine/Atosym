@@ -103,6 +103,6 @@ public class ReducerFactoryTest {
     // Like 3x + 5x would give x(3+5) = 8x
 
     private void assertReduction(String initial, String result) {
-       Assertions.assertThat(ReducerFactory.reduce(initial).toString()).isEqualTo(result);
+       Assertions.assertThat(FastAtosymMath.reduce(initial).toString()).isEqualTo(result);
     }
 }

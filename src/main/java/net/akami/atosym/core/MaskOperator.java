@@ -1,6 +1,6 @@
 package net.akami.atosym.core;
 
-import net.akami.atosym.utils.ReducerFactory;
+import net.akami.atosym.utils.FastAtosymMath;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,7 @@ import java.util.List;
  * A specific operation taking an input, sorting out an output. <br>
  * Available operators :
  * <ul>
- * <li> {@link MaskSimplifier}, a simple layer for the reducing tree system. It will soon replace the {@link ReducerFactory} class.
+ * <li> {@link MaskSimplifier}, a simple layer for the reducing tree system. It will soon replace the {@link FastAtosymMath} class.
  * <li> {@link MaskDerivativeCalculator}, providing support for derivatives
  * <li> {@link MaskImageCalculator}, calculating images with a given function.
  * </ul>

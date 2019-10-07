@@ -81,10 +81,10 @@ public class MathUtilsTest {
     }
 
     private void assertComputation(QuaternaryMathOperation op, String a, String aAlt, String b, String bAlt, String r) {
-        /*Expression expA = ReducerFactory.reduce(a);
-        Expression expAAlt = ReducerFactory.reduce(aAlt);
-        Expression expB = ReducerFactory.reduce(b);
-        Expression expBAlt = ReducerFactory.reduce(bAlt);
+        /*Expression expA = FastAtosymMath.reduce(a);
+        Expression expAAlt = FastAtosymMath.reduce(aAlt);
+        Expression expB = FastAtosymMath.reduce(b);
+        Expression expBAlt = FastAtosymMath.reduce(bAlt);
         assertThat(op.compute(expA, expAAlt, expB, expBAlt).toString()).isEqualTo(r);*/
     }
 }

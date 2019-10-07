@@ -1,6 +1,6 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.handler.MultOperator;
+import net.akami.atosym.function.MultOperator;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 

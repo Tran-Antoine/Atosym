@@ -6,7 +6,7 @@ import net.akami.atosym.exception.MaskException;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
-import net.akami.atosym.handler.BinaryOperator;
+import net.akami.atosym.function.BinaryOperator;
 import net.akami.atosym.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +21,7 @@ import java.util.stream.Stream;
 /**
  * Defines a calculation environment, required to perform any operation on expressions. <br>
  * A context (or environment) allows you to customize different calculations. <br>
- * You are free to add some support for mathematical patterns that are not supported by the library, or, on the other hand,
+ * You are free to addBranch some support for mathematical patterns that are not supported by the library, or, on the other hand,
  * remove some undesired features provided by default, which will make your calculations run faster. <br>
  * Furthermore, the environment gives you a total control over inputs and outputs, which means that a single expression
  * can merge in different outcomes. You will for instance be able to decide whether {@code 5/2} will remain {@code 5/2} or
@@ -37,7 +37,7 @@ import java.util.stream.Stream;
  *      because your expression doesn't literally contain a given operation doesn't mean it is not required. For
  *      instance, the power calculator requires the multiplier to work, since it basically chains multiplications a given
  *      amount of times. <br>
- *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or add your owns
+ *      Note : binary operations take care of the alteration system. You can directly modify the handlers, or addBranch your owns
  *      with different alterations. <br>
  *      <li> A set of {@link MathOperator}s. Only the mathematical functions present in the set wil be supported.
  *      Mathematical functions can require multiple arguments. See {@link MathOperator}'s documentation for further
@@ -101,7 +101,7 @@ public class MaskContext {
     /**
      * Adds a new function to the set. <br>
      * Note that the new function will replace any existing function whose binding would match with the new function's.
-     * @param target a new function to add
+     * @param target a new function to addBranch
      */
     public void addOperator(MathOperator target) {
         supportedOperators.add(target);

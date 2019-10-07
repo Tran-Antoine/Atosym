@@ -2,7 +2,7 @@ package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.handler.PowerOperator;
+import net.akami.atosym.function.PowerOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.util.List;

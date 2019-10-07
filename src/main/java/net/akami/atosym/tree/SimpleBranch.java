@@ -14,6 +14,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class SimpleBranch {
@@ -33,7 +35,7 @@ public class SimpleBranch {
         this.parseTree = parseTree;
         this.exp = parseTree.getText();
         this.children = loadChildren();
-        parent.add(this);
+        parent.addBranch(this);
 
         loadOperator();
     }
@@ -58,10 +60,11 @@ public class SimpleBranch {
             if(func != null) {
                 text = func.getText();
             } else {
-                throw new UnsupportedOperationException();
+                text = "";
             }
         }
-        this.operator = parent.getContext().getOperator(text).orElseThrow(UnsupportedOperationException::new);
+        Supplier<UnsupportedOperationException> exception = () -> new UnsupportedOperationException("Unknown token : "+text);
+        this.operator = parent.getContext().getOperator(text).orElseThrow(exception);
     }
 
     private List<SimpleBranch> loadChildren() {
@@ -120,7 +123,7 @@ public class SimpleBranch {
                 .stream()
                 .map(SimpleBranch::getSimplifiedValue)
                 .collect(Collectors.toList());
-        this.simplifiedValue = operator.rawOperate(objects);
+        this.simplifiedValue = Objects.requireNonNull(operator.rawOperate(objects), "Operation cannot return null result");
         this.evalTime = (System.nanoTime() - time) / 1E9f;
     }
 
