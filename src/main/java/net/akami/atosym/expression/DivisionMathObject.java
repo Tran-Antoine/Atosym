@@ -1,26 +1,19 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.DivOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;
 
-public class DivisionMathObject extends MathFunction<DivOperator> {
+public class DivisionMathObject extends MathFunction {
 
-    public DivisionMathObject(DivOperator operator, List<MathObject> children) {
-        super(operator, children);
+    public DivisionMathObject(List<MathObject> children) {
+        super(children, 2);
     }
 
     @Override
     public String display() {
         super.checkSize(children.size());
         return DisplayUtils.join(children.get(0), children.get(1), "/");
-    }
-
-    @Override
-    protected int size() {
-        // a/b/c should become a/(bc)
-        return 2;
     }
 
     @Override

@@ -1,37 +1,28 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
-
 import java.util.List;
 
-public abstract class MathFunction<T extends MathOperator> implements MathObject {
+public abstract class MathFunction implements MathObject {
 
-    protected T operator;
     protected List<MathObject> children;
+    private int size;
 
-    public MathFunction(T operator, List<MathObject> children) {
-        this.operator = operator;
+    public MathFunction(List<MathObject> children, int size) {
         this.children = children;
+        this.size = size;
     }
 
-    @Override
-    public MathObject operate() {
-        checkSize(children.size());
-        return operator.rawOperate(children);
-    }
-
-    public void checkSize(int size) {
-        int rightSize = size();
-        if(rightSize != -1 && size != rightSize) {
+    public void checkSize(int currentSize) {
+        if(size != -1 && currentSize != size) {
             throw new IllegalStateException("Too few or too many parameters given");
         }
     }
 
-    protected int size() {
-        return operator.getSize();
-    }
-
     public void addChildrenTo(List<MathObject> list) {
         list.addAll(children);
+    }
+
+    public int getSize() {
+        return size;
     }
 }

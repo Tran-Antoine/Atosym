@@ -53,7 +53,7 @@ public class SumOperator extends BinaryOperator {
             return mergedElements.get(0);
         }
 
-        return new SumMathObject(this, mergedElements);
+        return new SumMathObject(mergedElements);
     }
 
     private List<MathObject> toList(MathObject... x) {

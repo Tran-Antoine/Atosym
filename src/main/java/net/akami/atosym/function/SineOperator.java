@@ -23,6 +23,6 @@ public class SineOperator extends MathOperator implements AngleUnitDependent {
             return new NumberExpression((float) Math.sin(exp.getValue()));
         }
 
-        return new SineMathObject(this, input);
+        return new SineMathObject(input);
     }
 }

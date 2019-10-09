@@ -1,14 +1,13 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MultOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
 import java.util.List;
 
-public class MultMathObject extends MathFunction<MultOperator> {
+public class MultMathObject extends MathFunction {
 
-    public MultMathObject(MultOperator operator, List<MathObject> children) {
-        super(operator, children);
+    public MultMathObject(List<MathObject> children) {
+        super(children, -1);
     }
 
     @Override
@@ -42,12 +41,7 @@ public class MultMathObject extends MathFunction<MultOperator> {
     }
 
     private boolean validMultShortcut(char a, char b) {
-        return ExpressionUtils.isANumber(String.valueOf(a)) || ExpressionUtils.isANumber(String.valueOf(b));
-    }
-
-    @Override
-    protected int size() {
-        return -1;
+        return !ExpressionUtils.isANumber(String.valueOf(a)) || !ExpressionUtils.isANumber(String.valueOf(b));
     }
 
     @Override

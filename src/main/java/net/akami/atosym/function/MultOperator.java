@@ -2,8 +2,14 @@ package net.akami.atosym.function;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.MultMathObject;
+import net.akami.atosym.merge.FairMerge;
+import net.akami.atosym.merge.MonomialMultiplicationMerge;
+import net.akami.atosym.merge.SequencedMerge;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultOperator extends BinaryOperator {
 
@@ -17,21 +23,18 @@ public class MultOperator extends BinaryOperator {
     @Override
     public MathObject binaryOperate(MathObject a, MathObject b) {
 
-        /*List<Monomial> aMonomials = a.getElements();
-        List<Monomial> bMonomials = b.getElements();
+        List<MathObject> objects = new ArrayList<>();
+        objects.add(a);
+        objects.add(b);
 
-        LOGGER.debug("Operating mult {} * {}", a, b);
-        if(a.length() != 0 && aMonomials.get(0) instanceof FunctionSign) {
-            return functionOperation(a, b);
+        SequencedMerge<MathObject> merge = new MonomialMultiplicationMerge(context);
+        objects = merge.merge(objects, objects, true);
+
+        if(objects.size() == 1) {
+            return objects.get(0);
         }
 
-        if(b.length() != 0 && bMonomials.get(0) instanceof FunctionSign) {
-            return functionOperation(b, a);
-        }
-
-        List<Monomial> reducedResult = resolveMult(aMonomials, bMonomials);
-        return new Expression(reducedResult);*/
-        return null;
+        return new MultMathObject(objects);
     }
 
     /*private Expression functionOperation(Expression bindingExpression, Expression target) {

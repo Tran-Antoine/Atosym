@@ -2,7 +2,6 @@ package net.akami.atosym.merge.property.sum;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.*;
-import net.akami.atosym.function.MultOperator;
 import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
 
 import java.util.Arrays;
@@ -22,7 +21,7 @@ public class IdenticalVariablesSumProperty extends ElementSequencedMergeProperty
         List<MathObject> elements = Arrays.asList(
                 new NumberExpression(2f),
                 new VariableExpression(((VariableExpression) p1).getValue()));
-        constructed.add(new MultMathObject(context.getBinaryOperator(MultOperator.class), elements));
+        constructed.add(new MultMathObject(elements));
     }
 
     @Override

@@ -1,18 +1,11 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.SineOperator;
-
 import java.util.List;
 
-public class SineMathObject extends LiteralFunction<SineOperator> {
+public class SineMathObject extends LiteralFunction {
 
-    public SineMathObject(SineOperator operator, List<MathObject> children) {
-        super(operator, children);
-    }
-
-    @Override
-    protected int size() {
-        return 1;
+    public SineMathObject(List<MathObject> children) {
+        super(children, "sin", 1);
     }
 
     @Override

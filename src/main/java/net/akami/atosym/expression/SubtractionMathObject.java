@@ -1,14 +1,13 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.SubOperator;
-
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SubtractionMathObject extends MathFunction<SubOperator> {
+public class SubtractionMathObject extends MathFunction {
 
-    public SubtractionMathObject(SubOperator operator, List<MathObject> children) {
-        super(operator, children);
+    public SubtractionMathObject(List<MathObject> children) {
+        // a-b-c should become a - (b+c) -> sub(a, sum(b, c)), therefore the size is always 2
+        super(children, 2);
     }
 
     @Override
@@ -35,11 +34,6 @@ public class SubtractionMathObject extends MathFunction<SubOperator> {
         return builder.toString();
     }
 
-    @Override
-    protected int size() {
-        // a-b-c should become a - (b+c) -> sub(a, sum(b, c))
-        return 2;
-    }
 
     @Override
     public MathObjectType getType() {

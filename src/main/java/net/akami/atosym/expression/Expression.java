@@ -2,7 +2,7 @@ package net.akami.atosym.expression;
 
 public abstract class Expression<V> implements MathObject {
 
-    private V value;
+    protected V value;
 
     public Expression(V value) {
         this.value = value;
@@ -15,10 +15,5 @@ public abstract class Expression<V> implements MathObject {
     @Override
     public String display() {
         return value.toString();
-    }
-
-    @Override
-    public MathObject operate() {
-        return this;
     }
 }

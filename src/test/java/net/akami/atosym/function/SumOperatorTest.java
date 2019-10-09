@@ -11,6 +11,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,26 +23,27 @@ public class SumOperatorTest {
 
     @Test
     public void numeric_sum() {
-        assertSum("7.0", "5", "2");
-        assertSum("2.0", "0.5", "1.5");
+        assertSum("5", "2", "7.0");
+        assertSum("0.5", "2.0", "1.5");
     }
 
     @Test
     public void sum_involving_monomials_with_different_literal_parts() {
-        assertSum("2.0+x", "2", "x");
-        assertSum("a+b", "a", "b");
+        assertSum("2", "x", "2.0+x");
+        assertSum("a", "b", "a+b");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void numeric_sum_involving_more_than_two_numbers() {
         // Binary operators cannot manage other than two elements
-        assertSum("4", "1", "2", "1");
+        adder.rawOperate(Stream.of("5", "2", "3").map(this::toMathObject).collect(Collectors.toList()));
     }
 
-    // TODO : Test currently failing, the following property has to be written: a + (b+c) = a+b+c
     @Test
     public void sum_involving_more_than_two_elements() {
-        assertSum("4.0+x", "2", "x+2");
+        assertSum("2", "x+2", "4.0+x");
+        assertSum("2+x", "2+x", "4.0+2.0x");
+        assertSum("x+2+y", "x+2", "2.0x+4.0+y");
     }
 
     @Test
@@ -57,19 +60,17 @@ public class SumOperatorTest {
     private void assertSimpleSum(MathObject a, MathObject b, MaskContext context, String result) {
         List<MathObject> elements = toList(a, b);
         SumOperator operator = context.getBinaryOperator(SumOperator.class);
-        MathObject sum = new SumMathObject(operator, elements);
-        assertThat(sum.operate().display()).isEqualTo(result);
+        assertThat(operator.rawOperate(elements).display()).isEqualTo(result);
     }
 
     private List<MathObject> toList(MathObject... objects) {
         return new ArrayList<>(Arrays.asList(objects));
     }
 
-    private void assertSum(String result, String... elements) {
+    private void assertSum(String a, String b, String result) {
         List<MathObject> objects = new ArrayList<>();
-        for(String element : elements) {
-            objects.add(toMathObject(element));
-        }
+        objects.add(toMathObject(a));
+        objects.add(toMathObject(b));
         assertThat(adder.rawOperate(objects).display()).isEqualTo(result);
     }
 

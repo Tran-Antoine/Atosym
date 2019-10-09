@@ -1,24 +1,19 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.PowerOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;
 
-public class PowerMathObject extends MathFunction<PowerOperator> {
+public class PowerMathObject extends MathFunction {
 
-    public PowerMathObject(PowerOperator operator, List<MathObject> children) {
-        super(operator, children);
+    public PowerMathObject(List<MathObject> children) {
+        super(children, -1);
     }
 
+    // TODO : Change so that it works for a^b^c
     @Override
     public String display() {
         return DisplayUtils.join(children.get(0), children.get(1), "^");
-    }
-
-    @Override
-    protected int size() {
-        return -1;
     }
 
     @Override

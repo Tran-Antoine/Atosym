@@ -10,4 +10,18 @@ public class VariableExpression extends Expression<Character> {
     public MathObjectType getType() {
         return MathObjectType.VARIABLE;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof PowerMathObject) {
+            PowerMathObject powerObject = (PowerMathObject) obj;
+            return powerObject.getSize() == 2 && powerObject.children.get(0).equals(this);
+        }
+
+        if(obj instanceof VariableExpression) {
+            return value.equals(((VariableExpression) obj).value);
+        }
+
+        return false;
+    }
 }

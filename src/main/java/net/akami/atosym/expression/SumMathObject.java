@@ -1,13 +1,11 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.SumOperator;
-
 import java.util.List;
 
-public class SumMathObject extends MathFunction<SumOperator> {
+public class SumMathObject extends MathFunction {
 
-    public SumMathObject(SumOperator operator, List<MathObject> children) {
-        super(operator, children);
+    public SumMathObject(List<MathObject> children) {
+        super(children, -1);
     }
 
     @Override
@@ -31,11 +29,6 @@ public class SumMathObject extends MathFunction<SumOperator> {
         }
 
         return builder.toString();
-    }
-
-    @Override
-    protected int size() {
-        return -1;
     }
 
     @Override

@@ -22,7 +22,9 @@ public class NumericSumProperty extends ElementSequencedMergeProperty<MathObject
     @Override
     public void blendResult(List<MathObject> constructed) {
         BiFunction<Float, Float, Float> func = (a, b) -> NumericUtils.sum(a, b, context);
-        constructed.add(new NumberExpression((NumberExpression) p1, (NumberExpression) p2, func));
+        NumberExpression numericA = (NumberExpression) p1;
+        NumberExpression numericB = (NumberExpression) p2;
+        constructed.add(new NumberExpression(numericA, numericB, func));
     }
 
     @Override

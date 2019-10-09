@@ -9,10 +9,11 @@ public final class DisplayUtils {
 
     public static String join(MathObject a, MathObject b, String separator) {
 
-        // TODO : Test if () are needed for the numerator
-        return surroundWithParenthesis(a)
-                + separator
-                + surroundWithParenthesis(b);
+        StringBuilder builder = new StringBuilder();
+        return builder.append(surroundWithParenthesis(a))
+                .append(separator)
+                .append(surroundWithParenthesis(b))
+                .toString();
     }
 
     private static String surroundWithParenthesis(MathObject mathObject) {

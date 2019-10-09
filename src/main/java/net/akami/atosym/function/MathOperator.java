@@ -34,6 +34,7 @@ public abstract class MathOperator implements
     }
 
     protected abstract MathObject operate(List<MathObject> input);
+    //public abstract int priority();
 
     public MathObject rawOperate(List<MathObject> input) {
         if(input.size() != argsLength) {
