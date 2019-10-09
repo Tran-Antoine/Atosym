@@ -1,7 +1,7 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.alteration.DegreeUnit;
-import net.akami.atosym.function.AngleUnitDependent;
+import net.akami.atosym.operator.AngleUnitDependent;
 
 public class AtosymDemo {
 

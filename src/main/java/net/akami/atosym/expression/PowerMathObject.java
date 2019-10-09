@@ -13,11 +13,16 @@ public class PowerMathObject extends MathFunction {
     // TODO : Change so that it works for a^b^c
     @Override
     public String display() {
-        return DisplayUtils.join(children.get(0), children.get(1), "^");
+        return DisplayUtils.join(children.get(0), children.get(1), "^", this);
     }
 
     @Override
     public MathObjectType getType() {
         return MathObjectType.POW;
+    }
+
+    @Override
+    public int priority() {
+        return 2;
     }
 }

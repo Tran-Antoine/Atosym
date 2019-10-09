@@ -35,7 +35,7 @@ public class PairEraser<T> implements SinglePropertySequencedMerge<T> {
         }
 
         @Override
-        public boolean isSuitable() {
+        public boolean prepare() {
             return p1.equals(p2);
         }
 

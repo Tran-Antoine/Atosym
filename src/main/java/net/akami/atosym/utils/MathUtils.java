@@ -3,7 +3,7 @@ package net.akami.atosym.utils;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.function.*;
+import net.akami.atosym.operator.*;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 
@@ -38,32 +38,6 @@ public class MathUtils {
     }
     public static MathObject diffPow(MathObject a, MathObject altA, MathObject b, MathObject altB) {
         return mult(mult(b, pow(a, subtract(b, new NumberExpression(1f)))), altA);
-    }
-
-    public static String sin(String a) {
-        return trigonometryOperation(a, '@', Math::sin);
-    }
-
-    public static String cos(String a) {
-        return trigonometryOperation(a, '#', Math::cos);
-    }
-
-    public static String tan(String a) {
-        return trigonometryOperation(a, ' ', Math::tan);
-    }
-
-    public static String trigonometryOperation(String a, char opChar, UnaryOperation operation) {
-        if(ExpressionUtils.isANumber(a)) {
-            double result = operation.compute(Double.valueOf(a));
-            return String.valueOf(Math.abs(result) > 10E-15 ? result : 0);
-        }
-        /* TODO: Replace with
-            DisplayUtils.surroundWithParenthesis(DisplayUtils.surroundWithParenthesis(a) + opChar);
-            or
-            DisplayUtils.surroundWithParenthesis("(" + a + ")" + opChar);
-            or not??
-         */
-        return "(("+a+")"+opChar+")";
     }
 
     public static String roundPeriodicSeries(String value) {

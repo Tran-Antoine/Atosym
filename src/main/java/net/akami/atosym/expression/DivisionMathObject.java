@@ -13,11 +13,16 @@ public class DivisionMathObject extends MathFunction {
     @Override
     public String display() {
         super.checkSize(children.size());
-        return DisplayUtils.join(children.get(0), children.get(1), "/");
+        return DisplayUtils.join(children.get(0), children.get(1), "/", this);
     }
 
     @Override
     public MathObjectType getType() {
         return MathObjectType.DIV;
+    }
+
+    @Override
+    public int priority() {
+        return 1;
     }
 }

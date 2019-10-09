@@ -48,4 +48,9 @@ public class MultMathObject extends MathFunction {
     public MathObjectType getType() {
         return MathObjectType.MULT;
     }
+
+    @Override
+    public int priority() {
+        return 1;
+    }
 }

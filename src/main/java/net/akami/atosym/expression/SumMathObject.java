@@ -35,4 +35,9 @@ public class SumMathObject extends MathFunction {
     public MathObjectType getType() {
         return MathObjectType.SUM;
     }
+
+    @Override
+    public int priority() {
+        return 0;
+    }
 }

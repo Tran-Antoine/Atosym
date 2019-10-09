@@ -1,6 +1,7 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.operator.PowerOperator;
 import org.junit.Test;
 
 public class PowerCalculatorTest {

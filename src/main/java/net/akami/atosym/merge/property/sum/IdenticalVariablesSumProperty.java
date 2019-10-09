@@ -25,7 +25,7 @@ public class IdenticalVariablesSumProperty extends ElementSequencedMergeProperty
     }
 
     @Override
-    public boolean isSuitable() {
+    public boolean prepare() {
         if(p1.getType() != MathObjectType.VARIABLE) return false;
         if(p2.getType() != MathObjectType.VARIABLE) return false;
         return ((VariableExpression) p1).getValue() == ((VariableExpression) p2).getValue();

@@ -99,10 +99,9 @@ public class ReducerFactoryTest {
     }
 
 
-    // TODO : support for "factorisation", xx + 3x -> x(x+3). It could replace the actual monomialSum ??
     // Like 3x + 5x would give x(3+5) = 8x
 
     private void assertReduction(String initial, String result) {
-       Assertions.assertThat(FastAtosymMath.reduce(initial).toString()).isEqualTo(result);
+       Assertions.assertThat(FastAtosymMath.reduce(initial)).isEqualTo(result);
     }
 }

@@ -24,4 +24,9 @@ public class VariableExpression extends Expression<Character> {
 
         return false;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(value);
+    }
 }

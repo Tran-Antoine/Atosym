@@ -10,5 +10,4 @@ public enum MathObjectType {
     DIV,
     POW,
     SIN,
-    // TODO : Add other functions
 }

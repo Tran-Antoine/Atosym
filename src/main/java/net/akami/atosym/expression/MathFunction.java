@@ -25,4 +25,18 @@ public abstract class MathFunction implements MathObject {
     public int getSize() {
         return size;
     }
+
+    @Override
+    public int compareTo(MathObject o) {
+        return 0;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof MathFunction)) return false;
+
+        MathFunction other = (MathFunction) obj;
+
+        return getClass().equals(other.getClass()) && children.equals(other.children);
+    }
 }

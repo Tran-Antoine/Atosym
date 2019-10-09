@@ -1,6 +1,5 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.function.MathOperator;
 import net.akami.atosym.utils.DisplayUtils;
 
 import java.util.List;
@@ -18,6 +17,11 @@ public abstract class LiteralFunction extends MathFunction {
     @Override
     public String display() {
         String concatWithComma = children.stream().map(MathObject::display).collect(Collectors.joining(", "));
-        return displayName + DisplayUtils.surroundWithParenthesis(concatWithComma);
+        return displayName + DisplayUtils.surroundWithBrackets(concatWithComma);
+    }
+
+    @Override
+    public int priority() {
+        return 3;
     }
 }

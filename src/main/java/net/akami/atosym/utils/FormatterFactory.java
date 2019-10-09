@@ -10,10 +10,10 @@ public class FormatterFactory {
     }
 
     public static String formatFunctions(String origin, MaskContext context) {
-        /*for(MathOperator function : context.getSupportedOperators()) {
-            String replaced = function.getNames() + "\\((.*?)\\)";
-            String replacement = "\\(\\($1\\)" + function.getBinding() + "\\)";
-            while(origin.contains(function.getNames()))
+        /*for(MathOperator operator : context.getSupportedOperators()) {
+            String replaced = operator.getNames() + "\\((.*?)\\)";
+            String replacement = "\\(\\($1\\)" + operator.getBinding() + "\\)";
+            while(origin.contains(operator.getNames()))
                 origin = origin.replaceAll(replaced, replacement);
         }
         return origin;*/ return null;

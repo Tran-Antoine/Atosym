@@ -16,7 +16,7 @@ public abstract class MergeProperty<P> {
         this.startOverRequested = startOverRequested;
     }
 
-    public abstract boolean isSuitable();
+    public abstract boolean prepare();
 
     public boolean isStartOverRequested() {
         return startOverRequested;

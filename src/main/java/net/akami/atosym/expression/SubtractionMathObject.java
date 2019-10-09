@@ -39,4 +39,10 @@ public class SubtractionMathObject extends MathFunction {
     public MathObjectType getType() {
         return MathObjectType.SUB;
     }
+
+    @Override
+    public int priority() {
+        return 0;
+    }
+
 }

@@ -16,4 +16,14 @@ public abstract class Expression<V> implements MathObject {
     public String display() {
         return value.toString();
     }
+
+    @Override
+    public int priority() {
+        return 9;
+    }
+    
+    @Override
+    public int compareTo(MathObject o) {
+        return 0;
+    }
 }

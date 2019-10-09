@@ -1,9 +1,8 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.expression.VariableExpression;
 import net.akami.atosym.utils.ParserUtils;
 import org.junit.Test;
@@ -44,6 +43,23 @@ public class SumOperatorTest {
         assertSum("2", "x+2", "4.0+x");
         assertSum("2+x", "2+x", "4.0+2.0x");
         assertSum("x+2+y", "x+2", "2.0x+4.0+y");
+    }
+
+    @Test
+    public void sum_of_simple_mult() {
+        assertSum("x", "5x", "6.0x");
+        assertSum("5x", "x", "6.0x");
+        assertSum("5x", "3x", "8.0x");
+    }
+
+    @Test
+    public void sum_of_incompatible_simple_mult() {
+        assertSum("5xy", "3x", "5.0xy+3.0x");
+    }
+
+    @Test
+    public void sum_of_mult_with_squared_variable() {
+        assertSum("5xx", "4xx", "9.0x^2.0");
     }
 
     @Test

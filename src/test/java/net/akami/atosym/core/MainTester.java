@@ -1,7 +1,7 @@
 package net.akami.atosym.core;
 
 import net.akami.atosym.alteration.CalculationCache;
-import net.akami.atosym.function.BinaryOperator;
+import net.akami.atosym.operator.BinaryOperator;
 import net.akami.atosym.utils.FastAtosymMath;
 
 import java.util.Scanner;

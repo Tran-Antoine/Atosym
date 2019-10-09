@@ -1,10 +1,10 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import org.junit.Test;
 
 public class TangentTest {
 
-    //private final TangentOperator function = new TangentOperator();
+    //private final TangentOperator operator = new TangentOperator();
 
     @Test
     public void numericValuesTest() {
@@ -20,6 +20,6 @@ public class TangentTest {
     }
 
     private void assertTangent(String input, String result) {
-        //Assertions.assertThat(function.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
+        //Assertions.assertThat(operator.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
     }
 }

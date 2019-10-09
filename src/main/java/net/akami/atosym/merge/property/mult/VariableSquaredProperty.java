@@ -26,7 +26,7 @@ public class VariableSquaredProperty extends ElementSequencedMergeProperty<MathO
     }
 
     @Override
-    public boolean isSuitable() {
+    public boolean prepare() {
         return p1.getType() == MathObjectType.VARIABLE && p2.getType() == MathObjectType.VARIABLE
                 && p1.equals(p2);
     }

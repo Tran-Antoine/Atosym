@@ -1,7 +1,7 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.function.DivOperator;
+import net.akami.atosym.operator.DivOperator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;

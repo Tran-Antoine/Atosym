@@ -25,4 +25,9 @@ public class NumberExpression extends Expression<Float> {
     public String toString() {
         return display();
     }
+
+    @Override
+    public int compareTo(MathObject o) {
+        return -1;
+    }
 }

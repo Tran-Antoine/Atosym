@@ -1,10 +1,10 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import org.junit.Test;
 
 public class CosineTest {
 
-    //private final CosineOperator function = new CosineOperator();
+    //private final CosineOperator operator = new CosineOperator();
 
     @Test
     public void numericValuesTest() {
@@ -23,6 +23,6 @@ public class CosineTest {
 
 
     private void assertCosine(String input, String result) {
-        //Assertions.assertThat(function.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
+        //Assertions.assertThat(operator.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
     }
 }

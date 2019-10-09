@@ -1,10 +1,10 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import org.junit.Test;
 
 public class SinusTest {
 
-    //private final SineOperator function = new SineOperator();
+    //private final SineOperator operator = new SineOperator();
 
     @Test
     public void numericValuesTest() {
@@ -23,6 +23,6 @@ public class SinusTest {
 
 
     private void assertSinus(String input, String result) {
-        //Assertions.assertThat(function.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
+        //Assertions.assertThat(operator.rawOperate(FastAtosymMath.reduce(input)).toString()).isEqualTo(result);
     }
 }

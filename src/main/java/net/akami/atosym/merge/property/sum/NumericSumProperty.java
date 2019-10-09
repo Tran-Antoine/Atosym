@@ -28,7 +28,7 @@ public class NumericSumProperty extends ElementSequencedMergeProperty<MathObject
     }
 
     @Override
-    public boolean isSuitable() {
+    public boolean prepare() {
         return p1.getType() == MathObjectType.NUMBER && p2.getType() == MathObjectType.NUMBER;
     }
 }

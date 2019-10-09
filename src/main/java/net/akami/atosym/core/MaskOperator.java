@@ -11,7 +11,7 @@ import java.util.List;
  * <ul>
  * <li> {@link MaskSimplifier}, a simple layer for the reducing tree system. It will soon replace the {@link FastAtosymMath} class.
  * <li> {@link MaskDerivativeCalculator}, providing support for derivatives
- * <li> {@link MaskImageCalculator}, calculating images with a given function.
+ * <li> {@link MaskImageCalculator}, calculating images with a given operator.
  * </ul>
  * @param <E> potential required additional data
  */

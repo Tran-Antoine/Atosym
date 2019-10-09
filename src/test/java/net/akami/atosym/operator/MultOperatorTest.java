@@ -1,11 +1,8 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.function.MultOperator;
-import net.akami.atosym.utils.FastAtosymMath;
 import net.akami.atosym.utils.ParserUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +25,16 @@ public class MultOperatorTest {
     public void non_simplifiable_sum() {
         assertOperation("3", "x", "3.0x");
         assertOperation("abc", "d", "abcd");
+    }
+
+    @Test
+    public void partially_simplifiable_sum() {
+        assertOperation("3x", "3y", "9.0xy");
+    }
+
+    @Test
+    public void partially_simplifiable_sum_with_identical_variables() {
+        assertOperation("5xy", "3xz", "15.0x^2.0yz");
     }
 
     // a * a = a^2    with a : variable

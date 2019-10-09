@@ -40,6 +40,6 @@ public class ExpressionElementTest {
 
         SequencedMerge<Variable> behavior = new VariableCombination(DEFAULT);
         assertThat(m1.equals(m2)).isEqualTo(false);
-        assertThat(behavior.generateElementProperties(m1, m2).get(0).isSuitable()).isEqualTo(false);
+        assertThat(behavior.generateElementProperties(m1, m2).get(0).prepare()).isEqualTo(false);
     }*/
 }

@@ -54,7 +54,7 @@ public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMe
      */
     default Optional<ElementSequencedMergeProperty<T>> prepare(T p1, T p2) {
         for(ElementSequencedMergeProperty<T> property : generateElementProperties(p1, p2)) {
-            if(property.isSuitable()) return Optional.of(property);
+            if(property.prepare()) return Optional.of(property);
         }
         return Optional.empty();
     }
@@ -136,7 +136,7 @@ public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMe
         List<T> finalResult = new ArrayList<>(initialCapacity);
 
         for(FairOverallMergeProperty<List<T>> overallProperty : generateOverallProperties(l1, l2)) {
-            if(overallProperty.isSuitable()) {
+            if(overallProperty.prepare()) {
                 // Overall properties are capable of creating a full result by themselves
                 return overallProperty.rawComputeResult();
             }

@@ -1,9 +1,8 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MultMathObject;
-import net.akami.atosym.merge.FairMerge;
 import net.akami.atosym.merge.MonomialMultiplicationMerge;
 import net.akami.atosym.merge.SequencedMerge;
 

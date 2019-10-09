@@ -2,7 +2,7 @@ package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.function.BinaryOperator;
+import net.akami.atosym.operator.BinaryOperator;
 
 import java.util.HashMap;
 import java.util.List;

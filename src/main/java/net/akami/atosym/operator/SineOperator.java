@@ -1,4 +1,4 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;

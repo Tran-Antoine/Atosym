@@ -5,7 +5,7 @@ import net.akami.atosym.core.Mask;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.core.MaskImageCalculator;
 import net.akami.atosym.core.MaskOperatorHandler;
-import net.akami.atosym.function.AngleUnitDependent;
+import net.akami.atosym.operator.AngleUnitDependent;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package net.akami.atosym.function;
+package net.akami.atosym.handler;
 
 import net.akami.atosym.utils.FastAtosymMath;
 import org.assertj.core.api.Assertions;

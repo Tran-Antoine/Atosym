@@ -1,4 +1,4 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 @FunctionalInterface
 public interface DoubleOperation {

@@ -1,4 +1,4 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
@@ -11,7 +11,7 @@ import java.util.*;
     To not confuse :
 
         Mult is a binary operator, which means that he can only computes a*b, not a*b*c*...
-        However, it does not mean that the mult function can only store 2 arguments.
+        However, it does not mean that the mult operator can only store 2 arguments.
 
         mult(a, mult(b,c)) can be computed, and will result in mult(a,b,c)
 

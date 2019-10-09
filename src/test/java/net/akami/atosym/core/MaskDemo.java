@@ -3,9 +3,9 @@ package net.akami.atosym.core;
 import net.akami.atosym.alteration.CalculationCache;
 import net.akami.atosym.alteration.DegreeUnit;
 import net.akami.atosym.alteration.PowExpansionLimit;
-import net.akami.atosym.function.AngleUnitDependent;
-import net.akami.atosym.function.BinaryOperator;
-import net.akami.atosym.function.PowerOperator;
+import net.akami.atosym.operator.AngleUnitDependent;
+import net.akami.atosym.operator.BinaryOperator;
+import net.akami.atosym.operator.PowerOperator;
 
 public class MaskDemo {
 

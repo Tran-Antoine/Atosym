@@ -4,9 +4,9 @@ import net.akami.atosym.alteration.*;
 import net.akami.atosym.check.*;
 import net.akami.atosym.exception.MaskException;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
-import net.akami.atosym.function.BinaryOperator;
+import net.akami.atosym.operator.BinaryOperator;
 import net.akami.atosym.utils.MathUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,16 +99,16 @@ public class MaskContext {
     }
 
     /**
-     * Adds a new function to the set. <br>
-     * Note that the new function will replace any existing function whose binding would match with the new function's.
-     * @param target a new function to addBranch
+     * Adds a new operator to the set. <br>
+     * Note that the new operator will replace any existing operator whose binding would match with the new operator's.
+     * @param target a new operator to addBranch
      */
     public void addOperator(MathOperator target) {
         supportedOperators.add(target);
     }
 
     /**
-     * Removes the function from the set whose {@link #getClass()} method equals the clazz parameter
+     * Removes the operator from the set whose {@link #getClass()} method equals the clazz parameter
      * @param clazz the class type to remove
      */
     public void removeOperator(Class<? extends MathOperator> clazz) {
@@ -118,7 +118,7 @@ public class MaskContext {
                 return;
             }
         }
-        LOGGER.warn("Unable to remove function from the given class name : {}", clazz.getName());
+        LOGGER.warn("Unable to remove operator from the given class name : {}", clazz.getName());
     }
 
     /**

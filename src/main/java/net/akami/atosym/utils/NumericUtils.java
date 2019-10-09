@@ -34,4 +34,12 @@ public class NumericUtils {
     public static boolean isNotZero(MathObject object) {
         return !isZero(object);
     }
+
+    private static boolean isOne(MathObject object) {
+        return object instanceof NumberExpression && ((NumberExpression) object).getValue() == 1;
+    }
+
+    public static boolean isNotOne(MathObject object) {
+        return !isOne(object);
+    }
 }

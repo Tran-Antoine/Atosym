@@ -3,9 +3,8 @@ package net.akami.atosym.tree;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
-import net.akami.atosym.function.MathOperator;
+import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
@@ -85,9 +84,7 @@ public class SimpleBranch {
         mergeChildren();
     }
 
-    // TODO : Match the correct tokens
     private void simpleEval() {
-        CommonTokenStream stream = parent.getTokenStream();
         Vocabulary voc = parent.getVocabulary();
 
         List<Token> tokens = new ArrayList<>();

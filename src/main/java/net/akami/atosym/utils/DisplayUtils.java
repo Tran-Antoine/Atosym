@@ -4,27 +4,28 @@ import net.akami.atosym.expression.MathObject;
 
 public final class DisplayUtils {
 
-    private DisplayUtils() {
-    }
+    private DisplayUtils() { }
 
-    public static String join(MathObject a, MathObject b, String separator) {
+    public static String join(MathObject a, MathObject b, String separator, MathObject parent) {
 
         StringBuilder builder = new StringBuilder();
-        return builder.append(surroundWithParenthesis(a))
+        return builder.append(addBracketsIfRequired(a, parent))
                 .append(separator)
-                .append(surroundWithParenthesis(b))
+                .append(addBracketsIfRequired(b, parent))
                 .toString();
     }
 
-    private static String surroundWithParenthesis(MathObject mathObject) {
-        return surroundWithParenthesis(mathObject.display());
+    private static String addBracketsIfRequired(MathObject mathObject, MathObject parent) {
+        String display = mathObject.display();
+
+        if(parent.priority() <= mathObject.priority()) {
+            return display;
+        }
+
+        return surroundWithBrackets(display);
     }
 
-    public static String surroundWithParenthesis(String str) {
-        return '(' + str + ')';
-    }
-
-    public static void surroundWithParenthesis(StringBuilder stringBuilder, String str) {
-        stringBuilder.append('(').append(str).append(')');
+    public static String surroundWithBrackets(String concatWithComma) {
+        return '(' + concatWithComma + ')';
     }
 }

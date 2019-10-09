@@ -1,4 +1,4 @@
-package net.akami.atosym.function;
+package net.akami.atosym.operator;
 
 import net.akami.atosym.alteration.CalculationCanceller;
 import net.akami.atosym.alteration.FairAlterationHandler;
@@ -11,7 +11,7 @@ import net.akami.atosym.handler.PostCalculationActionable;
 import java.util.*;
 
 /**
- * Represents a mathematical function matching the following syntax : {@code name(p1, p2, ...)}.
+ * Represents a mathematical operator matching the following syntax : {@code name(p1, p2, ...)}.
  * <br><br>
  * The currently available functions are the trigonometry functions exclusively. More functions with multiple
  * parameters, such as {@code log} or {@code root} will be added in the future.
