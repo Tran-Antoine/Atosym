@@ -2,7 +2,7 @@ package net.akami.atosym.expression;
 
 import java.util.List;
 
-public class SumMathObject extends MathFunction {
+public class SumMathObject extends FunctionObject {
 
     public SumMathObject(List<MathObject> children) {
         super(children, -1);

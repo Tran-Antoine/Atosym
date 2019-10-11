@@ -1,7 +1,7 @@
 package net.akami.atosym.merge.property.global;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.MathFunction;
+import net.akami.atosym.expression.FunctionObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.merge.SequencedMerge;
@@ -45,7 +45,7 @@ public abstract class ChainOperationProperty extends ElementSequencedMergeProper
 
     private boolean isSuitable(MathObject object) {
         if(object.getType() == getWorkingType()) {
-            MathFunction functionObject = (MathFunction) object;
+            FunctionObject functionObject = (FunctionObject) object;
             functionObject.addChildrenTo(elements);
             return true;
         }

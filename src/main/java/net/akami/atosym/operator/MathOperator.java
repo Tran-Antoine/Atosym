@@ -91,7 +91,8 @@ public abstract class MathOperator implements
 
     public static Set<MathOperator> generateDefaultOperators(MaskContext context) {
         Set<MathOperator> operators = new HashSet<>(Arrays.asList(
-            new SineOperator()
+                new SineOperator(),
+                new CosineOperator()
         ));
 
         operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));

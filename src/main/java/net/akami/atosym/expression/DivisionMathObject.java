@@ -1,19 +1,17 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.utils.DisplayUtils;
+import net.akami.atosym.display.visitor.DisplayerVisitor;
+import net.akami.atosym.display.visitor.DivisionDisplayer;
 
 import java.util.List;
 
-public class DivisionMathObject extends MathFunction {
+public class DivisionMathObject extends FunctionObject {
+
+    private DisplayerVisitor displayer;
 
     public DivisionMathObject(List<MathObject> children) {
         super(children, 2);
-    }
-
-    @Override
-    public String display() {
-        super.checkSize(children.size());
-        return DisplayUtils.join(children.get(0), children.get(1), "/", this);
+        this.displayer = new DivisionDisplayer();
     }
 
     @Override
@@ -24,5 +22,10 @@ public class DivisionMathObject extends MathFunction {
     @Override
     public int priority() {
         return 1;
+    }
+
+    @Override
+    public DisplayerVisitor getDisplayer() {
+        return displayer;
     }
 }

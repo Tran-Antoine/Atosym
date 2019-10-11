@@ -2,12 +2,12 @@ package net.akami.atosym.expression;
 
 import java.util.List;
 
-public abstract class MathFunction implements MathObject {
+public abstract class FunctionObject implements MathObject {
 
     protected List<MathObject> children;
     private int size;
 
-    public MathFunction(List<MathObject> children, int size) {
+    public FunctionObject(List<MathObject> children, int size) {
         this.children = children;
         this.size = size;
     }
@@ -33,10 +33,16 @@ public abstract class MathFunction implements MathObject {
 
     @Override
     public boolean equals(Object obj) {
-        if(!(obj instanceof MathFunction)) return false;
+        if(!(obj instanceof FunctionObject)) {
+            return false;
+        }
 
-        MathFunction other = (MathFunction) obj;
+        FunctionObject object = (FunctionObject) obj;
+        return getType() == object.getType() && children.equals(object.children);
 
-        return getClass().equals(other.getClass()) && children.equals(other.children);
+    }
+
+    public boolean childrenEqual(FunctionObject f2) {
+        return children.equals(f2.children);
     }
 }

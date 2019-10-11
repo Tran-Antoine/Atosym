@@ -4,7 +4,7 @@ import net.akami.atosym.utils.ExpressionUtils;
 
 import java.util.List;
 
-public class MultMathObject extends MathFunction {
+public class MultMathObject extends FunctionObject {
 
     public MultMathObject(List<MathObject> children) {
         super(children, -1);

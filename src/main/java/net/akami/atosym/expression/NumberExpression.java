@@ -23,7 +23,7 @@ public class NumberExpression extends Expression<Float> {
 
     @Override
     public String toString() {
-        return display();
+        return getDisplayer().accept();
     }
 
     @Override

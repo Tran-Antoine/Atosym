@@ -4,6 +4,7 @@ import net.akami.atosym.alteration.*;
 import net.akami.atosym.check.*;
 import net.akami.atosym.exception.MaskException;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.comparison.SortingManager;
 import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
 import net.akami.atosym.operator.BinaryOperator;
@@ -56,6 +57,7 @@ public class MaskContext {
 
     private Set<MathOperator> supportedOperators;
     private List<ValidityCheck> validityChecks;
+    private SortingManager sortingManager;
     private MathContext bigDecimalContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
@@ -82,6 +84,7 @@ public class MaskContext {
         this.supportedOperators = MathOperator.generateDefaultOperators(this);
         this.bigDecimalContext = new MathContext(precision);
         this.validityChecks = defaultValidityChecks();
+        this.sortingManager = SortingManager.DEFAULT;
     }
 
     /**
@@ -214,6 +217,10 @@ public class MaskContext {
         return null;
     }
 
+    public SortingManager getSortingManager() {
+        return sortingManager;
+    }
+
     @FunctionalInterface
     private interface AlterationAction<T, S> {
         void action(T t, S s);
@@ -239,6 +246,11 @@ public class MaskContext {
 
         public Builder withOperators(Function<MaskContext, MathOperator>... operators) {
             context.supportedOperators = Stream.of(operators).map(op -> op.apply(context)).collect(Collectors.toSet());
+            return this;
+        }
+
+        public Builder withSortingManager(SortingManager manager) {
+            context.sortingManager = manager;
             return this;
         }
     }

@@ -3,7 +3,7 @@ package net.akami.atosym.expression;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SubtractionMathObject extends MathFunction {
+public class SubtractionMathObject extends FunctionObject {
 
     public SubtractionMathObject(List<MathObject> children) {
         // a-b-c should become a - (b+c) -> sub(a, sum(b, c)), therefore the size is always 2
