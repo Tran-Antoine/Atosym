@@ -12,7 +12,7 @@ public class ExpressionDisplayer implements DisplayerVisitor {
     }
 
     @Override
-    public String accept(InfixNotationDisplayable displayer) {
+    public String accept(InfixNotationDisplayable displayable) {
         return value.toString();
     }
 

@@ -76,7 +76,7 @@ public class SumOperatorTest {
     private void assertSimpleSum(MathObject a, MathObject b, MaskContext context, String result) {
         List<MathObject> elements = toList(a, b);
         SumOperator operator = context.getBinaryOperator(SumOperator.class);
-        assertThat(operator.rawOperate(elements).display()).isEqualTo(result);
+        assertThat(operator.rawOperate(elements).testDisplay()).isEqualTo(result);
     }
 
     private List<MathObject> toList(MathObject... objects) {
@@ -87,7 +87,7 @@ public class SumOperatorTest {
         List<MathObject> objects = new ArrayList<>();
         objects.add(toMathObject(a));
         objects.add(toMathObject(b));
-        assertThat(adder.rawOperate(objects).display()).isEqualTo(result);
+        assertThat(adder.rawOperate(objects).testDisplay()).isEqualTo(result);
     }
 
     private MathObject toMathObject(String input) {

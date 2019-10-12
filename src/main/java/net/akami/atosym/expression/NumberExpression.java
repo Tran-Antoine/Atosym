@@ -22,11 +22,6 @@ public class NumberExpression extends Expression<Float> {
     }
 
     @Override
-    public String toString() {
-        return getDisplayer().accept();
-    }
-
-    @Override
     public int compareTo(MathObject o) {
         return -1;
     }

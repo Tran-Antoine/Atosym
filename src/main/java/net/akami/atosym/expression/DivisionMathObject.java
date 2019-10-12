@@ -11,7 +11,7 @@ public class DivisionMathObject extends FunctionObject {
 
     public DivisionMathObject(List<MathObject> children) {
         super(children, 2);
-        this.displayer = new DivisionDisplayer();
+        this.displayer = new DivisionDisplayer(children, this);
     }
 
     @Override

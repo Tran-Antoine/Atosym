@@ -1,19 +1,22 @@
 package net.akami.atosym.expression;
 
-import net.akami.atosym.utils.DisplayUtils;
+import net.akami.atosym.display.visitor.DisplayerVisitor;
+import net.akami.atosym.display.visitor.PowerDisplayer;
 
 import java.util.List;
 
 public class PowerMathObject extends FunctionObject {
 
+    private DisplayerVisitor displayer;
+
     public PowerMathObject(List<MathObject> children) {
         super(children, -1);
+        this.displayer = new PowerDisplayer(children, this);
     }
 
-    // TODO : Change so that it works for a^b^c
     @Override
-    public String display() {
-        return DisplayUtils.join(children.get(0), children.get(1), "^", this, displayer);
+    public DisplayerVisitor getDisplayer() {
+        return displayer;
     }
 
     @Override

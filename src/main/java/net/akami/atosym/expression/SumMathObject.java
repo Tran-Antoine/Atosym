@@ -1,34 +1,22 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.display.visitor.DisplayerVisitor;
+import net.akami.atosym.display.visitor.SumDisplayer;
+
 import java.util.List;
 
 public class SumMathObject extends FunctionObject {
 
+    private DisplayerVisitor displayer;
+
     public SumMathObject(List<MathObject> children) {
         super(children, -1);
+        this.displayer = new SumDisplayer(children);
     }
 
     @Override
-    public String display() {
-        StringBuilder builder = new StringBuilder();
-
-        int i = 0;
-
-        for (MathObject displayable : children) {
-
-            String display = displayable.display();
-            boolean isSigned = !(display.startsWith("+") || display.startsWith("-"));
-
-            if (i != 0 && isSigned) {
-                builder.append('+');
-            }
-
-            builder.append(display);
-
-            i++;
-        }
-
-        return builder.toString();
+    public DisplayerVisitor getDisplayer() {
+        return displayer;
     }
 
     @Override

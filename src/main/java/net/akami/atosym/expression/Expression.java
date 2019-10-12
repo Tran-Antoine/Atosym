@@ -1,11 +1,13 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.display.InfixNotationDisplayable;
+import net.akami.atosym.display.visitor.DisplayerVisitor;
 import net.akami.atosym.display.visitor.ExpressionDisplayer;
 
 public abstract class Expression<V> implements MathObject {
 
     protected V value;
-    private ExpressionDisplayer displayer;
+    private DisplayerVisitor displayer;
 
     public Expression(V value) {
         this.value = value;
@@ -17,7 +19,7 @@ public abstract class Expression<V> implements MathObject {
     }
 
     @Override
-    public ExpressionDisplayer getDisplayer() {
+    public DisplayerVisitor getDisplayer() {
         return displayer;
     }
 
@@ -37,5 +39,10 @@ public abstract class Expression<V> implements MathObject {
             return false;
         }
         return value.equals(((Expression) obj).value);
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayer().accept(InfixNotationDisplayable.EMPTY_INSTANCE);
     }
 }

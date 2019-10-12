@@ -9,11 +9,16 @@ import java.util.List;
 
 public class DivisionDisplayer extends SimpleDisplayerVisitor {
 
+    private FunctionObject parent;
+
+    public DivisionDisplayer(List<MathObject> children, FunctionObject parent) {
+        super(children, "div");
+        this.parent = parent;
+    }
+
     @Override
     public String accept(InfixNotationDisplayable displayable) {
-        MathObject parent = displayable.getParent();
-        List<MathObject> children = displayable.getChildren();
-        ((FunctionObject) parent).checkSize(children.size());
+        parent.checkSize(children.size());
         return DisplayUtils.join(children.get(0), children.get(1), "/", parent, displayable);
     }
 }

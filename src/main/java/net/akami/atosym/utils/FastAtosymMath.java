@@ -1,6 +1,7 @@
 package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.handler.sign.BinaryOperationSign;
 
 import java.util.Objects;
@@ -25,6 +26,7 @@ public class FastAtosymMath {
         Objects.requireNonNull(exp, "Cannot reduce a null expression");
         return ParserUtils.generateSimpleTree(exp, context)
                 .merge()
-                .display();
+                .getDisplayer()
+                .accept(InfixNotationDisplayable.EMPTY_INSTANCE);
     }
 }

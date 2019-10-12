@@ -1,5 +1,6 @@
 package net.akami.atosym.tree;
 
+import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
@@ -138,7 +139,7 @@ public class SimpleBranch {
         if(simplifiedValue == null) {
             return exp;
         }
-        return simplifiedValue.display();
+        return simplifiedValue.getDisplayer().accept(InfixNotationDisplayable.EMPTY_INSTANCE);
     }
 
     public boolean hasSimplifiedValue() {

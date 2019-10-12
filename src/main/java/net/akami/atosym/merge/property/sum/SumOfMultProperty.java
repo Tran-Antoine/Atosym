@@ -53,7 +53,7 @@ public class SumOfMultProperty extends ElementSequencedMergeProperty<MathObject>
 
     @Override
     public boolean prepare() {
-        if (! (initMultObjects(p1, this::setM1) | initMultObjects(p2, this::setM2))) {
+        if (! (initMultObjects(p1, this::setM1) & initMultObjects(p2, this::setM2))) {
             return false;
         }
 

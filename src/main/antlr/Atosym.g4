@@ -16,6 +16,7 @@ exp
 FUNC
     : 'sin'  // sin(angle)
     | 'cos'  // cos(angle)
+    | 'tan'  // tan(angle)
     | 'log'  // log(base, n)
     | 'root' // root(base, n)
     ;
@@ -27,7 +28,6 @@ OTHER_SYMBOL : '!'|'π';
 SUM : '+';
 SUB : '-';
 MULT : '*';
-IMPLICIT_MULT : ;
 DIV : '/';
 POW : '^';
 

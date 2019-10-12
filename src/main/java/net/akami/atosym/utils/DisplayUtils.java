@@ -1,11 +1,7 @@
 package net.akami.atosym.utils;
 
-import net.akami.atosym.display.FunctionalNotationDisplayable;
 import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public final class DisplayUtils {
 
@@ -28,13 +24,6 @@ public final class DisplayUtils {
         }
 
         return surroundWithBrackets(display);
-    }
-
-    public static List<String> toStringList(List<MathObject> target, FunctionalNotationDisplayable displayable) {
-        return target
-                .stream()
-                .map(o -> o.getDisplayer().accept(displayable))
-                .collect(Collectors.toList());
     }
 
     public static String surroundWithBrackets(String concatWithComma) {

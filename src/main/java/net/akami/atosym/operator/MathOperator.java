@@ -20,8 +20,6 @@ import java.util.*;
 public abstract class MathOperator implements
         FairAlterationHandler<MathObject>, PostCalculationActionable<MathObject> {
 
-    public static final MathOperator NONE = null;
-
     protected List<CalculationCanceller<MathObject, MathObject>> cancellers;
     protected List<IOCalculationModifier<MathObject>> modifiers;
     protected final List<String> names;
@@ -38,7 +36,7 @@ public abstract class MathOperator implements
 
     public MathObject rawOperate(List<MathObject> input) {
         if(input.size() != argsLength) {
-            throw new IllegalArgumentException(input.size() + " params given, only " + argsLength + " required.");
+            throw new IllegalArgumentException(input.size() + " params given " + argsLength + " required.");
         }
 
         for(IOCalculationModifier<MathObject> modifier : getSuitableModifiers(input)) {
@@ -92,7 +90,8 @@ public abstract class MathOperator implements
     public static Set<MathOperator> generateDefaultOperators(MaskContext context) {
         Set<MathOperator> operators = new HashSet<>(Arrays.asList(
                 new SineOperator(),
-                new CosineOperator()
+                new CosineOperator(),
+                new TangentOperator()
         ));
 
         operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));

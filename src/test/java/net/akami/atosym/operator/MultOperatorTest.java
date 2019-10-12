@@ -46,7 +46,7 @@ public class MultOperatorTest {
     private void assertOperation(String a, String b, String result) {
         MathObject aObject = toMathObject(a);
         MathObject bObject = toMathObject(b);
-        assertThat(MULT.binaryOperate(aObject, bObject).display()).isEqualTo(result);
+        assertThat(MULT.binaryOperate(aObject, bObject).testDisplay()).isEqualTo(result);
     }
 
     private MathObject toMathObject(String input) {

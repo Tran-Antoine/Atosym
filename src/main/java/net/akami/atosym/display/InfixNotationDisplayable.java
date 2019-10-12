@@ -3,18 +3,16 @@ package net.akami.atosym.display;
 import net.akami.atosym.expression.MathObject;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class InfixNotationDisplayable extends SimpleDisplayable {
+public class InfixNotationDisplayable implements Displayable {
 
-    // TODO : Add formatting tree, data, etc
-    private MathObject parent;
+    public static final InfixNotationDisplayable EMPTY_INSTANCE = new InfixNotationDisplayable();
 
-    public InfixNotationDisplayable(List<MathObject> children, String functionName, MathObject parent) {
-        super(children, functionName);
-        this.parent = parent;
-    }
-
-    public MathObject getParent() {
-        return parent;
+    public List<String> toStringList(List<MathObject> target, InfixNotationDisplayable displayable) {
+        return target
+                .stream()
+                .map(o -> o.getDisplayer().accept(displayable))
+                .collect(Collectors.toList());
     }
 }

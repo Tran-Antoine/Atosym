@@ -5,7 +5,9 @@ import net.akami.atosym.display.InfixNotationDisplayable;
 
 public interface DisplayerVisitor {
 
-    String accept(InfixNotationDisplayable displayer);
+    String accept(InfixNotationDisplayable displayable);
     String accept(FunctionalNotationDisplayable displayable);
     // TODO : 'Image accept(LatexDisplayer displayer);'
+
+
 }
