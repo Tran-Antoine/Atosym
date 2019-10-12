@@ -19,7 +19,6 @@ Table of contents
 	* Maven
 * [How to use Atosym](#how-to-use-atosym) <br>
 	* Wiki
-	* General comments on **how** and **why** to use or not to use Atosym
 * [Documentation](#documentation)
 * [See also](#also) <br>
 *A direct implementation of the tool through a calculator*
@@ -30,7 +29,12 @@ Table of contents
 
 #### Calculation of any series of numbers split by different operators
 
-Basically, it acts as a classic numeric calculator. With a given entry, the library outputs the number that the entry equals to. <br>
+<br>
+<p align="center">
+  <img width="400" height="100" src="https://i.imgur.com/IR3cKUc.png">
+</p>
+
+Basically, it acts as a classic numeric calculator. With a given entry, the library outputs the number that the entry equals. <br>
 Entries support: 
 
 * Arabic numbers, fitting the specified precision. Integers and decimal numbers are both supported 
@@ -41,20 +45,35 @@ Entries support:
 
 #### Evaluation of any algebraic expression, giving the most simplified result
 
+<br>
+<p align="center">
+  <img width="800" height="100" src="https://i.imgur.com/JlpUq3V.png">
+</p>
+
 It evaluates expressions containing **unknowns** (or **variables**). Results are not necessarily numbers, therefore the **most simplified** expression is returned.
 
 In addition to the previous feature, entries support:
 
-* Litteral characters, uppercase or lowercase. The supported characters list can be extended or restricted by changing the [ValidityChecks](https://tran-antoine.github.io/Atosym/javadoc/index.html?net/akami/mask/check/ValidityCheck.html)
+* Literal characters, uppercase or lowercase. The supported characters list can be extended or restricted by changing the [ValidityChecks](https://tran-antoine.github.io/Atosym/javadoc/index.html?net/akami/mask/check/ValidityCheck.html)
 ***
 
 #### Image calculations of any function from given values for given unknowns
 
-It replaces defined unknowns by `litteral` or `numeric` values. <br>
+<br>
+<p align="center">
+  <img width="500" height="90" src="https://i.imgur.com/YnA7FH7.png">
+</p>
+
+It replaces defined unknowns by `literal` or `numeric` values. <br>
 Entries support exactly what the previous feature does. Additionally, they require mapped unknowns and values. 
 ***
 
 #### Differentiation of functions
+
+<br>
+<p align="center">
+  <img width="400" height="120" src="https://i.imgur.com/gNnOG0o.png">
+</p>
 
 It computes the derivative of a given function. Entries are given the same way as for evaluating algebraic expressions. <br>
 Additionally, the unknown of the function must be specified. In a differentiation context, functions have a single unknown, and other **non-numeric** elements are considered as constants.
@@ -82,6 +101,13 @@ public class AtosymDemo {
         Mask mask2 = new Mask("(a+b)^100.0 + (a+b)^3");
         Mask mask3 = new Mask("(3-x)^3 + 3x - 12x^2 - 2x^2");
 
+        MaskOperatorHandler handler = generateHandler();
+        sample1(mask1, handler);
+        sample2(mask2, handler);
+        sample3(mask3, handler);
+    }
+
+    private static MaskOperatorHandler generateHandler() {
         // Initializing a calculation environment to customize the calculations
         MaskContext context = new MaskContext();
         // Alteration #1 : Changes angles to degrees
@@ -90,34 +116,40 @@ public class AtosymDemo {
         context.addGlobalCanceller(new PowExpansionLimit(10, context), PowerCalculator.class);
         // Alteration #3 : Adds a cache that store the results from the previous calculations to increase the performances
         // This alteration must be duplicated, which means that every object computing results must have its own cache
-        context.addDuplicatedCanceller(CalculationCache::new, BinaryOperationHandler.class);
+        context.addClonedCanceller(CalculationCache::new, BinaryOperationHandler.class);
+        return new MaskOperatorHandler(context);
+    }
 
-        MaskOperatorHandler manager = new MaskOperatorHandler(context);
-
+    private static void sample1(Mask input, MaskOperatorHandler handler) {
         // Stores the simplified result to the temporary Mask instance, in order to get its string value
-        String result1 = manager
-                .compute(MaskSimplifier.class, mask1, Mask.TEMP, null)
+        String result1 = handler
+                .compute(MaskSimplifier.class, input, Mask.TEMP, null)
                 .asExpression();
-        String result2 = manager
+        // cos(90) indeed gives 0 since we set the angle unit to degrees
+        System.out.printf("%s = %s\n", input.getExpression(), result1);
+    }
+
+    private static void sample2(Mask input, MaskOperatorHandler handler) {
+        String result2 = handler
                 // "begin(Mask)" is an alternative to putting (in this case) mask2 before "Mask.TEMP" as in the previous example
-                .begin(mask2)
+                .begin(input)
                 .compute(MaskSimplifier.class, Mask.TEMP, null)
                 .asExpression();
+        // (a+b)^100 is not expanded, whereas (a+b)^3 is, since we set the expansion limit to 10
+        System.out.printf("%s = %s\n", input.getExpression(), result2);
+    }
 
+    private static void sample3(Mask input, MaskOperatorHandler handler) {
         // Instead of retrieving the string value, we want to store the result of the calculation in a different object
         Mask result3 = new Mask();
-        manager
-                .begin(mask3)
+        handler
+                .begin(input)
                 // instead of using Mask.TEMP, we change the mask itself so its new string value is simplified
-                .compute(MaskSimplifier.class, mask3, null)
+                .compute(MaskSimplifier.class, input, null)
                 // we store the derivative in another object
                 .compute(MaskDerivativeCalculator.class, result3, 'x');
-	// cos(90) indeed gives 0 since we set the angle unit to degrees
-        System.out.printf("%s = %s\n", mask1.getExpression(), result1);
-	// (a+b)^100 is not expanded, whereas (a+b)^3 is, since we set the expansion limit to 10
-        System.out.printf("%s = %s\n", mask2.getExpression(), result2);
-	// The left expression is simplified, since we changed the value of "mask3" when we simplified the expression
-        System.out.printf("(%s)' = %s", mask3.getExpression(), result3.getExpression());
+        // The left expression is simplified, since we changed the value of "mask3" when we simplified the expression
+        System.out.printf("(%s)' = %s", input.getExpression(), result3.getExpression());
     }
 }
 ```
@@ -183,12 +215,12 @@ The documentation is available on the repository's description. Note that the to
 
 ## Also
 
-For a direct implementation of the Atosym library, see [MaskInterface](https://github.com/lolilolulolilol/MaskInterface). <br>
+For a direct implementation of the Atosym library, look at [MaskInterface](https://github.com/lolilolulolilol/MaskInterface). <br>
 **MaskInterface** is a GUI based calculator that implements the following features of the library:
 
 * [Calculation of any series of numbers split by different operators](#calculation-of-any-series-of-numbers-split-by-different-operators)
 * [Evaluation of any algebraic expression, giving the most simplified result](#evaluation-of-any-algebraic-expression-giving-the-most-simplified-result)
-* [Images calculation of any function from given values for given unknowns](#images-calculation-of-any-function-from-given-values-for-given-unknowns)
+* [Images calculation of any function from given values for given unknowns](#image-calculations-of-any-function-from-given-values-for-given-unknowns)
 * [Differentiation of functions](#differentiation-of-functions)
 <br>
 
