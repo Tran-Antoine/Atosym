@@ -32,7 +32,6 @@ public abstract class MathOperator implements
     }
 
     protected abstract MathObject operate(List<MathObject> input);
-    //public abstract int priority();
 
     public MathObject rawOperate(List<MathObject> input) {
         if(input.size() != argsLength) {
@@ -91,7 +90,8 @@ public abstract class MathOperator implements
         Set<MathOperator> operators = new HashSet<>(Arrays.asList(
                 new SineOperator(),
                 new CosineOperator(),
-                new TangentOperator()
+                new TangentOperator(),
+                new PriorityOperator()
         ));
 
         operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));

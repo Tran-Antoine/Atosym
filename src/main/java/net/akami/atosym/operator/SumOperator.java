@@ -48,7 +48,8 @@ public class SumOperator extends BinaryOperator {
 
     private MathObject result(List<MathObject> mergedElements) {
         mergedElements = mergedElements.stream().filter(NumericUtils::isNotZero).collect(Collectors.toList());
-        //Collections.sort(elements);
+        mergedElements.sort(context.getSortingManager());
+
         if(mergedElements.size() == 1) {
             return mergedElements.get(0);
         }

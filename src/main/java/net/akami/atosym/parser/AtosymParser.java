@@ -133,13 +133,13 @@ public class AtosymParser extends Parser {
 
 	public static class ExpContext extends ParserRuleContext {
 		public Token binop;
-		public TerminalNode FUNC() { return getToken(AtosymParser.FUNC, 0); }
 		public List<ExpContext> exp() {
 			return getRuleContexts(ExpContext.class);
 		}
 		public ExpContext exp(int i) {
 			return getRuleContext(ExpContext.class,i);
 		}
+		public TerminalNode FUNC() { return getToken(AtosymParser.FUNC, 0); }
 		public TerminalNode NUMBER() { return getToken(AtosymParser.NUMBER, 0); }
 		public TerminalNode CHAR() { return getToken(AtosymParser.CHAR, 0); }
 		public TerminalNode POW() { return getToken(AtosymParser.POW, 0); }
@@ -178,58 +178,57 @@ public class AtosymParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(26);
+			setState(24);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
+			case T__0:
 			case FUNC:
 				{
-				setState(7);
-				match(FUNC);
 				setState(8);
-				match(T__0);
-				setState(14);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+				_la = _input.LA(1);
+				if (_la==FUNC) {
+					{
+					setState(7);
+					match(FUNC);
+					}
+				}
+
+				setState(10);
+				match(T__0);
+				setState(16);
+				_errHandler.sync(this);
+				_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 				while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 					if ( _alt==1 ) {
 						{
 						{
-						setState(9);
+						setState(11);
 						exp(0);
-						setState(10);
+						setState(12);
 						match(T__1);
 						}
 						} 
 					}
-					setState(16);
+					setState(18);
 					_errHandler.sync(this);
-					_alt = getInterpreter().adaptivePredict(_input,0,_ctx);
+					_alt = getInterpreter().adaptivePredict(_input,1,_ctx);
 				}
-				setState(17);
+				setState(19);
 				exp(0);
-				setState(18);
-				match(T__2);
-				}
-				break;
-			case T__0:
-				{
 				setState(20);
-				match(T__0);
-				setState(21);
-				exp(0);
-				setState(22);
 				match(T__2);
 				}
 				break;
 			case NUMBER:
 				{
-				setState(24);
+				setState(22);
 				match(NUMBER);
 				}
 				break;
 			case CHAR:
 				{
-				setState(25);
+				setState(23);
 				match(CHAR);
 				}
 				break;
@@ -237,26 +236,26 @@ public class AtosymParser extends Parser {
 				throw new NoViableAltException(this);
 			}
 			_ctx.stop = _input.LT(-1);
-			setState(43);
+			setState(41);
 			_errHandler.sync(this);
-			_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+			_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					if ( _parseListeners!=null ) triggerExitRuleEvent();
 					_prevctx = _localctx;
 					{
-					setState(41);
+					setState(39);
 					_errHandler.sync(this);
-					switch ( getInterpreter().adaptivePredict(_input,3,_ctx) ) {
+					switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 					case 1:
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(28);
+						setState(26);
 						if (!(precpred(_ctx, 5))) throw new FailedPredicateException(this, "precpred(_ctx, 5)");
-						setState(29);
+						setState(27);
 						((ExpContext)_localctx).binop = match(POW);
-						setState(30);
+						setState(28);
 						exp(6);
 						}
 						break;
@@ -264,14 +263,14 @@ public class AtosymParser extends Parser {
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(31);
+						setState(29);
 						if (!(precpred(_ctx, 4))) throw new FailedPredicateException(this, "precpred(_ctx, 4)");
-						setState(33);
+						setState(31);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
 						if (_la==MULT || _la==DIV) {
 							{
-							setState(32);
+							setState(30);
 							((ExpContext)_localctx).binop = _input.LT(1);
 							_la = _input.LA(1);
 							if ( !(_la==MULT || _la==DIV) ) {
@@ -285,7 +284,7 @@ public class AtosymParser extends Parser {
 							}
 						}
 
-						setState(35);
+						setState(33);
 						exp(5);
 						}
 						break;
@@ -293,9 +292,9 @@ public class AtosymParser extends Parser {
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(36);
+						setState(34);
 						if (!(precpred(_ctx, 3))) throw new FailedPredicateException(this, "precpred(_ctx, 3)");
-						setState(37);
+						setState(35);
 						((ExpContext)_localctx).binop = _input.LT(1);
 						_la = _input.LA(1);
 						if ( !(_la==SUM || _la==SUB) ) {
@@ -306,7 +305,7 @@ public class AtosymParser extends Parser {
 							_errHandler.reportMatch(this);
 							consume();
 						}
-						setState(38);
+						setState(36);
 						exp(4);
 						}
 						break;
@@ -314,18 +313,18 @@ public class AtosymParser extends Parser {
 						{
 						_localctx = new ExpContext(_parentctx, _parentState);
 						pushNewRecursionContext(_localctx, _startState, RULE_exp);
-						setState(39);
+						setState(37);
 						if (!(precpred(_ctx, 6))) throw new FailedPredicateException(this, "precpred(_ctx, 6)");
-						setState(40);
+						setState(38);
 						match(OTHER_SYMBOL);
 						}
 						break;
 					}
 					} 
 				}
-				setState(45);
+				setState(43);
 				_errHandler.sync(this);
-				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
+				_alt = getInterpreter().adaptivePredict(_input,5,_ctx);
 			}
 			}
 		}
@@ -362,20 +361,20 @@ public class AtosymParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20\61\4\2\t\2\4\3"+
-		"\t\3\3\2\3\2\3\3\3\3\3\3\3\3\3\3\3\3\7\3\17\n\3\f\3\16\3\22\13\3\3\3\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\3\3\3\5\3\35\n\3\3\3\3\3\3\3\3\3\3\3\5\3$\n\3"+
-		"\3\3\3\3\3\3\3\3\3\3\3\3\7\3,\n\3\f\3\16\3/\13\3\3\3\2\3\4\4\2\4\2\4\3"+
-		"\2\r\16\3\2\13\f\2\67\2\6\3\2\2\2\4\34\3\2\2\2\6\7\5\4\3\2\7\3\3\2\2\2"+
-		"\b\t\b\3\1\2\t\n\7\6\2\2\n\20\7\3\2\2\13\f\5\4\3\2\f\r\7\4\2\2\r\17\3"+
-		"\2\2\2\16\13\3\2\2\2\17\22\3\2\2\2\20\16\3\2\2\2\20\21\3\2\2\2\21\23\3"+
-		"\2\2\2\22\20\3\2\2\2\23\24\5\4\3\2\24\25\7\5\2\2\25\35\3\2\2\2\26\27\7"+
-		"\3\2\2\27\30\5\4\3\2\30\31\7\5\2\2\31\35\3\2\2\2\32\35\7\7\2\2\33\35\7"+
-		"\t\2\2\34\b\3\2\2\2\34\26\3\2\2\2\34\32\3\2\2\2\34\33\3\2\2\2\35-\3\2"+
-		"\2\2\36\37\f\7\2\2\37 \7\17\2\2 ,\5\4\3\b!#\f\6\2\2\"$\t\2\2\2#\"\3\2"+
-		"\2\2#$\3\2\2\2$%\3\2\2\2%,\5\4\3\7&\'\f\5\2\2\'(\t\3\2\2(,\5\4\3\6)*\f"+
-		"\b\2\2*,\7\n\2\2+\36\3\2\2\2+!\3\2\2\2+&\3\2\2\2+)\3\2\2\2,/\3\2\2\2-"+
-		"+\3\2\2\2-.\3\2\2\2.\5\3\2\2\2/-\3\2\2\2\7\20\34#+-";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\20/\4\2\t\2\4\3\t"+
+		"\3\3\2\3\2\3\3\3\3\5\3\13\n\3\3\3\3\3\3\3\3\3\7\3\21\n\3\f\3\16\3\24\13"+
+		"\3\3\3\3\3\3\3\3\3\3\3\5\3\33\n\3\3\3\3\3\3\3\3\3\3\3\5\3\"\n\3\3\3\3"+
+		"\3\3\3\3\3\3\3\3\3\7\3*\n\3\f\3\16\3-\13\3\3\3\2\3\4\4\2\4\2\4\3\2\r\16"+
+		"\3\2\13\f\2\65\2\6\3\2\2\2\4\32\3\2\2\2\6\7\5\4\3\2\7\3\3\2\2\2\b\n\b"+
+		"\3\1\2\t\13\7\6\2\2\n\t\3\2\2\2\n\13\3\2\2\2\13\f\3\2\2\2\f\22\7\3\2\2"+
+		"\r\16\5\4\3\2\16\17\7\4\2\2\17\21\3\2\2\2\20\r\3\2\2\2\21\24\3\2\2\2\22"+
+		"\20\3\2\2\2\22\23\3\2\2\2\23\25\3\2\2\2\24\22\3\2\2\2\25\26\5\4\3\2\26"+
+		"\27\7\5\2\2\27\33\3\2\2\2\30\33\7\7\2\2\31\33\7\t\2\2\32\b\3\2\2\2\32"+
+		"\30\3\2\2\2\32\31\3\2\2\2\33+\3\2\2\2\34\35\f\7\2\2\35\36\7\17\2\2\36"+
+		"*\5\4\3\b\37!\f\6\2\2 \"\t\2\2\2! \3\2\2\2!\"\3\2\2\2\"#\3\2\2\2#*\5\4"+
+		"\3\7$%\f\5\2\2%&\t\3\2\2&*\5\4\3\6\'(\f\b\2\2(*\7\n\2\2)\34\3\2\2\2)\37"+
+		"\3\2\2\2)$\3\2\2\2)\'\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,\5\3\2\2\2"+
+		"-+\3\2\2\2\b\n\22\32!)+";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

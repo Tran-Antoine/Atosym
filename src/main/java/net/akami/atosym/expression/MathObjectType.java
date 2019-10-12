@@ -7,5 +7,7 @@ public enum MathObjectType {
     // Binary operators types
     SUM, SUB, MULT, DIV, POW,
     // Trigonometrical types
-    SIN, COS, TAN
+    SIN, COS, TAN,
+    // Brackets indicator
+    PRIORITY
 }

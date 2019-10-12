@@ -60,7 +60,13 @@ public class SimpleBranch {
             if(func != null) {
                 text = func.getText();
             } else {
-                text = "";
+                // Two possibilities : either there is no function name, because there are brackets for the priority of operations
+                //                     or we are dealing with a multiplication with no sign, such as 4x
+                if(children.size() == 1) {
+                    text = "priority";
+                } else {
+                    text = "";
+                }
             }
         }
         Supplier<UnsupportedOperationException> exception = () -> new UnsupportedOperationException("Unknown token : "+text);

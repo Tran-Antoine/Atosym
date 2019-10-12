@@ -20,9 +20,4 @@ public class NumberExpression extends Expression<Float> {
     public MathObjectType getType() {
         return MathObjectType.NUMBER;
     }
-
-    @Override
-    public int compareTo(MathObject o) {
-        return -1;
-    }
 }

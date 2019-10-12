@@ -3,7 +3,7 @@ package net.akami.atosym.expression;
 import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.display.visitor.DisplayerVisitor;
 
-public interface MathObject extends Comparable<MathObject> {
+public interface MathObject {
 
     DisplayerVisitor getDisplayer();
     MathObjectType getType();

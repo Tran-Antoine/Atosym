@@ -1,5 +1,7 @@
 package net.akami.atosym.expression;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class FunctionObject implements MathObject {
@@ -8,7 +10,7 @@ public abstract class FunctionObject implements MathObject {
     private int size;
 
     public FunctionObject(List<MathObject> children, int size) {
-        this.children = children;
+        this.children = Collections.unmodifiableList(children);
         this.size = size;
     }
 
@@ -27,11 +29,6 @@ public abstract class FunctionObject implements MathObject {
     }
 
     @Override
-    public int compareTo(MathObject o) {
-        return 0;
-    }
-
-    @Override
     public boolean equals(Object obj) {
         if(!(obj instanceof FunctionObject)) {
             return false;
@@ -42,7 +39,22 @@ public abstract class FunctionObject implements MathObject {
 
     }
 
-    public boolean childrenEqual(FunctionObject f2) {
-        return children.equals(f2.children);
+    public List<MathObject> getChildren() {
+        return children;
+    }
+
+    public List<MathObject> getFractionChildren(int start, int stop) {
+        int realStart = start >= 0 ? start : children.size() + start;
+        int realStop  = stop >= 0 ? stop : children.size() + stop;
+        List<MathObject> newList = new ArrayList<>(stop - start + 2);
+        for(int i = realStart; i <= realStop; i++) {
+            newList.add(children.get(i));
+        }
+        return newList;
+    }
+
+    public MathObject getChild(int i) {
+        int realI = i >= 0 ? i : children.size() + i;
+        return children.get(realI);
     }
 }

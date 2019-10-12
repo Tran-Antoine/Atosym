@@ -15,7 +15,7 @@ public class LiteralFunctionDisplayer extends SimpleDisplayerVisitor {
     // Infix notation is the same as functional notation for literal functions
     @Override
     public String accept(InfixNotationDisplayable displayable) {
-        String arguments = String.join(", ", displayable.toStringList(children, displayable));
+        String arguments = String.join(", ", displayable.toStringList(children));
         return functionName + DisplayUtils.surroundWithBrackets(arguments);
     }
 }

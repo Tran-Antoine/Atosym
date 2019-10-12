@@ -2,7 +2,6 @@ package net.akami.atosym.tree;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Vocabulary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,16 +15,14 @@ public class AtosymTree<T extends SimpleBranch> implements AbstractSyntaxTree<T>
     public static final Logger LOGGER = LoggerFactory.getLogger(BinaryTree.class);
 
     private Vocabulary vocabulary;
-    private CommonTokenStream tokenStream;
 
     private MaskContext context;
     private List<T> branches;
 
-    public AtosymTree(MaskContext context, Vocabulary vocabulary, CommonTokenStream tokenStream) {
+    public AtosymTree(MaskContext context, Vocabulary vocabulary) {
         this.context = context;
         this.branches = new ArrayList<>();
         this.vocabulary = vocabulary;
-        this.tokenStream = tokenStream;
     }
 
     public void addBranch(T branch) {
@@ -46,10 +43,6 @@ public class AtosymTree<T extends SimpleBranch> implements AbstractSyntaxTree<T>
             return first.getSimplifiedValue();
         }
         throw new RuntimeException("Internal error : Could not solve the given tree");
-    }
-
-    CommonTokenStream getTokenStream() {
-        return tokenStream;
     }
 
     @Override

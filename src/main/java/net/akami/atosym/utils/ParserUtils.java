@@ -27,7 +27,7 @@ public class ParserUtils {
         CommonTokenStream stream = new CommonTokenStream(atosymLexer);
         AtosymParser atosymParser = new AtosymParser(stream);
 
-        AtosymTree<SimpleBranch> atosymTree = new AtosymTree<>(context, voc, stream);
+        AtosymTree<SimpleBranch> atosymTree = new AtosymTree<>(context, voc);
 
         MainContext tree = atosymParser.main();
         ExpContext expContext = (ExpContext) tree.getChild(0);

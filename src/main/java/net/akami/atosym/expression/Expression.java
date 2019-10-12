@@ -27,11 +27,6 @@ public abstract class Expression<V> implements MathObject {
     public int priority() {
         return 9;
     }
-    
-    @Override
-    public int compareTo(MathObject o) {
-        return 0;
-    }
 
     @Override
     public boolean equals(Object obj) {

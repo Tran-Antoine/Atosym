@@ -3,8 +3,7 @@ grammar Atosym;
 main: exp;
 
 exp
-    : FUNC '(' (exp',')* exp ')'
-    | '(' exp ')'
+    : FUNC? '(' (exp',')* exp ')'
     | exp OTHER_SYMBOL
     | exp binop=POW exp
     | exp (binop=(DIV|MULT))? exp
@@ -14,7 +13,13 @@ exp
     ;
 
 FUNC
-    : 'sin'  // sin(angle)
+    : 'sum'
+    | 'sub'
+    | 'mult'
+    | 'div'
+    | 'pow'
+
+    | 'sin'  // sin(angle)
     | 'cos'  // cos(angle)
     | 'tan'  // tan(angle)
     | 'log'  // log(base, n)
