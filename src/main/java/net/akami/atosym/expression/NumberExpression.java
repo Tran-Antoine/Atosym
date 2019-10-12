@@ -1,8 +1,11 @@
 package net.akami.atosym.expression;
 
-import java.util.function.BiFunction;
+import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.merge.property.global.NumericOperation;
 
 public class NumberExpression extends Expression<Float> {
+
+    public static final NumberExpression NEUTRAL_MULT_FACTOR = new NumberExpression(1f);
 
     public NumberExpression(String value) {
         this(Float.parseFloat(value));
@@ -12,8 +15,8 @@ public class NumberExpression extends Expression<Float> {
         super(value);
     }
 
-    public NumberExpression(NumberExpression a, NumberExpression b, BiFunction<Float, Float, Float> function) {
-        super(function.apply(a.getValue(), b.getValue()));
+    public NumberExpression(NumberExpression a, NumberExpression b, NumericOperation function, MaskContext context) {
+        super(function.compute(a.getValue(), b.getValue(), context));
     }
 
     @Override

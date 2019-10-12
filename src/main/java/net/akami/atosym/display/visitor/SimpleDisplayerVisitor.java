@@ -4,6 +4,7 @@ import net.akami.atosym.display.FunctionalNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.DisplayUtils;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class SimpleDisplayerVisitor implements DisplayerVisitor {
@@ -12,7 +13,7 @@ public abstract class SimpleDisplayerVisitor implements DisplayerVisitor {
     protected String functionName;
 
     public SimpleDisplayerVisitor(List<MathObject> children, String functionName) {
-        this.children = children;
+        this.children = Collections.unmodifiableList(children);
         this.functionName = functionName;
     }
 

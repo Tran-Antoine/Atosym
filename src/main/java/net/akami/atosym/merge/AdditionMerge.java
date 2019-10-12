@@ -11,11 +11,11 @@ import net.akami.atosym.merge.property.sum.SumOfMultProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public class MonomialAdditionMerge implements SequencedMerge<MathObject> {
+public class AdditionMerge implements SequencedMerge<MathObject> {
 
     protected MaskContext context;
 
-    public MonomialAdditionMerge(MaskContext context) {
+    public AdditionMerge(MaskContext context) {
         this.context = context;
     }
 

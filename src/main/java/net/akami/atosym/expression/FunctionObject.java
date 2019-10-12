@@ -1,5 +1,7 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.display.InfixNotationDisplayable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -56,5 +58,10 @@ public abstract class FunctionObject implements MathObject {
     public MathObject getChild(int i) {
         int realI = i >= 0 ? i : children.size() + i;
         return children.get(realI);
+    }
+
+    @Override
+    public String toString() {
+        return getDisplayer().accept(InfixNotationDisplayable.EMPTY_INSTANCE);
     }
 }

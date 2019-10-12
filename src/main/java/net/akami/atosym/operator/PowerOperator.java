@@ -2,31 +2,21 @@ package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.merge.PowerCalculationMerge;
 
 public class PowerOperator extends BinaryOperator {
 
     private MaskContext context;
 
     public PowerOperator(MaskContext context) {
-        super("pow");
+        super("pow", "^");
         this.context = context;
     }
 
     @Override
     public MathObject binaryOperate(MathObject a, MathObject b) {
-        /*LOGGER.info("PowerOperator operation process between {} and {} : \n", a, b);
-
-        if(ExpressionUtils.isANumber(a) && ExpressionUtils.isANumber(b)) {
-            return fullNumericPow(a, b);
-        }
-
-        if(ExpressionUtils.isAnInteger(b)) {
-            Monomial first = b.get(0);
-            return extensiblePow(a, (int) first.getNumericValue());
-        }
-
-        return layerPow(a, b);*/
-        return null;
+        PowerCalculationMerge mergeTool = new PowerCalculationMerge(context);
+        return mergeTool.merge(a, b, false);
     }
 
     /*private Expression fullNumericPow(Expression a, Expression b) {

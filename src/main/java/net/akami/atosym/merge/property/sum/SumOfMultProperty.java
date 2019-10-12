@@ -11,7 +11,6 @@ import net.akami.atosym.utils.NumericUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -35,14 +34,13 @@ public class SumOfMultProperty extends ElementSequencedMergeProperty<MathObject>
     public void blendResult(List<MathObject> constructed) {
         NumberExpression result;
         if(number1 == null && number2 == null) {
-            result = new NumberExpression(1f);
+            result = new NumberExpression(2f);
         } else if(number1 == null) {
-            result = number2;
+            result = new NumberExpression(number2, NumberExpression.NEUTRAL_MULT_FACTOR, NumericUtils::sum, context);
         } else if(number2 == null){
-            result = number1;
+            result = new NumberExpression(number1, NumberExpression.NEUTRAL_MULT_FACTOR, NumericUtils::sum, context);
         } else {
-            BiFunction<Float, Float, Float> func = (a, b) -> NumericUtils.sum(a, b, context);
-            result = new NumberExpression(number1, number2, func);
+            result = new NumberExpression(number1, number2, NumericUtils::sum, context);
         }
 
         variableElements.add(result);

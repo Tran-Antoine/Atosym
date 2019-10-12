@@ -18,6 +18,5 @@ public class PowerDisplayer extends SimpleDisplayerVisitor {
     @Override
     public String accept(InfixNotationDisplayable displayable) {
         return displayable.join(children.get(0), children.get(1), "^", parent);
-
     }
 }

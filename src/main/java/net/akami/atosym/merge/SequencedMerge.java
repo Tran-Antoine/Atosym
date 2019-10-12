@@ -184,8 +184,8 @@ public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMe
 
     /**
      * Action to perform when a property matches two elements. <br>
-     * This method should usually not be redefined, since the logic behavior is to remove the elements from
-     * the former lists, and addBranch the computed one to the constructed list.
+     * This method should usually not be redefined, since the logical behavior is to remove the elements from
+     * the former lists, and add the computed one to the constructed list.
      * @param l1 the first former list
      * @param l2 the second former list
      * @param i the index of the element present in {@code l1}

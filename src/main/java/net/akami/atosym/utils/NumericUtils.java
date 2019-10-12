@@ -20,6 +20,18 @@ public class NumericUtils {
         return operation(a, b, context, BigDecimal::multiply);
     }
 
+    public static float div(float a, float b, MaskContext context) {
+        return operation(a, b, context, BigDecimal::divide);
+    }
+
+    public static float pow(float a, float b, MaskContext context) {
+        if(b % 1 != 0) throw new UnsupportedOperationException();
+
+        int bInt = (int) b;
+        BigDecimal bigA = new BigDecimal(a, context.getMathContext());
+        return bigA.pow(bInt).floatValue();
+    }
+
     private static float operation(float a, float b, MaskContext context, BiFunction<BigDecimal, BigDecimal, BigDecimal> func) {
         MathContext mathContext = context.getMathContext();
         BigDecimal bigA = new BigDecimal(a, mathContext);

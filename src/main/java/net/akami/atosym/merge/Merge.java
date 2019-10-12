@@ -42,7 +42,7 @@ public interface Merge<P, R, PROP extends OverallMergeProperty<P, R>> {
             if(property.prepare()) return property.rawComputeResult();
         }
 
-        throw new IllegalStateException("Could not find a property matching the two inputs. If the merge behavior you are" +
+        throw new IllegalStateException("Could not find a property matching the two inputs. If the merge behavior you are " +
                 "currently using doesn't directly or doesn't only use overall properties, you might need to override" +
                 "the merge method");
     }

@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -82,7 +83,7 @@ public class MaskContext {
      */
     public MaskContext(int precision) {
         this.supportedOperators = MathOperator.generateDefaultOperators(this);
-        this.bigDecimalContext = new MathContext(precision);
+        this.bigDecimalContext = new MathContext(precision, RoundingMode.CEILING);
         this.validityChecks = defaultValidityChecks();
         this.sortingManager = SortingManager.DEFAULT;
     }

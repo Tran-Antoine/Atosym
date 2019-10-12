@@ -5,8 +5,8 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.PowerMathObject;
 import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
-import net.akami.atosym.operator.MultOperator;
 import net.akami.atosym.operator.PowerOperator;
+import net.akami.atosym.operator.SumOperator;
 
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -28,9 +28,9 @@ public class IdenticalBaseProperty extends ElementSequencedMergeProperty<MathObj
     @Override
     public void blendResult(List<MathObject> constructed) {
 
-        PowerMathObject power1 = new PowerMathObject(exponent1);
-        PowerMathObject power2 = new PowerMathObject(exponent2);
-        MathObject multResult = context.getBinaryOperator(MultOperator.class).binaryOperate(power1, power2);
+        MathObject power1 = toSingleObject(exponent1);
+        MathObject power2 = toSingleObject(exponent2);
+        MathObject multResult = context.getBinaryOperator(SumOperator.class).binaryOperate(power1, power2);
 
         MathObject result = context.getBinaryOperator(PowerOperator.class).binaryOperate(base1, multResult);
         constructed.add(result);
@@ -62,5 +62,13 @@ public class IdenticalBaseProperty extends ElementSequencedMergeProperty<MathObj
     private void setExponent2(List<MathObject> exponent2, MathObject base2) {
         this.exponent2 = exponent2;
         this.base2 = base2;
+    }
+
+    private MathObject toSingleObject(List<MathObject> list) {
+        if(list.size() == 1) {
+            return list.get(0);
+        }
+
+        return new PowerMathObject(list);
     }
 }

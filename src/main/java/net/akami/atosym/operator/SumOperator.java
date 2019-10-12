@@ -3,7 +3,7 @@ package net.akami.atosym.operator;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.SumMathObject;
-import net.akami.atosym.merge.MonomialAdditionMerge;
+import net.akami.atosym.merge.AdditionMerge;
 import net.akami.atosym.merge.SequencedMerge;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * <li> {@link CommonDenominatorAdditionProperty}, allowing sums of fractions having the same denominator
  * <li> {@link IdenticalVariablePartProperty}, for expressions having the exact same variable part
  * </ul>
- * The {@code operate} method delegates the work to the {@link MonomialAdditionMerge} behavior, comparing the different
+ * The {@code operate} method delegates the work to the {@link AdditionMerge} behavior, comparing the different
  * monomials by pairs, and computing a result if possible.
  *
  * @author Antoine Tran
@@ -40,14 +40,22 @@ public class SumOperator extends BinaryOperator {
         LOGGER.debug("SumOperator process of {} |+| {}: \n", a, b);
         List<MathObject> elements = toList(a, b);
 
-        SequencedMerge<MathObject> additionBehavior = new MonomialAdditionMerge(context);
-        List<MathObject> mergedElements = additionBehavior.merge(elements, elements, true);
+        return sumMerge(elements);
+    }
 
-        return result(mergedElements);
+    public MathObject sumMerge(List<MathObject> elements) {
+        SequencedMerge<MathObject> additionBehavior = new AdditionMerge(context);
+        return result(additionBehavior.merge(elements, elements, true)
+                .stream()
+                .filter(NumericUtils::isNotZero)
+                .collect(Collectors.toList()));
     }
 
     private MathObject result(List<MathObject> mergedElements) {
-        mergedElements = mergedElements.stream().filter(NumericUtils::isNotZero).collect(Collectors.toList());
+        mergedElements = mergedElements
+                .stream()
+                .filter(NumericUtils::isNotZero)
+                .collect(Collectors.toList());
         mergedElements.sort(context.getSortingManager());
 
         if(mergedElements.size() == 1) {
