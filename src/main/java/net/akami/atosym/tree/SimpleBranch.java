@@ -60,12 +60,17 @@ public class SimpleBranch {
             if(func != null) {
                 text = func.getText();
             } else {
-                // Two possibilities : either there is no function name, because there are brackets for the priority of operations
-                //                     or we are dealing with a multiplication with no sign, such as 4x
-                if(children.size() == 1) {
-                    text = "priority";
+                TerminalNode symbol = expTree.OTHER_SYMBOL();
+                if(symbol != null) {
+                    text = symbol.getText();
                 } else {
-                    text = "";
+                    // Two possibilities : either there is no function name, because there are brackets for the priority of operations
+                    //                     or we are dealing with a multiplication with no sign, such as 4x
+                    if (children.size() == 1) {
+                        text = "priority";
+                    } else {
+                        text = "";
+                    }
                 }
             }
         }

@@ -92,7 +92,8 @@ public abstract class MathOperator implements
                 new CosineOperator(),
                 new TangentOperator(),
                 new PriorityOperator(),
-                new RootOperator()
+                new RootOperator(),
+                new FactorialOperator(context)
         ));
 
         operators.addAll(BinaryOperator.generateDefaultBinaryOperators(context));

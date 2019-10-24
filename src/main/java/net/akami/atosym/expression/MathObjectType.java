@@ -8,6 +8,7 @@ public enum MathObjectType {
     SUM, SUB, MULT, DIV, POW, ROOT,
     // Trigonometrical types
     SIN, COS, TAN,
-
+    // Other
+    FACTORIAL
 
 }

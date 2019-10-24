@@ -16,6 +16,10 @@ public class NumericUtils {
         return operation(a, b, context, BigDecimal::add);
     }
 
+    public static float sub(int a, int b, MaskContext context) {
+        return operation(a, b, context, BigDecimal::subtract);
+    }
+
     public static float mult(float a, float b, MaskContext context) {
         return operation(a, b, context, BigDecimal::multiply);
     }
