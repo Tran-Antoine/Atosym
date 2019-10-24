@@ -2,9 +2,11 @@ package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.merge.MultiplicationMerge;
 import net.akami.atosym.merge.SequencedMerge;
+import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
@@ -29,16 +31,18 @@ public class MultOperator extends BinaryOperator {
         bList.add(b);
 
         SequencedMerge<MathObject> merge = new MultiplicationMerge(context);
+        SortingRules rules = context.getSortingRules(MathObjectType.MULT);
+
         List<MathObject> result = merge.merge(aList, bList, false)
                 .stream()
                 .filter(NumericUtils::isNotOne)
-                .sorted(context.getSortingManager())
+                .sorted(rules)
                 .collect(Collectors.toList());
 
-        if(result.size() == 1) {
-            return result.get(0);
+        switch (result.size()) {
+            case 0:  return MathObject.NEUTRAL_MULT;
+            case 1:  return result.get(0);
+            default: return new MultMathObject(result);
         }
-
-        return new MultMathObject(result);
     }
 }

@@ -28,7 +28,7 @@ public class PowExpansionLimit implements FairCalculationCanceller<MathObject> {
 
     @Override
     public MathObject resultIfCancelled(List<MathObject> input) {
-        return context.getBinaryOperator(PowerOperator.class).layerPow(input.get(0), input.get(1));
+        return context.getOperator(PowerOperator.class).layerPow(input.get(0), input.get(1));
     }
 
     @Override

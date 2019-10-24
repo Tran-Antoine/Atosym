@@ -6,6 +6,7 @@ import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
@@ -36,15 +37,16 @@ public class SumOfMultProperty extends ElementSequencedMergeProperty<MathObject>
         if(number1 == null && number2 == null) {
             result = new NumberExpression(2f);
         } else if(number1 == null) {
-            result = new NumberExpression(number2, NumberExpression.NEUTRAL_MULT_FACTOR, NumericUtils::sum, context);
+            result = new NumberExpression(number2, (NumberExpression) MathObject.NEUTRAL_MULT, NumericUtils::sum, context);
         } else if(number2 == null){
-            result = new NumberExpression(number1, NumberExpression.NEUTRAL_MULT_FACTOR, NumericUtils::sum, context);
+            result = new NumberExpression(number1, (NumberExpression) MathObject.NEUTRAL_MULT, NumericUtils::sum, context);
         } else {
             result = new NumberExpression(number1, number2, NumericUtils::sum, context);
         }
 
         variableElements.add(result);
-        variableElements.sort(context.getSortingManager());
+        SortingRules rules = context.getSortingRules(MathObjectType.MULT);
+        variableElements.sort(rules);
         constructed.add(new MultMathObject(variableElements));
     }
 

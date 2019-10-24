@@ -1,7 +1,6 @@
 package net.akami.atosym.handler.sign;
 
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.tree.DerivativeTree;
 import net.akami.atosym.utils.MathUtils;
 
 import java.util.Objects;

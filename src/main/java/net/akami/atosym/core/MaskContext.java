@@ -4,7 +4,8 @@ import net.akami.atosym.alteration.*;
 import net.akami.atosym.check.*;
 import net.akami.atosym.exception.MaskException;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.expression.comparison.SortingManager;
+import net.akami.atosym.expression.MathObjectType;
+import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.handler.AlterationHandler;
 import net.akami.atosym.operator.BinaryOperator;
@@ -58,7 +59,7 @@ public class MaskContext {
 
     private Set<MathOperator> supportedOperators;
     private List<ValidityCheck> validityChecks;
-    private SortingManager sortingManager;
+    private SortingRules sortingRules;
     private MathContext bigDecimalContext;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MaskContext.class);
@@ -85,7 +86,7 @@ public class MaskContext {
         this.supportedOperators = MathOperator.generateDefaultOperators(this);
         this.bigDecimalContext = new MathContext(precision, RoundingMode.CEILING);
         this.validityChecks = defaultValidityChecks();
-        this.sortingManager = SortingManager.DEFAULT;
+        this.sortingRules = SortingRules.DEFAULT;
     }
 
     /**
@@ -98,7 +99,7 @@ public class MaskContext {
      * @return a result computed by the operator from the two elements given
      */
     public MathObject binaryCompute(MathObject a, MathObject b, Class<? extends BinaryOperator> clazz) {
-        BinaryOperator handler = getBinaryOperator(clazz);
+        BinaryOperator handler = getOperator(clazz);
         return handler.rawOperate(Arrays.asList(a, b));
     }
 
@@ -203,14 +204,14 @@ public class MaskContext {
 
     /**
      * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link BinaryOperator#operate(List<MathObject>)} from it. <br>
+     * the default {@link MathOperator#operate(List<MathObject>)} from it. <br>
      * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
      * instead.
      * @param clazz the type of the operator
      * @param <T> the generic type to avoid casting
      * @return the supported operator whose {@link #getClass()} method equals the clazz parameter.
      */
-    public <T extends MathOperator> T getBinaryOperator(Class<T> clazz) {
+    public <T extends MathOperator> T getOperator(Class<T> clazz) {
         for(MathOperator current : supportedOperators) {
             if(current.getClass().equals(clazz))
                 return (T) current;
@@ -218,8 +219,9 @@ public class MaskContext {
         return null;
     }
 
-    public SortingManager getSortingManager() {
-        return sortingManager;
+    public SortingRules getSortingRules(MathObjectType currentParentType) {
+        sortingRules.setParentType(currentParentType);
+        return sortingRules;
     }
 
     @FunctionalInterface
@@ -250,8 +252,8 @@ public class MaskContext {
             return this;
         }
 
-        public Builder withSortingManager(SortingManager manager) {
-            context.sortingManager = manager;
+        public Builder withSortingManager(SortingRules manager) {
+            context.sortingRules = manager;
             return this;
         }
     }

@@ -1,10 +1,10 @@
 package net.akami.atosym.core;
 
-import net.akami.atosym.tree.ReducerTree;
+import net.akami.atosym.tree.AtosymTree;
 import net.akami.atosym.utils.FastAtosymMath;
 
 /**
- * An overlay to the {@link ReducerTree} system. It currently uses the {@link FastAtosymMath} class to compute results.
+ * An overlay to the {@link AtosymTree} system. It currently uses the {@link FastAtosymMath} class to compute results.
  * In the future, the {@link FastAtosymMath} class will be removed and calculations will be performable through this operator
  * only.
  */

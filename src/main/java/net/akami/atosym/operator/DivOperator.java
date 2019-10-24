@@ -15,7 +15,7 @@ public class DivOperator extends BinaryOperator {
 
     @Override
     public MathObject binaryOperate(MathObject a, MathObject b) {
-        LOGGER.debug("DivOperator process of {} |/| {}: \n", a, b);
+        LOGGER.debug("Division process of {} |/| {}: \n", a, b);
         DivisionMerge mergeTool = new DivisionMerge(context);
         return mergeTool.merge(a, b, false);
     }

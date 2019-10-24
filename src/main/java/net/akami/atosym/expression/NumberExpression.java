@@ -5,8 +5,6 @@ import net.akami.atosym.merge.property.global.NumericOperation;
 
 public class NumberExpression extends Expression<Float> {
 
-    public static final NumberExpression NEUTRAL_MULT_FACTOR = new NumberExpression(1f);
-
     public NumberExpression(String value) {
         this(Float.parseFloat(value));
     }

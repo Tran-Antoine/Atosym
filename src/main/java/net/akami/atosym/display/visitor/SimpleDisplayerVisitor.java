@@ -1,6 +1,7 @@
 package net.akami.atosym.display.visitor;
 
 import net.akami.atosym.display.FunctionalNotationDisplayable;
+import net.akami.atosym.display.PrefixNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.utils.DisplayUtils;
 
@@ -19,7 +20,12 @@ public abstract class SimpleDisplayerVisitor implements DisplayerVisitor {
 
     @Override
     public String accept(FunctionalNotationDisplayable displayable) {
-        String arguments = String.join(", ", displayable.toStringList(children, displayable));
+        String arguments = String.join(", ", displayable.toStringList(children));
         return functionName + DisplayUtils.surroundWithBrackets(arguments);
+    }
+
+    @Override
+    public String accept(PrefixNotationDisplayable displayable) {
+        return displayable.toShortcut(functionName) + " " + String.join(" ", displayable.toStringList(children));
     }
 }

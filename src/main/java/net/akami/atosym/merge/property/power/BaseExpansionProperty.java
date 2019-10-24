@@ -17,8 +17,8 @@ public class BaseExpansionProperty extends FairOverallMergeProperty<MathObject> 
 
     @Override
     protected MathObject computeResult() {
-        MultOperator mult = context.getBinaryOperator(MultOperator.class);
-        MathObject initial = NumberExpression.NEUTRAL_MULT_FACTOR;
+        MultOperator mult = context.getOperator(MultOperator.class);
+        MathObject initial = MathObject.NEUTRAL_MULT;
 
         for(int i = 0; i < expansion; i++) {
             initial = mult.binaryOperate(initial, p1);

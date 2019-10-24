@@ -29,7 +29,7 @@ public class MaskHandlerTest {
         prepare("4x^2-5y");
         Map<Character, String> images = new HashMap<>();
         images.put('x', "2");
-        // TODO : implement a better comparison that would make sure that the expression doesn't start with '-'
+        // TODO : implement a better sorting that would make sure that the expression doesn't start with '-'
         assertOperator(MaskImageCalculator.class, images, "-5.0y+16.0");
     }
 

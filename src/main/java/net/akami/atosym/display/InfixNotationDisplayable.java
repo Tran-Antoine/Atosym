@@ -20,16 +20,17 @@ public class InfixNotationDisplayable implements Displayable {
     public String join(MathObject a, MathObject b, String separator, MathObject parent) {
 
         StringBuilder builder = new StringBuilder();
-        return builder.append(addBracketsIfRequired(a, parent))
+        return builder.append(addBracketsIfRequired(a, parent, true))
                 .append(separator)
-                .append(addBracketsIfRequired(b, parent))
+                .append(addBracketsIfRequired(b, parent, false))
                 .toString();
     }
 
-    private String addBracketsIfRequired(MathObject mathObject, MathObject parent) {
+    private String addBracketsIfRequired(MathObject mathObject, MathObject parent, boolean leftMember) {
         String display = mathObject.getDisplayer().accept(this);
+        int leftToRightPriority = leftMember ? 0 : 1;
 
-        if(parent.priority() <= mathObject.priority()) {
+        if(parent.priority() + leftToRightPriority <= mathObject.priority()) {
             return display;
         }
 

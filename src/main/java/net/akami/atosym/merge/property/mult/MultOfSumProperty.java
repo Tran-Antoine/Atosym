@@ -31,10 +31,10 @@ public class MultOfSumProperty extends ElementSequencedMergeProperty<MathObject>
         List<MathObject> result = new ArrayList<>();
         for(MathObject leftElement : monomials1) {
             for(MathObject rightElement : monomials2) {
-                result.add(context.getBinaryOperator(MultOperator.class).binaryOperate(leftElement, rightElement));
+                result.add(context.getOperator(MultOperator.class).binaryOperate(leftElement, rightElement));
             }
         }
-        SumOperator sumOperator = context.getBinaryOperator(SumOperator.class);
+        SumOperator sumOperator = context.getOperator(SumOperator.class);
         constructed.add(sumOperator.sumMerge(result));
     }
 

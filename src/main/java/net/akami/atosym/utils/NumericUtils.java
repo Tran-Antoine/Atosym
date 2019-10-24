@@ -2,11 +2,11 @@ package net.akami.atosym.utils;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.function.BiFunction;
 
 public class NumericUtils {
 
@@ -25,22 +25,22 @@ public class NumericUtils {
     }
 
     public static float pow(float a, float b, MaskContext context) {
-        if(b % 1 != 0) throw new UnsupportedOperationException();
+        if(b % 1 != 0) throw new UnsupportedOperationException("Non integer exponents aren't supported yet");
 
         int bInt = (int) b;
         BigDecimal bigA = new BigDecimal(a, context.getMathContext());
         return bigA.pow(bInt).floatValue();
     }
 
-    private static float operation(float a, float b, MaskContext context, BiFunction<BigDecimal, BigDecimal, BigDecimal> func) {
+    private static float operation(float a, float b, MaskContext context, BigDecimalAction func) {
         MathContext mathContext = context.getMathContext();
         BigDecimal bigA = new BigDecimal(a, mathContext);
         BigDecimal bigB = new BigDecimal(b, mathContext);
-        return func.apply(bigA, bigB).floatValue();
+        return func.apply(bigA, bigB, context.getMathContext()).floatValue();
     }
 
     public static boolean isZero(MathObject object) {
-        return object instanceof NumberExpression && ((NumberExpression) object).getValue() == 0;
+        return isANumber(object) && ((NumberExpression) object).getValue() == 0;
     }
 
     public static boolean isNotZero(MathObject object) {
@@ -48,10 +48,22 @@ public class NumericUtils {
     }
 
     private static boolean isOne(MathObject object) {
-        return object instanceof NumberExpression && ((NumberExpression) object).getValue() == 1;
+        return object.equals(MathObject.NEUTRAL_MULT);
     }
 
     public static boolean isNotOne(MathObject object) {
         return !isOne(object);
+    }
+
+    public static boolean isANumber(MathObject object) {
+        return object.getType() == MathObjectType.NUMBER;
+    }
+
+    public static boolean isAnInteger(MathObject object) {
+        return isANumber(object) && ((NumberExpression) object).getValue() % 1 == 0;
+    }
+
+    private interface BigDecimalAction {
+        BigDecimal apply(BigDecimal a, BigDecimal b, MathContext mode);
     }
 }

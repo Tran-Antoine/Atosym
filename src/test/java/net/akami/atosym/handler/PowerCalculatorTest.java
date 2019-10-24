@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class PowerCalculatorTest {
 
-    PowerOperator POW = MaskContext.DEFAULT.getBinaryOperator(PowerOperator.class);
+    PowerOperator POW = MaskContext.DEFAULT.getOperator(PowerOperator.class);
 
     @Test
     public void powTest() {

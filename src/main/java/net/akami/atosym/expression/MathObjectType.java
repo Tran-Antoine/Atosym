@@ -5,9 +5,9 @@ public enum MathObjectType {
     // Non functional types
     NUMBER, VARIABLE,
     // Binary operators types
-    SUM, SUB, MULT, DIV, POW,
+    SUM, SUB, MULT, DIV, POW, ROOT,
     // Trigonometrical types
     SIN, COS, TAN,
-    // Brackets indicator
-    PRIORITY
+
+
 }

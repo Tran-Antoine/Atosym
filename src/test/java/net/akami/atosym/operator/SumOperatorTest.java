@@ -18,17 +18,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SumOperatorTest {
 
-    private final SumOperator adder = DEFAULT.getBinaryOperator(SumOperator.class);
+    private final SumOperator adder = DEFAULT.getOperator(SumOperator.class);
 
     @Test
     public void numeric_sum() {
         assertSum("5", "2", "7.0");
-        assertSum("0.5", "2.0", "1.5");
+        assertSum("0.5", "2.0", "2.5");
     }
 
     @Test
     public void sum_involving_monomials_with_different_literal_parts() {
-        assertSum("2", "x", "2.0+x");
+        assertSum("2", "x", "x+2.0");
         assertSum("a", "b", "a+b");
     }
 
@@ -40,9 +40,9 @@ public class SumOperatorTest {
 
     @Test
     public void sum_involving_more_than_two_elements() {
-        assertSum("2", "x+2", "4.0+x");
-        assertSum("2+x", "2+x", "4.0+2.0x");
-        assertSum("x+2+y", "x+2", "2.0x+4.0+y");
+        assertSum("2", "x+2", "x+4.0");
+        assertSum("2+x", "2+x", "2.0x+4.0");
+        assertSum("x+2+y", "x+2", "2.0x+y+4.0");
     }
 
     @Test
@@ -69,13 +69,13 @@ public class SumOperatorTest {
                 .build();
 
         assertSimpleSum(new NumberExpression(3f), new NumberExpression(5f), context, "8.0");
-        assertSimpleSum(new NumberExpression(4f), new VariableExpression('x'), context, "4.0+x");
+        assertSimpleSum(new NumberExpression(4f), new VariableExpression('x'), context, "x+4.0");
         assertSimpleSum(new VariableExpression('x'), new VariableExpression('x'), context, "2.0x");
     }
 
     private void assertSimpleSum(MathObject a, MathObject b, MaskContext context, String result) {
         List<MathObject> elements = toList(a, b);
-        SumOperator operator = context.getBinaryOperator(SumOperator.class);
+        SumOperator operator = context.getOperator(SumOperator.class);
         assertThat(operator.rawOperate(elements).testDisplay()).isEqualTo(result);
     }
 

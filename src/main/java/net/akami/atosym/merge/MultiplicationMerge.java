@@ -23,7 +23,8 @@ public class MultiplicationMerge implements SequencedMerge<MathObject> {
                 new VariableSquaredProperty(p1, p2),
                 new ChainMultProperty(p1, p2, context),
                 new MultOfSumProperty(p1, p2, context),
-                new IdenticalBaseProperty(p1, p2, context)
+                new IdenticalBaseProperty(p1, p2, context),
+                new MultOfFractionsProperty(p1, p2, context)
         );
     }
 }

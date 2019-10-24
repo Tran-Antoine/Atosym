@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultOperatorTest {
 
-    private static final MultOperator MULT = MaskContext.DEFAULT.getBinaryOperator(MultOperator.class);
+    private static final MultOperator MULT = MaskContext.DEFAULT.getOperator(MultOperator.class);
 
     // n * m = k    with n, m, k : known numbers
     @Test

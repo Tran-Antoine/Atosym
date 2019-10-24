@@ -4,6 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.merge.property.FairOverallMergeProperty;
 import net.akami.atosym.merge.property.power.BaseExpansionProperty;
+import net.akami.atosym.merge.property.power.ChainPowerProperty;
 import net.akami.atosym.merge.property.power.DefaultPowerProperty;
 import net.akami.atosym.merge.property.power.NumericPowerProperty;
 
@@ -23,6 +24,7 @@ public class PowerCalculationMerge implements FairMerge<MathObject, FairOverallM
         return Arrays.asList(
                 new NumericPowerProperty(p1, p2, context),
                 new BaseExpansionProperty(p1, p2, context),
+                new ChainPowerProperty(p1, p2),
                 new DefaultPowerProperty(p1, p2)
         );
     }

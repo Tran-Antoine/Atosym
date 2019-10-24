@@ -2,9 +2,11 @@ package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.merge.AdditionMerge;
 import net.akami.atosym.merge.SequencedMerge;
+import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
@@ -52,11 +54,12 @@ public class SumOperator extends BinaryOperator {
     }
 
     private MathObject result(List<MathObject> mergedElements) {
+        SortingRules rules = context.getSortingRules(MathObjectType.SUM);
         mergedElements = mergedElements
                 .stream()
                 .filter(NumericUtils::isNotZero)
+                .sorted(rules)
                 .collect(Collectors.toList());
-        mergedElements.sort(context.getSortingManager());
 
         if(mergedElements.size() == 1) {
             return mergedElements.get(0);

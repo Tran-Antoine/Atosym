@@ -9,10 +9,10 @@ public class FunctionalNotationDisplayable implements Displayable {
 
     public static final FunctionalNotationDisplayable EMPTY_INSTANCE = new FunctionalNotationDisplayable();
 
-    public List<String> toStringList(List<MathObject> target, FunctionalNotationDisplayable displayable) {
+    public List<String> toStringList(List<MathObject> target) {
         return target
                 .stream()
-                .map(o -> o.getDisplayer().accept(displayable))
+                .map(o -> o.getDisplayer().accept(this))
                 .collect(Collectors.toList());
     }
 }

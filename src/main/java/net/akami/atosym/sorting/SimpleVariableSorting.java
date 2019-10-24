@@ -1,4 +1,4 @@
-package net.akami.atosym.expression.comparison;
+package net.akami.atosym.sorting;
 
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
@@ -12,7 +12,7 @@ public class SimpleVariableSorting implements SortingRule {
     }
 
     @Override
-    public int compare(MathObject o1, MathObject o2) {
+    public int compare(MathObject o1, MathObject o2, MathObjectType parentType) {
         VariableExpression e1 = (VariableExpression) o1;
         VariableExpression e2 = (VariableExpression) o2;
         return Character.compare(e1.getValue(), e2.getValue());

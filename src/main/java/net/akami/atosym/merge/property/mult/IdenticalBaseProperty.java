@@ -8,6 +8,7 @@ import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
 import net.akami.atosym.operator.PowerOperator;
 import net.akami.atosym.operator.SumOperator;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -30,9 +31,9 @@ public class IdenticalBaseProperty extends ElementSequencedMergeProperty<MathObj
 
         MathObject power1 = toSingleObject(exponent1);
         MathObject power2 = toSingleObject(exponent2);
-        MathObject multResult = context.getBinaryOperator(SumOperator.class).binaryOperate(power1, power2);
+        MathObject multResult = context.getOperator(SumOperator.class).binaryOperate(power1, power2);
 
-        MathObject result = context.getBinaryOperator(PowerOperator.class).binaryOperate(base1, multResult);
+        MathObject result = context.getOperator(PowerOperator.class).binaryOperate(base1, multResult);
         constructed.add(result);
     }
 
@@ -51,7 +52,7 @@ public class IdenticalBaseProperty extends ElementSequencedMergeProperty<MathObj
             return;
         }
 
-        setter.accept(PowerMathObject.NEUTRAL_OBJECT.getChildren(), object);
+        setter.accept(Collections.singletonList(MathObject.NEUTRAL_POW), object);
     }
 
     private void setExponent1(List<MathObject> exponent1, MathObject base1) {

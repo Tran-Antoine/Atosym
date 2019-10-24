@@ -8,18 +8,17 @@ public class SubOperator extends BinaryOperator {
     private MaskContext context;
 
     public SubOperator(MaskContext context) {
-        super("sub");
+        super("-", "sub");
         this.context = context;
     }
 
     @Override
     protected MathObject binaryOperate(MathObject a, MathObject b) {
-        /*LOGGER.debug("SubOperator process of {} |-| {}: \n", a, b);
-        SumOperator adder = context.getBinaryOperation(SumOperator.class);
-        MultOperator multiplier = context.getBinaryOperation(MultOperator.class);
+        LOGGER.debug("SubOperator process of {} |-| {}: \n", a, b);
+        SumOperator adder = context.getOperator(SumOperator.class);
+        MultOperator multiplier = context.getOperator(MultOperator.class);
 
-        Expression oppositeB = multiplier.operate(Expression.of(-1), b);
-        return adder.operate(a, oppositeB);*/
-        return null;
+        MathObject oppositeB = multiplier.binaryOperate(MathObject.SIGN_INVERSION_MULT, b);
+        return adder.binaryOperate(a, oppositeB);
     }
 }
