@@ -11,11 +11,11 @@ import net.akami.atosym.operator.SumOperator;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DecomposableNumeratorProperty extends FairOverallMergeProperty<MathObject> {
+public class DividedSumProperty extends FairOverallMergeProperty<MathObject> {
 
     private MaskContext context;
 
-    public DecomposableNumeratorProperty(MathObject p1, MathObject p2, MaskContext context) {
+    public DividedSumProperty(MathObject p1, MathObject p2, MaskContext context) {
         super(p1, p2, false);
         this.context = context;
     }
