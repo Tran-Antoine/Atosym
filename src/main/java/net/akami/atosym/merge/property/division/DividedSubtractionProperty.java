@@ -5,7 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.SubtractionMathObject;
 import net.akami.atosym.merge.property.FairOverallMergeProperty;
-import net.akami.atosym.operator.DivOperator;
+import net.akami.atosym.operator.DivisionOperator;
 import net.akami.atosym.operator.SubOperator;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class DividedSubtractionProperty extends FairOverallMergeProperty<MathObj
     private MaskContext context;
 
     public DividedSubtractionProperty(MathObject p1, MathObject p2, MaskContext context) {
-        super(p1, p2, false);
+        super(p1, p2);
         this.context = context;
     }
 
@@ -34,7 +34,7 @@ public class DividedSubtractionProperty extends FairOverallMergeProperty<MathObj
     }
 
     private void localDivision(List<MathObject> destination, List<MathObject> children, int index) {
-        DivOperator divOperator = context.getOperator(DivOperator.class);
+        DivisionOperator divOperator = context.getOperator(DivisionOperator.class);
         destination.add(divOperator.binaryOperate(children.get(index), p2));
     }
 

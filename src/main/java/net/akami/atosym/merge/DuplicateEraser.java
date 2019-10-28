@@ -1,6 +1,6 @@
 package net.akami.atosym.merge;
 
-import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ import java.util.List;
 public class DuplicateEraser<T> implements SinglePropertySequencedMerge<T> {
 
     @Override
-    public ElementSequencedMergeProperty<T> getSingleProperty(T p1, T p2) {
+    public SimpleElementMergeProperty<T> getSingleProperty(T p1, T p2) {
         return new DuplicateEraserProperty(p1, p2);
     }
 
@@ -23,7 +23,7 @@ public class DuplicateEraser<T> implements SinglePropertySequencedMerge<T> {
      * both elements are equal, which of the two elements is added to the list should not matter. This object does not provide
      * any control over which element is added.
      */
-    public class DuplicateEraserProperty extends ElementSequencedMergeProperty<T> {
+    public class DuplicateEraserProperty extends SimpleElementMergeProperty<T> {
 
         protected DuplicateEraserProperty(T p1, T p2) {
             super(p1, p2, false);

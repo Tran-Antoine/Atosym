@@ -1,14 +1,14 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.operator.DivOperator;
+import net.akami.atosym.operator.DivisionOperator;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class DividerTest {
 
-    private final DivOperator divider = MaskContext.DEFAULT.getOperator(DivOperator.class);
+    private final DivisionOperator divider = MaskContext.DEFAULT.getOperator(DivisionOperator.class);
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
     @Test

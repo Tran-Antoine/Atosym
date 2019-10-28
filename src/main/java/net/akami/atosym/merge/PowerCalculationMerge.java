@@ -11,7 +11,7 @@ import net.akami.atosym.merge.property.power.NumericPowerProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public class PowerCalculationMerge implements FairMerge<MathObject, FairOverallMergeProperty<MathObject>> {
+public class PowerCalculationMerge implements FairMerge<MathObject> {
 
     private MaskContext context;
 

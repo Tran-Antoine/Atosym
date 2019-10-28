@@ -4,7 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.PowerMathObject;
-import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 import net.akami.atosym.operator.PowerOperator;
 import net.akami.atosym.operator.SumOperator;
 
@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class IdenticalBaseProperty extends ElementSequencedMergeProperty<MathObject> {
+public class IdenticalBaseProperty extends SimpleElementMergeProperty<MathObject> {
 
     private List<MathObject> exponent1;
     private List<MathObject> exponent2;

@@ -4,13 +4,12 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.PowerMathObject;
-import net.akami.atosym.merge.SequencedMerge;
-import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class VariableSquaredProperty extends ElementSequencedMergeProperty<MathObject> {
+public class VariableSquaredProperty extends SimpleElementMergeProperty<MathObject> {
 
     public VariableSquaredProperty(MathObject p1, MathObject p2) {
         super(p1, p2, false);

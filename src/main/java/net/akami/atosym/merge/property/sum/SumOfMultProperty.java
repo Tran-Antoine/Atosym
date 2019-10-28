@@ -5,7 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class SumOfMultProperty extends ElementSequencedMergeProperty<MathObject> {
+public class SumOfMultProperty extends SimpleElementMergeProperty<MathObject> {
 
     private MultMathObject m1;
     private MultMathObject m2;

@@ -43,7 +43,7 @@ public abstract class BinaryOperator extends MathOperator {
                 new SumOperator(context),
                 new SubOperator(context),
                 new MultOperator(context),
-                new DivOperator(context),
+                new DivisionOperator(context),
                 new PowerOperator(context)
         ));
     }

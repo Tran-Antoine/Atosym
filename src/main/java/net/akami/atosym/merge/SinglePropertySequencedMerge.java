@@ -1,15 +1,15 @@
 package net.akami.atosym.merge;
 
-import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
+import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 
 import java.util.Collections;
 import java.util.List;
 
 /**
- * A simple wrapper for {@link SequencedMerge}s that only have one {@link ElementSequencedMergeProperty}. <br>
+ * A simple wrapper for {@link SimpleSequencedMerge}s that only have one {@link SimpleElementMergeProperty}. <br>
  * Since a lot of sequenced merge seem to only require one property, this interfaces serves as a shortcut.
  */
-public interface SinglePropertySequencedMerge<T> extends SequencedMerge<T> {
+public interface SinglePropertySequencedMerge<T> extends SimpleSequencedMerge<T> {
 
     /**
      * Creates a single property from the given input. See {@link #generateElementProperties(Object, Object)}
@@ -18,10 +18,10 @@ public interface SinglePropertySequencedMerge<T> extends SequencedMerge<T> {
      * @param p2 the element from the second list
      * @return a single property suiting both elements
      */
-    ElementSequencedMergeProperty<T> getSingleProperty(T p1, T p2);
+    SimpleElementMergeProperty<T> getSingleProperty(T p1, T p2);
 
     @Override
-    default List<ElementSequencedMergeProperty<T>> generateElementProperties(T p1, T p2) {
+    default List<SimpleElementMergeProperty<T>> generateElementProperties(T p1, T p2) {
         return Collections.singletonList(getSingleProperty(p1, p2));
     }
 }

@@ -49,7 +49,7 @@ public class VariableTest {
     }
 
     private void assertCombineVars(char[] v1, char[] v2, String result) {
-        SequencedMerge<Variable> combination = new VariableCombination(DEFAULT);
+        SimpleSequencedMerge<Variable> combination = new VariableCombination(DEFAULT);
         List<Variable> variables = combination.merge(get(v1), get(v2),  false);
         List<String> converted = variables
                 .stream()

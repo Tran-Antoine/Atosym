@@ -5,7 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.merge.MultiplicationMerge;
-import net.akami.atosym.merge.SequencedMerge;
+import net.akami.atosym.merge.SimpleSequencedMerge;
 import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -30,7 +30,7 @@ public class MultOperator extends BinaryOperator {
         aList.add(a);
         bList.add(b);
 
-        SequencedMerge<MathObject> merge = new MultiplicationMerge(context);
+        SimpleSequencedMerge<MathObject> merge = new MultiplicationMerge(context);
         SortingRules rules = context.getSortingRules(MathObjectType.MULT);
 
         List<MathObject> result = merge.merge(aList, bList, false)

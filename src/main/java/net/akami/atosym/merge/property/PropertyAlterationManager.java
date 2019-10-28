@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class PropertyAlterationManager {
 
-    private Map<Class, AlterationPack> alterationsMap;
+    private Map<Class<?>, AlterationPack> alterationsMap;
 
     public PropertyAlterationManager() {
         this.alterationsMap = new HashMap<>();

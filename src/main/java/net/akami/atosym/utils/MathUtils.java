@@ -21,7 +21,7 @@ public class MathUtils {
     public static MathObject sum(MathObject a, MathObject b, MaskContext context)      { return context.binaryCompute(a, b, SumOperator.class);         }
     public static MathObject subtract(MathObject a, MathObject b, MaskContext context) { return context.binaryCompute(a, b, SubOperator.class);    }
     public static MathObject mult(MathObject a, MathObject b, MaskContext context)     { return context.binaryCompute(a, b, MultOperator.class); }
-    public static MathObject divide(MathObject a, MathObject b, MaskContext context)   { return context.binaryCompute(a, b, DivOperator.class);       }
+    public static MathObject divide(MathObject a, MathObject b, MaskContext context)   { return context.binaryCompute(a, b, DivisionOperator.class);       }
     public static MathObject pow(MathObject a, MathObject b, MaskContext context)      { return context.binaryCompute(a, b, PowerOperator.class); }
 
     public static MathObject diffSum(MathObject a, MathObject altA, MathObject b, MathObject altB) {
