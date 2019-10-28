@@ -4,3 +4,4 @@ out/
 javadoc
 src/main/resources
 samples/samples.iml
+build

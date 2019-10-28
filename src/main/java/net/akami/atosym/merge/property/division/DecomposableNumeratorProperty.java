@@ -5,7 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.merge.property.FairOverallMergeProperty;
-import net.akami.atosym.operator.DivOperator;
+import net.akami.atosym.operator.DivisionOperator;
 import net.akami.atosym.operator.SumOperator;
 
 import java.util.ArrayList;
@@ -16,14 +16,14 @@ public class DecomposableNumeratorProperty extends FairOverallMergeProperty<Math
     private MaskContext context;
 
     public DecomposableNumeratorProperty(MathObject p1, MathObject p2, MaskContext context) {
-        super(p1, p2, false);
+        super(p1, p2);
         this.context = context;
     }
 
     @Override
     protected MathObject computeResult() {
         SumMathObject sumObject = (SumMathObject) p1;
-        DivOperator divOperator = context.getOperator(DivOperator.class);
+        DivisionOperator divOperator = context.getOperator(DivisionOperator.class);
         SumOperator sumOperator = context.getOperator(SumOperator.class);
 
         List<MathObject> newObjects = new ArrayList<>();

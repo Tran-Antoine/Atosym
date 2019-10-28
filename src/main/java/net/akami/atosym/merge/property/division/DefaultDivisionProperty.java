@@ -9,7 +9,7 @@ import java.util.Arrays;
 public class DefaultDivisionProperty extends FairOverallMergeProperty<MathObject> {
 
     public DefaultDivisionProperty(MathObject p1, MathObject p2) {
-        super(p1, p2, false);
+        super(p1, p2);
     }
 
     @Override

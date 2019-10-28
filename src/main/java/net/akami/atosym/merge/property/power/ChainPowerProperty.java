@@ -15,7 +15,7 @@ public class ChainPowerProperty extends FairOverallMergeProperty<MathObject> {
     private PowerMathObject power2;
 
     public ChainPowerProperty(MathObject p1, MathObject p2) {
-        super(p1, p2, false);
+        super(p1, p2);
     }
 
     @Override

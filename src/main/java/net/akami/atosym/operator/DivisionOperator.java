@@ -4,11 +4,11 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.merge.DivisionMerge;
 
-public class DivOperator extends BinaryOperator {
+public class DivisionOperator extends BinaryOperator {
 
     private MaskContext context;
 
-    public DivOperator(MaskContext context) {
+    public DivisionOperator(MaskContext context) {
         super("div", "/");
         this.context = context;
     }

@@ -6,6 +6,8 @@ import net.akami.atosym.merge.property.OverallMergeProperty;
 import net.akami.atosym.merge.property.OverallSequencedMergeProperty;
 
 import java.util.*;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -21,7 +23,7 @@ import java.util.stream.Collectors;
  * @param <T> the type of elements composing the sequences
  * @author Antoine Tran
  */
-public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMergeProperty<T>> {
+public interface SequencedMerge<T> extends FairMerge<List<T>> {
 
     /**
      * Generates a list containing the element properties. Contrary to {@link OverallMergeProperty}s, they don't directly
@@ -134,13 +136,8 @@ public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMe
 
         boolean requestsStartingOver = false;
         List<T> finalResult = new ArrayList<>(initialCapacity);
-
-        for(FairOverallMergeProperty<List<T>> overallProperty : generateOverallProperties(l1, l2)) {
-            if(overallProperty.prepare()) {
-                // Overall properties are capable of creating a full result by themselves
-                return overallProperty.rawComputeResult();
-            }
-        }
+        Optional<List<T>> potentialResult = resultFromProperties(l1, l2);
+        if(potentialResult.isPresent()) return potentialResult.get();
 
         int i = 0;
         for (T element : l1) {
@@ -171,14 +168,19 @@ public interface SequencedMerge<T> extends FairMerge<List<T>, OverallSequencedMe
             }
             i++;
         }
-        finalResult.addAll(l1.stream().filter(Objects::nonNull).collect(Collectors.toList()));
-        if (!selfMerge)
-            finalResult.addAll(l2.stream().filter(Objects::nonNull).collect(Collectors.toList()));
+        Function<List<T>, Boolean> addAllFunction = (b) -> finalResult.addAll(b
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .collect(Collectors.toList()));
+
+        addAllFunction.apply(l1);
+        if (!selfMerge) {
+            addAllFunction.apply(l2);
+        }
 
         if(requestsStartingOver) {
             return merge(finalResult, finalResult, true);
         }
-
         return finalResult;
     }
 

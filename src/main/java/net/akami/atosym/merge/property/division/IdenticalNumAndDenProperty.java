@@ -6,7 +6,7 @@ import net.akami.atosym.merge.property.FairOverallMergeProperty;
 public class IdenticalNumAndDenProperty extends FairOverallMergeProperty<MathObject> {
 
     public IdenticalNumAndDenProperty(MathObject p1, MathObject p2) {
-        super(p1, p2, false);
+        super(p1, p2);
     }
 
     @Override

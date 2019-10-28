@@ -21,8 +21,8 @@ public abstract class OverallMergeProperty<P, R> extends MergeProperty<P> implem
     protected List<IOCalculationModifier<P>> modifiers = new ArrayList<>();
     protected List<CalculationCanceller<P, R>> cancellers = new ArrayList<>();
 
-    public OverallMergeProperty(P p1, P p2, boolean startOverRequested) {
-        super(p1, p2, startOverRequested);
+    public OverallMergeProperty(P p1, P p2) {
+        super(p1, p2);
     }
 
     protected abstract R computeResult();

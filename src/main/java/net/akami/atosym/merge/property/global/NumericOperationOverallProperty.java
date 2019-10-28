@@ -11,7 +11,7 @@ public abstract class NumericOperationOverallProperty extends FairOverallMergePr
     private MaskContext context;
 
     public NumericOperationOverallProperty(MathObject p1, MathObject p2, MaskContext context) {
-        super(p1, p2, false);
+        super(p1, p2);
         this.context = context;
     }
 

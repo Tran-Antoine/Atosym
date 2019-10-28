@@ -5,7 +5,7 @@ import net.akami.atosym.expression.DivisionMathObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.merge.property.ElementSequencedMergeProperty;
-import net.akami.atosym.operator.DivOperator;
+import net.akami.atosym.operator.DivisionOperator;
 import net.akami.atosym.operator.MultOperator;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class MultOfFractionsProperty extends ElementSequencedMergeProperty<MathO
         MathObject finalNum = multOperator.binaryOperate(num1, num2);
         MathObject finalDen = multOperator.binaryOperate(den1, den2);
 
-        DivOperator divOperator = context.getOperator(DivOperator.class);
+        DivisionOperator divOperator = context.getOperator(DivisionOperator.class);
         constructed.add(divOperator.binaryOperate(finalNum, finalDen));
     }
 
