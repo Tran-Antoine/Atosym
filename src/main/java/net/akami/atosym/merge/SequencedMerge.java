@@ -47,7 +47,7 @@ public interface SequencedMerge<T, R, PROP extends MergeProperty<T> & RestartApp
                 if (optionalMergeData.isPresent()) {
                     PROP property = optionalMergeData.get();
                     if(selfMerge) { requestsStartingOver = true; }
-                    associate(element, element2, property);
+                    associate(property).modify(l1, i, l2, j);
                     if(property.isRestartRequired()) {
                         requestsStartingOver = true;
                     }
@@ -63,7 +63,25 @@ public interface SequencedMerge<T, R, PROP extends MergeProperty<T> & RestartApp
         return loadFinalResult();
     }
 
-    void associate(T element, T element2, PROP property);
+    /**
+     * Action to perform when a property matches two elements. <br>
+     * This method should usually not be redefined, since the logical behavior is to remove the elements from
+     * the former lists, and add the computed one to the constructed list.
+     * @param l1 the first former list
+     * @param l2 the second former list
+     * @param i the index of the element present in {@code l1}
+     * @param j the index of the element present in {@code l2}
+     */
+    default void nullifyElements(List<T> l1, int i, List<T> l2, int j) {
+        l1.set(i, null);
+        l2.set(j, null);
+    }
+
+    MergeFlowModification<T> associate(PROP property);
     R andThenMerge();
     R loadFinalResult();
+
+    interface MergeFlowModification<T> {
+        void modify(List<T> l1, int i, List<T> l2, int j);
+    }
 }

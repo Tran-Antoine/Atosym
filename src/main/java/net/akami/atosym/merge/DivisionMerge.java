@@ -23,13 +23,13 @@ public class DivisionMerge implements BiSequencedMerge<MathObject> {
     @Override
     public List<BiElementMergeProperty<MathObject>> loadPropertiesFrom(MathObject p1, MathObject p2) {
         return Arrays.asList(
-            // des propriétés qui n'implémentent pas RestartApplicant
         );
     }
 
     @Override
-    public void associate(MathObject element, MathObject element2, BiElementMergeProperty<MathObject> property) {
-
+    public MergeFlowModification<MathObject> associate(BiElementMergeProperty<MathObject> property) {
+        property.blendResult(numerator, denominator);
+        return BiSequencedMerge.super::nullifyElements;
     }
 
     @Override

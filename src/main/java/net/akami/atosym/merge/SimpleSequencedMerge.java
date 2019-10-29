@@ -5,8 +5,6 @@ import net.akami.atosym.merge.property.OverallMergeProperty;
 import net.akami.atosym.merge.property.OverallSequencedMergeProperty;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * A merge concerning sequences of elements. <br>
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
  * @param <T> the type of elements composing the sequences
  * @author Antoine Tran
  */
-public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
+public interface SimpleSequencedMerge<T> extends SequencedMerge<T, List<T>, SimpleElementMergeProperty<T>> {
 
     /**
      * Generates a list containing the element properties. Contrary to {@link OverallMergeProperty}s, they don't directly
@@ -36,14 +34,6 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
      * @return a list of properties suiting {@code p1} and {@code p2}
      */
     List<SimpleElementMergeProperty<T>> generateElementProperties(T p1, T p2);
-
-    /**
-     * @return an empty list by default. In most of the cases, sequenced merges don't have any overall properties
-     */
-    @Override
-    default List<OverallSequencedMergeProperty<T>> generateOverallProperties(List<T> p1, List<T> p2) {
-        return Collections.emptyList();
-    }
 
     /**
      * Method that should usually not be used outside this class. Java 8 does not support private methods in interfaces. <br>
@@ -72,26 +62,7 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
      * @return a merge of the two lists
      */
     default <S extends T> List<T> subtypeMerge(List<S> l1, List<S> l2, boolean selfMerge) {
-        return subtypeMerge(l1, l2, selfMerge, 0);
-    }
-
-    /**
-     * Constructs a list from the subtypes of the handled type. However, you can not expect to retrieve a list
-     * containing only objects having the same type as the parameter types. Therefore, a {@code SequenceMerge<Object>}
-     * for instance will always return a list of objects, since every item added into the constructed list is not
-     * guaranteed to be anything else than an Object. <br>
-     * See {@link #merge(List, List, boolean, int)} for further information
-     * @param l1 the first list to merge
-     * @param l2 the second list to merge
-     * @param selfMerge whether the merge is proceeded with a single list or not
-     * @param initialCapacity the initial capacity of the new list
-     * @param <S> the subtype
-     * @return a merge of the two lists
-     */
-    default <S extends T> List<T> subtypeMerge(List<S> l1, List<S> l2, boolean selfMerge, int initialCapacity) {
-        List<T> copy1 = new ArrayList<>(l1);
-        List<T> copy2 = new ArrayList<>(l2);
-        return merge(copy1, copy2, selfMerge, initialCapacity);
+        return subtypeMerge(l1, l2, selfMerge);
     }
 
     /**
@@ -110,7 +81,26 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
      */
     @Override
     default List<T> merge(List<T> l1, List<T> l2, boolean selfMerge) {
-        return merge(l1, l2, selfMerge, 0);
+        // Meaningless override of method for now
+        return SequencedMerge.super.merge(l1, l2, selfMerge);
+    }
+
+    List<T> getTargetList();
+
+    @Override
+    default MergeFlowModification<T> associate(SimpleElementMergeProperty<T> property) {
+        property.blendResult(this.getTargetList());
+        return SequencedMerge.super::nullifyElements;
+    }
+
+    @Override
+    default List<T> loadFinalResult() {
+        return getTargetList();
+    }
+
+    @Override
+    default List<T> andThenMerge() {
+        return merge(getTargetList(), getTargetList(), true);
     }
 
     /**
@@ -128,7 +118,7 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
      * @param initialCapacity the initial capacity of the new list, 0 if not specified
      * @return a merge of the two lists
      */
-    default List<T> merge(List<T> l1, List<T> l2, boolean selfMerge, int initialCapacity) {
+    /*default List<T> merge(List<T> l1, List<T> l2, boolean selfMerge, int initialCapacity) {
         if (l1 == null) return l2;
         if (l2 == null) return l1;
 
@@ -155,7 +145,7 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
 
                     if(selfMerge) requestsStartingOver = true;
 
-                    compatibilityFound(l1, l2, i, j, finalResult, mergeData);
+                    nullifyElements(l1, l2, i, j, finalResult, mergeData);
 
                     if(mergeData.isRestartRequired()) {
                         requestsStartingOver = true;
@@ -180,23 +170,5 @@ public interface SimpleSequencedMerge<T> extends FairMerge<List<T>> {
             return merge(finalResult, finalResult, true);
         }
         return finalResult;
-    }
-
-    /**
-     * Action to perform when a property matches two elements. <br>
-     * This method should usually not be redefined, since the logical behavior is to remove the elements from
-     * the former lists, and add the computed one to the constructed list.
-     * @param l1 the first former list
-     * @param l2 the second former list
-     * @param i the index of the element present in {@code l1}
-     * @param j the index of the element present in {@code l2}
-     * @param constructed the constructed list
-     * @param compatibility the property suitable for the two elements
-     */
-    default void compatibilityFound(List<T> l1, List<T> l2, int i, int j, List<T> constructed,
-                                    SimpleElementMergeProperty<T> compatibility) {
-        l1.set(i, null);
-        l2.set(j, null);
-        compatibility.blendResult(constructed);
-    }
+    }*/
 }
