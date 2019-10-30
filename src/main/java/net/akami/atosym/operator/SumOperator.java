@@ -5,7 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.merge.AdditionMerge;
-import net.akami.atosym.merge.SimpleSequencedMerge;
+import net.akami.atosym.merge.FairSequencedMerge;
 import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -46,7 +46,7 @@ public class SumOperator extends BinaryOperator {
     }
 
     public MathObject sumMerge(List<MathObject> elements) {
-        SimpleSequencedMerge<MathObject> additionBehavior = new AdditionMerge(context);
+        FairSequencedMerge<MathObject> additionBehavior = new AdditionMerge(context);
         return result(additionBehavior.merge(elements, elements, true)
                 .stream()
                 .filter(NumericUtils::isNotZero)

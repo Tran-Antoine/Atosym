@@ -4,7 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.merge.AdditionMerge;
-import net.akami.atosym.merge.SimpleSequencedMerge;
+import net.akami.atosym.merge.FairSequencedMerge;
 import net.akami.atosym.merge.property.global.ChainOperationProperty;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -22,7 +22,7 @@ public class ChainSumProperty extends ChainOperationProperty {
     }
 
     @Override
-    protected SimpleSequencedMerge<MathObject> generateMergeTool(MaskContext context) {
+    protected FairSequencedMerge<MathObject> generateMergeTool(MaskContext context) {
         return new AdditionMerge(context);
     }
 

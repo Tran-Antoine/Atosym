@@ -15,7 +15,7 @@ import java.util.List;
  * wont be compared. Thus merging {1,2,3,1,3,2} with itself will return an empty list, whereas {1,2,3} won't.
  * @param <T> the kind of object handled by the eraser
  */
-public class PairEraser<T> implements SinglePropertySequencedMerge<T> {
+public class PairEraser<T> extends SinglePropertySequencedMerge<T> {
 
     @Override
     public SimpleElementMergeProperty<T> getSingleProperty(T p1, T p2) {

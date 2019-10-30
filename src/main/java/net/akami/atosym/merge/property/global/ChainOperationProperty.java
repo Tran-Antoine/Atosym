@@ -4,7 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.FunctionObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
-import net.akami.atosym.merge.SimpleSequencedMerge;
+import net.akami.atosym.merge.FairSequencedMerge;
 import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 
 import java.util.ArrayList;
@@ -24,12 +24,12 @@ public abstract class ChainOperationProperty extends SimpleElementMergeProperty<
     }
 
     protected abstract MathObjectType getWorkingType();
-    protected abstract SimpleSequencedMerge<MathObject> generateMergeTool(MaskContext context);
+    protected abstract FairSequencedMerge<MathObject> generateMergeTool(MaskContext context);
     protected abstract Predicate<MathObject> significantElementCondition();
 
     @Override
     public void blendResult(List<MathObject> constructed) {
-        SimpleSequencedMerge<MathObject> newMerge = generateMergeTool(context);
+        FairSequencedMerge<MathObject> newMerge = generateMergeTool(context);
         List<MathObject> result = newMerge.merge(elements, elements, true)
                 .stream()
                 .filter(significantElementCondition())

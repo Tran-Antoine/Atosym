@@ -2,22 +2,28 @@ package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
+import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.merge.property.SimpleElementMergeProperty;
 import net.akami.atosym.merge.property.mult.*;
+import net.akami.atosym.sorting.SortingRules;
+import net.akami.atosym.utils.NumericUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class MultiplicationMerge implements SimpleSequencedMerge<MathObject> {
+public class MultiplicationMerge extends FairSequencedMerge<MathObject> {
 
     private MaskContext context;
+    private SortingRules rules;
 
     public MultiplicationMerge(MaskContext context) {
         this.context = context;
+        this.rules = context.getSortingRules(MathObjectType.MULT);
     }
 
     @Override
-    public List<SimpleElementMergeProperty<MathObject>> generateElementProperties(MathObject p1, MathObject p2) {
+    public List<SimpleElementMergeProperty<MathObject>> loadPropertiesFrom(MathObject p1, MathObject p2) {
         return Arrays.asList(
                 new NumericMultProperty(p1, p2, context),
                 new VariableSquaredProperty(p1, p2),
@@ -26,5 +32,14 @@ public class MultiplicationMerge implements SimpleSequencedMerge<MathObject> {
                 new IdenticalBaseProperty(p1, p2, context),
                 new MultOfFractionsProperty(p1, p2, context)
         );
+    }
+
+    @Override
+    public List<MathObject> loadFinalResult() {
+        return super.loadFinalResult()
+                .stream()
+                .filter(NumericUtils::isNotOne)
+                .sorted(rules)
+                .collect(Collectors.toList());
     }
 }

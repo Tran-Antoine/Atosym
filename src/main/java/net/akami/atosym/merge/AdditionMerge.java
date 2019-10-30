@@ -11,7 +11,7 @@ import net.akami.atosym.merge.property.sum.SumOfMultProperty;
 import java.util.Arrays;
 import java.util.List;
 
-public class AdditionMerge implements SimpleSequencedMerge<MathObject> {
+public class AdditionMerge extends FairSequencedMerge<MathObject> {
 
     protected MaskContext context;
 
@@ -20,7 +20,7 @@ public class AdditionMerge implements SimpleSequencedMerge<MathObject> {
     }
 
     @Override
-    public List<SimpleElementMergeProperty<MathObject>> generateElementProperties(MathObject p1, MathObject p2) {
+    public List<SimpleElementMergeProperty<MathObject>> loadPropertiesFrom(MathObject p1, MathObject p2) {
         return Arrays.asList(
                 new NumericSumProperty(p1, p2, this.context),
                 new IdenticalVariablesSumProperty(p1, p2, this.context),
@@ -28,5 +28,4 @@ public class AdditionMerge implements SimpleSequencedMerge<MathObject> {
                 new SumOfMultProperty(p1, p2, context)
         );
     }
-
 }

@@ -10,7 +10,7 @@ import java.util.List;
  * are removed from their former list, and one of them is added to the new list.
  * @param <T> the kind of object handled by the duplicate eraser
  */
-public class DuplicateEraser<T> implements SinglePropertySequencedMerge<T> {
+public class DuplicateEraser<T> extends SinglePropertySequencedMerge<T> {
 
     @Override
     public SimpleElementMergeProperty<T> getSingleProperty(T p1, T p2) {
