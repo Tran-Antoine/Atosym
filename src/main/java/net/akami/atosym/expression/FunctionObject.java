@@ -1,5 +1,6 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.display.InfixNotationDisplayable;
 
 import java.util.ArrayList;
@@ -11,7 +12,11 @@ public abstract class FunctionObject implements MathObject {
     protected List<MathObject> children;
     private int size;
 
-    public FunctionObject(List<MathObject> children, int size) {
+    public FunctionObject(List<MathObject> children, int size, MaskContext context) {
+        MathObjectType type = getType();
+        if(type.hasProperty(MathProperty.COMMUTATIVITY)) {
+            children.sort(context.getSortingRules(type));
+        }
         this.children = Collections.unmodifiableList(children);
         this.size = size;
     }

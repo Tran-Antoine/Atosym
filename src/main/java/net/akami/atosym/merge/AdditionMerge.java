@@ -2,7 +2,7 @@ package net.akami.atosym.merge;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 import net.akami.atosym.merge.property.sum.ChainSumProperty;
 import net.akami.atosym.merge.property.sum.IdenticalVariablesSumProperty;
 import net.akami.atosym.merge.property.sum.NumericSumProperty;
@@ -20,7 +20,7 @@ public class AdditionMerge extends FairSequencedMerge<MathObject> {
     }
 
     @Override
-    public List<SimpleElementMergeProperty<MathObject>> loadPropertiesFrom(MathObject p1, MathObject p2) {
+    public List<FairElementMergeProperty<MathObject>> loadPropertiesFrom(MathObject p1, MathObject p2) {
         return Arrays.asList(
                 new NumericSumProperty(p1, p2, this.context),
                 new IdenticalVariablesSumProperty(p1, p2, this.context),

@@ -2,12 +2,12 @@ package net.akami.atosym.merge.property.sum;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.*;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class IdenticalVariablesSumProperty extends SimpleElementMergeProperty<MathObject> {
+public class IdenticalVariablesSumProperty extends FairElementMergeProperty<MathObject> {
 
     private MaskContext context;
 
@@ -21,7 +21,7 @@ public class IdenticalVariablesSumProperty extends SimpleElementMergeProperty<Ma
         List<MathObject> elements = Arrays.asList(
                 new NumberExpression(2f),
                 new VariableExpression(((VariableExpression) p1).getValue()));
-        constructed.add(new MultMathObject(elements));
+        constructed.add(new MultMathObject(elements, context));
     }
 
     @Override

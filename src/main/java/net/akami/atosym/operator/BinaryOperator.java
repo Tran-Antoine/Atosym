@@ -23,12 +23,12 @@ public abstract class BinaryOperator extends MathOperator {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(BinaryOperator.class);
 
-    public BinaryOperator(String name) {
-        this(new String[]{name});
+    public BinaryOperator(MaskContext context, String name) {
+        this(context, new String[]{name});
     }
 
-    public BinaryOperator(String... names) {
-        super(Arrays.asList(names), 2);
+    public BinaryOperator(MaskContext context, String... names) {
+        super(Arrays.asList(names), 2, context);
     }
 
     @Override
@@ -44,7 +44,7 @@ public abstract class BinaryOperator extends MathOperator {
                 new SubOperator(context),
                 new MultOperator(context),
                 new DivisionOperator(context),
-                new PowerOperator(context)
+                new ExponentiationOperator(context)
         ));
     }
 }

@@ -3,16 +3,16 @@ package net.akami.atosym.merge.property.mult;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
-import net.akami.atosym.expression.PowerMathObject;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
-import net.akami.atosym.operator.PowerOperator;
+import net.akami.atosym.expression.ExponentMathObject;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
+import net.akami.atosym.operator.ExponentiationOperator;
 import net.akami.atosym.operator.SumOperator;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class IdenticalBaseProperty extends SimpleElementMergeProperty<MathObject> {
+public class IdenticalBaseProperty extends FairElementMergeProperty<MathObject> {
 
     private List<MathObject> exponent1;
     private List<MathObject> exponent2;
@@ -33,7 +33,7 @@ public class IdenticalBaseProperty extends SimpleElementMergeProperty<MathObject
         MathObject power2 = toSingleObject(exponent2);
         MathObject multResult = context.getOperator(SumOperator.class).binaryOperate(power1, power2);
 
-        MathObject result = context.getOperator(PowerOperator.class).binaryOperate(base1, multResult);
+        MathObject result = context.getOperator(ExponentiationOperator.class).binaryOperate(base1, multResult);
         constructed.add(result);
     }
 
@@ -47,7 +47,7 @@ public class IdenticalBaseProperty extends SimpleElementMergeProperty<MathObject
 
     private void splitBaseAndExponent(MathObject object, BiConsumer<List<MathObject>, MathObject> setter) {
         if(object.getType() == MathObjectType.POW) {
-            PowerMathObject powerObject = (PowerMathObject) object;
+            ExponentMathObject powerObject = (ExponentMathObject) object;
             setter.accept(powerObject.getFractionChildren(1, -1), powerObject.getChild(0));
             return;
         }
@@ -70,6 +70,6 @@ public class IdenticalBaseProperty extends SimpleElementMergeProperty<MathObject
             return list.get(0);
         }
 
-        return new PowerMathObject(list);
+        return new ExponentMathObject(list, context);
     }
 }

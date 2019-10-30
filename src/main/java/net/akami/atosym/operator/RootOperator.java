@@ -1,5 +1,6 @@
 package net.akami.atosym.operator;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
@@ -10,8 +11,8 @@ import java.util.List;
 
 public class RootOperator extends MathOperator {
 
-    public RootOperator() {
-        super(Collections.singletonList("root"), 2);
+    public RootOperator(MaskContext context) {
+        super(Collections.singletonList("root"), 2, context);
     }
 
     @Override
@@ -20,7 +21,7 @@ public class RootOperator extends MathOperator {
         MathObject value = input.get(1);
 
         if(base.getType() != MathObjectType.NUMBER || value.getType() != MathObjectType.NUMBER) {
-            return new RootMathObject(input);
+            return new RootMathObject(input, context);
         }
 
         NumberExpression numericBase = (NumberExpression) base;

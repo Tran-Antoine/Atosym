@@ -1,10 +1,11 @@
 package net.akami.atosym.alteration;
 
 import net.akami.atosym.core.MaskContext;
+import net.akami.atosym.expression.ExponentMathObject;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.operator.PowerOperator;
 import net.akami.atosym.utils.ExpressionUtils;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -12,23 +13,23 @@ import java.util.List;
  * If set to 3 for instance, {@code (x+y)^3} will be expanded as {@code x^3 + 3x^2y + 3xy^2 + y^3},
  * whereas {@code (x+y)^4} will remain {@code (x+y)^4}
  */
-public class PowExpansionLimit implements FairCalculationCanceller<MathObject> {
+public class ExponentExpansionLimit implements FairCalculationCanceller<MathObject> {
 
     private int limit;
     private MaskContext context;
 
-    public PowExpansionLimit(MaskContext context) {
+    public ExponentExpansionLimit(MaskContext context) {
         this(5, context);
     }
 
-    public PowExpansionLimit(int limit, MaskContext context) {
+    public ExponentExpansionLimit(int limit, MaskContext context) {
         this.limit = limit;
         this.context = context;
     }
 
     @Override
     public MathObject resultIfCancelled(List<MathObject> input) {
-        return context.getOperator(PowerOperator.class).layerPow(input.get(0), input.get(1));
+        return new ExponentMathObject(Arrays.asList(input.get(0), input.get(1)), context);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.display.visitor.DisplayerVisitor;
 import net.akami.atosym.display.visitor.SubtractionDisplayer;
 
@@ -9,9 +10,9 @@ public class SubtractionMathObject extends FunctionObject {
 
     private DisplayerVisitor displayer;
 
-    public SubtractionMathObject(List<MathObject> children) {
+    public SubtractionMathObject(List<MathObject> children, MaskContext context) {
         // a-b-c should become a - (b+c) -> sub(a, sum(b, c)), therefore the size is always 2
-        super(children, 2);
+        super(children, 2, context);
         this.displayer = new SubtractionDisplayer(children, this);
     }
 

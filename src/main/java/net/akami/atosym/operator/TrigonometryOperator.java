@@ -1,5 +1,6 @@
 package net.akami.atosym.operator;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
@@ -10,8 +11,8 @@ import java.util.function.Function;
 
 public abstract class TrigonometryOperator extends MathOperator implements AngleUnitDependent {
 
-    public TrigonometryOperator(String name) {
-        super(Collections.singletonList(name), 1);
+    public TrigonometryOperator(String name, MaskContext context) {
+        super(Collections.singletonList(name), 1, context);
     }
 
     @Override

@@ -12,18 +12,15 @@ import java.util.List;
 
 public class FactorialOperator extends MathOperator {
 
-    private MaskContext context;
-
     public FactorialOperator(MaskContext context) {
-        super(Collections.singletonList("!"), 1);
-        this.context = context;
+        super(Collections.singletonList("!"), 1, context);
     }
 
     @Override
     protected MathObject operate(List<MathObject> input) {
         MathObject single = input.get(0);
         if(single.getType() != MathObjectType.NUMBER) {
-            return new FactorialMathObject(single);
+            return new FactorialMathObject(single, context);
         }
 
         NumberExpression numberObject = (NumberExpression) single;

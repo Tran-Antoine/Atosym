@@ -4,7 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.FunctionObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 import net.akami.atosym.operator.MultOperator;
 import net.akami.atosym.operator.SumOperator;
 
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class MultOfSumProperty extends SimpleElementMergeProperty<MathObject> {
+public class MultOfSumProperty extends FairElementMergeProperty<MathObject> {
 
     private MaskContext context;
 

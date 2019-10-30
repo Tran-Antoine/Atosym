@@ -1,5 +1,6 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.display.visitor.DisplayerVisitor;
 import net.akami.atosym.display.visitor.DivisionDisplayer;
 
@@ -9,8 +10,8 @@ public class DivisionMathObject extends FunctionObject {
 
     private DisplayerVisitor displayer;
 
-    public DivisionMathObject(List<MathObject> children) {
-        super(children, 2);
+    public DivisionMathObject(List<MathObject> children, MaskContext context) {
+        super(children, 2, context);
         this.displayer = new DivisionDisplayer(children, this);
     }
 

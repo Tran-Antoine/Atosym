@@ -1,5 +1,6 @@
 package net.akami.atosym.operator;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.CosineMathObject;
 import net.akami.atosym.expression.MathObject;
 
@@ -8,8 +9,8 @@ import java.util.function.Function;
 
 public class CosineOperator extends TrigonometryOperator {
 
-    public CosineOperator() {
-        super("cos");
+    public CosineOperator(MaskContext context) {
+        super("cos", context);
     }
 
     @Override
@@ -19,6 +20,6 @@ public class CosineOperator extends TrigonometryOperator {
 
     @Override
     protected MathObject toObject(List<MathObject> input) {
-        return new CosineMathObject(input);
+        return new CosineMathObject(input, context);
     }
 }

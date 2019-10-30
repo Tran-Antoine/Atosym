@@ -2,10 +2,10 @@ package net.akami.atosym.core;
 
 import net.akami.atosym.alteration.CalculationCache;
 import net.akami.atosym.alteration.DegreeUnit;
-import net.akami.atosym.alteration.PowExpansionLimit;
+import net.akami.atosym.alteration.ExponentExpansionLimit;
 import net.akami.atosym.operator.AngleUnitDependent;
 import net.akami.atosym.operator.BinaryOperator;
-import net.akami.atosym.operator.PowerOperator;
+import net.akami.atosym.operator.ExponentiationOperator;
 
 public class MaskDemo {
 
@@ -21,7 +21,7 @@ public class MaskDemo {
         // Alteration #1 : Changes angles to degrees
         context.addGlobalModifier(new DegreeUnit(), AngleUnitDependent.class);
         // Alteration #2 : Stops (...)^x expansions when x is over 50
-        context.addGlobalCanceller(new PowExpansionLimit(50, context), PowerOperator.class);
+        context.addGlobalCanceller(new ExponentExpansionLimit(50, context), ExponentiationOperator.class);
         // Alteration #3 : Adds a cache that store the results from the previous calculations to increase the performances
         // This alteration must be duplicated, which means that every object computing results must have its own cache
         context.addDuplicatedCanceller(CalculationCache::new, BinaryOperator.class);

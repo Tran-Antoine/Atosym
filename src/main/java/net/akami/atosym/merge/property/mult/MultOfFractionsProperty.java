@@ -4,14 +4,14 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.DivisionMathObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 import net.akami.atosym.operator.DivisionOperator;
 import net.akami.atosym.operator.MultOperator;
 
 import java.util.List;
 import java.util.function.BiConsumer;
 
-public class MultOfFractionsProperty extends SimpleElementMergeProperty<MathObject> {
+public class MultOfFractionsProperty extends FairElementMergeProperty<MathObject> {
 
     private MathObject num1;
     private MathObject num2;

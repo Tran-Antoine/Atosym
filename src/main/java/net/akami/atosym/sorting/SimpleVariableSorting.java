@@ -7,7 +7,7 @@ import net.akami.atosym.expression.VariableExpression;
 public class SimpleVariableSorting implements SortingRule {
 
     @Override
-    public boolean isRuleSuitable(MathObject o1, MathObject o2) {
+    public boolean isRuleSuitable(MathObject o1, MathObject o2, MathObjectType parentType) {
         return o1.getType() == MathObjectType.VARIABLE && o2.getType() == MathObjectType.VARIABLE;
     }
 

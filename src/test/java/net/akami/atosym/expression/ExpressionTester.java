@@ -5,7 +5,7 @@ public class ExpressionTester {
     /*private final SumOperator sumOperator = new SumOperator(DEFAULT);
     private final MultOperator multiplier = new MultOperator(DEFAULT);
     private final DivOperator divider = new DivOperator(DEFAULT);
-    private final PowerOperator pow = new PowerOperator(DEFAULT);
+    private final ExponentiationOperator pow = new ExponentiationOperator(DEFAULT);
 
     @Test
     public void basicSum() {

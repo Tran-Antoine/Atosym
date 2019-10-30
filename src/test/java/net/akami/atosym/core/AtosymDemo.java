@@ -24,7 +24,7 @@ public class AtosymDemo {
         // Alteration #1 : Changes angles to degrees
         context.addGlobalModifier(new DegreeUnit(), AngleUnitDependent.class);
         // Alteration #2 : Stops (...)^x expansions when x is over 10
-        //context.addGlobalCanceller(new PowExpansionLimit(10, context), PowerCalculator.class);
+        //context.addGlobalCanceller(new ExponentExpansionLimit(10, context), PowerCalculator.class);
         // Alteration #3 : Adds a cache that store the results from the previous calculations to increase the performances
         // This alteration must be duplicated, which means that every object computing results must have its own cache
         //context.addClonedCanceller(CalculationCache::new, BinaryOperationHandler.class);

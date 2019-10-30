@@ -2,24 +2,17 @@ package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
-import net.akami.atosym.merge.MultiplicationMerge;
 import net.akami.atosym.merge.FairSequencedMerge;
-import net.akami.atosym.sorting.SortingRules;
-import net.akami.atosym.utils.NumericUtils;
+import net.akami.atosym.merge.MultiplicationMerge;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MultOperator extends BinaryOperator {
 
-    private MaskContext context;
-
     public MultOperator(MaskContext context) {
-        super("mult", "*", "");
-        this.context = context;
+        super(context, "mult", "*", "");
     }
 
     @Override
@@ -34,7 +27,7 @@ public class MultOperator extends BinaryOperator {
         switch (result.size()) {
             case 0:  return MathObject.NEUTRAL_MULT;
             case 1:  return result.get(0);
-            default: return new MultMathObject(result);
+            default: return new MultMathObject(result, context);
         }
     }
 

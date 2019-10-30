@@ -1,27 +1,14 @@
 package net.akami.atosym.merge;
 
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
-import net.akami.atosym.merge.property.OverallMergeProperty;
-import net.akami.atosym.merge.property.OverallSequencedMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**
- * A merge concerning sequences of elements. <br>
- * The SimpleSequencedMerge behavior is a slightly more complex merge than usual merges. As every normal merge, it first
- * tries to compute a full list from the {@link OverallSequencedMergeProperty}s handled. However, if no property matches
- * the two lists (which is likely to happen), both lists will be browsed to try to merge elements. <br>
- * Each element of the first list will be compared to each element of the second list. If an {@link SimpleElementMergeProperty}
- * is found to be suitable for the two elements, one or several results will be added to a new list which will be the merge result.
- * Elements which couldn't be merged at all (elements to which no property applied) will eventually be added to the list. <br>
- * See {@link #merge(List, List, boolean)} or {@link #merge(List, List, boolean)} for further information.
- *
- * @param <T> the type of elements composing the sequences
- * @author Antoine Tran
- */
-public abstract class FairSequencedMerge<T> implements SequencedMerge<T, List<T>, SimpleElementMergeProperty<T>> {
+public abstract class FairSequencedMerge<T> implements SequencedMerge<T, List<T>, FairElementMergeProperty<T>> {
 
     private List<T> l1;
     private List<T> l2;
@@ -30,22 +17,6 @@ public abstract class FairSequencedMerge<T> implements SequencedMerge<T, List<T>
 
     public FairSequencedMerge() {
         this.result = new ArrayList<>();
-    }
-
-    /**
-     * Constructs a list from the subtypes of the handled type. However, you can not expect to retrieve a list
-     * containing only objects having the same type as the parameter types. Therefore, a {@code SequenceMerge<Object>}
-     * for instance will always return a list of objects, since every item added into the constructed list is not
-     * guaranteed to be anything else than an Object. <br>
-     * See {@link #merge(List, List, boolean)} for further information
-     * @param l1 the first list to merge
-     * @param l2 the second list to merge
-     * @param selfMerge whether the merge is proceeded with a single list or not
-     * @param <S> the subtype
-     * @return a merge of the two lists
-     */
-    public <S extends T> List<T> subtypeMerge(List<S> l1, List<S> l2, boolean selfMerge) {
-        return subtypeMerge(l1, l2, selfMerge);
     }
 
     /**
@@ -71,9 +42,9 @@ public abstract class FairSequencedMerge<T> implements SequencedMerge<T, List<T>
     }
 
     @Override
-    public MergeFlowModification<T> associate(SimpleElementMergeProperty<T> property) {
+    public MergeFlowModification<T> associate(FairElementMergeProperty<T> property) {
         property.blendResult(result);
-        return SequencedMerge.super::nullifyElements;
+        return SequencedMerge::nullifyElements;
     }
 
     @Override

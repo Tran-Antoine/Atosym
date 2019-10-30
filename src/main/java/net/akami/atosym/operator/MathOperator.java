@@ -25,9 +25,12 @@ public abstract class MathOperator implements
     protected final List<String> names;
     private final int argsLength;
 
-    public MathOperator(List<String> names, int argsLength) {
+    protected MaskContext context;
+
+    public MathOperator(List<String> names, int argsLength, MaskContext context) {
         this.names = names;
         this.argsLength = argsLength;
+        this.context = context;
         initAlterations();
     }
 
@@ -88,11 +91,11 @@ public abstract class MathOperator implements
 
     public static Set<MathOperator> generateDefaultOperators(MaskContext context) {
         Set<MathOperator> operators = new HashSet<>(Arrays.asList(
-                new SineOperator(),
-                new CosineOperator(),
-                new TangentOperator(),
-                new PriorityOperator(),
-                new RootOperator(),
+                new SineOperator(context),
+                new CosineOperator(context),
+                new TangentOperator(context),
+                new PriorityOperator(context),
+                new RootOperator(context),
                 new FactorialOperator(context)
         ));
 

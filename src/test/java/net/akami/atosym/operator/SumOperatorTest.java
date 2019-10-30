@@ -4,7 +4,6 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
-import net.akami.atosym.utils.ParserUtils;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class SumOperatorTest {
 
-    private final SumOperator adder = DEFAULT.getOperator(SumOperator.class);
+    private final SumOperator SUM = DEFAULT.getOperator(SumOperator.class);
 
     @Test
     public void numeric_sum() {
@@ -35,7 +34,7 @@ public class SumOperatorTest {
     @Test(expected = IllegalArgumentException.class)
     public void numeric_sum_involving_more_than_two_numbers() {
         // Binary operators cannot manage other than two elements
-        adder.rawOperate(Stream.of("5", "2", "3").map(this::toMathObject).collect(Collectors.toList()));
+        SUM.rawOperate(Stream.of("5", "2", "3").map(OperatorTestUtils::toMathObject).collect(Collectors.toList()));
     }
 
     @Test
@@ -84,14 +83,7 @@ public class SumOperatorTest {
     }
 
     private void assertSum(String a, String b, String result) {
-        List<MathObject> objects = new ArrayList<>();
-        objects.add(toMathObject(a));
-        objects.add(toMathObject(b));
-        assertThat(adder.rawOperate(objects).testDisplay()).isEqualTo(result);
-    }
-
-    private MathObject toMathObject(String input) {
-        return ParserUtils.generateSimpleTree(input).merge();
+        OperatorTestUtils.assertBinaryOperation(a, b, result, SUM);
     }
 
      /*@Test

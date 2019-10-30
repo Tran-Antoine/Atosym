@@ -5,11 +5,8 @@ import net.akami.atosym.expression.MathObject;
 
 public class SubOperator extends BinaryOperator {
 
-    private MaskContext context;
-
     public SubOperator(MaskContext context) {
-        super("-", "sub");
-        this.context = context;
+        super(context, "-", "sub");
     }
 
     @Override

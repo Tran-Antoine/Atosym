@@ -5,14 +5,14 @@ import net.akami.atosym.expression.FunctionObject;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.merge.FairSequencedMerge;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public abstract class ChainOperationProperty extends SimpleElementMergeProperty<MathObject> {
+public abstract class ChainOperationProperty extends FairElementMergeProperty<MathObject> {
 
     private MaskContext context;
     private List<MathObject> elements;

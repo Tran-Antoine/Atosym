@@ -67,6 +67,16 @@ public class NumericUtils {
         return isANumber(object) && ((NumberExpression) object).getValue() % 1 == 0;
     }
 
+    public static int asInt(MathObject object) {
+        if(!isAnInteger(object)) throw new UnsupportedOperationException("Object is not an integer");
+        return ((NumberExpression) object).getValue().intValue();
+    }
+
+    public static float asFloat(MathObject object) {
+        if(!isANumber(object)) throw new UnsupportedOperationException("Object is not a number");
+        return ((NumberExpression) object).getValue();
+    }
+
     private interface BigDecimalAction {
         BigDecimal apply(BigDecimal a, BigDecimal b, MathContext mode);
     }

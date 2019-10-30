@@ -4,11 +4,11 @@ import net.akami.atosym.merge.MergeProperty;
 
 import java.util.List;
 
-public abstract class SimpleElementMergeProperty<P> extends MergeProperty<P> implements RestartApplicant {
+public abstract class FairElementMergeProperty<P> extends MergeProperty<P> implements RestartApplicant {
 
     private boolean startOverRequested;
 
-    public SimpleElementMergeProperty(P p1, P p2, boolean startOverRequested) {
+    public FairElementMergeProperty(P p1, P p2, boolean startOverRequested) {
         super(p1, p2);
         this.startOverRequested = startOverRequested;
     }

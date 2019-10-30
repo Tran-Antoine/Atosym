@@ -1,18 +1,22 @@
 package net.akami.atosym.merge.property.mult;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.expression.PowerMathObject;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.expression.ExponentMathObject;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class VariableSquaredProperty extends SimpleElementMergeProperty<MathObject> {
+public class VariableSquaredProperty extends FairElementMergeProperty<MathObject> {
 
-    public VariableSquaredProperty(MathObject p1, MathObject p2) {
+    private MaskContext context;
+
+    public VariableSquaredProperty(MathObject p1, MathObject p2, MaskContext context) {
         super(p1, p2, false);
+        this.context = context;
     }
 
     @Override
@@ -21,7 +25,7 @@ public class VariableSquaredProperty extends SimpleElementMergeProperty<MathObje
                 p1,
                 new NumberExpression(2f)
         );
-        constructed.add(new PowerMathObject(children));
+        constructed.add(new ExponentMathObject(children, context));
     }
 
     @Override

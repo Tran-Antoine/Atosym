@@ -1,11 +1,7 @@
 package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.utils.ParserUtils;
 import org.junit.Test;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class MultOperatorTest {
 
@@ -44,13 +40,7 @@ public class MultOperatorTest {
     }
 
     private void assertOperation(String a, String b, String result) {
-        MathObject aObject = toMathObject(a);
-        MathObject bObject = toMathObject(b);
-        assertThat(MULT.binaryOperate(aObject, bObject).testDisplay()).isEqualTo(result);
-    }
-
-    private MathObject toMathObject(String input) {
-        return ParserUtils.generateSimpleTree(input).merge();
+        OperatorTestUtils.assertBinaryOperation(a, b, result, MULT);
     }
 
         /*@Test

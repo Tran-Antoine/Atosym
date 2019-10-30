@@ -1,17 +1,25 @@
 package net.akami.atosym.merge.property.division;
 
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.merge.property.FairOverallMergeProperty;
+import net.akami.atosym.merge.BiSequencedMerge;
+import net.akami.atosym.merge.BiSequencedMerge.BiListContainer;
+import net.akami.atosym.merge.property.BiOverallSequencedMergeProperty;
 
-public class IdenticalNumAndDenProperty extends FairOverallMergeProperty<MathObject> {
+import java.util.Collections;
+import java.util.List;
 
-    public IdenticalNumAndDenProperty(MathObject p1, MathObject p2) {
+public class IdenticalNumAndDenProperty extends BiOverallSequencedMergeProperty<MathObject> {
+
+    private BiSequencedMerge<MathObject> parent;
+
+    public IdenticalNumAndDenProperty(List<MathObject> p1, List<MathObject> p2, BiSequencedMerge<MathObject> parent) {
         super(p1, p2);
+        this.parent = parent;
     }
 
     @Override
-    protected MathObject computeResult() {
-        return MathObject.NEUTRAL_DIV;
+    protected BiListContainer computeResult() {
+        return parent.new BiListContainer(Collections.emptyList(), Collections.emptyList());
     }
 
     @Override

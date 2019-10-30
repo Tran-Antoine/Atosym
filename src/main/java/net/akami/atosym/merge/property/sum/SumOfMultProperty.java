@@ -5,8 +5,7 @@ import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
-import net.akami.atosym.sorting.SortingRules;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-public class SumOfMultProperty extends SimpleElementMergeProperty<MathObject> {
+public class SumOfMultProperty extends FairElementMergeProperty<MathObject> {
 
     private MultMathObject m1;
     private MultMathObject m2;
@@ -45,9 +44,7 @@ public class SumOfMultProperty extends SimpleElementMergeProperty<MathObject> {
         }
 
         variableElements.add(result);
-        SortingRules rules = context.getSortingRules(MathObjectType.MULT);
-        variableElements.sort(rules);
-        constructed.add(new MultMathObject(variableElements));
+        constructed.add(new MultMathObject(variableElements, context));
     }
 
     @Override
@@ -67,7 +64,7 @@ public class SumOfMultProperty extends SimpleElementMergeProperty<MathObject> {
 
         if(object.getType() == MathObjectType.VARIABLE) {
             List<MathObject> transformedVariable = Arrays.asList(new NumberExpression(1f), object);
-            setter.accept(new MultMathObject(transformedVariable));
+            setter.accept(new MultMathObject(transformedVariable, context));
             return true;
         }
 

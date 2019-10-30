@@ -5,9 +5,24 @@ import net.akami.atosym.merge.property.BiElementMergeProperty;
 
 import java.util.List;
 
-public interface BiSequencedMerge<T> extends SequencedMerge<T, BiListContainer<T>, BiElementMergeProperty<T>> {
+public abstract class BiSequencedMerge<T> implements SequencedMerge<T, BiListContainer, BiElementMergeProperty<T>> {
 
-    class BiListContainer<T> {
+    protected List<T> listA;
+    protected List<T> listB;
+
+    @Override
+    public BiListContainer merge(List<T> l1, List<T> l2, boolean selfMerge) {
+        this.listA = l1;
+        this.listB = l2;
+        return andThenMerge(l1, l2, selfMerge);
+    }
+
+    protected BiListContainer andThenMerge(List<T> l1, List<T> l2, boolean selfMerge) {
+        return SequencedMerge.super.merge(l1, l2, selfMerge);
+    }
+
+
+    public class BiListContainer {
 
         private List<T> firstList;
         private List<T> secondList;

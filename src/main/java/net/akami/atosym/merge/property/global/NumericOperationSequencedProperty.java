@@ -4,11 +4,11 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
-import net.akami.atosym.merge.property.SimpleElementMergeProperty;
+import net.akami.atosym.merge.property.FairElementMergeProperty;
 
 import java.util.List;
 
-public abstract class NumericOperationSequencedProperty extends SimpleElementMergeProperty<MathObject> {
+public abstract class NumericOperationSequencedProperty extends FairElementMergeProperty<MathObject> {
 
     private MaskContext context;
 

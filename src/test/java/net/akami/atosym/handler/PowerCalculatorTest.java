@@ -1,12 +1,12 @@
 package net.akami.atosym.handler;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.operator.PowerOperator;
+import net.akami.atosym.operator.ExponentiationOperator;
 import org.junit.Test;
 
 public class PowerCalculatorTest {
 
-    PowerOperator POW = MaskContext.DEFAULT.getOperator(PowerOperator.class);
+    ExponentiationOperator POW = MaskContext.DEFAULT.getOperator(ExponentiationOperator.class);
 
     @Test
     public void powTest() {

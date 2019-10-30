@@ -1,5 +1,6 @@
 package net.akami.atosym.expression;
 
+import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.display.visitor.DisplayerVisitor;
 import net.akami.atosym.display.visitor.SumDisplayer;
 
@@ -9,8 +10,8 @@ public class SumMathObject extends FunctionObject {
 
     private DisplayerVisitor displayer;
 
-    public SumMathObject(List<MathObject> children) {
-        super(children, -1);
+    public SumMathObject(List<MathObject> children, MaskContext context) {
+        super(children, -1, context);
         this.displayer = new SumDisplayer(children);
     }
 

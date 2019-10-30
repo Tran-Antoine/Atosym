@@ -13,11 +13,8 @@ import java.util.List;
 
 public class DivisionOperator extends BinaryOperator {
 
-    private MaskContext context;
-
     public DivisionOperator(MaskContext context) {
-        super("div", "/");
-        this.context = context;
+        super(context, "div", "/");
     }
 
     @Override
@@ -27,7 +24,7 @@ public class DivisionOperator extends BinaryOperator {
         DivisionMerge mergeTool = new DivisionMerge(context);
         List<MathObject> aList = new ArrayList<MathObject>(){{add(a);}};
         List<MathObject> bList = new ArrayList<MathObject>(){{add(b);}};
-        BiListContainer<MathObject> container = mergeTool.merge(aList, bList, false);
+        BiListContainer container = mergeTool.merge(aList, bList, false);
 
         MathObject numerator = concatenate(container.getFirstList());
         List<MathObject> denominatorList = container.getSecondList();
@@ -36,14 +33,14 @@ public class DivisionOperator extends BinaryOperator {
         }
 
         MathObject denominator = concatenate(denominatorList);
-        return new DivisionMathObject(Arrays.asList(numerator, denominator));
+        return new DivisionMathObject(Arrays.asList(numerator, denominator), context);
     }
 
     private MathObject concatenate(List<MathObject> target) {
         switch (target.size()) {
             case 0:  return MathObject.NEUTRAL_DIV;
             case 1:  return target.get(0);
-            default: return new MultMathObject(target);
+            default: return new MultMathObject(target, context);
         }
     }
 }

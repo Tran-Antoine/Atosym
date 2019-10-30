@@ -24,8 +24,8 @@ public class PowerCalculationMerge implements FairMerge<MathObject> {
         return Arrays.asList(
                 new NumericPowerProperty(p1, p2, context),
                 new BaseExpansionProperty(p1, p2, context),
-                new ChainPowerProperty(p1, p2),
-                new DefaultPowerProperty(p1, p2)
+                new ChainPowerProperty(p1, p2, context),
+                new DefaultPowerProperty(p1, p2, context)
         );
     }
 }

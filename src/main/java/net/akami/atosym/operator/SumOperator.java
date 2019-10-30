@@ -2,11 +2,9 @@ package net.akami.atosym.operator;
 
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.SumMathObject;
 import net.akami.atosym.merge.AdditionMerge;
 import net.akami.atosym.merge.FairSequencedMerge;
-import net.akami.atosym.sorting.SortingRules;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.ArrayList;
@@ -18,9 +16,6 @@ import java.util.stream.Collectors;
  * Computes the sum between two objects. The default SumOperator class handles the following properties :
  *
  * <ul>
- * <li> {@link CosineSinusSquaredProperty}, converting {@code sin^2(x) + cos^2(x)} to 1.
- * <li> {@link CommonDenominatorAdditionProperty}, allowing sums of fractions having the same denominator
- * <li> {@link IdenticalVariablePartProperty}, for expressions having the exact same variable part
  * </ul>
  * The {@code operate} method delegates the work to the {@link AdditionMerge} behavior, comparing the different
  * monomials by pairs, and computing a result if possible.
@@ -29,11 +24,8 @@ import java.util.stream.Collectors;
  */
 public class SumOperator extends BinaryOperator {
 
-    private MaskContext context;
-
     public SumOperator(MaskContext context) {
-        super("+", "sum");
-        this.context = context;
+        super(context, "+", "sum");
     }
 
     @Override
@@ -47,25 +39,20 @@ public class SumOperator extends BinaryOperator {
 
     public MathObject sumMerge(List<MathObject> elements) {
         FairSequencedMerge<MathObject> additionBehavior = new AdditionMerge(context);
-        return result(additionBehavior.merge(elements, elements, true)
-                .stream()
-                .filter(NumericUtils::isNotZero)
-                .collect(Collectors.toList()));
+        return result(additionBehavior.merge(elements, elements, true));
     }
 
     private MathObject result(List<MathObject> mergedElements) {
-        SortingRules rules = context.getSortingRules(MathObjectType.SUM);
         mergedElements = mergedElements
                 .stream()
                 .filter(NumericUtils::isNotZero)
-                .sorted(rules)
                 .collect(Collectors.toList());
 
-        if(mergedElements.size() == 1) {
-            return mergedElements.get(0);
+        switch (mergedElements.size()) {
+            case 0: return MathObject.NEUTRAL_SUM;
+            case 1: return mergedElements.get(0);
+            default: return new SumMathObject(mergedElements, context);
         }
-
-        return new SumMathObject(mergedElements);
     }
 
     private List<MathObject> toList(MathObject... x) {

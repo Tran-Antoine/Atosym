@@ -13,8 +13,8 @@ public class VariableExpression extends Expression<Character> {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof PowerMathObject) {
-            PowerMathObject powerObject = (PowerMathObject) obj;
+        if(obj instanceof ExponentMathObject) {
+            ExponentMathObject powerObject = (ExponentMathObject) obj;
             return powerObject.getSize() == 2 && powerObject.children.get(0).equals(this);
         }
 

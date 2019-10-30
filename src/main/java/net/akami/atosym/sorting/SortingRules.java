@@ -25,18 +25,19 @@ public class SortingRules implements Comparator<MathObject> {
     public static Set<SortingRule> generateRules() {
         return new HashSet<>(Arrays.asList(
                 new SimpleVariableSorting(),
-                new NumberSorting()
+                new NumberSorting(),
+                new ExponentLevelSorting()
         ));
     }
 
     @Override
     public int compare(MathObject o1, MathObject o2) {
         if(parentType == null) {
-            throw new IllegalStateException("Set the parent before comparing");
+            throw new IllegalStateException("Set the context before comparing");
         }
 
         for(SortingRule rule : rules) {
-            if(rule.isRuleSuitable(o1, o2)) {
+            if(rule.isRuleSuitable(o1, o2, parentType)) {
                 return rule.compare(o1, o2, parentType);
             }
         }
