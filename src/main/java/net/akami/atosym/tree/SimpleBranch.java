@@ -6,6 +6,7 @@ import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
 import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
+import net.akami.atosym.parser.AtosymParser.FunCallContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
@@ -56,11 +57,11 @@ public class SimpleBranch {
         if(binOp != null) {
             text = binOp.getText();
         } else {
-            TerminalNode func = expTree.FUNC();
+            FunCallContext func = expTree.funCall();
             if(func != null) {
-                text = func.getText();
+                text = func.FUNC().getText();
             } else {
-                TerminalNode symbol = expTree.OTHER_SYMBOL();
+                Token symbol = expTree.unop;
                 if(symbol != null) {
                     text = symbol.getText();
                 } else {

@@ -35,6 +35,18 @@ public class AtosymBaseListener implements AtosymListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExp(AtosymParser.ExpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFunCall(AtosymParser.FunCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunCall(AtosymParser.FunCallContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

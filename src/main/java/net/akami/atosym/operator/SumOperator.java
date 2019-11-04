@@ -29,6 +29,14 @@ public class SumOperator extends BinaryOperator {
     }
 
     @Override
+    protected MathObject operate(List<MathObject> input) {
+        if(input.size() == 1) {
+            return binaryOperate(MathObject.NEUTRAL_SUB, input.get(0));
+        }
+        return super.operate(input);
+    }
+
+    @Override
     public MathObject binaryOperate(MathObject a, MathObject b) {
 
         LOGGER.debug("SumOperator process of {} |+| {}: \n", a, b);
@@ -57,5 +65,10 @@ public class SumOperator extends BinaryOperator {
 
     private List<MathObject> toList(MathObject... x) {
         return new ArrayList<>(Arrays.asList(x));
+    }
+
+    @Override
+    protected void checkInputSize(int size) {
+        // do nothing
     }
 }

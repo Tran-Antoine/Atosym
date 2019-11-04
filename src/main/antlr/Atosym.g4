@@ -3,14 +3,18 @@ grammar Atosym;
 main: exp;
 
 exp
-    : FUNC? '(' (exp',')* exp ')'
-    | exp OTHER_SYMBOL
-    | exp binop=POW exp
-    | exp (binop=(DIV|MULT))? exp
-    | exp binop=(SUM|SUB) exp
+    : funCall
     | NUMBER
     | CHAR
+    | exp unop='!'
+    | unop=(SUM|SUB) exp
+    | exp binop = POW exp
+    | exp (funCall | CHAR)
+    | exp (binop = (DIV | MULT)) exp
+    | exp binop=(SUM|SUB) exp
     ;
+
+funCall: FUNC? '(' (exp',')* exp ')';
 
 FUNC
     : 'sum'
@@ -28,8 +32,7 @@ FUNC
 
 NUMBER : DIGIT+;
 DIGIT  : [0-9]('.'[0-9] |);
-CHAR   : [a-zA-Z];
-OTHER_SYMBOL : '!'|'π';
+CHAR   : [a-zA-Z]|'π';
 SUM : '+';
 SUB : '-';
 MULT : '*';

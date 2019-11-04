@@ -37,10 +37,7 @@ public abstract class MathOperator implements
     protected abstract MathObject operate(List<MathObject> input);
 
     public MathObject rawOperate(List<MathObject> input) {
-        if(input.size() != argsLength) {
-            throw new IllegalArgumentException(input.size() + " params given " + argsLength + " required.");
-        }
-
+        checkInputSize(input.size());
         for(IOCalculationModifier<MathObject> modifier : getSuitableModifiers(input)) {
             input = modifier.modify(input);
         }
@@ -51,6 +48,11 @@ public abstract class MathOperator implements
         }
 
         return operate(input);
+    }
+
+    protected void checkInputSize(int size) {
+        if(size != argsLength)
+            throw new IllegalArgumentException(size + " params given " + argsLength + " required.");
     }
 
     @Override

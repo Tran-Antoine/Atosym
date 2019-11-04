@@ -27,4 +27,14 @@ public interface AtosymListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExp(AtosymParser.ExpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link AtosymParser#funCall}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunCall(AtosymParser.FunCallContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link AtosymParser#funCall}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunCall(AtosymParser.FunCallContext ctx);
 }
