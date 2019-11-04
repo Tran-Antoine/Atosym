@@ -41,4 +41,11 @@ public class MultiplicationMerge extends FairSequencedMerge<MathObject> {
                 .filter(NumericUtils::isNotOne)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<MathObject> andThenMerge() {
+        MultiplicationMerge newMerge = new MultiplicationMerge(context);
+        List<MathObject> result = loadFinalResult();
+        return newMerge.merge(result, result, true);
+    }
 }

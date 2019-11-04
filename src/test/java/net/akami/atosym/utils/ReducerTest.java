@@ -9,7 +9,7 @@ public class ReducerTest {
     @Test
     public void singleNumberReduction() {
         String s1 = "5";
-        assertReduction(s1, "5");
+        assertReduction(s1, "5.0");
     }
 
     @Test
@@ -53,7 +53,7 @@ public class ReducerTest {
         assertReduction(s10, "10.0x^2.0");
         assertReduction(s11, "8.0xy");
         assertReduction(s12, "7.0x");
-        assertReduction(s13, "4.0x+6.0xy");
+        assertReduction(s13, "6.0xy+4.0x");
     }
 
 
@@ -64,7 +64,7 @@ public class ReducerTest {
         String s16 = "((((5)*3)*2)*1)";
         String s17 = "(8x+y-3)*(1+2-2)+12^(0+4-3)";
         assertReduction(s14, "6.0x+12.0y-24.0z");
-        assertReduction(s15, "5");
+        assertReduction(s15, "5.0");
         assertReduction(s16, "30.0");
         assertReduction(s17, "8.0x+y+9.0");
     }

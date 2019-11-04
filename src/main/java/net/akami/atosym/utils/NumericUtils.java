@@ -4,11 +4,15 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.expression.MathObjectType;
 import net.akami.atosym.expression.NumberExpression;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 
 public class NumericUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(NumericUtils.class);
 
     private NumericUtils(){}
 
@@ -29,7 +33,10 @@ public class NumericUtils {
     }
 
     public static float pow(float a, float b, MaskContext context) {
-        if(b % 1 != 0) throw new UnsupportedOperationException("Non integer exponents aren't supported yet");
+        if(b % 1 != 0) {
+            LOGGER.warn("Non integer exponents aren't fully functional yet. They could cause unexpected results");
+            return (float) Math.pow(a, b);
+        }
 
         int bInt = (int) b;
         BigDecimal bigA = new BigDecimal(a, context.getMathContext());

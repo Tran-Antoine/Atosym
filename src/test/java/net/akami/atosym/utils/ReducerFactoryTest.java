@@ -7,7 +7,7 @@ public class ReducerFactoryTest {
 
     @Test
     public void singleNumberReduction() {
-        assertReduction("5", "5");
+        assertReduction("5", "5.0");
         assertReduction("0.445", "0.445");
         assertReduction("-0.045", "-0.045");
         assertReduction("-5", "-5.0");
@@ -25,7 +25,7 @@ public class ReducerFactoryTest {
 
     @Test
     public void multiSpacesTest() {
-        assertReduction("4               ", "4");
+        assertReduction("4               ", "4.0");
         assertReduction("5    +         5", "10.0");
     }
 
@@ -50,11 +50,11 @@ public class ReducerFactoryTest {
 
     @Test
     public void simpleBracketExpressions() {
-        assertReduction("(((((5)))))", "5");
+        assertReduction("(((((5)))))", "5.0");
         assertReduction("((((5)*3)*2)*1)", "30.0");
         assertReduction("(5+3)*2", "16.0");
         assertReduction("(3-2)^100", "1.0");
-        assertReduction("3/(2+4)", "0.5");
+        assertReduction("3/(2+4)", "1.0/2.0");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class ReducerFactoryTest {
 
     @Test
     public void mixedVariableOperations() {
-        assertReduction("4x + 3x * 2y", "4.0x+6.0xy");
+        assertReduction("4x + 3x * 2y", "6.0xy+4.0x");
         assertReduction("3*((x+2y)*2 - 8z)", "6.0x+12.0y-24.0z");
         assertReduction("(8x+y-3)*(1+2-2)+12^(0+4-3)", "8.0x+y+9.0");
         assertReduction("x^y*x^(y^2)", "x^(y^2.0+y)");
@@ -92,10 +92,10 @@ public class ReducerFactoryTest {
     public void poweredBracketsTest() {
         assertReduction("(3+x)^2", "x^2.0+6.0x+9.0");
         assertReduction("(x+y+z)^2", "x^2.0+y^2.0+z^2.0+2.0xy+2.0xz+2.0yz");
-        assertReduction("(x+y)^7", "x^7.0+y^7.0+7.0x^6.0y+7.0y^6.0x+21.0x^5.0y^2.0+21.0y^5.0x^2.0+35.0x^4.0y^3.0+35.0y^4.0x^3.0");
-        assertReduction("(a+b+c)^5", "a^5.0+b^5.0+c^5.0+5.0a^4.0b+5.0a^4.0c+5.0b^4.0a+5.0b^4.0c+5.0c^4.0a" +
-                "+5.0c^4.0b+20.0a^3.0bc+10.0a^3.0b^2.0+10.0a^3.0c^2.0+20.0b^3.0ac+10.0b^3.0a^2.0+10.0b^3.0c^2.0" +
-                "+20.0c^3.0ab+10.0c^3.0a^2.0+10.0c^3.0b^2.0+30.0a^2.0b^2.0c+30.0a^2.0c^2.0b+30.0b^2.0c^2.0a");
+        assertReduction("(x+y)^7", "x^7.0+y^7.0+7.0x^6.0y+7.0y^6.0x+21.0y^2.0x^5.0+21.0x^2.0y^5.0+35.0y^3.0x^4.0+35.0x^3.0y^4.0");
+        assertReduction("(a+b+c)^5", "a^5.0+b^5.0+c^5.0+5.0a^4.0b+5.0a^4.0c+5.0b^4.0a+5.0b^4.0c+5.0c^4.0a+5.0c^4.0b" +
+                "+20.0a^3.0bc+20.0b^3.0ac+20.0c^3.0ab+10.0b^2.0a^3.0+10.0c^2.0a^3.0+10.0a^2.0b^3.0+10.0c^2.0b^3.0+10.0a^2.0c^3.0" +
+                "+10.0b^2.0c^3.0+30.0b^2.0a^2.0c+30.0c^2.0a^2.0b+30.0c^2.0b^2.0a");
     }
 
 

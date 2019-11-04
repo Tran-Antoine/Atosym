@@ -59,12 +59,4 @@ public abstract class FairSequencedMerge<T> implements SequencedMerge<T, List<T>
         }
         return result;
     }
-
-    @Override
-    public List<T> andThenMerge() {
-        return SequencedMerge.super.merge(result, result, true);
-    }
-
-
-
 }

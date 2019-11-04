@@ -42,8 +42,14 @@ public abstract class FunctionObject implements MathObject {
         }
 
         FunctionObject object = (FunctionObject) obj;
-        return getType() == object.getType() && children.equals(object.children);
+        if(getType() != object.getType()) return false;
 
+        return (getType().hasProperty(MathProperty.COMMUTATIVITY) && commutativityEquality(children, object.children))
+                || children.equals(object.children);
+    }
+
+    public static boolean commutativityEquality(List<MathObject> l1, List<MathObject> l2) {
+        return l1.size() == l2.size() && l1.containsAll(l2) && l2.containsAll(l1);
     }
 
     public List<MathObject> getChildren() {

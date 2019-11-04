@@ -28,4 +28,11 @@ public class AdditionMerge extends FairSequencedMerge<MathObject> {
                 new SumOfMultProperty(p1, p2, context)
         );
     }
+
+    @Override
+    public List<MathObject> andThenMerge() {
+        AdditionMerge newMerge = new AdditionMerge(context);
+        List<MathObject> finalResult = super.loadFinalResult();
+        return newMerge.merge(finalResult, finalResult, true);
+    }
 }

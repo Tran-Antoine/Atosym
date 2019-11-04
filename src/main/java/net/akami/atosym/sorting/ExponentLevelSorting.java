@@ -9,8 +9,11 @@ import java.util.function.Consumer;
 
 public class ExponentLevelSorting implements SortingRule {
 
-    private int power1;
-    private int power2;
+    private float maxPower1;
+    private float totalPower1;
+
+    private float maxPower2;
+    private float totalPower2;
 
     @Override
     public boolean isRuleSuitable(MathObject o1, MathObject o2, MathObjectType parentType) {
@@ -21,9 +24,14 @@ public class ExponentLevelSorting implements SortingRule {
     public int compare(MathObject o1, MathObject o2, MathObjectType parentType) {
         setPower(o1, this::addPower1);
         setPower(o2, this::addPower2);
-        int comparison = Integer.compare(power2, power1);
-        power1 = 0;
-        power2 = 0;
+        int comparison = Float.compare(maxPower2, maxPower1);
+        if(comparison == 0) {
+            comparison = Float.compare(totalPower2, totalPower1);
+        }
+        maxPower1 = 0;
+        maxPower2 = 0;
+        totalPower1 = 0;
+        totalPower2 = 0;
         return comparison;
     }
 
@@ -56,10 +64,12 @@ public class ExponentLevelSorting implements SortingRule {
     }
 
     private void addPower1(float a) {
-        this.power1 += a;
+        if(maxPower1 < a) this.maxPower1 = a;
+        this.totalPower1 += a;
     }
 
     private void addPower2(float a) {
-        this.power2 += a;
+        if(maxPower2 < a) this.maxPower2 = a;
+        this.totalPower2 += a;
     }
 }

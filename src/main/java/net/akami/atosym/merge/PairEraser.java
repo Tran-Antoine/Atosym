@@ -22,6 +22,11 @@ public class PairEraser<T> extends SinglePropertySequencedMerge<T> {
         return new PairNullifyingProperty(p1, p2);
     }
 
+    @Override
+    public List<T> andThenMerge() {
+        throw new IllegalStateException();
+    }
+
     /**
      * The property used for {@link PairEraser}. Suitable if the two elements are equal (according to the {@link #equals(Object)}
      * method). Simply removes the elements from their former list if suitable. Since

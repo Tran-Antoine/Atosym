@@ -4,19 +4,11 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.operator.DivisionOperator;
 import org.junit.Test;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 public class DividerTest {
 
     private final DivisionOperator divider = MaskContext.DEFAULT.getOperator(DivisionOperator.class);
     // It won't support factorisation for now. Therefore :
     // (x^2 + 2x + 1) / (x+1) won't give (x+1)
-    @Test
-    public void decomposeExpressionTest() {
-        StringBuilder builder = new StringBuilder();
-        //MathUtils.decomposeNumberToString(18).forEach(x -> builder.append(x).append("*"));
-        assertThat(builder.toString()).isEqualTo("2*3*3*");
-    }
 
     @Test
     public void divisionsTest() {

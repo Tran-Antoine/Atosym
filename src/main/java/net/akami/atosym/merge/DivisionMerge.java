@@ -29,7 +29,8 @@ public class DivisionMerge extends BiSequencedMerge<MathObject> {
                 new IdenticalElementsProperty(p1, p2),
                 new NumericalDivisionProperty(p1, p2, context),
                 new DivisionOfMultiplicationProperty(p1, p2),
-                new IdenticalBaseDivisionProperty(p1, p2, context)
+                new IdenticalBaseDivisionProperty(p1, p2, context),
+                new DivisionInvolvingFractionsProperty(p1, p2, context)
         );
     }
 
@@ -46,7 +47,8 @@ public class DivisionMerge extends BiSequencedMerge<MathObject> {
 
     @Override
     public BiListContainer andThenMerge() {
-        return super.andThenMerge(numerator, denominator, false);
+        DivisionMerge newMerge = new DivisionMerge(context);
+        return newMerge.merge(numerator, denominator, false);
     }
 
     @Override

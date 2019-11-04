@@ -14,13 +14,8 @@ public abstract class BiSequencedMerge<T> implements SequencedMerge<T, BiListCon
     public BiListContainer merge(List<T> l1, List<T> l2, boolean selfMerge) {
         this.listA = l1;
         this.listB = l2;
-        return andThenMerge(l1, l2, selfMerge);
-    }
-
-    protected BiListContainer andThenMerge(List<T> l1, List<T> l2, boolean selfMerge) {
         return SequencedMerge.super.merge(l1, l2, selfMerge);
     }
-
 
     public class BiListContainer {
 

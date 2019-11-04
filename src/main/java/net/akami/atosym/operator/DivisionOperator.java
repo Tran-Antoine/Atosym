@@ -7,7 +7,6 @@ import net.akami.atosym.expression.MultMathObject;
 import net.akami.atosym.merge.BiSequencedMerge.BiListContainer;
 import net.akami.atosym.merge.DivisionMerge;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,8 +21,9 @@ public class DivisionOperator extends BinaryOperator {
         LOGGER.debug("Division process of {} |/| {}: \n", a, b);
 
         DivisionMerge mergeTool = new DivisionMerge(context);
-        List<MathObject> aList = new ArrayList<MathObject>(){{add(a);}};
-        List<MathObject> bList = new ArrayList<MathObject>(){{add(b);}};
+        List<MathObject> aList = Arrays.asList(a);
+        List<MathObject> bList = Arrays.asList(b);
+
         BiListContainer container = mergeTool.merge(aList, bList, false);
 
         MathObject numerator = concatenate(container.getFirstList());

@@ -1,10 +1,7 @@
 package net.akami.atosym.merge.property.sum;
 
 import net.akami.atosym.core.MaskContext;
-import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.expression.MathObjectType;
-import net.akami.atosym.expression.MultMathObject;
-import net.akami.atosym.expression.NumberExpression;
+import net.akami.atosym.expression.*;
 import net.akami.atosym.merge.property.FairElementMergeProperty;
 import net.akami.atosym.utils.NumericUtils;
 
@@ -74,7 +71,7 @@ public class SumOfMultProperty extends FairElementMergeProperty<MathObject> {
     private boolean areObjectsCompatible() {
         List<MathObject> variables1 = createNumberlessList(m1, this::setNumber1);
         List<MathObject> variables2 = createNumberlessList(m2, this::setNumber2);
-        if(variables1.equals(variables2)) {
+        if(FunctionObject.commutativityEquality(variables1, variables2)) {
             this.variableElements = variables1;
             return true;
         }
