@@ -10,7 +10,7 @@ public class SubOperator extends BinaryOperator {
     }
 
     @Override
-    protected MathObject binaryOperate(MathObject a, MathObject b) {
+    public MathObject binaryOperate(MathObject a, MathObject b) {
         LOGGER.debug("SubOperator process of {} |-| {}: \n", a, b);
         SumOperator adder = context.getOperator(SumOperator.class);
         MultOperator multiplier = context.getOperator(MultOperator.class);

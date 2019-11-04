@@ -4,10 +4,7 @@ import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.merge.property.BiElementMergeProperty;
 import net.akami.atosym.merge.property.BiOverallSequencedMergeProperty;
-import net.akami.atosym.merge.property.division.DivisionOfMultiplicationProperty;
-import net.akami.atosym.merge.property.division.IdenticalElementsProperty;
-import net.akami.atosym.merge.property.division.IdenticalNumAndDenProperty;
-import net.akami.atosym.merge.property.division.NumericalDivisionProperty;
+import net.akami.atosym.merge.property.division.*;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.*;
@@ -31,7 +28,8 @@ public class DivisionMerge extends BiSequencedMerge<MathObject> {
         return Arrays.asList(
                 new IdenticalElementsProperty(p1, p2),
                 new NumericalDivisionProperty(p1, p2, context),
-                new DivisionOfMultiplicationProperty(p1, p2)
+                new DivisionOfMultiplicationProperty(p1, p2),
+                new IdenticalBaseDivisionProperty(p1, p2, context)
         );
     }
 

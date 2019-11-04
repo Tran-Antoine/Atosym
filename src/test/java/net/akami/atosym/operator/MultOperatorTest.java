@@ -39,6 +39,11 @@ public class MultOperatorTest {
         assertOperation("x", "x", "x^2.0");
     }
 
+    @Test
+    public void simple_identical_base_mult() {
+        assertOperation("x^2", "x^3", "x^5.0");
+    }
+
     private void assertOperation(String a, String b, String result) {
         OperatorTestUtils.assertBinaryOperation(a, b, result, MULT);
     }

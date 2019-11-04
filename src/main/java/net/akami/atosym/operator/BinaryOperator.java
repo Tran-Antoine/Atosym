@@ -36,7 +36,7 @@ public abstract class BinaryOperator extends MathOperator {
         return binaryOperate(input.get(0), input.get(1));
     }
 
-    protected abstract MathObject binaryOperate(MathObject a, MathObject b);
+    public abstract MathObject binaryOperate(MathObject a, MathObject b);
 
     public static Set<BinaryOperator> generateDefaultBinaryOperators(MaskContext context) {
         return new HashSet<>(Arrays.asList(

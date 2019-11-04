@@ -50,7 +50,7 @@ public abstract class FunctionObject implements MathObject {
         return children;
     }
 
-    public List<MathObject> getFractionChildren(int start, int stop) {
+    public List<MathObject> getChildrenFraction(int start, int stop) {
         int realStart = start >= 0 ? start : children.size() + start;
         int realStop  = stop >= 0 ? stop : children.size() + stop;
         List<MathObject> newList = new ArrayList<>(stop - start + 2);

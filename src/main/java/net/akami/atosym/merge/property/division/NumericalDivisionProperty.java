@@ -8,6 +8,8 @@ import net.akami.atosym.merge.property.BiElementMergeProperty;
 import net.akami.atosym.utils.NumericUtils;
 
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class NumericalDivisionProperty extends BiElementMergeProperty<MathObject> {
 

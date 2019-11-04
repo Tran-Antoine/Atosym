@@ -29,7 +29,7 @@ public class MultiplicationMerge extends FairSequencedMerge<MathObject> {
                 new VariableSquaredProperty(p1, p2, context),
                 new ChainMultProperty(p1, p2, context),
                 new MultOfSumProperty(p1, p2, context),
-                new IdenticalBaseProperty(p1, p2, context),
+                new IdenticalBaseMultProperty(p1, p2, context),
                 new MultOfFractionsProperty(p1, p2, context)
         );
     }
