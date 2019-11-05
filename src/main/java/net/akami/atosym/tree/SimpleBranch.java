@@ -53,13 +53,14 @@ public class SimpleBranch {
         ExpContext expTree = (ExpContext) parseTree;
         String text;
         Token binOp = expTree.binop;
-
+        // TODO : try expTree.unop
         if(binOp != null) {
             text = binOp.getText();
         } else {
             FunCallContext func = expTree.funCall();
-            if(func != null) {
-                text = func.FUNC().getText();
+            TerminalNode funcToken;
+            if(func != null && (funcToken=func.FUNC()) != null) {
+                text = funcToken.getText();
             } else {
                 Token symbol = expTree.unop;
                 if(symbol != null) {
