@@ -7,7 +7,7 @@ import net.akami.atosym.display.PrefixNotationDisplayable;
 import net.akami.atosym.display.visitor.DisplayerVisitor;
 import net.akami.atosym.expression.MathObject;
 import net.akami.atosym.operator.BinaryOperator;
-import net.akami.atosym.utils.ParserUtils;
+import net.akami.atosym.utils.ParserFactory;
 
 import java.util.Scanner;
 
@@ -28,7 +28,7 @@ public class MainTester {
 
     private static void simplify(String expression, MaskContext context) {
         long time = System.nanoTime();
-        MathObject result = ParserUtils.generateSimpleTree(expression, context).merge();
+        MathObject result = ParserFactory.generateSimpleTree(expression, context).merge();
         DisplayerVisitor displayer = result.getDisplayer();
         System.out.println("Result (Infix notation)      : "+ displayer.accept(InfixNotationDisplayable.EMPTY_INSTANCE));
         System.out.println("Result (Functional notation) : "+displayer.accept(FunctionalNotationDisplayable.EMPTY_INSTANCE));

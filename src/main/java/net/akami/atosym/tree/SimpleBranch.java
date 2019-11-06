@@ -51,33 +51,33 @@ public class SimpleBranch {
 
     private void loadOperatorFromExp() {
         ExpContext expTree = (ExpContext) parseTree;
-        String text;
+        String text = loadText(expTree);
+
+        Supplier<UnsupportedOperationException> exception = () -> new UnsupportedOperationException("Unknown token : "+text);
+        this.operator = parent.getContext().getOperator(text).orElseThrow(exception);
+    }
+
+    private String loadText(ExpContext expTree) {
         Token binOp = expTree.binop;
         // TODO : try expTree.unop
         if(binOp != null) {
-            text = binOp.getText();
-        } else {
-            FunCallContext func = expTree.funCall();
-            TerminalNode funcToken;
-            if(func != null && (funcToken=func.FUNC()) != null) {
-                text = funcToken.getText();
-            } else {
-                Token symbol = expTree.unop;
-                if(symbol != null) {
-                    text = symbol.getText();
-                } else {
-                    // Two possibilities : either there is no function name, because there are brackets for the priority of operations
-                    //                     or we are dealing with a multiplication with no sign, such as 4x
-                    if (children.size() == 1) {
-                        text = "priority";
-                    } else {
-                        text = "";
-                    }
-                }
-            }
+            return binOp.getText();
         }
-        Supplier<UnsupportedOperationException> exception = () -> new UnsupportedOperationException("Unknown token : "+text);
-        this.operator = parent.getContext().getOperator(text).orElseThrow(exception);
+        FunCallContext func = expTree.funCall();
+        TerminalNode funcToken;
+        if(func != null && (funcToken=func.FUNC()) != null) {
+            return funcToken.getText();
+        }
+        Token symbol = expTree.unop;
+        if(symbol != null) {
+            return symbol.getText();
+        }
+        // Two possibilities : either there is no function name, because there are brackets for the priority of operations
+        //                     or we are dealing with a multiplication with no sign, such as 4x
+        if (children.size() == 1) {
+            return "priority";
+        }
+        return "";
     }
 
     private List<SimpleBranch> loadChildren() {

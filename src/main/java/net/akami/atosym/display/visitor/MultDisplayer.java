@@ -2,11 +2,13 @@ package net.akami.atosym.display.visitor;
 
 import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.utils.ExpressionUtils;
+import net.akami.atosym.utils.NumericUtils;
 
 import java.util.List;
 
 public class MultDisplayer extends SimpleDisplayerVisitor {
+
+    private static final String NUMBERS = "0123456789";
 
     public MultDisplayer(List<MathObject> children) {
         super(children, "mult");
@@ -41,6 +43,6 @@ public class MultDisplayer extends SimpleDisplayerVisitor {
     }
 
     private boolean validMultShortcut(char a, char b) {
-        return !ExpressionUtils.isANumber(String.valueOf(a)) || !ExpressionUtils.isANumber(String.valueOf(b));
+        return NUMBERS.contains(String.valueOf(a)) || NUMBERS.contains(String.valueOf(b));
     }
 }

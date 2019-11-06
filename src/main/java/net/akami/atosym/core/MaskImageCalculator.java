@@ -1,6 +1,5 @@
 package net.akami.atosym.core;
 
-import net.akami.atosym.utils.ExpressionUtils;
 import net.akami.atosym.utils.FastAtosymMath;
 
 import java.util.Map;
@@ -39,7 +38,7 @@ public class MaskImageCalculator implements MaskOperator<Map<Character, String>>
             char currentChar = self.charAt(i);
 
             if (currentChar == var) {
-                if (i != 0 && ExpressionUtils.NUMBERS.contains(String.valueOf(self.charAt(i - 1)))) {
+                if (i != 0 && "1234567890".contains(String.valueOf(self.charAt(i - 1)))) {
                     //the char before the variable is a number. 4x obviously means 4*x
                     builder.append("*");
                 } // No number before the variable, for instance 3+x

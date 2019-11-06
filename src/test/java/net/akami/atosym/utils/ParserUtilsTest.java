@@ -9,7 +9,7 @@ public class ParserUtilsTest {
 
     @Test
     public void simple_tree_merging_test() {
-        AbstractSyntaxTree tree = ParserUtils.generateSimpleTree("2+2+3");
+        AbstractSyntaxTree tree = ParserFactory.generateSimpleTree("2+2+3");
         assertThat(tree.merge().testDisplay()).isEqualTo("7.0");
     }
 }

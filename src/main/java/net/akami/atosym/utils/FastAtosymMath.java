@@ -24,7 +24,7 @@ public class FastAtosymMath {
 
     public static String reduce(String exp, MaskContext context) {
         Objects.requireNonNull(exp, "Cannot reduce a null expression");
-        return ParserUtils.generateSimpleTree(exp, context)
+        return ParserFactory.generateSimpleTree(exp, context)
                 .merge()
                 .getDisplayer()
                 .accept(InfixNotationDisplayable.EMPTY_INSTANCE);

@@ -3,7 +3,7 @@ package net.akami.atosym.alteration;
 import net.akami.atosym.core.MaskContext;
 import net.akami.atosym.expression.ExponentMathObject;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.utils.ExpressionUtils;
+import net.akami.atosym.utils.NumericUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +36,7 @@ public class ExponentExpansionLimit implements FairCalculationCanceller<MathObje
     public boolean appliesTo(List<MathObject> input) {
         MathObject exponent = input.get(1);
         // using parseFloat instead of parseInt for possible ".0", such as "5.0"
-        return ExpressionUtils.isAnInteger(exponent) && Float.parseFloat(exponent.toString()) > limit;
+        return NumericUtils.isAnInteger(exponent) && Float.parseFloat(exponent.toString()) > limit;
     }
 
     @Override

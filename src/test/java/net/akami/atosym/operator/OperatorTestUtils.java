@@ -1,7 +1,7 @@
 package net.akami.atosym.operator;
 
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.utils.ParserUtils;
+import net.akami.atosym.utils.ParserFactory;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,6 +14,6 @@ public class OperatorTestUtils {
     }
 
     public static MathObject toMathObject(String input) {
-        return ParserUtils.generateSimpleTree(input).merge();
+        return ParserFactory.generateSimpleTree(input).merge();
     }
 }

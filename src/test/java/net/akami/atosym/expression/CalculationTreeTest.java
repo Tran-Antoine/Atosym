@@ -1,7 +1,7 @@
 package net.akami.atosym.expression;
 
 import net.akami.atosym.tree.AbstractSyntaxTree;
-import net.akami.atosym.utils.ParserUtils;
+import net.akami.atosym.utils.ParserFactory;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,7 +14,7 @@ public class CalculationTreeTest {
     }
 
     private void assertCalculationTree(String input, String expected) {
-        AbstractSyntaxTree tree = ParserUtils.generateSimpleTree(input);
+        AbstractSyntaxTree tree = ParserFactory.generateSimpleTree(input);
         assertThat(tree.merge().testDisplay()).isEqualTo(expected);
     }
 }
