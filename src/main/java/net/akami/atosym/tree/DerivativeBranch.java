@@ -1,6 +1,7 @@
 package net.akami.atosym.tree;
 
 import net.akami.atosym.expression.MathObject;
+import org.antlr.v4.runtime.ParserRuleContext;
 
 /**
  * Implementation of the base Branch class. The {@link DerivativeBranch} class brings two changes :
@@ -15,7 +16,7 @@ public class DerivativeBranch extends SimpleBranch {
     private MathObject derivativeValue;
 
     public DerivativeBranch(String expression) {
-        super(null, null);
+        super(null, (ParserRuleContext) null);
     }
 
     /**

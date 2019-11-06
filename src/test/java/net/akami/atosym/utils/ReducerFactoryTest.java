@@ -19,7 +19,7 @@ public class ReducerFactoryTest {
         assertReduction("3-5", "-2.0");
         assertReduction("-4-5", "-9.0");
         assertReduction("3.2*1.5", "4.8");
-        assertReduction("3/4", "0.75");
+        assertReduction("3/4", "3.0/4.0");
         assertReduction("3^2", "9.0");
     }
 

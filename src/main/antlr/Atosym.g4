@@ -3,18 +3,16 @@ grammar Atosym;
 main: exp;
 
 exp
-    : funCall
+    : FUNC? '(' (exp',')* exp ')'
     | NUMBER
     | CHAR
     | exp unop='!'
     | unop=(SUM|SUB) exp
-    | exp binop = POW exp
-    | exp (funCall | CHAR)
+    | exp (binop = POW) exp
+    | exp (FUNC? '(' (exp',')* exp ')' | CHAR)
     | exp (binop = (DIV | MULT)) exp
     | exp binop=(SUM|SUB) exp
     ;
-
-funCall: FUNC? '(' (exp',')* exp ')';
 
 FUNC
     : 'sum'

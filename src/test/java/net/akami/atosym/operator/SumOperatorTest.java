@@ -9,8 +9,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static net.akami.atosym.core.MaskContext.DEFAULT;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,12 +27,6 @@ public class SumOperatorTest {
     public void sum_involving_monomials_with_different_literal_parts() {
         assertSum("2", "x", "x+2.0");
         assertSum("a", "b", "a+b");
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void numeric_sum_involving_more_than_two_numbers() {
-        // Binary operators cannot manage other than two elements
-        SUM.rawOperate(Stream.of("5", "2", "3").map(OperatorTestUtils::toMathObject).collect(Collectors.toList()));
     }
 
     @Test

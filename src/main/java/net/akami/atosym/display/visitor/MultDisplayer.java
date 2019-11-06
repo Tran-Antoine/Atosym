@@ -2,7 +2,6 @@ package net.akami.atosym.display.visitor;
 
 import net.akami.atosym.display.InfixNotationDisplayable;
 import net.akami.atosym.expression.MathObject;
-import net.akami.atosym.utils.NumericUtils;
 
 import java.util.List;
 
@@ -43,6 +42,6 @@ public class MultDisplayer extends SimpleDisplayerVisitor {
     }
 
     private boolean validMultShortcut(char a, char b) {
-        return NUMBERS.contains(String.valueOf(a)) || NUMBERS.contains(String.valueOf(b));
+        return !NUMBERS.contains(String.valueOf(a)) || !NUMBERS.contains(String.valueOf(b));
     }
 }

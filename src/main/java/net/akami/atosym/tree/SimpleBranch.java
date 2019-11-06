@@ -6,7 +6,6 @@ import net.akami.atosym.expression.NumberExpression;
 import net.akami.atosym.expression.VariableExpression;
 import net.akami.atosym.operator.MathOperator;
 import net.akami.atosym.parser.AtosymParser.ExpContext;
-import net.akami.atosym.parser.AtosymParser.FunCallContext;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.Vocabulary;
@@ -14,6 +13,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -27,7 +27,7 @@ public class SimpleBranch {
     private MathOperator operator;
     private MathObject simplifiedValue;
 
-    private ParserRuleContext parseTree;
+    private ParseTree parseTree;
     private String exp;
     private float evalTime;
 
@@ -35,10 +35,18 @@ public class SimpleBranch {
         this.parent = parent;
         this.parseTree = parseTree;
         this.exp = parseTree.getText();
-        this.children = loadChildren();
+        this.children = loadChildren(parseTree);
         parent.addBranch(this);
 
         loadOperator();
+    }
+
+    public SimpleBranch(AtosymTree<SimpleBranch> parent, TerminalNode node) {
+        this.parent = parent;
+        this.exp = node.getText();
+        this.children = Collections.emptyList();
+        this.parseTree = node;
+        parent.addBranch(this);
     }
 
     private void loadOperator() {
@@ -59,19 +67,21 @@ public class SimpleBranch {
 
     private String loadText(ExpContext expTree) {
         Token binOp = expTree.binop;
-        // TODO : try expTree.unop
+
         if(binOp != null) {
             return binOp.getText();
         }
-        FunCallContext func = expTree.funCall();
+
+        Token unOp = expTree.unop;
+        if(unOp != null) {
+            return unOp.getText();
+        }
+
+        /*FunCallContext func = expTree.funCall();
         TerminalNode funcToken;
         if(func != null && (funcToken=func.FUNC()) != null) {
             return funcToken.getText();
-        }
-        Token symbol = expTree.unop;
-        if(symbol != null) {
-            return symbol.getText();
-        }
+        }*/
         // Two possibilities : either there is no function name, because there are brackets for the priority of operations
         //                     or we are dealing with a multiplication with no sign, such as 4x
         if (children.size() == 1) {
@@ -80,12 +90,15 @@ public class SimpleBranch {
         return "";
     }
 
-    private List<SimpleBranch> loadChildren() {
+    private List<SimpleBranch> loadChildren(ParserRuleContext tree) {
         List<SimpleBranch> children = new ArrayList<>();
-        for(ParseTree child : parseTree.children) {
+        for(ParseTree child : tree.children) {
             if(child instanceof ParserRuleContext) {
                 children.add(new SimpleBranch(parent, (ParserRuleContext) child));
-            }
+            } else if (child instanceof TerminalNode) {
+                TerminalNode node = (TerminalNode) child;
+                children.add(new SimpleBranch(parent, node));
+            } else throw new UnsupportedOperationException();
         }
         return children;
     }
@@ -107,6 +120,10 @@ public class SimpleBranch {
             if(child instanceof TerminalNode) {
                 tokens.add(((TerminalNode) child).getSymbol());
             }
+        }
+
+        if(parseTree instanceof TerminalNode) {
+            tokens.add(((TerminalNode) parseTree).getSymbol());
         }
 
         for(Token token : tokens) {
