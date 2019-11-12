@@ -97,7 +97,10 @@ public class SimpleBranch {
                 children.add(new SimpleBranch(parent, (ParserRuleContext) child));
             } else if (child instanceof TerminalNode) {
                 TerminalNode node = (TerminalNode) child;
-                children.add(new SimpleBranch(parent, node));
+                // TODO : this is the ugliest way possible of fixing this bug. Please, my good self, change this
+                if(!"()+-*/^".contains(node.getText())) {
+                    children.add(new SimpleBranch(parent, node));
+                }
             } else throw new UnsupportedOperationException();
         }
         return children;

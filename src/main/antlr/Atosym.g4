@@ -7,11 +7,12 @@ exp
     | NUMBER
     | CHAR
     | exp unop='!'
-    | unop=(SUM|SUB) exp
     | exp (binop = POW) exp
-    | exp (FUNC? '(' (exp',')* exp ')' | CHAR)
+    //| exp exp
+    //| exp (FUNC? '(' (exp',')* exp ')' | CHAR)
     | exp (binop = (DIV | MULT)) exp
     | exp binop=(SUM|SUB) exp
+    | unop=(SUM|SUB) exp
     ;
 
 FUNC
