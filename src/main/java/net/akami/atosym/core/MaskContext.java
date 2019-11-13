@@ -204,7 +204,7 @@ public class MaskContext {
 
     /**
      * Returns the instance of a required operator, allowing the user to call other methods than
-     * the default {@link MathOperator#operate(List<MathObject>)} from it. <br>
+     * the default {@link MathOperator#rawOperate(List<MathObject>)} from it. <br>
      * If you are looking forward to using the {@code operate()} method from an operator, use {@link #binaryCompute(MathObject, MathObject, Class)}
      * instead.
      * @param clazz the type of the operator

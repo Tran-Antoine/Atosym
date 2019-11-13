@@ -3,17 +3,35 @@ grammar Atosym;
 main: exp;
 
 exp
-    : FUNC? '(' (exp',')* exp ')'
-    | NUMBER
-    | CHAR
-    | exp unop='!'
-    | exp (binop = POW) exp
-    //| exp exp
-    //| exp (FUNC? '(' (exp',')* exp ')' | CHAR)
-    | exp (binop = (DIV | MULT)) exp
-    | exp binop=(SUM|SUB) exp
-    | unop=(SUM|SUB) exp
+    : literal
+    | nonLitExpr
     ;
+
+nonLitExpr
+    : identifier
+    | funcCall
+    | binop = '^' exp
+    | binop = ('*'|'/') exp
+    |
+    | unop = ('+'|'-') exp
+    | binop = ('+' | '-') exp
+    ;
+
+literal
+    : DIGIT+
+    ;
+
+identifier
+    : CHAR
+    ;
+
+funcCall
+    : FUNC? '(' (exp',')* exp ')'
+    ;
+
+expr:  mult ('+' mult)*;
+mult:  atom ('*' atom)* ;
+atom:  literal | identifier | '(' expr ')' ;
 
 FUNC
     : 'sum'
@@ -29,7 +47,7 @@ FUNC
     | 'root' // root(base, n)
     ;
 
-NUMBER : DIGIT+;
+
 DIGIT  : [0-9]('.'[0-9] |);
 CHAR   : [a-zA-Z]|'π';
 SUM : '+';
